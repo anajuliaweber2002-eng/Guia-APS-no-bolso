@@ -50,8 +50,9 @@ header .wrap{padding-block:10px 0;display:grid;gap:8px}
 h1{margin:0;font-size:1.15rem;letter-spacing:-.01em}
 h1 small{font-weight:500;color:var(--muted);font-size:.8rem;margin-left:6px}
 .seg{display:flex;background:var(--sunk);border-radius:999px;padding:3px}
-.seg{flex:1 1 auto;max-width:440px}
-.seg button{flex:1;border:0;background:none;color:var(--muted);font:600 .82rem var(--f-ui);padding:6px 8px;border-radius:999px;cursor:pointer}
+.seg{flex:1 1 auto;max-width:480px;overflow-x:auto;scrollbar-width:none}
+.seg::-webkit-scrollbar{display:none}
+.seg button{flex:1;border:0;background:none;color:var(--muted);font:600 .8rem var(--f-ui);padding:6px 7px;white-space:nowrap;border-radius:999px;cursor:pointer}
 .seg button[aria-selected="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 2px rgb(0 0 0/.12)}
 .chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none;margin-inline:-4px;padding-inline:4px}
 .chips::-webkit-scrollbar{display:none}
@@ -107,6 +108,10 @@ input,select{width:100%;font:500 1rem var(--f-ui);color:var(--fg);background:var
 .opt span i{font-style:normal;font-family:var(--f-mono);color:var(--muted);margin-right:4px}
 .opt input:checked+span{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
 .opt input:checked+span i{color:inherit}
+.soft .opt input:checked+span{background:var(--accent-soft);color:var(--fg);border-color:var(--accent)}
+.soft .opt span{padding-left:34px;position:relative}
+.soft .opt span::before{content:'';position:absolute;left:10px;top:9px;width:14px;height:14px;border:2px solid var(--muted);border-radius:4px}
+.soft .opt input:checked+span::before{background:var(--accent);border-color:var(--accent)}
 .opt input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
 .scale{width:100%;border-collapse:collapse;font-size:.84rem;font-variant-numeric:tabular-nums}
 .scale td{padding:5px 6px;border-top:1px solid var(--line);vertical-align:top}
@@ -146,6 +151,7 @@ footer{color:var(--muted);font-size:.78rem}
         <button id="tab-soap" role="tab" aria-selected="true" data-sec="soap">SOAP</button>
         <button id="tab-calc" role="tab" aria-selected="false" data-sec="calc">Cálculos</button>
         <button id="tab-presc" role="tab" aria-selected="false" data-sec="presc">Prescrições</button>
+        <button id="tab-mev" role="tab" aria-selected="false" data-sec="mev">MEV</button>
         <button id="tab-esq" role="tab" aria-selected="false" data-sec="esq">Paciente</button>
       </div>
     </div>
@@ -928,9 +934,9 @@ function sheetSVG(){
     y+=h+10;
   });
   const cs=CUID.filter(([k])=>ESQ.cuid.has(k)).map(([k,t])=>[k,t]);
-  ESQ.extra.split(/\r?\n/).map(s=>s.trim()).filter(Boolean).forEach(t=>cs.push(['extra',t]));
+  const ex=ESQ.extra.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
   if(ESQ.retorno)cs.push(['retorno','Volte na unidade em '+ESQ.retorno.split('-').reverse().join('/')]);
-  if(cs.length){
+  if(cs.length||ex.length){
     y+=14;o+=`<text x="30" y="${y+26}" font-family="${F}" font-size="28" font-weight="700" fill="#111">Cuidados</text>`;y+=44;
     cs.forEach(([k,t],i)=>{const col=i%2,x=20+col*385;if(col===0&&i>0)y+=0;
       const L=wrapT(t,24).slice(0,3),hh=Math.max(80,L.length*26+24);
@@ -938,6 +944,10 @@ function sheetSVG(){
       L.forEach((l,j)=>o+=`<text x="${x+80}" y="${y+hh/2-(L.length-1)*13+8+j*26}" font-family="${F}" font-size="21" fill="#111">${X(l)}</text>`);
       if(col===1||i===cs.length-1)y+=Math.max(hh,80)+10;
     });
+    ex.forEach(t=>{const L=wrapT(t,54),hh=Math.max(64,L.length*26+22);
+      o+=`<rect x="20" y="${y}" width="760" height="${hh}" rx="10" fill="#fff" stroke="#adb5bd" stroke-width="2"/><svg x="32" y="${y+hh/2-22}" width="44" height="44" viewBox="0 0 100 100">${ICO.extra}</svg>`;
+      L.forEach((l,j)=>o+=`<text x="90" y="${y+hh/2-(L.length-1)*13+8+j*26}" font-family="${F}" font-size="21" fill="#111">${X(l)}</text>`);
+      y+=hh+10});
   }
   if(ESQ.unidade){y+=10;o+=`<text x="30" y="${y+20}" font-family="${F}" font-size="20" fill="#333">${X(ESQ.unidade)}</text>`;y+=30}
   y+=20;
@@ -1009,11 +1019,164 @@ function renderESQ(m){
   };
   drawRows();
 }
+/* ---------- MEV: orientações de estilo de vida (linguagem para o paciente) ---------- */
+const ALIM='Faça da comida de verdade a base: arroz, feijão, legumes, verduras, frutas, ovos, carnes e peixes. Evite ultraprocessados (salgadinho, biscoito recheado, embutidos, refrigerante, macarrão instantâneo).';
+const ATIV='Faça atividade física: pelo menos 150 minutos por semana (ex.: 30 minutos de caminhada, 5 dias por semana), e exercícios de força 2 vezes por semana. Qualquer movimento já ajuda: comece aos poucos.';
+const FUMO='Pare de fumar. A unidade de saúde oferece grupo e remédios gratuitos para ajudar.';
+const ALC='Evite bebida alcoólica.';
+const M={
+mev_has:{s:'Hipertensão',t:'Pressão alta',pr:'Orientado(a) sobre MEV para HAS: redução de sal (< 5 g/dia), alimentação baseada no Guia Alimentar, atividade física ≥ 150 min/sem, controle de peso, cessação do tabagismo, redução do álcool, adesão e automonitorização da PA.',items:[
+ 'Use pouco sal: no máximo 1 colher de chá rasa por dia para toda a comida. Tempere com alho, cebola, cheiro-verde, limão e ervas.',
+ 'Evite temperos prontos (caldo em cubo, sachê), embutidos (salsicha, presunto, mortadela), enlatados e salgadinhos: têm muito sal.',
+ 'Coma frutas, verduras e legumes todos os dias e prefira feijão, arroz integral e aveia.',ATIV,
+ 'Se estiver acima do peso, perder um pouco (5 a 10%) já baixa a pressão.',FUMO,'Evite bebida alcoólica ou beba pouco.',
+ 'Durma bem e procure maneiras de diminuir o estresse.',
+ 'Tome os remédios todos os dias, mesmo quando a pressão estiver boa. Não pare sem falar com a equipe.',
+ 'Meça a pressão quando puder e anote para mostrar na consulta.']},
+mev_dm:{s:'Diabetes',t:'Diabetes',pr:'Orientado(a) sobre MEV para DM: alimentação baseada no Guia Alimentar com redução de açúcares e ultraprocessados, regularidade nas refeições, atividade física ≥ 150 min/sem, controle de peso, cessação do tabagismo, cuidado diário com os pés e reconhecimento de hipoglicemia.',items:[
+ 'Evite açúcar, doces, refrigerante e suco de caixinha ou em pó. Prefira a fruta inteira ao suco.',
+ 'Monte o prato: metade com verduras e legumes, um quarto com arroz, mandioca, batata ou macarrão e um quarto com feijão, ovo, carne ou peixe.',
+ 'Faça as refeições em horários regulares e não fique muito tempo sem comer, principalmente se usa insulina.',
+ 'Prefira alimentos integrais: arroz integral, aveia, pão integral.',ATIV,
+ 'Se estiver acima do peso, perder 5 a 10% melhora muito a glicose.',
+ 'Olhe os pés todo dia. Lave, seque bem entre os dedos e hidrate (menos entre os dedos). Use calçado fechado e confortável e nunca ande descalço.',
+ 'Se sentir tremor, suor frio, fraqueza ou tontura: tome 1 colher de sopa de açúcar em água ou um copo de suco e meça a glicemia.',FUMO,ALC]},
+mev_obes:{s:'Obesidade',t:'Sobrepeso e obesidade',pr:'Orientado(a) sobre MEV para excesso de peso: alimentação baseada no Guia Alimentar, redução de ultraprocessados e bebidas açucaradas, atividade física progressiva até 150–300 min/sem, sono adequado, meta inicial de perda de 5–10% do peso.',items:[
+ 'A meta inicial é perder 5 a 10% do peso. Isso já traz benefício para a saúde.',ALIM,
+ 'Troque refrigerante e suco por água. Tenha sempre uma garrafa de água por perto.',
+ 'Coma devagar, sentado à mesa, sem televisão ou celular, e com atenção na comida.',
+ 'Cozinhe em casa sempre que puder e planeje as compras da semana.',
+ 'Faça atividade física aos poucos e aumente até 150 a 300 minutos por semana. Escolha algo de que goste: caminhada, dança, bicicleta.',
+ 'Durma de 7 a 8 horas por noite: dormir pouco aumenta a fome.',
+ 'Procure os grupos da unidade de saúde e a Academia da Saúde, se houver.']},
+mev_lip:{s:'Colesterol',t:'Colesterol alto e risco do coração',pr:'Orientado(a) sobre MEV para dislipidemia/risco cardiovascular: redução de gorduras saturadas e trans e de ultraprocessados, aumento de fibras, atividade física ≥ 150 min/sem, controle de peso, cessação do tabagismo, moderação do álcool.',items:[
+ 'Diminua frituras, carnes gordas, pele de frango, linguiça, bacon, manteiga e alimentos com gordura trans (biscoito recheado, margarina dura, salgadinho).',
+ 'Prefira carnes magras, frango sem pele, peixe e ovos cozidos. Use pouco óleo.',
+ 'Coma mais fibras: aveia, feijão, frutas com casca, verduras e legumes.',ATIV,FUMO,
+ 'Evite bebida alcoólica: ela aumenta os triglicerídeos.',
+ 'Tome o remédio do colesterol todos os dias. Ele protege o coração mesmo quando o exame melhora.']},
+mev_drc:{s:'Rins',t:'Doença renal crônica',pr:'Orientado(a) sobre MEV para DRC: restrição de sal (< 5 g/dia), ingestão proteica adequada ao estágio, evitar anti-inflamatórios e nefrotóxicos, controle de PA e glicemia, atividade física, cessação do tabagismo, hidratação conforme orientação.',items:[
+ 'Use pouco sal e evite temperos prontos, embutidos e enlatados.',
+ 'Não exagere nas carnes: coma porções moderadas, conforme orientação da equipe.',
+ 'Não tome anti-inflamatórios (ibuprofeno, diclofenaco, nimesulida, cetoprofeno) nem chás e remédios por conta própria. Para dor, use dipirona ou paracetamol.',
+ 'Beba água conforme a orientação da equipe (há casos em que é preciso limitar).',
+ 'Controle bem a pressão e o diabetes: é o que mais protege os rins.',ATIV,FUMO,
+ 'Sempre avise qualquer médico ou dentista que você tem doença nos rins.']},
+mev_icc:{s:'Coração (ICC)',t:'Insuficiência cardíaca',pr:'Orientado(a) sobre MEV para IC: restrição de sal, pesagem diária com sinais de alerta, atividade física leve a moderada conforme tolerância, evitar AINE, cessação do tabagismo e do álcool, adesão às medicações, vacinação.',items:[
+ 'Use pouco sal e evite temperos prontos, embutidos, enlatados e salgadinhos.',
+ 'Pese-se todo dia, de manhã, depois de urinar e antes do café. Se ganhar mais de 2 kg em 3 dias, procure a unidade.',
+ 'Procure a unidade se tiver mais falta de ar, inchaço nas pernas ou barriga, ou precisar dormir com mais travesseiros.',
+ 'Faça caminhadas leves e aumente aos poucos, sempre no seu ritmo. Pare se tiver falta de ar forte ou dor no peito.',
+ 'Não use anti-inflamatórios (ibuprofeno, diclofenaco, nimesulida).',
+ 'Não fume e não beba bebida alcoólica.',
+ 'Tome os remédios todos os dias, mesmo se estiver bem.',
+ 'Tome as vacinas da gripe, da covid e da pneumonia.']},
+mev_gest:{s:'Gestação',t:'Gestação saudável',pr:'Orientada sobre MEV na gestação: alimentação baseada no Guia Alimentar, ganho de peso adequado ao IMC pré-gestacional, atividade física moderada, suspensão de álcool, tabaco e outras drogas, suplementação, sinais de alarme.',items:[
+ ALIM,
+ 'Coma de 3 em 3 horas, em pequenas porções, se tiver enjoo. Biscoito de água e sal ao acordar ajuda.',
+ 'Não beba nenhuma bebida alcoólica, não fume e não use drogas durante a gravidez.',
+ 'Lave bem frutas e verduras e não coma carne crua ou malpassada (protege da toxoplasmose).',
+ 'Faça caminhadas ou exercícios leves, se a equipe liberar: cerca de 30 minutos na maior parte dos dias.',
+ 'Tome o ácido fólico e o sulfato ferroso como orientado.',
+ 'Procure a maternidade se tiver sangramento, perda de líquido, dor de cabeça forte, visão embaçada, inchaço repentino, febre ou se o bebê parar de mexer.']},
+mev_cri:{s:'Criança',t:'Criança saudável',pr:'Orientados responsáveis sobre alimentação conforme Guia Alimentar para crianças < 2 anos (AME até 6 meses, alimentação complementar sem açúcar e ultraprocessados), sono seguro, tempo de tela, prevenção de acidentes e vacinação.',items:[
+ 'Até 6 meses: só leite materno, sem água, chá ou outros leites. Mamar até 2 anos ou mais.',
+ 'A partir de 6 meses: comida amassada (não liquidificada) de verdade, com feijão, legumes, carnes e frutas.',
+ 'Não dê açúcar, mel, refrigerante, suco de caixinha, biscoito recheado ou salgadinho antes dos 2 anos.',
+ 'Bebê dorme de barriga para cima, no berço, sem travesseiro, protetor ou bichos de pelúcia.',
+ 'Evite telas (TV, celular) antes dos 2 anos e limite a 1 hora por dia dos 2 aos 5 anos.',
+ 'Brinque, converse e leia com a criança todos os dias.',
+ 'Previna acidentes: remédios e produtos de limpeza longe do alcance, cadeirinha no carro, tela nas janelas.',
+ 'Mantenha as vacinas em dia e traga a Caderneta da Criança em toda consulta.']},
+mev_dep:{s:'Depressão',t:'Depressão',pr:'Orientado(a) sobre MEV e autocuidado em saúde mental: atividade física regular, rotina de sono, ativação comportamental, rede de apoio, evitar álcool e outras drogas, adesão ao tratamento e plano de segurança.',items:[
+ 'Mantenha uma rotina: horário para acordar, comer e dormir.',
+ 'Faça alguma atividade física, mesmo leve: caminhar 20 a 30 minutos já melhora o humor.',
+ 'Planeje uma atividade prazerosa ou útil por dia, mesmo sem vontade. A disposição costuma vir depois.',
+ 'Converse com pessoas de confiança e participe de grupos da unidade ou da comunidade.',
+ 'Evite bebida alcoólica e outras drogas: pioram a depressão e atrapalham o remédio.',
+ 'Tome o remédio todos os dias. Ele leva de 2 a 4 semanas para começar a fazer efeito. Não pare sem falar com a equipe.',
+ 'Se tiver pensamentos de se machucar, procure ajuda na hora: unidade de saúde, CVV (ligue 188, 24 horas) ou SAMU (192).']},
+mev_ans:{s:'Ansiedade',t:'Ansiedade',pr:'Orientado(a) sobre MEV para ansiedade: técnicas de respiração e relaxamento, atividade física regular, higiene do sono, redução de cafeína e álcool, rede de apoio, psicoterapia.',items:[
+ 'Quando a ansiedade apertar, respire devagar: puxe o ar pelo nariz contando até 4, segure até 4 e solte pela boca contando até 6. Repita por 2 a 5 minutos.',
+ 'Faça atividade física regular: caminhada, dança, bicicleta.',
+ 'Diminua café, chá preto, chimarrão, refrigerante de cola e energético, principalmente à tarde e à noite.',
+ 'Evite bebida alcoólica: ela alivia na hora e piora a ansiedade depois.',
+ 'Durma em horário regular e evite celular na cama.',
+ 'Reserve um tempo do dia para algo que dá prazer e converse com pessoas de confiança.',
+ 'Separe um horário do dia para pensar nas preocupações e anote o que pode resolver.']},
+mev_sono:{s:'Insônia',t:'Insônia (higiene do sono)',pr:'Orientado(a) sobre higiene do sono: horários regulares, restrição de cochilos, cafeína, álcool e telas à noite, ambiente adequado, uso da cama só para dormir.',items:[
+ 'Deite e levante sempre no mesmo horário, inclusive no fim de semana.',
+ 'Evite cochilar de dia. Se precisar, no máximo 20 minutos antes das 15 h.',
+ 'Não tome café, chá preto, chimarrão, refrigerante de cola ou energético depois das 16 h.',
+ 'Evite bebida alcoólica e cigarro à noite.',
+ 'Desligue TV e celular 1 hora antes de deitar.',
+ 'Deixe o quarto escuro, silencioso e com temperatura agradável.',
+ 'Se não dormir em 20 minutos, levante, faça algo calmo com pouca luz e volte quando tiver sono.',
+ 'Faça atividade física durante o dia, mas não perto da hora de dormir.']},
+mev_tab:{s:'Tabagismo',t:'Parar de fumar',pr:'Realizada abordagem breve para cessação do tabagismo; orientado(a) sobre estratégias comportamentais, manejo da fissura e oferta do tratamento na unidade.',items:[
+ 'Marque uma data para parar de fumar, de preferência nas próximas 2 semanas.',
+ 'Conte para a família e os amigos e peça apoio.',
+ 'Tire de casa cigarros, isqueiros e cinzeiros.',
+ 'A vontade forte de fumar dura poucos minutos: beba água gelada, respire fundo, escove os dentes ou mastigue uma cenoura ou um cravo.',
+ 'Evite situações que lembram o cigarro (café, bebida alcoólica) nas primeiras semanas.',
+ 'Se tiver uma recaída, não desista: cada tentativa ajuda a parar de vez.',
+ 'A unidade de saúde tem grupo e remédios gratuitos (adesivo, goma, bupropiona).']},
+mev_alc:{s:'Álcool',t:'Uso de álcool',pr:'Realizada intervenção breve para uso de álcool (AUDIT __); orientado(a) sobre redução de danos, metas de consumo e sinais de abstinência.',items:[
+ 'Combine uma meta: parar ou diminuir. Se for diminuir, defina quantos dias por semana e quantas doses.',
+ 'Fique pelo menos 2 dias por semana sem beber.',
+ 'Beba devagar, alterne com água e coma antes e durante.',
+ 'Evite os lugares e as pessoas que levam a beber mais.',
+ 'Nunca dirija depois de beber.',
+ 'Não pare de repente se bebe muito todo dia: pode dar tremor e convulsão. Fale com a equipe para parar com segurança.',
+ 'Procure a unidade ou o CAPS AD para ajuda. Existem grupos como os Alcoólicos Anônimos.']},
+mev_hpb:{s:'Próstata',t:'Próstata aumentada (HPB)',pr:'Orientado sobre medidas comportamentais para LUTS/HPB: redução de líquidos à noite, cafeína e álcool, micção dupla, revisão de medicações e treinamento vesical.',items:[
+ 'Beba menos líquido nas 2 horas antes de dormir, mas mantenha a água durante o dia.',
+ 'Diminua café, chá preto, refrigerante e bebida alcoólica, principalmente à noite.',
+ 'Urine antes de deitar e antes de sair de casa.',
+ 'Depois de urinar, espere um pouco e tente de novo (micção dupla).',
+ 'Evite remédios para gripe e alergia sem orientação: podem prender a urina.',
+ 'Procure a unidade se não conseguir urinar, tiver sangue na urina ou ardência com febre.']},
+mev_ivas:{s:'Gripe/resfriado',t:'Gripe e resfriado',pr:'Orientado(a) sobre cuidados domiciliares em IVAS: hidratação, lavagem nasal, repouso, sintomáticos, etiqueta respiratória e sinais de alarme.',items:[
+ 'Beba bastante água, sucos e sopas.',
+ 'Lave o nariz com soro fisiológico várias vezes ao dia.',
+ 'Descanse e se alimente bem.',
+ 'Cubra a boca com o braço ao tossir ou espirrar e lave as mãos com frequência.',
+ 'Use máscara perto de idosos, bebês, gestantes e pessoas doentes.',
+ 'Não tome antibiótico sem receita: não funciona contra vírus.',
+ 'Procure a unidade se tiver falta de ar, febre por mais de 3 dias, piora depois de melhorar ou dor de ouvido forte.']},
+mev_diar:{s:'Diarreia',t:'Diarreia e vômitos',pr:'Orientado(a) sobre Plano A: SRO após cada evacuação/vômito, manutenção da alimentação, higiene das mãos e da água, sinais de alarme.',items:[
+ 'Tome o soro de reidratação oral depois de cada evacuação líquida ou vômito, em pequenos goles.',
+ 'Continue comendo, em pequenas porções: arroz, batata, frango, banana, maçã, sopas.',
+ 'Evite refrigerante, suco de caixinha, doces e frituras enquanto durar a diarreia.',
+ 'Lave as mãos depois de usar o banheiro e antes de comer ou cozinhar.',
+ 'Beba água filtrada ou fervida, ou com 2 gotas de hipoclorito por litro (espere 30 minutos).',
+ 'Procure a unidade se tiver sangue nas fezes, febre alta, muita sonolência, urinar pouco ou não conseguir beber.']}
+};
+function mevText(c){return c.t+'\n'+c.items.map(i=>'• '+i).join('\n')}
+function renderMEV(m,id){
+  const c=M[id];
+  m.innerHTML=`<section class="panel">
+    <div class="ph"><h2>${esc(c.t)}</h2><span class="code">mudança de estilo de vida</span></div>
+    <div class="card"><div class="lbl">Orientações para o paciente</div>
+      <div class="opts soft" style="grid-template-columns:1fr">${c.items.map((t,i)=>`<label class="opt"><input type="checkbox" id="mv-${i}" checked><span>${esc(t)}</span></label>`).join('')}</div>
+      <p class="note">Desmarque o que não se aplica antes de copiar ou levar para a folha.</p></div>
+    <div class="bar sticky-bar"><button class="btn primary small" id="mv-cp">Copiar orientações</button><button class="btn small" id="mv-pr">Copiar p/ prontuário</button><button class="btn small" id="mv-esq">Levar à folha</button></div>
+    <div class="card"><div class="lbl">Registro no prontuário</div><pre class="rx">${esc(c.pr)}</pre></div>
+    <p class="note">Baseado no Guia Alimentar para a População Brasileira, no Guia de Atividade Física do MS e nos Cadernos de Atenção Básica. "Levar à folha do paciente" coloca as orientações marcadas nos cuidados da aba Paciente.</p>
+  </section>`;
+  const sel=()=>c.items.filter((_,i)=>$('#mv-'+i).checked);
+  $('#mv-cp').onclick=()=>copy(c.t+'\n'+sel().map(i=>'• '+i).join('\n'));
+  $('#mv-pr').onclick=()=>copy(c.pr);
+  $('#mv-esq').onclick=()=>{const s=sel();if(!s.length){toast('Marque ao menos uma orientação');return}
+    if(ESQ.ex){ESQ.rows=[];ESQ.ex=false;ESQ.nome='';ESQ.cuid=new Set(['agua','todo','trazer'])}
+    const cur=ESQ.extra.split('\n').map(x=>x.trim()).filter(Boolean);s.forEach(x=>{if(!cur.includes(x))cur.push(x)});ESQ.extra=cur.join('\n');
+    toast(s.length+' orientação(ões) na folha do paciente')};
+}
 const E={esquema:'Esquema'};
-const SECS={soap:Object.keys(T),calc:Object.keys(C),presc:Object.keys(P),esq:Object.keys(E)};
+const SECS={soap:Object.keys(T),calc:Object.keys(C),presc:Object.keys(P),mev:Object.keys(M),esq:Object.keys(E)};
 let cur={sec:'soap',id:'has'};
 
-function chipLabel(id){return T[id]?({has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:E[id])}
+function chipLabel(id){return T[id]?({has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:E[id])}
 
 function renderChips(){
   const c=$('#chips');c.innerHTML='';c.hidden=SECS[cur.sec].length<2;
@@ -1021,7 +1184,7 @@ function renderChips(){
   document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-selected',b.dataset.sec===cur.sec));
 }
 function go(id){
-  cur={sec:T[id]?'soap':C[id]?'calc':P[id]?'presc':'esq',id};
+  cur={sec:T[id]?'soap':C[id]?'calc':P[id]?'presc':M[id]?'mev':'esq',id};
   store.set('kitaps:last',id);
   try{history.replaceState(null,'','#'+id)}catch(e){}
   renderChips();render();
@@ -1036,6 +1199,7 @@ function render(){
   if(cur.sec==='soap')return renderSoap(m,cur.id);
   if(cur.sec==='presc')return renderPresc(m,cur.id);
   if(cur.sec==='esq')return renderESQ(m);
+  if(cur.sec==='mev')return renderMEV(m,cur.id);
   ({ig:renderIG,tfg:renderTFG,imc:renderIMC,phq9:renderPHQ,audit:renderAUDIT,gad7:renderGAD,insulina:renderINS,fluxodm:renderFLUXO,melanoma:renderMEL,rcv:renderRCV,fager:renderFAGER,ipss:renderIPSS})[cur.id](m);
 }
 
@@ -1696,8 +1860,8 @@ function renderIPSS(m){
 }
 
 const h=(location.hash||'').slice(1);
-const start=(T[h]||C[h]||P[h]||E[h])?h:(store.get('kitaps:last')||'has');
-go(T[start]||C[start]||P[start]||E[start]?start:'has');
+const start=(T[h]||C[h]||P[h]||M[h]||E[h])?h:(store.get('kitaps:last')||'has');
+go(T[start]||C[start]||P[start]||M[start]||E[start]?start:'has');
 window.__test={ckdepi,usgLimit,framingham,parseList};
 })();
 </script>
