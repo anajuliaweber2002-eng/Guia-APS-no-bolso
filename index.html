@@ -954,6 +954,14 @@ function sheetSVG(){
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${y}" width="${W}" height="${y}"><rect width="${W}" height="${y}" fill="#fff"/>${o}</svg>`;
 }
 
+function svgToPng(svg,img,out){
+  const vb=svg.match(/viewBox="0 0 (\d+) (\d+)"/),w=+vb[1],h=+vb[2],url='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+  const im=new Image();
+  im.onload=()=>{try{const c=document.createElement('canvas');c.width=w*2;c.height=h*2;const x=c.getContext('2d');x.scale(2,2);x.drawImage(im,0,0);img.src=c.toDataURL('image/png')}catch(e){img.src=url}out.hidden=false;out.scrollIntoView({block:'start'})};
+  im.onerror=()=>{img.src=url;out.hidden=false};
+  im.src=url;
+}
+function printSheet(){try{window.print()}catch(e){toast('Impressão bloqueada aqui: use Gerar imagem')}}
 function renderESQ(m){
   if(!ESQ.data)ESQ.data=isoD(today());
   if(!ESQ.unidade)ESQ.unidade=store.get('kitaps:unidade')||'';
@@ -1009,14 +1017,8 @@ function renderESQ(m){
   $('#es-uni').oninput=e=>{ESQ.unidade=e.target.value;store.set('kitaps:unidade',e.target.value);drawSheet()};
   $('#es-extra').oninput=e=>{ESQ.extra=e.target.value;drawSheet()};
   m.querySelectorAll('[id^="es-c-"]').forEach(c=>c.onchange=()=>{c.checked?ESQ.cuid.add(c.dataset.k):ESQ.cuid.delete(c.dataset.k);drawSheet()});
-  $('#es-print').onclick=()=>{try{window.print()}catch(e){toast('Impressão bloqueada aqui: use Gerar imagem')}};
-  $('#es-img').onclick=()=>{
-    const svg=sheetSVG(),vb=svg.match(/viewBox="0 0 (\d+) (\d+)"/),w=+vb[1],h=+vb[2],url='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
-    const im=new Image();
-    im.onload=()=>{try{const c=document.createElement('canvas');c.width=w*2;c.height=h*2;const x=c.getContext('2d');x.scale(2,2);x.drawImage(im,0,0);$('#es-png').src=c.toDataURL('image/png')}catch(e){$('#es-png').src=url}$('#es-out').hidden=false;$('#es-out').scrollIntoView({block:'start'})};
-    im.onerror=()=>{$('#es-png').src=url;$('#es-out').hidden=false};
-    im.src=url;
-  };
+  $('#es-print').onclick=printSheet;
+  $('#es-img').onclick=()=>svgToPng(sheetSVG(),$('#es-png'),$('#es-out'));
   drawRows();
 }
 /* ---------- MEV: orientações de estilo de vida (linguagem para o paciente) ---------- */
@@ -1152,6 +1154,20 @@ mev_diar:{s:'Diarreia',t:'Diarreia e vômitos',pr:'Orientado(a) sobre Plano A: S
  'Beba água filtrada ou fervida, ou com 2 gotas de hipoclorito por litro (espere 30 minutos).',
  'Procure a unidade se tiver sangue nas fezes, febre alta, muita sonolência, urinar pouco ou não conseguir beber.']}
 };
+function mevSVG(c,items,nome){
+  const W=800,F='Arial, Helvetica, sans-serif';let y=0,o='';
+  o+=`<text x="30" y="58" font-family="${F}" font-size="36" font-weight="700" fill="#111">${X(c.t)}</text>`;
+  o+=`<text x="30" y="92" font-family="${F}" font-size="22" fill="#333">Orientações para cuidar da sua saúde${nome?' · '+X(nome):''}</text>`;
+  y=116;
+  items.forEach(t=>{const L=wrapT(t,52),hh=L.length*30+26;
+    o+=`<rect x="20" y="${y}" width="760" height="${hh}" rx="10" fill="#fff" stroke="#adb5bd" stroke-width="2"/><circle cx="46" cy="${y+28}" r="9" fill="#0d6b60"/>`;
+    L.forEach((l,j)=>o+=`<text x="70" y="${y+36+j*30}" font-family="${F}" font-size="23" fill="#111">${X(l)}</text>`);
+    y+=hh+10});
+  const u=ESQ.unidade||store.get('kitaps:unidade')||'';
+  if(u){o+=`<text x="30" y="${y+28}" font-family="${F}" font-size="20" fill="#333">${X(u)}</text>`;y+=40}
+  y+=16;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${y}" width="${W}" height="${y}"><rect width="${W}" height="${y}" fill="#fff"/>${o}</svg>`;
+}
 function mevText(c){return c.t+'\n'+c.items.map(i=>'• '+i).join('\n')}
 function renderMEV(m,id){
   const c=M[id];
@@ -1160,11 +1176,21 @@ function renderMEV(m,id){
     <div class="card"><div class="lbl">Orientações para o paciente</div>
       <div class="opts soft" style="grid-template-columns:1fr">${c.items.map((t,i)=>`<label class="opt"><input type="checkbox" id="mv-${i}" checked><span>${esc(t)}</span></label>`).join('')}</div>
       <p class="note">Desmarque o que não se aplica antes de copiar ou levar para a folha.</p></div>
-    <div class="bar sticky-bar"><button class="btn primary small" id="mv-cp">Copiar orientações</button><button class="btn small" id="mv-pr">Copiar p/ prontuário</button><button class="btn small" id="mv-esq">Levar à folha</button></div>
+    <div class="bar sticky-bar"><button class="btn primary small" id="mv-print">Imprimir</button><button class="btn small" id="mv-img">Gerar imagem</button><button class="btn small" id="mv-cp">Copiar orientações</button><button class="btn small" id="mv-pr">Copiar p/ prontuário</button><button class="btn small" id="mv-esq">Levar à folha</button></div>
     <div class="card"><div class="lbl">Registro no prontuário</div><pre class="rx">${esc(c.pr)}</pre></div>
-    <p class="note">Baseado no Guia Alimentar para a População Brasileira, no Guia de Atividade Física do MS e nos Cadernos de Atenção Básica. "Levar à folha do paciente" coloca as orientações marcadas nos cuidados da aba Paciente.</p>
+    <div class="field"><label for="mv-nome">Nome do paciente na folha (opcional)</label><input id="mv-nome"></div>
+    <div class="lbl">Folha para imprimir</div>
+    <div id="sheet" class="card" style="padding:8px;background:#fff"></div>
+    <div id="mv-out" hidden class="card"><p class="note">Toque e segure a imagem para salvar ou compartilhar (WhatsApp, impressora).</p><img id="mv-png" alt="Orientações para o paciente" style="width:100%;border:1px solid var(--line);border-radius:8px"></div>
+    <p class="note">Baseado no Guia Alimentar para a População Brasileira, no Guia de Atividade Física do MS e nos Cadernos de Atenção Básica. A folha impressa sai só com as orientações marcadas. Se Imprimir não abrir a janela de impressão, use Gerar imagem. "Levar à folha" coloca as orientações nos cuidados da aba Paciente.</p>
   </section>`;
   const sel=()=>c.items.filter((_,i)=>$('#mv-'+i).checked);
+  const svg=()=>mevSVG(c,sel(),$('#mv-nome').value.trim());
+  const draw=()=>{$('#sheet').innerHTML=svg().replace('<svg ','<svg style="width:100%;height:auto;display:block" ');$('#mv-out').hidden=true};
+  m.querySelectorAll('[id^="mv-"]').forEach(el=>{if(el.type==='checkbox')el.onchange=draw});
+  $('#mv-nome').oninput=draw;draw();
+  $('#mv-print').onclick=()=>{if(!sel().length){toast('Marque ao menos uma orientação');return}printSheet()};
+  $('#mv-img').onclick=()=>{if(!sel().length){toast('Marque ao menos uma orientação');return}svgToPng(svg(),$('#mv-png'),$('#mv-out'))};
   $('#mv-cp').onclick=()=>copy(c.t+'\n'+sel().map(i=>'• '+i).join('\n'));
   $('#mv-pr').onclick=()=>copy(c.pr);
   $('#mv-esq').onclick=()=>{const s=sel();if(!s.length){toast('Marque ao menos uma orientação');return}
