@@ -194,6 +194,8 @@ textarea.nota{font-family:var(--f-ui);font-size:.9rem}
 .edlist{display:grid;gap:6px}
 .edrow{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;color:var(--fg);font:500 .88rem var(--f-ui);cursor:pointer}
 .edrow .edtag{margin:0}
+.pdt td:first-child{white-space:normal;width:38%}
+.lnk{background:none;border:0;padding:0;color:var(--accent);font:600 .84rem var(--f-ui);text-align:left;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 .out{font-weight:600}
 .sec-h{margin:6px 0 0;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 @media print{@page{margin:8mm}body{background:#fff}body::before,header,.toast{display:none!important}main .wrap>section>*:not(#sheet){display:none!important}#sheet{border:0!important;padding:0!important}main .wrap{padding:0!important;max-width:none}}
@@ -597,6 +599,43 @@ P:
 3. PSA: [decisão compartilhada sobre riscos e benefícios]
 4. Encaminhar à urologia se: retenção urinária, hematúria, ITU de repetição, litíase vesical, lesão renal por obstrução, toque retal suspeito ou PSA alterado, falha do tratamento clínico
 5. Reaplicar IPSS e retorno em [4–12] semanas`},
+vertigem:{t:'Vertigem e tontura',code:'CIAP-2 N17/H82 · CID-10 R42/H81',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+
+S:
+Paciente refere [sensação de rotação / instabilidade / pré-síncope] há [ ], com episódios de [segundos / minutos / horas / contínua há dias], [desencadeados por movimentos da cabeça, como deitar, virar na cama ou olhar para cima / espontâneos / ao levantar]. Associa [náuseas e vômitos]. [Nega/refere] perda auditiva, zumbido e plenitude aural [à D/E].
+Nega cefaleia súbita ou intensa, diplopia, disartria, disfagia, fraqueza ou dormência em face ou membros, dificuldade para andar ou ficar de pé sem apoio, perda de consciência e dor cervical após trauma. Nega dor torácica, palpitações e dispneia.
+Quadro viral recente: [ ]. Episódios prévios: [ ]. Uso de medicações que causam tontura (anti-hipertensivos, sedativos, anticonvulsivantes, aminoglicosídeos): [ ]. Fatores de risco cardiovascular: [ver lista].
+DHI: [ ]/100.
+
+O:
+PA sentado [ ]x[ ] e em pé [ ]x[ ] mmHg | FC [ ] bpm | Glicemia capilar [ ]
+Otoscopia: [MT íntegras]
+Nistagmo espontâneo: [ausente / horizontal unidirecional para __ / vertical ou que muda de direção]
+Dix-Hallpike: [negativo / positivo à D/E com nistagmo torcional para cima, latência de segundos, duração < 1 min]
+Head roll (supine roll test): [negativo / nistagmo horizontal]
+HINTS: impulso cefálico [alterado (sugere periférico) / normal], nistagmo [unidirecional / muda de direção], skew (teste de cobertura) [ausente]
+Exame neurológico: pares cranianos [sem alterações], força e sensibilidade [preservadas], índex-nariz e calcanhar-joelho [normais], Romberg [ ], marcha [ ]
+Weber/Rinne: [ ]
+
+A:
+[VPPB de canal posterior D/E / neurite vestibular / doença de Ménière provável / migrânea vestibular / hipotensão ortostática / suspeita de causa central].
+
+P:
+1. [Manobra de Epley realizada à D/E, com melhora / orientada a repetir em casa]
+2. [Dimenidrinato 50 mg 6/6 h ou meclizina 25 mg 8/8 h por no máximo 3 dias, só na crise]
+3. [Prednisona 60 mg/dia por 5 dias e reduzir, se neurite vestibular com até 72 h]
+4. Reabilitação vestibular / exercícios de Brandt-Daroff [ ]
+5. Prevenção de quedas; não dirigir durante as crises
+6. Sinais de alarme (fraqueza, fala enrolada, visão dupla, cefaleia súbita, não consegue andar): procurar urgência
+7. Retorno em [ ] dias`},
 idoso:{t:'Pessoa idosa (avaliação multidimensional)',code:'CIAP-2 A98 · CID-10 Z00.0',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -1012,7 +1051,7 @@ P:
 };
 
 /* ---------- Calculadoras ---------- */
-const C={ig:'IG / DPP',tfg:'TFG CKD-EPI',imc:'IMC',phq9:'PHQ-9',audit:'AUDIT',gad7:'GAD-7',insulina:'Insulina',fluxodm:'Fluxo DM2',melanoma:'Melanoma',rcv:'Risco CV',rastreio:'Rastreios',vacinas:'Vacinas',ajustes:'Ajustes de dose',fager:'Tabagismo',ipss:'IPSS'};
+const C={ig:'IG / DPP',tfg:'TFG CKD-EPI',imc:'IMC',phq9:'PHQ-9',audit:'AUDIT',gad7:'GAD-7',insulina:'Insulina',fluxodm:'Fluxo DM2',melanoma:'Melanoma',rcv:'Risco CV',rastreio:'Rastreios',vacinas:'Vacinas',ajustes:'Ajustes de dose',fager:'Tabagismo',ipss:'IPSS',pedi:'Doses pediátricas',curb65:'CURB-65',wells_tvp:'Wells TVP',wells_tep:'Wells TEP',chads:'CHA₂DS₂-VASc',hasbled:'HAS-BLED',centor:'Centor',katz:'Katz',lawton:'Lawton',minicog:'Mini-Cog',ivcf20:'IVCF-20',quedas:'Risco de quedas',pps:'PPS',dhi:'DHI',drcest:'Estágio DRC',cg:'Cockcroft-Gault',cacorr:'Cálcio corrigido'};
 /* ---------- Prescrições padrão (adultos) ---------- */
 const RS='Receita simples',RA='Receita simples em 2 vias (retenção na farmácia), validade 10 dias',RC='Receita de Controle Especial em 2 vias (lista C1), validade 30 dias',RB='Notificação de Receita B (azul) + receita, validade 30 dias, até 60 dias de tratamento',RA2='Receita de Controle Especial em 2 vias';
 const P={
@@ -1899,6 +1938,17 @@ fx_cef:{s:'Cefaleia',t:'Cefaleia',src:'SBCe · SNOOP · Caderno AB 28',k:'cefale
   {k:'step',h:'Profilaxia',sub:'Indicada se 4 ou mais dias de crise por mês, crises incapacitantes ou falha do tratamento agudo',li:['Amitriptilina 10–25 mg à noite (até 50–75 mg)','Propranolol 40–160 mg/dia (evitar em asma)','Topiramato 25 mg, aumentar até 50 mg 12/12 h','Reavaliar em 2–3 meses; diário de cefaleia']}],
  post:[{k:'info',h:'Uso excessivo de analgésico',li:['Analgésico em 15 dias ou mais por mês (triptano ou combinações em 10 ou mais) mantém a cefaleia crônica','Retirar o excesso e iniciar profilaxia']}]},
 
+fx_vert:{s:'Vertigem',t:'Vertigem e tontura',src:'TiTrATE · HINTS · AAO-HNS (VPPB)',k:'vertigem tontura labirintite vppb epley dix-hallpike neurite meniere hints avc dimenidrinato',
+ pre:[{k:'bad',h:'Pensar em AVC (central)',li:['Déficit neurológico, diplopia, disartria, disfagia, ataxia de marcha (não fica de pé sem apoio), cefaleia súbita ou cervicalgia intensa','HINTS central: impulso cefálico <b>normal</b> em vertigem contínua, nistagmo que <b>muda de direção</b> ou vertical, <b>skew</b> presente; perda auditiva súbita nova','Idoso ou fatores de risco CV com vertigem contínua: baixo limiar para urgência. SAMU se déficit']}],
+ flow:[
+  {k:'step',h:'Tempo e gatilho (TiTrATE)',li:['Episódios de segundos, ao deitar, virar ou olhar para cima: VPPB','Contínua por dias, início agudo, após quadro viral: neurite vestibular (ou AVC)','Episódios de 20 min a 12 h com zumbido, plenitude e perda auditiva: Ménière','Ao levantar: hipotensão ortostática; com cefaleia ou fotofobia: migrânea vestibular']},
+  {k:'dec',h:'Qual síndrome?',br:[
+   ['ok','Episódica com gatilho','Dix-Hallpike positivo: nistagmo torcional para cima, latência de segundos, dura &lt; 1 min','→ VPPB de canal posterior: manobra de Epley do lado positivo'],
+   ['warn','Vestibular aguda contínua','Nistagmo horizontal unidirecional, impulso cefálico alterado, sem skew (HINTS periférico)','→ Neurite vestibular: sintomáticos por até 3 dias, considerar corticoide, reabilitação precoce'],
+   ['warn','Episódica espontânea','Crises de horas com sintomas auditivos','→ Ménière provável: restrição de sal, sintomático na crise, otorrinolaringologia e audiometria']]},
+  {k:'step',h:'Tratar',li:['Epley: pode repetir na mesma consulta; ensinar exercícios em casa (Brandt-Daroff)','Crise: dimenidrinato 50 mg 6/6 h ou meclizina 25 mg 8/8 h por no máximo 3 dias (atrasam a compensação)','Neurite com até 72 h: prednisona 60 mg/dia por 5 dias e reduzir (benefício modesto)','Reabilitação vestibular; prevenção de quedas']},
+  {k:'step',a:'Sem melhora ou atípico',h:'Reavaliar e encaminhar',li:['VPPB que não resolve após 2–3 manobras, nistagmo atípico: otorrinolaringologia','Perda auditiva súbita: otorrino com urgência (até 72 h para corticoide)','Suspeita central: emergência (neuroimagem)']}],
+ post:[{k:'info',h:'Revisar sempre',li:['Medicações: anti-hipertensivos, sedativos, anticonvulsivantes, aminoglicosídeos','PA deitado e em pé, glicemia, anemia, arritmia','Ansiedade e tontura postural-perceptual persistente (TPPP) em quadros crônicos']}]},
 fx_tor:{s:'Dor torácica',t:'Dor torácica na UBS',src:'SBC · Protocolos de urgência na APS',k:'dor toracica peito infarto iam sca angina ecg aas samu',
  flow:[
   {k:'step',h:'Avaliação imediata',li:['Sinais vitais, SpO2, glicemia; ECG em até 10 minutos','Dor em aperto ou peso, retroesternal, irradiada para braço, pescoço ou mandíbula, &gt; 20 min, com sudorese, náusea ou dispneia','Idoso, mulher e diabético: sintomas atípicos (dispneia, mal-estar, dor epigástrica)']},
@@ -2060,11 +2110,359 @@ function renderMeu(m){
     myKeys().filter(k=>k!=='kitaps:favs'&&k!=='kitaps:unidade').forEach(k=>store.del(k));
     loadEd();applyEdits();IDX=null;rerender();toast('Edições apagadas')});
 }
+/* Doses pediátricas. pres: [rótulo, concentração por mL (ou por comprimido/jato/gota), unidade, gotas/mL padrão]
+   reg: mk = mg/kg (por dose ou por dia, conforme per), div = tomadas/dia, max = teto por tomada; b(kg,meses) = dose fixa por faixa */
+const PED=[
+ {id:'paracetamol',g:'Febre e dor',n:'Paracetamol',via:'oral',pres:[['Gotas 200 mg/mL',200,'mL',15],['Suspensão 32 mg/mL (160 mg/5 mL)',32,'mL']],
+  reg:[{l:'Febre ou dor',mk:15,r:[10,15],per:'dose',max:1000,fr:'de 6/6 h se febre ou dor'}],
+  al:['Máximo 75 mg/kg/dia, sem passar de 4 g/dia','Menor de 3 meses com febre: avaliar antes de medicar']},
+ {id:'dipirona',g:'Febre e dor',n:'Dipirona',via:'oral',minMo:3,minKg:5,pres:[['Gotas 500 mg/mL',500,'mL',20],['Solução oral 50 mg/mL',50,'mL']],
+  reg:[{l:'Febre ou dor',mk:20,r:[10,25],per:'dose',max:1000,fr:'de 6/6 h se febre ou dor'}],
+  al:['Não usar em menores de 3 meses ou com menos de 5 kg','Máximo 4 doses por dia']},
+ {id:'ibuprofeno',g:'Febre e dor',n:'Ibuprofeno',via:'oral',minMo:6,pres:[['Gotas 50 mg/mL',50,'mL',10],['Suspensão 20 mg/mL (100 mg/5 mL)',20,'mL']],
+  reg:[{l:'Febre ou dor',mk:10,r:[5,10],per:'dose',max:400,fr:'de 8/8 h se febre ou dor'}],
+  al:['A partir de 6 meses. Máximo 40 mg/kg/dia','Não usar se suspeita de dengue, varicela, desidratação ou doença renal']},
+
+ {id:'amoxicilina',g:'Antibióticos',n:'Amoxicilina',via:'oral',pres:[['Suspensão 250 mg/5 mL',50,'mL'],['Suspensão 125 mg/5 mL',25,'mL'],['Suspensão 500 mg/5 mL',100,'mL']],
+  reg:[{l:'Padrão: faringite, sinusite, PAC (50 mg/kg/dia)',mk:50,per:'dia',div:3,max:500,fr:'de 8/8 h',dur:'10 dias (faringite) ou 5–7 dias (sinusite, PAC)'},
+       {l:'Alta dose: otite média aguda (90 mg/kg/dia)',mk:90,r:[80,90],per:'dia',div:2,max:1000,fr:'de 12/12 h',dur:'10 dias (< 2 anos) ou 5–7 dias (≥ 2 anos)'}]},
+ {id:'amoxclav',g:'Antibióticos',n:'Amoxicilina + clavulanato',via:'oral',pres:[['Suspensão 400 + 57 mg/5 mL',80,'mL'],['Suspensão 250 + 62,5 mg/5 mL',50,'mL']],
+  reg:[{l:'Padrão (45 mg/kg/dia de amoxicilina)',mk:45,per:'dia',div:2,max:875,fr:'de 12/12 h',dur:'7–10 dias'},
+       {l:'Alta dose: otite, sinusite com falha (90 mg/kg/dia)',mk:90,per:'dia',div:2,max:1000,fr:'de 12/12 h',dur:'10 dias'}],
+  al:['Dose calculada pela amoxicilina','Para 12/12 h, prefira a apresentação 400 + 57 mg/5 mL; com 250 + 62,5 o clavulanato fica alto (mais diarreia)']},
+ {id:'azitromicina',g:'Antibióticos',n:'Azitromicina',via:'oral',pres:[['Suspensão 200 mg/5 mL',40,'mL']],
+  reg:[{l:'Otite, PAC, alergia à penicilina (10 mg/kg/dia)',mk:10,per:'dia',div:1,max:500,fr:'1 vez ao dia',dur:'3 dias'},
+       {l:'Faringite estreptocócica (12 mg/kg/dia)',mk:12,per:'dia',div:1,max:500,fr:'1 vez ao dia',dur:'5 dias'}]},
+ {id:'cefalexina',g:'Antibióticos',n:'Cefalexina',via:'oral',pres:[['Suspensão 250 mg/5 mL',50,'mL']],
+  reg:[{l:'Impetigo, celulite, ITU (50 mg/kg/dia)',mk:50,r:[25,50],per:'dia',div:4,max:500,fr:'de 6/6 h',dur:'7–10 dias'}]},
+ {id:'smxtmp',g:'Antibióticos',n:'Sulfametoxazol + trimetoprima',via:'oral',minMo:2,unit:'mg de TMP',pres:[['Suspensão 200 + 40 mg/5 mL',8,'mL']],
+  reg:[{l:'ITU (8 mg/kg/dia de trimetoprima)',mk:8,r:[6,12],per:'dia',div:2,max:160,fr:'de 12/12 h',dur:'7–10 dias'}],
+  al:['Dose pela trimetoprima (TMP)','Não usar em menores de 2 meses']},
+ {id:'penbenz',g:'Antibióticos',n:'Penicilina G benzatina',via:'intramuscular',unit:'UI',pres:[['Frasco 1.200.000 UI',null,'UI']],
+  reg:[{l:'Faringite estreptocócica',b:kg=>kg<27?600000:1200000,rt:'< 27 kg: 600.000 UI · ≥ 27 kg: 1.200.000 UI',fr:'dose única'}]},
+
+ {id:'prednisolona',g:'Corticoides e alergia',n:'Prednisolona',via:'oral',pres:[['Solução 3 mg/mL',3,'mL'],['Solução 1 mg/mL',1,'mL']],
+  reg:[{l:'Crise de asma, sibilância (1–2 mg/kg/dia)',mk:1,r:[1,2],per:'dia',div:1,max:40,fr:'1 vez ao dia, pela manhã',dur:'3–5 dias'}]},
+ {id:'dexametasona',g:'Corticoides e alergia',n:'Dexametasona',via:'oral',pres:[['Injetável 4 mg/mL (dar por via oral)',4,'mL'],['Elixir 0,1 mg/mL',0.1,'mL']],
+  reg:[{l:'Crupe leve (0,15 mg/kg)',mk:0.15,per:'dose',max:10,fr:'dose única'},{l:'Crupe moderado a grave (0,6 mg/kg)',mk:0.6,per:'dose',max:10,fr:'dose única'}],
+  al:['Crupe com estridor em repouso ou esforço respiratório: urgência']},
+ {id:'loratadina',g:'Corticoides e alergia',n:'Loratadina',via:'oral',minMo:24,pres:[['Xarope 1 mg/mL',1,'mL']],
+  reg:[{l:'Rinite, urticária',b:kg=>kg<=30?5:10,rt:'≤ 30 kg: 5 mg · > 30 kg: 10 mg',fr:'1 vez ao dia'}]},
+ {id:'desloratadina',g:'Corticoides e alergia',n:'Desloratadina',via:'oral',minMo:6,pres:[['Xarope 0,5 mg/mL',0.5,'mL']],
+  reg:[{l:'Rinite, urticária',b:(kg,mo)=>mo<12?1:mo<72?1.25:mo<144?2.5:5,rt:'6–11 meses: 1 mg · 1–5 anos: 1,25 mg · 6–11 anos: 2,5 mg · ≥ 12 anos: 5 mg',fr:'1 vez ao dia'}]},
+ {id:'dexclorfeniramina',g:'Corticoides e alergia',n:'Dexclorfeniramina',via:'oral',minMo:24,pres:[['Xarope 2 mg/5 mL',0.4,'mL']],
+  reg:[{l:'Alergia, prurido',b:(kg,mo)=>mo<72?0.5:mo<144?1:2,rt:'2–5 anos: 0,5 mg · 6–11 anos: 1 mg · ≥ 12 anos: 2 mg',fr:'de 8/8 h'}],
+  al:['Causa sonolência. Não usar em menores de 2 anos']},
+ {id:'hidroxizina',g:'Corticoides e alergia',n:'Hidroxizina',via:'oral',minMo:24,pres:[['Xarope 2 mg/mL',2,'mL']],
+  reg:[{l:'Prurido',mk:0.5,r:[0.5,0.7],per:'dose',max:25,fr:'de 8/8 h'}],al:['Causa sonolência']},
+
+ {id:'salbutamol',g:'Respiratório e antivirais',n:'Salbutamol spray',via:'inalatório',unit:'mcg',pres:[['Aerossol 100 mcg/jato com espaçador',100,'jato']],
+  reg:[{l:'Crise de broncoespasmo',b:kg=>Math.min(10,Math.max(2,Math.round(kg/2)))*100,rt:'1 jato a cada 2 kg, mínimo 2 e máximo 10 jatos',fr:'a cada 20 min na 1ª hora (até 3 vezes), depois de 4/4 h conforme resposta'}],
+  al:['Sempre com espaçador (e máscara em menores de 4 anos)','Sinais de gravidade: SpO2 < 92%, tiragem, fala entrecortada: urgência']},
+ {id:'oseltamivir',g:'Respiratório e antivirais',n:'Oseltamivir',via:'oral',pres:[['Suspensão preparada 6 mg/mL',6,'mL'],['Cápsula 30 mg',30,'cp'],['Cápsula 45 mg',45,'cp'],['Cápsula 75 mg',75,'cp']],
+  reg:[{l:'Influenza (tratamento)',b:(kg,mo)=>mo<12?3*kg:kg<=15?30:kg<=23?45:kg<=40?60:75,rt:'< 1 ano: 3 mg/kg · ≤ 15 kg: 30 mg · 15–23 kg: 45 mg · 23–40 kg: 60 mg · > 40 kg: 75 mg',fr:'de 12/12 h',dur:'5 dias'}]},
+
+ {id:'sro',g:'Gastrointestinal',n:'Soro de reidratação oral',via:'oral',unit:'mL',pres:[['SRO reconstituído',1,'mL']],
+  reg:[{l:'Plano B: alguma desidratação',mk:75,r:[50,100],per:'dose',tot:1,fr:'em 4 a 6 horas, em pequenos goles',dur:''},
+       {l:'Plano A: após cada evacuação',b:(kg,mo)=>mo<12?75:mo<120?150:250,rt:'< 1 ano: 50–100 mL · 1–10 anos: 100–200 mL · > 10 anos: à vontade',fr:'após cada evacuação líquida'}]},
+ {id:'ondansetrona',g:'Gastrointestinal',n:'Ondansetrona',via:'oral',minMo:6,minKg:8,pres:[['Comprimido orodispersível 4 mg',4,'cp']],
+  reg:[{l:'Vômitos na gastroenterite',b:kg=>kg<15?2:kg<=30?4:8,rt:'8–15 kg: 2 mg · 15–30 kg: 4 mg · > 30 kg: 8 mg',fr:'dose única; pode repetir em 8 h'}],
+  al:['A partir de 6 meses e 8 kg','Iniciar SRO 15–30 min após']},
+ {id:'zinco',g:'Gastrointestinal',n:'Zinco',via:'oral',minMo:0,pres:[['Solução 4 mg/mL de zinco elementar',4,'mL'],['Solução 10 mg/5 mL de zinco elementar',2,'mL']],
+  reg:[{l:'Diarreia aguda em < 5 anos',b:(kg,mo)=>mo<6?10:20,rt:'< 6 meses: 10 mg/dia · ≥ 6 meses: 20 mg/dia',fr:'1 vez ao dia',dur:'10–14 dias'}],
+  al:['Confira no rótulo se a concentração é de zinco elementar']},
+
+ {id:'albendazol',g:'Antiparasitários',n:'Albendazol',via:'oral',minMo:12,pres:[['Suspensão 40 mg/mL',40,'mL'],['Comprimido mastigável 400 mg',400,'cp']],
+  reg:[{l:'Verminoses (geo-helmintos)',b:(kg,mo)=>mo<24?200:400,rt:'1–2 anos: 200 mg · ≥ 2 anos: 400 mg',fr:'dose única'},
+       {l:'Giardíase (≥ 2 anos)',b:()=>400,rt:'400 mg/dia',fr:'1 vez ao dia',dur:'5 dias',minMo:24}]},
+ {id:'mebendazol',g:'Antiparasitários',n:'Mebendazol',via:'oral',minMo:12,pres:[['Suspensão 100 mg/5 mL',20,'mL'],['Comprimido 100 mg',100,'cp']],
+  reg:[{l:'Verminoses',b:()=>100,rt:'100 mg por tomada',fr:'de 12/12 h',dur:'3 dias'}]},
+ {id:'metronidazol',g:'Antiparasitários',n:'Metronidazol (benzoilmetronidazol)',via:'oral',pres:[['Suspensão 40 mg/mL',40,'mL']],
+  reg:[{l:'Giardíase (15 mg/kg/dia)',mk:15,per:'dia',div:3,max:250,fr:'de 8/8 h',dur:'5–7 dias'},
+       {l:'Amebíase (35 mg/kg/dia)',mk:35,r:[30,50],per:'dia',div:3,max:750,fr:'de 8/8 h',dur:'7–10 dias'}],
+  al:['Gosto metálico e náusea; evitar se uso de álcool (adolescentes)']},
+ {id:'ivermectina',g:'Antiparasitários',n:'Ivermectina',via:'oral',minKg:15,pres:[['Comprimido 6 mg',6,'cp']],
+  reg:[{l:'Escabiose, piolho, estrongiloidíase (200 mcg/kg)',mk:0.2,per:'dose',fr:'dose única; repetir em 7–14 dias na escabiose e pediculose'}],
+  al:['Não usar abaixo de 15 kg (ou menores de 5 anos)']},
+ {id:'nistatina',g:'Antiparasitários',n:'Nistatina (candidíase oral)',via:'oral',unit:'UI',pres:[['Suspensão 100.000 UI/mL',100000,'mL']],
+  reg:[{l:'Monilíase oral',b:(kg,mo)=>mo<12?200000:500000,rt:'Lactentes: 2 mL (1 mL de cada lado da boca) · Crianças: 4–6 mL',fr:'de 6/6 h',dur:'até 48 h após melhora (cerca de 14 dias)'}],
+  al:['Bochechar e reter na boca o máximo possível; tratar mamilos se amamentação']},
+
+ {id:'ferro',g:'Suplementos',n:'Sulfato ferroso',via:'oral',unit:'mg de ferro',pres:[['Gotas 25 mg/mL de ferro elementar',25,'mL',20]],
+  reg:[{l:'Prevenção (1 mg/kg/dia de ferro)',mk:1,per:'dia',div:1,max:60,fr:'1 vez ao dia, longe do leite',dur:'dos 6 aos 24 meses (prematuro ou baixo peso: 2 mg/kg/dia a partir de 30 dias)'},
+       {l:'Tratamento da anemia (3 mg/kg/dia de ferro)',mk:3,r:[3,5],per:'dia',div:1,max:60,fr:'1 vez ao dia, antes das refeições',dur:'3–6 meses (até repor estoques)'}],
+  al:['Pode escurecer fezes e dentes: oferecer com canudo ou escovar depois']},
+ {id:'vitd',g:'Suplementos',n:'Vitamina D',via:'oral',unit:'UI',maxMo:24,pres:[['Gotas 200 UI/gota',200,'gota'],['Gotas 400 UI/gota',400,'gota']],
+  reg:[{l:'Prevenção',b:(kg,mo)=>mo<12?400:600,rt:'até 12 meses: 400 UI/dia · 12–24 meses: 600 UI/dia',fr:'1 vez ao dia'}],
+  al:['Confira quantas UI há por gota no frasco (varia entre marcas)']},
+ {id:'vita',g:'Suplementos',n:'Vitamina A (megadose)',via:'oral',unit:'UI',minMo:6,maxMo:60,pres:[['Cápsula 100.000 UI',100000,'cp'],['Cápsula 200.000 UI',200000,'cp']],
+  reg:[{l:'Programa Nacional de Suplementação',b:(kg,mo)=>mo<12?100000:200000,rt:'6–11 meses: 100.000 UI · 12–59 meses: 200.000 UI',fr:'dose única, a cada 6 meses'}]}
+];
+const PEDM=Object.fromEntries(PED.map(d=>[d.id,d]));
+const nf=(x,d=2)=>{const r=Math.round(x*10**d)/10**d;return r.toLocaleString('pt-BR',{maximumFractionDigits:d})};
+const frac=x=>{const w=Math.floor(x),h=x-w>0.25&&x-w<0.75;return (w?w+(h?' e ½':''):(h?'½':'0'))};
+function pedCalc(d,pi,ri,kg,mo,gpm){
+  const p=d.pres[pi],g=d.reg[ri],u=d.unit||'mg',A=[];
+  let dose,lo,hi,capped=false;
+  if(g.b)dose=g.b(kg,mo);
+  else{const f=g.per==='dia'?kg/g.div:kg;dose=g.mk*f;if(g.r){lo=g.r[0]*f;hi=g.r[1]*f}
+    if(g.max&&dose>g.max){dose=g.max;capped=true}if(g.max){if(lo>g.max)lo=g.max;if(hi>g.max)hi=g.max}}
+  const minMo=g.minMo!=null?g.minMo:d.minMo;
+  if(minMo!=null&&mo!=null&&mo<minMo)A.push(`Não indicado abaixo de ${minMo>=24?nf(minMo/12,0)+' anos':minMo+' meses'} nesta indicação.`);
+  if(d.maxMo!=null&&mo!=null&&mo>=d.maxMo)A.push('Indicação prevista só até '+(d.maxMo>=24?nf(d.maxMo/12,0)+' anos':d.maxMo+' meses')+'.');
+  if(d.minKg&&kg<d.minKg)A.push(`Não indicado abaixo de ${d.minKg} kg.`);
+  if(capped)A.push(`Dose limitada ao máximo de ${nf(g.max)} ${u} por tomada.`);
+  let qty=null,qtxt='',real=dose,unitW='';
+  if(p[1]){
+    const raw=dose/p[1];
+    if(p[2]==='cp'){qty=Math.round(raw*2)/2;if(qty===0)qty=0.5;qtxt=frac(qty)+' '+(qty>1?'comprimidos':'comprimido');unitW=p[0].startsWith('Cápsula')?'cápsula':'comprimido';if(p[0].startsWith('Cápsula')){qty=Math.max(1,Math.round(raw));qtxt=qty+(qty>1?' cápsulas':' cápsula')}}
+    else if(p[2]==='jato'){qty=Math.round(raw);qtxt=qty+' jatos'}
+    else if(p[2]==='gota'){qty=Math.max(1,Math.round(raw));qtxt=qty+(qty>1?' gotas':' gota')}
+    else{qty=raw<5?Math.round(raw*10)/10:Math.round(raw*2)/2;qtxt=nf(qty,1)+' mL';if(gpm)qtxt+=` (${Math.round(qty*gpm)} gotas)`}
+    real=qty*p[1];
+    if(p[2]==='cp'&&Math.abs(real-dose)/dose>0.15)A.push('Arredondado para ½ comprimido: dose real '+nf(real)+' '+u+'.');
+  }
+  const perKg=real/kg*(g.per==='dia'?g.div:1);
+  return {dose,real,lo,hi,qty,qtxt,u,g,p,A,perKg};
+}
+function renderPEDI(m){
+  const S=PEDI_ST;
+  const groups=[...new Set(PED.map(d=>d.g))];
+  m.innerHTML=`<section class="panel">
+    <div class="ph"><h2>Doses pediátricas</h2><span class="code">dose por peso · APS</span></div>
+    <div class="card">
+      <div class="grid2">
+        <div class="field"><label for="pd-kg">Peso (kg)</label><input id="pd-kg" inputmode="decimal" value="${S.kg}"></div>
+        <div class="field"><label for="pd-id">Idade</label><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><input id="pd-id" inputmode="decimal" value="${S.id}" aria-label="Idade"><select id="pd-iu" aria-label="Unidade da idade"><option value="a">anos</option><option value="m">meses</option></select></div></div>
+      </div>
+      <div class="field"><label for="pd-med">Medicamento</label><select id="pd-med">${groups.map(g=>`<optgroup label="${esc(g)}">${PED.filter(d=>d.g===g).map(d=>`<option value="${d.id}">${esc(d.n)}</option>`).join('')}</optgroup>`).join('')}</select></div>
+      <div class="grid2">
+        <div class="field"><label for="pd-pr">Apresentação</label><select id="pd-pr"></select></div>
+        <div class="field" id="pd-rgf"><label for="pd-rg">Indicação</label><select id="pd-rg"></select></div>
+      </div>
+      <div class="field" id="pd-gtf" hidden><label for="pd-gt">Gotas por mL (confira na bula do frasco)</label><input id="pd-gt" inputmode="numeric"></div>
+    </div>
+    ${resultBox('pd-r')}
+    <div class="bar"><button class="btn primary small" id="pd-cp" type="button">Copiar prescrição</button><button class="btn small" id="pd-esq" type="button">Levar ao esquema do paciente</button></div>
+    <div class="lbl" id="pd-tl"></div>
+    <table class="scale pdt" id="pd-tb"><tbody></tbody></table>
+    <p class="note">Doses usuais para crianças com função renal e hepática normais, conforme bulas, SBP e protocolos do MS. O teto por tomada já é aplicado. Confira alergias, a apresentação disponível na REMUME e, nas gotas, quantas gotas há em 1 mL na bula do frasco.</p>
+  </section>`;
+  $('#pd-iu').value=S.iu;$('#pd-med').value=S.med;
+  let rx='';
+  const fill=()=>{const d=PEDM[$('#pd-med').value];
+    $('#pd-pr').innerHTML=d.pres.map((p,i)=>`<option value="${i}">${esc(p[0])}</option>`).join('');
+    $('#pd-rg').innerHTML=d.reg.map((g,i)=>`<option value="${i}">${esc(g.l)}</option>`).join('');
+    $('#pd-rgf').hidden=d.reg.length<2;};
+  const upd=()=>{
+    const d=PEDM[$('#pd-med').value],pi=+$('#pd-pr').value||0,ri=+$('#pd-rg').value||0,p=d.pres[pi];
+    const kg=num($('#pd-kg').value),iv=num($('#pd-id').value),iu=$('#pd-iu').value,mo=isNaN(iv)?null:(iu==='a'?iv*12:iv);
+    S.kg=$('#pd-kg').value;S.id=$('#pd-id').value;S.iu=iu;S.med=d.id;
+    const gtf=$('#pd-gtf');gtf.hidden=!p[3];
+    if(p[3]&&gtf.dataset.k!==d.id+pi){$('#pd-gt').value=p[3];gtf.dataset.k=d.id+pi}
+    const gpm=p[3]?num($('#pd-gt').value):null;
+    const r=$('#pd-r');
+    if(!(kg>0&&kg<150)){r.className='result';r.innerHTML='<div class="sub">Informe o peso da criança.</div>';rx='';$('#pd-tb tbody').innerHTML='';$('#pd-tl').textContent='';return}
+    const c=pedCalc(d,pi,ri,kg,mo,gpm>0?gpm:null),g=c.g,u=c.u;
+    const A=[...c.A];if(kg>40)A.push('Acima de 40 kg as doses se aproximam da dose de adulto.');
+    const rng=g.b?g.rt:`${nf(g.mk)} ${u==='mL'?'mL':u==='UI'?'UI':'mg'}/kg/${g.per==='dia'?'dia, dividido em '+g.div+(g.div>1?' tomadas':' tomada'):'dose'}${g.r?` (faixa ${nf(g.r[0])}–${nf(g.r[1])})`:''}${g.max?` · máximo ${nf(g.max)} ${u} por tomada`:''}`;
+    const block=A.some(a=>/^Não indicado/.test(a));
+    r.className='result '+(block?'bad':A.length?'warn':'ok');
+    r.innerHTML=`<div class="lbl">${esc(d.n)} · ${esc(p[0])}</div>
+      <div class="big">${c.qtxt?esc(c.qtxt):nf(c.dose)+' <small>'+esc(u)+'</small>'}</div>
+      <div class="sub"><b>${nf(c.real)} ${esc(u)}</b> ${g.tot?'no total':'por tomada'}${c.lo!=null&&!g.b?` (faixa ${nf(c.lo)}–${nf(c.hi)} ${esc(u)})`:''} · ${esc(g.fr)}${g.dur?' · '+esc(g.dur):''}</div>
+      <div class="sub">Regra: ${esc(rng)}</div>
+      ${A.concat(d.al||[]).length?`<ul style="margin:4px 0 0;padding-left:18px">${A.map(a=>`<li><b>${esc(a)}</b></li>`).join('')}${(d.al||[]).map(a=>`<li>${esc(a)}</li>`).join('')}</ul>`:''}`;
+    const via=d.via==='oral'?'Uso oral':d.via==='inalatório'?'Uso inalatório':'Uso intramuscular';
+    const qty=c.qtxt?c.qtxt:nf(c.dose)+' '+u;
+    const verb=d.via==='inalatório'?'Fazer':d.via==='intramuscular'?'Aplicar':'Dar';
+    const pk=c.p[2]==='cp'?'1 caixa':c.p[2]==='jato'?'1 frasco + espaçador':'1 frasco';
+    rx=`${via}\n1. ${d.n} ${p[0].replace(/^(Suspensão|Solução oral|Solução|Gotas|Xarope|Elixir|Aerossol|Comprimido orodispersível|Comprimido mastigável|Comprimido|Cápsula|Frasco|Injetável)\s*/,'')} ........ ${pk}\n${verb} ${qty}${c.qtxt&&u!=='mL'&&!/UI|mcg/.test(u)?' ('+nf(c.real)+' '+u+')':''} ${g.fr}${g.dur?', por '+g.dur:''}.`;
+    // resumo do grupo
+    $('#pd-tl').textContent=`${d.g}: doses para ${nf(kg,1)} kg`;
+    $('#pd-tb tbody').innerHTML=PED.filter(x=>x.g===d.g).map(x=>{const cc=pedCalc(x,0,0,kg,mo,x.pres[0][3]||null);const bad=cc.A.some(a=>/^Não indicado/.test(a));
+      return `<tr><td><button class="lnk" data-m="${x.id}" type="button">${esc(x.n)}</button></td><td>${bad?'<span style="color:var(--bad)">não indicado</span>':esc(cc.qtxt||nf(cc.dose)+' '+cc.u)+' '+esc(x.reg[0].fr)}<br><small style="color:var(--muted)">${esc(x.pres[0][0])} · ${esc(x.reg[0].l)}</small></td></tr>`}).join('');
+    $('#pd-tb').querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{$('#pd-med').value=b.dataset.m;fill();upd();focusCard('#pd-r')});
+  };
+  fill();
+  $('#pd-med').onchange=()=>{fill();upd()};
+  ['#pd-kg','#pd-id','#pd-gt'].forEach(s=>$(s).oninput=upd);
+  ['#pd-iu','#pd-pr','#pd-rg'].forEach(s=>$(s).onchange=upd);
+  upd();
+  $('#pd-cp').onclick=()=>{if(rx)copy(rx);else toast('Informe o peso primeiro')};
+  $('#pd-esq').onclick=()=>{if(!rx){toast('Informe o peso primeiro');return}const n=addToEsq(rx);toast(n?'Remédio levado ao esquema do paciente':'Não consegui ler esta receita')};
+}
+const PEDI_ST={kg:'12',id:'3',iu:'a',med:'paracetamol'};
+
+/* Escores genéricos. ck: lista de marcar [texto, pontos, grupo?]; q: perguntas com opções [texto, pontos]; cap: teto por grupo;
+   lv(total, valores) devolve [classe, título, conduta] */
+const lvBy=L=>t=>{for(const x of L)if(t>=x[0])return x.slice(1);return L[L.length-1].slice(1)};
+const SC={
+ curb65:{t:'CURB-65',code:'pneumonia · gravidade · SBPT',kind:'ck',ck:[['Confusão mental (nova)',1],['Ureia > 50 mg/dL',1],['FR ≥ 30 irpm',1],['PAS < 90 ou PAD ≤ 60 mmHg',1],['Idade ≥ 65 anos',1]],
+  lv:lvBy([[3,'bad','Alto risco','Internação; 4–5 pontos: considerar UTI. Acionar transporte.'],[2,'warn','Risco intermediário','Considerar internação ou tratamento supervisionado de perto.'],[0,'ok','Baixo risco','Tratamento ambulatorial, se SpO2 ≥ 92% e boas condições sociais.']]),
+  note:'Sem ureia disponível, use o CRB-65 (mesmos itens sem a ureia): 0 ambulatorial, 1–2 avaliar internação, 3–4 internação. Ver o fluxograma de pneumonia.'},
+ wells_tvp:{t:'Wells para TVP',code:'trombose venosa profunda',kind:'ck',ck:[['Câncer ativo (tratamento nos últimos 6 meses ou paliativo)',1],['Paralisia, paresia ou imobilização gessada recente de MMII',1],['Acamado > 3 dias ou cirurgia grande nas últimas 12 semanas',1],['Dor localizada no trajeto do sistema venoso profundo',1],['Edema de toda a perna',1],['Panturrilha > 3 cm maior que a outra (10 cm abaixo da tuberosidade tibial)',1],['Edema depressível só na perna sintomática',1],['Veias superficiais colaterais (não varicosas)',1],['TVP prévia documentada',1],['Diagnóstico alternativo tão ou mais provável que TVP',-2]],
+  lv:lvBy([[2,'bad','TVP provável','Doppler venoso de MMII com urgência (encaminhar). Se demora e sem contraindicação, discutir anticoagulação.'],[-9,'ok','TVP improvável','Dosar D-dímero: normal afasta TVP; elevado, fazer Doppler.']])},
+ wells_tep:{t:'Wells para TEP',code:'tromboembolismo pulmonar',kind:'ck',ck:[['Sinais clínicos de TVP (edema e dor à palpação venosa)',3],['TEP é o diagnóstico mais provável',3],['FC > 100 bpm',1.5],['Imobilização ≥ 3 dias ou cirurgia nas últimas 4 semanas',1.5],['TVP ou TEP prévios',1.5],['Hemoptise',1],['Câncer ativo',1]],
+  lv:lvBy([[4.5,'bad','TEP provável (> 4)','Encaminhar para emergência (angiotomografia). Instável: SAMU.'],[0,'warn','TEP improvável (≤ 4)','D-dímero em serviço de urgência; normal afasta TEP. Considerar PERC se risco muito baixo.']])},
+ chads:{t:'CHA₂DS₂-VASc',code:'fibrilação atrial · risco de AVC',kind:'q',q:[
+   {q:'Sexo',o:[['Masculino',0],['Feminino',1]]},
+   {q:'Idade',o:[['< 65 anos',0],['65–74 anos',1],['≥ 75 anos',2]]},
+   {q:'Insuficiência cardíaca ou disfunção de VE',o:[['Não',0],['Sim',1]]},
+   {q:'Hipertensão arterial',o:[['Não',0],['Sim',1]]},
+   {q:'Diabetes',o:[['Não',0],['Sim',1]]},
+   {q:'AVC, AIT ou tromboembolismo prévio',o:[['Não',0],['Sim',2]]},
+   {q:'Doença vascular (IAM, doença arterial periférica, placa aórtica)',o:[['Não',0],['Sim',1]]}],
+  lv:(t,v)=>{const f=v[0]===1,s=t-(f?1:0);return s>=2?['bad','Anticoagulação indicada','Anticoagular (varfarina com INR 2–3 ou DOAC conforme disponibilidade). Avaliar sangramento com HAS-BLED.']:s===1?['warn','Considerar anticoagulação','Decisão compartilhada, pesando risco de sangramento.']:['ok','Baixo risco','Sem indicação de anticoagulação nem de AAS para prevenção de AVC.']},
+  note:'O sexo feminino só conta como risco quando há outro fator (a conduta acima já desconta esse ponto).'},
+ hasbled:{t:'HAS-BLED',code:'risco de sangramento com anticoagulação',kind:'ck',ck:[['Hipertensão não controlada (PAS > 160)',1],['Função renal alterada (diálise, transplante, Cr ≥ 2,26)',1],['Função hepática alterada (cirrose, bilirrubina > 2x, TGO/TGP > 3x)',1],['AVC prévio',1],['Sangramento prévio ou predisposição (anemia)',1],['INR lábil (pouco tempo na faixa)',1],['Idade > 65 anos',1],['Antiplaquetário ou AINE',1],['Álcool ≥ 8 doses por semana',1]],
+  lv:lvBy([[3,'bad','Alto risco de sangramento','Não contraindica a anticoagulação: corrigir fatores modificáveis (PA, AINE, álcool, INR) e reavaliar com mais frequência.'],[0,'ok','Risco baixo a moderado','Manter e corrigir fatores modificáveis.']])},
+ centor:{t:'Centor / McIsaac',code:'faringoamigdalite · estreptococo',kind:'q',q:[
+   {q:'Febre > 38 °C',o:[['Não',0],['Sim',1]]},{q:'Ausência de tosse',o:[['Tem tosse',0],['Sem tosse',1]]},
+   {q:'Adenomegalia cervical anterior dolorosa',o:[['Não',0],['Sim',1]]},{q:'Exsudato ou edema amigdaliano',o:[['Não',0],['Sim',1]]},
+   {q:'Idade',o:[['3–14 anos',1],['15–44 anos',0],['≥ 45 anos',-1]]}],
+  lv:lvBy([[4,'bad','Alta probabilidade','Tratar como estreptocócica (amoxicilina 10 dias ou penicilina benzatina).'],[2,'warn','Intermediária','Teste rápido se disponível; sem teste, decisão clínica (tratar com 3).'],[-9,'ok','Baixa probabilidade','Sem antibiótico: sintomáticos e sinais de retorno.']])},
+ katz:{t:'Katz (AVD básicas)',code:'atividades básicas de vida diária',kind:'q',q:[
+   {q:'Banho',o:[['Sem ajuda ou só em uma parte do corpo',1],['Precisa de ajuda em mais de uma parte',0]]},
+   {q:'Vestir-se',o:[['Pega a roupa e se veste sem ajuda (exceto amarrar sapatos)',1],['Precisa de ajuda',0]]},
+   {q:'Uso do banheiro',o:[['Vai, usa e se arruma sem ajuda',1],['Precisa de ajuda ou não vai ao banheiro',0]]},
+   {q:'Transferência',o:[['Deita e levanta da cama e da cadeira sem ajuda',1],['Precisa de ajuda',0]]},
+   {q:'Continência',o:[['Controle total de urina e fezes',1],['Incontinência parcial ou total',0]]},
+   {q:'Alimentação',o:[['Come sem ajuda',1],['Precisa de ajuda ou sonda',0]]}],
+  lv:lvBy([[6,'ok','Independente','Independente para as AVD básicas.'],[3,'warn','Dependência parcial','Planejar apoio do cuidador, eMulti, adaptações em casa.'],[0,'bad','Dependência importante','Plano de cuidados com cuidador, avaliar atenção domiciliar.']])},
+ lawton:{t:'Lawton-Brody (AVD instrumentais)',code:'7 a 21 pontos',kind:'q',q:[
+   {q:'Usar o telefone',o:[['Sem ajuda',3],['Com ajuda parcial',2],['Não consegue',1]]},
+   {q:'Ir a lugares distantes (transporte)',o:[['Sem ajuda',3],['Com ajuda parcial',2],['Não consegue',1]]},
+   {q:'Fazer compras',o:[['Sem ajuda',3],['Com ajuda parcial',2],['Não consegue',1]]},
+   {q:'Preparar as refeições',o:[['Sem ajuda',3],['Com ajuda parcial',2],['Não consegue',1]]},
+   {q:'Arrumar a casa',o:[['Sem ajuda',3],['Com ajuda parcial',2],['Não consegue',1]]},
+   {q:'Tomar os remédios',o:[['Sem ajuda, na dose e horário certos',3],['Com ajuda parcial',2],['Não consegue',1]]},
+   {q:'Cuidar do dinheiro',o:[['Sem ajuda',3],['Com ajuda parcial',2],['Não consegue',1]]}],
+  lv:lvBy([[21,'ok','Independente','Independente para as AVD instrumentais.'],[8,'warn','Dependência parcial','Investigar a causa (cognição, mobilidade, visão, humor) e organizar o apoio.'],[0,'bad','Dependência total','Plano de cuidados e suporte do cuidador.']])},
+ minicog:{t:'Mini-Cog',code:'rastreio cognitivo · 0 a 5',kind:'q',q:[
+   {q:'Lembrou quantas das 3 palavras?',o:[['0',0],['1',1],['2',2],['3',3]]},
+   {q:'Desenho do relógio (números e ponteiros em 11h10)',o:[['Normal',2],['Alterado',0]]}],
+  lv:lvBy([[3,'ok','Rastreio negativo','Sem indício de comprometimento cognitivo no rastreio.'],[0,'bad','Rastreio positivo','Avaliar com MEEM/MoCA, excluir causas reversíveis (B12, TSH, sífilis, depressão, medicamentos) e acompanhar.']]),
+  note:'Palavras sugeridas: vaso, carro, tijolo. Diga as 3, peça para repetir, faça o relógio e depois peça as palavras.'},
+ ivcf20:{t:'IVCF-20',code:'vulnerabilidade clínico-funcional · 0 a 40',kind:'q',cap:{aivd:4,cap:2,com:4},q:[
+   {q:'Idade',o:[['60–74 anos',0],['75–84 anos',1],['≥ 85 anos',3]]},
+   {q:'Em comparação com outras pessoas da sua idade, sua saúde é',o:[['Excelente, muito boa ou boa',0],['Regular ou ruim',1]]},
+   {q:'Deixou de fazer compras por causa da saúde?',o:[['Não',0],['Sim',4]],g:'aivd'},
+   {q:'Deixou de controlar o dinheiro ou pagar contas?',o:[['Não',0],['Sim',4]],g:'aivd'},
+   {q:'Deixou de fazer pequenos trabalhos domésticos?',o:[['Não',0],['Sim',4]],g:'aivd'},
+   {q:'Deixou de tomar banho sozinho(a)?',o:[['Não',0],['Sim',6]]},
+   {q:'Algum familiar ou amigo disse que você está ficando esquecido(a)?',o:[['Não',0],['Sim',1]]},
+   {q:'Esse esquecimento está piorando nos últimos meses?',o:[['Não',0],['Sim',1]]},
+   {q:'Esse esquecimento está impedindo alguma atividade do dia a dia?',o:[['Não',0],['Sim',2]]},
+   {q:'No último mês, ficou com desânimo, tristeza ou desesperança?',o:[['Não',0],['Sim',2]]},
+   {q:'No último mês, perdeu o interesse ou prazer em atividades?',o:[['Não',0],['Sim',2]]},
+   {q:'Incapaz de elevar os braços acima do ombro?',o:[['Não',0],['Sim',1]]},
+   {q:'Incapaz de manusear ou segurar pequenos objetos?',o:[['Não',0],['Sim',1]]},
+   {q:'Perda de peso não intencional (> 4,5 kg ou 5% em 1 ano)?',o:[['Não',0],['Sim',2]],g:'cap'},
+   {q:'IMC < 22 kg/m²?',o:[['Não',0],['Sim',2]],g:'cap'},
+   {q:'Circunferência da panturrilha < 31 cm?',o:[['Não',0],['Sim',2]],g:'cap'},
+   {q:'Tempo para andar 4 m > 5 segundos?',o:[['Não',0],['Sim',2]],g:'cap'},
+   {q:'Dificuldade para caminhar que impede alguma atividade?',o:[['Não',0],['Sim',2]]},
+   {q:'Duas ou mais quedas no último ano?',o:[['Não',0],['Sim',2]]},
+   {q:'Perde urina ou fezes sem querer?',o:[['Não',0],['Sim',2]]},
+   {q:'Problema de visão que impede alguma atividade?',o:[['Não',0],['Sim',2]]},
+   {q:'Problema de audição que impede alguma atividade?',o:[['Não',0],['Sim',2]]},
+   {q:'5 ou mais doenças crônicas?',o:[['Não',0],['Sim',4]],g:'com'},
+   {q:'5 ou mais medicamentos por dia?',o:[['Não',0],['Sim',4]],g:'com'},
+   {q:'Internação nos últimos 6 meses?',o:[['Não',0],['Sim',4]],g:'com'}],
+  lv:lvBy([[15,'bad','Frágil (alta vulnerabilidade)','Avaliação multidimensional completa, plano de cuidados, considerar geriatria e atenção domiciliar.'],[7,'warn','Em risco de fragilização','Investigar os domínios alterados e intervir (medicações, quedas, nutrição, humor).'],[0,'ok','Robusto (baixa vulnerabilidade)','Manter promoção da saúde e reaplicar anualmente.']]),
+  note:'Nos blocos de AVD instrumentais, capacidade aeróbica/muscular e comorbidades conta-se só a pontuação máxima do bloco (4, 2 e 4), como no original.'},
+ dhi:{t:'DHI (Dizziness Handicap Inventory)',code:'impacto da tontura · 0 a 100',kind:'q',q:[
+  'Olhar para cima piora a tontura?','Você se sente frustrado(a) por causa da tontura?','Você restringe viagens de trabalho ou lazer por causa da tontura?','Andar pelo corredor de um supermercado piora a tontura?','Você tem dificuldade para deitar ou levantar da cama por causa da tontura?','Você restringe atividades sociais (sair para jantar, ir a festas) por causa da tontura?','Você tem dificuldade para ler por causa da tontura?','Atividades mais exigentes (esportes, dançar, varrer, guardar louça) pioram a tontura?','Por causa da tontura, você tem medo de sair de casa sem alguém junto?','Você já se sentiu envergonhado(a) diante de outras pessoas por causa da tontura?','Movimentos rápidos da cabeça pioram a tontura?','Você evita lugares altos por causa da tontura?','Virar-se na cama piora a tontura?','É difícil fazer trabalhos domésticos pesados ou de jardinagem por causa da tontura?','Você tem medo que as pessoas achem que você está alcoolizado(a)?','É difícil sair para caminhar sozinho(a) por causa da tontura?','Andar na calçada piora a tontura?','É difícil se concentrar por causa da tontura?','É difícil andar pela casa no escuro por causa da tontura?','Você tem medo de ficar sozinho(a) em casa por causa da tontura?','Você se sente incapacitado(a) por causa da tontura?','A tontura prejudica suas relações com família ou amigos?','Você se sente deprimido(a) por causa da tontura?','A tontura atrapalha seu trabalho ou suas tarefas de casa?','Abaixar-se piora a tontura?'
+ ].map(q=>({q,o:[['Não',0],['Às vezes',2],['Sim',4]]})),
+  lv:lvBy([[54,'bad','Impacto grave','Reabilitação vestibular, investigar e tratar a causa, avaliar ansiedade/depressão associadas.'],[36,'warn','Impacto moderado','Reabilitação vestibular e acompanhamento.'],[16,'warn','Impacto leve','Orientações, exercícios e reavaliação.'],[0,'ok','Sem impacto relevante','Acompanhar.']]),
+  note:'Use para medir o impacto e acompanhar a resposta ao tratamento (reaplicar). Pontos: sim 4, às vezes 2, não 0.'},
+ quedas:{t:'Risco de quedas',code:'STEADI · pessoa idosa',kind:'ck',ck:[['Caiu no último ano',1],['Sente-se instável ao ficar de pé ou andar',1],['Tem medo de cair',1],['Timed Up and Go ≥ 12 segundos',1],['Duas ou mais quedas ou queda com lesão no último ano',2]],
+  lv:lvBy([[3,'bad','Alto risco','Avaliação multifatorial: medicações (sedativos, anti-hipertensivos), hipotensão ortostática, visão, pés e calçados, vitamina D, casa segura; fisioterapia para força e equilíbrio.'],[1,'warn','Risco aumentado','Revisar medicações e ortostatismo, exercícios de força e equilíbrio, orientar a casa.'],[0,'ok','Baixo risco','Orientações gerais e atividade física; reavaliar anualmente.']])},
+ pps:{t:'PPS (Palliative Performance Scale)',code:'funcionalidade em cuidados paliativos',kind:'q',q:[
+   {q:'Nível que melhor descreve a pessoa',o:[['100%: deambulação e atividade normais, sem evidência de doença, autocuidado completo',100],['90%: atividade normal, alguma evidência de doença',90],['80%: atividade normal com esforço, alguma evidência de doença',80],['70%: deambulação reduzida, incapaz para o trabalho, autocuidado completo',70],['60%: incapaz de tarefas domésticas, assistência ocasional',60],['50%: maior parte do tempo sentado(a) ou deitado(a), assistência considerável',50],['40%: maior parte do tempo acamado(a), assistência quase completa',40],['30%: totalmente acamado(a), dependência completa',30],['20%: acamado(a), ingesta mínima (goles)',20],['10%: acamado(a), sonolência ou coma, só cuidados com a boca',10]]}],
+  lv:lvBy([[70,'ok','Funcionalidade preservada','Seguimento habitual; registrar o plano de cuidados se doença progressiva.'],[40,'warn','Declínio funcional','Plano de cuidados paliativos, diretivas antecipadas, apoio ao cuidador, visitas domiciliares.'],[0,'bad','Fase final de vida provável','Foco em conforto e controle de sintomas, plano para o domicílio, suporte à família.']]),
+  unit:'%'}
+};
+function renderSC(m,id){
+  const s=SC[id];
+  const body=s.kind==='ck'
+    ?`<div class="opts" style="grid-template-columns:1fr">${s.ck.map((c,i)=>`<label class="opt"><input type="checkbox" id="sc-${i}"><span><i>${c[1]>0?'+':''}${String(c[1]).replace('.',',')}</i>${esc(c[0])}</span></label>`).join('')}</div>`
+    :s.q.map((q,i)=>`<fieldset class="q"><legend><b>${i+1}.</b> ${esc(q.q)}</legend><div class="opts"${q.o.some(o=>o[0].length>30)?' style="grid-template-columns:1fr"':''}>${q.o.map((o,j)=>`<label class="opt"><input type="radio" name="sc-${i}" value="${j}"><span><i>${o[1]}</i>${esc(o[0])}</span></label>`).join('')}</div></fieldset>`).join('');
+  m.innerHTML=`<section class="panel">
+    <div class="ph"><h2>${esc(s.t)}</h2><span class="code">${esc(s.code)}</span></div>
+    ${resultBox('sc-r')}
+    ${s.kind==='ck'?`<div class="card">${body}</div>`:body}
+    ${copyBtn()}
+    <div class="bar"><button class="btn small" id="clr" type="button">Limpar respostas</button></div>
+    ${s.note?`<p class="note">${esc(s.note)}</p>`:''}
+  </section>`;
+  let line='';
+  const upd=()=>{
+    let t=0,ans=0;const v=[],pos=[],gs={};
+    if(s.kind==='ck')s.ck.forEach((c,i)=>{if($('#sc-'+i).checked){t+=c[1];pos.push(c[0])}});
+    else s.q.forEach((q,i)=>{const r=m.querySelector(`input[name="sc-${i}"]:checked`);if(!r){v.push(null);return}ans++;const o=q.o[+r.value];v.push(o[1]);
+      if(q.g){gs[q.g]=(gs[q.g]||0)+o[1]}else t+=o[1];if(o[1]>0)pos.push(q.q.replace(/\?$/,'')+': '+o[0])});
+    Object.entries(gs).forEach(([g,x])=>t+=Math.min(x,s.cap[g]));
+    const r=$('#sc-r'),n=s.kind==='q'?s.q.length:0;
+    if(s.kind==='q'&&!ans){r.className='result';r.innerHTML='<div class="sub">Marque as respostas.</div>';line='';return}
+    const [cls,tit,txt]=s.lv(t,v),u=s.unit||(Math.abs(t)===1?' ponto':' pontos'),tt=String(t).replace('.',',');
+    r.className='result '+cls;
+    r.innerHTML=`<div class="big">${tt}<small>${esc(u)}</small></div><div class="sub"><b>${esc(tit)}</b>${n&&ans<n?` · faltam ${n-ans} de ${n} respostas`:''}</div><div class="sub">${esc(txt)}</div>`;
+    line=`${s.t}: ${tt}${u} (${tit}).${pos.length?' Itens: '+pos.join('; ')+'.':''}`;
+  };
+  m.querySelectorAll('input').forEach(i=>i.onchange=upd);upd();
+  bindCopy(()=>line);
+  $('#clr').onclick=()=>{m.querySelectorAll('input').forEach(i=>i.checked=false);upd()};
+}
+/* Cálculos numéricos: estágio da DRC, Cockcroft-Gault, cálcio corrigido */
+function numCalc(m,o){
+  m.innerHTML=`<section class="panel">
+    <div class="ph"><h2>${esc(o.t)}</h2><span class="code">${esc(o.code)}</span></div>
+    <div class="card"><div class="grid2">${o.f.map(f=>f.o?`<div class="field"><label for="nc-${f.k}">${esc(f.l)}</label><select id="nc-${f.k}">${f.o.map(x=>`<option value="${x[0]}">${esc(x[1])}</option>`).join('')}</select></div>`:`<div class="field"><label for="nc-${f.k}">${esc(f.l)}</label><input id="nc-${f.k}" inputmode="decimal" value="${f.v||''}"></div>`).join('')}</div>
+      <p class="ex">Exemplo: substitua pelos dados da pessoa</p></div>
+    ${resultBox('nc-r')}
+    ${copyBtn()}
+    ${o.tbl?`<table class="scale"><tbody>${o.tbl.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</tbody></table>`:''}
+    ${o.note?`<p class="note">${o.note}</p>`:''}
+  </section>`;
+  let line='';
+  const upd=()=>{const v={};o.f.forEach(f=>{const e=$('#nc-'+f.k);v[f.k]=f.o?e.value:num(e.value)});
+    const r=$('#nc-r'),res=o.calc(v);
+    if(!res){r.className='result';r.innerHTML='<div class="sub">Preencha os campos.</div>';line='';return}
+    r.className='result '+res.cls;r.innerHTML=`<div class="big">${res.big}</div>${res.sub.map(x=>`<div class="sub">${x}</div>`).join('')}`;line=res.line};
+  m.querySelectorAll('input,select').forEach(e=>{e.oninput=upd;e.onchange=upd});upd();bindCopy(()=>line);
+}
+const KG=['G1','G2','G3a','G3b','G4','G5'],KH=[[0,1,2],[0,1,2],[1,2,3],[2,3,3],[3,3,3],[3,3,3]],
+ KF=[['1','1','2'],['1','1','2'],['1','2','3'],['2','3','3'],['3','3','4 ou mais'],['4 ou mais','4 ou mais','4 ou mais']],KRN=['baixo','moderado','alto','muito alto'];
+const NC={
+ drcest:{t:'Estágio da DRC (KDIGO)',code:'TFG + albuminúria',f:[{k:'tfg',l:'TFG (mL/min/1,73 m²)',v:'52'},{k:'rac',l:'Albumina/creatinina urinária (mg/g)',v:'45'}],
+  calc:v=>{if(!(v.tfg>0)||!(v.rac>=0))return null;const g=v.tfg>=90?0:v.tfg>=60?1:v.tfg>=45?2:v.tfg>=30?3:v.tfg>=15?4:5,a=v.rac<30?0:v.rac<=300?1:2;
+   const rk=KH[g][a],cls=['ok','warn','warn','bad'][rk],ref=g>=4||a===2;
+   const nodrc=g<=1&&a===0;
+   return {cls:nodrc?'ok':cls,big:nodrc?'Sem DRC <small>pelos números</small>':`${KG[g]}A${a+1}`,
+    sub:nodrc?['TFG ≥ 60 sem albuminúria: só é DRC se houver outro marcador de lesão renal por mais de 3 meses.']:[`Risco de progressão: <b>${KRN[rk]}</b>`,`Monitorar TFG e albuminúria <b>${KF[g][a]} vez(es) por ano</b>`,ref?'<b>Encaminhar à nefrologia</b> (TFG &lt; 30 ou RAC &gt; 300 mg/g).':'Acompanhar na APS: IECA/BRA se albuminúria, controle de PA e glicemia, evitar nefrotóxicos.'],
+    line:nodrc?`TFG ${nf(v.tfg,0)}, RAC ${nf(v.rac,0)} mg/g: sem critério de DRC pelos números.`:`DRC estágio ${KG[g]}A${a+1} (TFG ${nf(v.tfg,0)} mL/min/1,73 m², RAC ${nf(v.rac,0)} mg/g), risco ${KRN[rk]}.`}},
+  tbl:[['G1 ≥ 90','G2 60–89 · G3a 45–59 · G3b 30–44 · G4 15–29 · G5 &lt; 15'],['A1 &lt; 30','A2 30–300 · A3 &gt; 300 mg/g']],
+  note:'Confirme as alterações por mais de 3 meses. Para calcular a TFG, use a aba TFG CKD-EPI.'},
+ cg:{t:'Clearance de creatinina (Cockcroft-Gault)',code:'ajuste de dose',f:[{k:'id',l:'Idade (anos)',v:'78'},{k:'kg',l:'Peso (kg)',v:'62'},{k:'cr',l:'Creatinina (mg/dL)',v:'1,2'},{k:'sx',l:'Sexo',o:[['f','Feminino'],['m','Masculino']]}],
+  calc:v=>{if(!(v.id>0)||!(v.kg>0)||!(v.cr>0))return null;let c=(140-v.id)*v.kg/(72*v.cr);if(v.sx==='f')c*=0.85;
+   const cls=c<30?'bad':c<60?'warn':'ok';
+   return {cls,big:`${nf(c,0)} <small>mL/min</small>`,sub:[c<15?'Muito reduzido: rever todas as doses.':c<30?'Reduzido: ajustar ou evitar vários medicamentos (aba Ajustes de dose).':c<60?'Moderadamente reduzido: conferir ajuste de dose.':'Sem necessidade de ajuste pela função renal, na maioria dos casos.'],
+    line:`Clearance de creatinina (Cockcroft-Gault): ${nf(c,0)} mL/min (idade ${nf(v.id,0)}, peso ${nf(v.kg,1)} kg, Cr ${nf(v.cr,2)}).`}},
+  note:'Usado nas bulas para ajuste de dose (ex.: DOAC, alguns antibióticos). Em obesidade, use o peso ajustado; em idoso muito magro ou amputado, o resultado superestima a função.'},
+ cacorr:{t:'Cálcio corrigido pela albumina',code:'Ca + 0,8 × (4 − albumina)',f:[{k:'ca',l:'Cálcio total (mg/dL)',v:'8,2'},{k:'alb',l:'Albumina (g/dL)',v:'3,1'}],
+  calc:v=>{if(!(v.ca>0)||!(v.alb>0))return null;const c=v.ca+0.8*(4-v.alb);const cls=c<8.5||c>10.5?(c<7.5||c>12?'bad':'warn'):'ok';
+   return {cls,big:`${nf(c,1)} <small>mg/dL</small>`,sub:[c<8.5?'Hipocalcemia: dosar cálcio iônico, magnésio, PTH, vitamina D e função renal. Sintomas (parestesia, tetania, QT longo): urgência.':c>10.5?(c>=14?'Hipercalcemia grave: emergência.':'Hipercalcemia: repetir, dosar PTH, função renal; pensar em hiperparatireoidismo e neoplasia.'):'Cálcio corrigido normal (8,5–10,5 mg/dL).'],
+    line:`Cálcio corrigido: ${nf(c,1)} mg/dL (Ca ${nf(v.ca,1)}, albumina ${nf(v.alb,1)}).`}},
+  note:'Se disponível, o cálcio iônico é mais confiável, principalmente em DRC e doença grave.'}
+};
+
 const E={esquema:'Esquema',meu:'Minhas edições'};
 const SECS={soap:Object.keys(T),calc:Object.keys(C),presc:Object.keys(P),mev:Object.keys(M),esq:Object.keys(E),fx:Object.keys(F)};
 let cur={sec:'soap',id:'has'};
 
-function chipLabel(id){return T[id]?({hipotireo:'Hipotireoidismo',obesidade:'Obesidade',asma:'Asma',dpoc:'DPOC',idoso:'Idoso',puerperio:'Puerpério',contracepcao:'Contracepção',tabagismo:'Tabagismo',itu:'ITU',ist:'IST',dengue:'Dengue',cefaleia:'Cefaleia',lombalgia:'Lombalgia',has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:F[id]?F[id].s:E[id])}
+function chipLabel(id){return T[id]?({vertigem:'Vertigem',hipotireo:'Hipotireoidismo',obesidade:'Obesidade',asma:'Asma',dpoc:'DPOC',idoso:'Idoso',puerperio:'Puerpério',contracepcao:'Contracepção',tabagismo:'Tabagismo',itu:'ITU',ist:'IST',dengue:'Dengue',cefaleia:'Cefaleia',lombalgia:'Lombalgia',has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:F[id]?F[id].s:E[id])}
 
 /* Navegação: menu de seções (agrupadas) + abas internas; favoritos */
 const SICON={
@@ -2081,6 +2479,7 @@ const SICON={
  mental:'M12 5a3 3 0 0 0-5.5-1.5A3 3 0 0 0 4 8a3 3 0 0 0 0 5 3 3 0 0 0 2.5 4.5A3 3 0 0 0 12 19z M12 5a3 3 0 0 1 5.5-1.5A3 3 0 0 1 20 8a3 3 0 0 1 0 5 3 3 0 0 1-2.5 4.5A3 3 0 0 1 12 19',
  agudos:'M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0z M12 10v6.5',
  idoso:'M10 3.5a1.8 1.8 0 1 0 0 3.6 1.8 1.8 0 0 0 0-3.6z M10 8.5v6 M10 14.5l-2.5 6.5 M10 14.5l2.5 6.5 M10 9.5l-3 4 M10 9.5l4.5 2.5 M16.5 12v9 M16.5 12c0-1.5-1.8-1.8-2.2-.5',
+ pedi:'M9 2h6 M10 2v3 M14 2v3 M8 9a4 4 0 0 1 8 0v10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2z M8 13h3 M8 17h3',
  edit:'M4 20h4L19 9l-4-4L4 16z M13.5 6.5l4 4',
  fx:'M5 3h6v5H5z M13 16h6v5h-6z M8 8v4h8v4 M16 3l3 3-3 3',
  box:'M4 7l8-4 8 4v10l-8 4-8-4z M4 7l8 4 8-4 M12 11v10'
@@ -2088,20 +2487,21 @@ const SICON={
 const icon=(k,sz=20)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${SICON[k]}"/></svg>`;
 const SECTAG={soap:'SOAP',calc:'Cálc.',presc:'Rx',mev:'MEV',fx:'Fluxo',esq:''};
 const SECTIONS=[
- {g:'Atendimento',k:'soap',t:'Templates SOAP',ic:'soap',ids:['has','dm','drc','hipotireo','obesidade','asma','dpoc','hpb','idoso','prenatal','puerperio','contracepcao','puericultura','mental','ansiedade','tabagismo','ivas','gea','itu','ist','dengue','cefaleia','lombalgia']},
+ {g:'Atendimento',k:'soap',t:'Templates SOAP',ic:'soap',ids:['has','dm','drc','hipotireo','obesidade','asma','dpoc','hpb','idoso','prenatal','puerperio','contracepcao','puericultura','mental','ansiedade','tabagismo','ivas','gea','itu','ist','dengue','cefaleia','vertigem','lombalgia']},
  {g:'Atendimento',k:'presc',t:'Prescrições',ic:'presc',ids:Object.keys(P)},
  {g:'Atendimento',k:'fx',t:'Fluxogramas',ic:'fx',ids:['fx_has','fluxodm',...Object.keys(F).filter(k=>k!=='fx_has')]},
  {g:'Atendimento',k:'mev',t:'Estilo de vida (MEV)',ic:'mev',ids:Object.keys(M)},
  {g:'Atendimento',k:'esq',t:'Folha do paciente',ic:'esq',ids:['esquema']},
- {g:'Ferramentas',k:'calc',t:'Calculadoras',ic:'calc',ids:['ig','tfg','imc','rcv','insulina']},
- {g:'Ferramentas',k:'esc',t:'Escalas e questionários',ic:'esc',ids:['phq9','gad7','audit','fager','ipss','melanoma']},
+ {g:'Ferramentas',k:'calc',t:'Calculadoras',ic:'calc',ids:['ig','tfg','drcest','cg','imc','rcv','insulina','cacorr','curb65','wells_tvp','wells_tep','chads','hasbled']},
+ {g:'Ferramentas',k:'pedi',t:'Doses pediátricas',ic:'pedi',ids:['pedi']},
+ {g:'Ferramentas',k:'esc',t:'Escalas e questionários',ic:'esc',ids:['phq9','gad7','audit','fager','ipss','melanoma','centor','minicog','ivcf20','katz','lawton','quedas','pps','dhi']},
  {g:'Ferramentas',k:'prot',t:'Protocolos e prevenção',ic:'prot',ids:['rastreio','vacinas','ajustes']},
- {g:'Linhas de cuidado',k:'cronicos',t:'Crônicos',ic:'cronicos',ln:1,ids:['has','dm','drc','hpb','hipotireo','obesidade','asma','dpoc','tabagismo','fx_has','fluxodm','fx_lip','fx_tireo','fx_asma','fx_dpoc','tfg','imc','rcv','insulina','ipss','rastreio','vacinas','ajustes','melanoma','rx_cv','rx_anal','mev_has','mev_dm','mev_obes','mev_lip','mev_drc','mev_icc','mev_hpb','esquema']},
+ {g:'Linhas de cuidado',k:'cronicos',t:'Crônicos',ic:'cronicos',ln:1,ids:['has','dm','drc','hpb','hipotireo','obesidade','asma','dpoc','tabagismo','fx_has','fluxodm','fx_lip','fx_tireo','fx_asma','fx_dpoc','tfg','drcest','cg','imc','rcv','insulina','chads','hasbled','ipss','rastreio','vacinas','ajustes','melanoma','rx_cv','rx_anal','mev_has','mev_dm','mev_obes','mev_lip','mev_drc','mev_icc','mev_hpb','esquema']},
  {g:'Linhas de cuidado',k:'mulher',t:'Saúde da mulher',ic:'mulher',ln:1,ids:['prenatal','puerperio','contracepcao','ist','itu','ig','imc','rastreio','vacinas','ajustes','fx_sif','fx_itu','rx_aco','rx_ist','rx_hiv','rx_atb','mev_gest','esquema']},
- {g:'Linhas de cuidado',k:'crianca',t:'Saúde da criança',ic:'crianca',ln:1,ids:['puericultura','imc','vacinas','fx_diar','fx_dengue','fx_farin','rx_par','rx_sint','mev_cri','esquema']},
+ {g:'Linhas de cuidado',k:'crianca',t:'Saúde da criança',ic:'crianca',ln:1,ids:['puericultura','pedi','imc','vacinas','fx_diar','fx_dengue','fx_farin','rx_par','rx_sint','mev_cri','esquema']},
  {g:'Linhas de cuidado',k:'mental',t:'Saúde mental',ic:'mental',ln:1,ids:['mental','ansiedade','tabagismo','fx_dep','fx_ans','phq9','gad7','audit','fager','rx_ad','rx_ans','rx_ap','rx_tab','mev_dep','mev_ans','mev_sono','mev_alc','mev_tab','esquema']},
- {g:'Linhas de cuidado',k:'idoso',t:'Saúde do idoso',ic:'idoso',ln:1,ids:['idoso','has','dm','hpb','drc','ajustes','vacinas','rastreio','tfg','rcv','phq9','fx_has','fluxodm','fx_dep','fx_lomb','rx_anal','mev_has','mev_dm','mev_sono','esquema']},
- {g:'Linhas de cuidado',k:'agudos',t:'Agudos',ic:'agudos',ln:1,ids:['ivas','gea','itu','ist','dengue','cefaleia','lombalgia','fx_dengue','fx_farin','fx_sinus','fx_pac','fx_itu','fx_diar','fx_tor','fx_cef','fx_lomb','fx_tb','rx_atb','rx_sint','rx_anal','rx_par','rx_ist','rx_hiv','mev_ivas','mev_diar','esquema']},
+ {g:'Linhas de cuidado',k:'idoso',t:'Saúde do idoso',ic:'idoso',ln:1,ids:['idoso','vertigem','dhi','fx_vert','ivcf20','katz','lawton','minicog','quedas','pps','cg','has','dm','hpb','drc','ajustes','vacinas','rastreio','tfg','rcv','phq9','fx_has','fluxodm','fx_dep','fx_lomb','rx_anal','mev_has','mev_dm','mev_sono','esquema']},
+ {g:'Linhas de cuidado',k:'agudos',t:'Agudos',ic:'agudos',ln:1,ids:['ivas','gea','itu','ist','dengue','cefaleia','lombalgia','vertigem','dhi','fx_vert','curb65','centor','wells_tvp','wells_tep','fx_dengue','fx_farin','fx_sinus','fx_pac','fx_itu','fx_diar','fx_tor','fx_cef','fx_lomb','fx_tb','rx_atb','rx_sint','rx_anal','rx_par','rx_ist','rx_hiv','mev_ivas','mev_diar','esquema']},
  {g:'Meu kit',k:'meu',t:'Minhas edições',ic:'edit',ids:['meu']}
 ];
 const SECM=Object.fromEntries(SECTIONS.map(s=>[s.k,s]));
@@ -2163,7 +2563,9 @@ function render(){
   if(cur.sec==='esq')return cur.id==='meu'?renderMeu(m):renderESQ(m);
   if(cur.sec==='mev')return renderMEV(m,cur.id);
   if(cur.sec==='fx')return renderFX(m,cur.id);
-  ({ig:renderIG,tfg:renderTFG,imc:renderIMC,phq9:renderPHQ,audit:renderAUDIT,gad7:renderGAD,insulina:renderINS,fluxodm:renderFLUXO,melanoma:renderMEL,rcv:renderRCV,rastreio:renderRAST,vacinas:renderVAC,ajustes:renderAJ,fager:renderFAGER,ipss:renderIPSS})[cur.id](m);
+  if(SC[cur.id])return renderSC(m,cur.id);
+  if(NC[cur.id])return numCalc(m,NC[cur.id]);
+  ({ig:renderIG,tfg:renderTFG,imc:renderIMC,phq9:renderPHQ,audit:renderAUDIT,gad7:renderGAD,insulina:renderINS,fluxodm:renderFLUXO,melanoma:renderMEL,rcv:renderRCV,rastreio:renderRAST,vacinas:renderVAC,ajustes:renderAJ,fager:renderFAGER,ipss:renderIPSS,pedi:renderPEDI})[cur.id](m);
 }
 
 function renderPresc(m,id){
@@ -3109,7 +3511,7 @@ const known=id=>!!(T[id]||C[id]||P[id]||M[id]||F[id]||E[id]);
 const start=known(h)?h:(store.get('kitaps:last')||'has');
 go(known(start)?start:'has');
 /* ---------- Busca única ---------- */
-const CKEY={ig:'idade gestacional dpp dum usg gestacao gravidez parto',tfg:'creatinina rim renal ckd-epi filtracao drc',imc:'peso altura obesidade indice de massa corporal',phq9:'depressao humor rastreio',gad7:'ansiedade rastreio',audit:'alcool bebida etilismo',insulina:'nph regular diabetes titulacao dose glicemia hipoglicemia',fluxodm:'diabetes metformina fluxograma tratamento dm2 gliclazida dapagliflozina',melanoma:'pele nevo pinta lesao abcde glasgow cancer',rcv:'framingham colesterol risco cardiovascular estatina ldl',rastreio:'rastreamento preventivo citopatologico papanicolau preventivo mamografia colonoscopia sangue oculto psof densitometria osteoporose psa sorologias hiv sifilis hepatite',ajustes:'ajuste dose renal drc tfg gestacao gravidez lactacao amamentacao idoso beers interacao seguranca',vacinas:'vacina calendario vacinal pni imunizacao bcg penta hpv dtpa influenza gestante crianca idoso',fager:'cigarro tabagismo fumo fagerstrom anos-maco nicotina',ipss:'prostata hpb urinario luts'};
+const CKEY={dhi:'tontura vertigem labirintite dizziness impacto',curb65:'pneumonia curb crb gravidade internacao',wells_tvp:'trombose tvp perna edema d-dimero doppler',wells_tep:'embolia tep pulmonar dispneia d-dimero',chads:'fibrilacao atrial fa anticoagulacao avc chads vasc',hasbled:'sangramento anticoagulacao has-bled varfarina',centor:'garganta faringite amigdalite mcisaac estreptococo',katz:'idoso avd atividades basicas dependencia funcionalidade',lawton:'idoso aivd atividades instrumentais funcionalidade',minicog:'idoso memoria demencia cognicao relogio rastreio',ivcf20:'idoso fragilidade vulnerabilidade ivcf',quedas:'idoso queda steadi tug equilibrio',pps:'paliativo cuidados paliativos funcionalidade karnofsky',drcest:'drc estagio kdigo albuminuria rac renal',cg:'clearance creatinina cockcroft gault ajuste dose renal',cacorr:'calcio albumina hipocalcemia hipercalcemia',pedi:'pediatria pediatrica crianca dose peso mg/kg gotas xarope suspensao paracetamol dipirona ibuprofeno amoxicilina azitromicina cefalexina prednisolona salbutamol albendazol sulfato ferroso vitamina',ig:'idade gestacional dpp dum usg gestacao gravidez parto',tfg:'creatinina rim renal ckd-epi filtracao drc',imc:'peso altura obesidade indice de massa corporal',phq9:'depressao humor rastreio',gad7:'ansiedade rastreio',audit:'alcool bebida etilismo',insulina:'nph regular diabetes titulacao dose glicemia hipoglicemia',fluxodm:'diabetes metformina fluxograma tratamento dm2 gliclazida dapagliflozina',melanoma:'pele nevo pinta lesao abcde glasgow cancer',rcv:'framingham colesterol risco cardiovascular estatina ldl',rastreio:'rastreamento preventivo citopatologico papanicolau preventivo mamografia colonoscopia sangue oculto psof densitometria osteoporose psa sorologias hiv sifilis hepatite',ajustes:'ajuste dose renal drc tfg gestacao gravidez lactacao amamentacao idoso beers interacao seguranca',vacinas:'vacina calendario vacinal pni imunizacao bcg penta hpv dtpa influenza gestante crianca idoso',fager:'cigarro tabagismo fumo fagerstrom anos-maco nicotina',ipss:'prostata hpb urinario luts'};
 let IDX=null;
 function buildIdx(){
   const L=[];
