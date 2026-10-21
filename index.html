@@ -5344,8 +5344,7 @@ function renderFARM(m){
         ${s!=='l'?row('Gestação',f[4]):''}${s!=='g'?row('Lactação',f[5]):''}</div><div class="bar"><button class="btn small" type="button" data-fa="${esc(f[0])}">+ Receita</button></div></div>`}).join(''):'<p class="note">Nada encontrado. Confira na RENAME ou na REMUME do município.</p>'};
   draw();
   $('#fm-list').addEventListener('click',e=>{const b=e.target.closest('[data-fa]');if(!b)return;const f=FARM.find(x=>x[0]===b.dataset.fa);if(!f)return;
-    const pr=(f[3]||'').split(';')[0].trim(),pn=norm(pr),via=/creme|gel|pomada|locao|xampu|topic/.test(pn)?'Uso tópico':/vaginal/.test(pn)?'Uso vaginal':/colirio/.test(pn)?'Uso oftálmico':/injetav/.test(pn)?'Uso intramuscular':/spray|aerossol|inal/.test(pn)?'Uso inalatório':/adesivo/.test(pn)?'Uso transdérmico':'Uso oral';
-    RXB.push({via,txt:f[0].split(' (')[0]+(pr?' ('+pr+')':'')+' ...... [quantidade]\n[como usar]'});saveRxb();toast(`Na receita: ${RXB.length} remédio(s). Complete a dose em Receita montada`)});
+    BLD=bldNew({name:f[0].split(' (')[0]});bldSetFarm(FARM.indexOf(f));go('receita')});
   const q=$('#fm-q');q.oninput=()=>{FARMST.q=q.value;draw()};
   m.querySelectorAll('input[name="fm-s"]').forEach(r=>r.onchange=()=>{FARMST.sit=r.value;draw()});
   FMUN.forEach(([k])=>{const t=$('#fm-m-'+k);t.oninput=()=>{if(t.value.trim())store.set('kitaps:remume:'+k,t.value);else store.del('kitaps:remume:'+k);draw()}});
@@ -6083,24 +6082,104 @@ function renderLABS(m){
   $('#lb-clr').onclick=()=>{if(!confirm('Apagar todos os resultados preenchidos?'))return;LBS.v={};LBS.x='';LBS.hist=[];$('#lb-x').value='';fields()};
   fields();
 }
+/* Montar remédio: apresentações do SUS (FARM) e posologia personalizada */
+const BU={comprimido:'comprimidos','cápsula':'cápsulas',mL:'mL',gotas:'gotas',jato:'jatos','aplicação':'aplicações',aplicador:'aplicadores','sachê':'sachês',adesivo:'adesivos',ampola:'ampolas',UI:'UI',goma:'gomas',pastilha:'pastilhas',dispositivo:'dispositivos'};
+const BCOUNT=/^(comprimido|cápsula|sachê|adesivo|ampola|goma|pastilha|dispositivo)$/;
+const BFR=[['1 vez ao dia',1],['pela manhã',1],['à noite',1],['de 12/12 horas',2],['de 8/8 horas',3],['de 6/6 horas',4],['de 4/4 horas',6],['2 vezes ao dia',2],['3 vezes ao dia',3],['1 vez por semana',1/7],['a cada 3 meses',0],['se dor ou febre, até de 6/6 horas',4],['se necessário',0]];
+const BDUR=[['d','por __ dias'],['s','por __ semanas'],['m','por __ meses'],['c','uso contínuo'],['u','dose única'],['n','sem duração']];
+function farmPres(f){
+  const out=[];String(f[3]||'').split(/;\s*/).forEach(p=>{p=p.replace(/\s*\([^)]*\)\s*/g,' ').trim().replace(/(\d[\d.,]*) ?(%|mg|mcg|g)(?=(?:, | e )\d[\d.,]*\s?\2)/g,'$1');if(!p)return;
+    const m=p.match(/^(.*?)(\d[\d.,\/]*(?:(?:, | e )\d[\d.,\/]*)+) ?(mg\/mL|mg\/g|mcg\/dose|mcg|mg|g|UI\/mL|UI|%)(.*)$/);
+    if(m)m[2].split(/, | e /).forEach(n=>out.push((m[1]+n+(m[3]==='%'?'':' ')+m[3]+m[4]).replace(/\s+/g,' ').trim()));else out.push(p)});
+  return out}
+function presInfo(p){const n=norm(p),s=p.match(/\d[\d.,\/+ ]*\s?(mg\/mL|mg\/g|mcg\/dose|mcg|mg|g|UI\/mL|UI|%)/);
+  const form=(s?p.slice(0,s.index):p).trim(),str=s?s[0].trim():'';
+  const via=/vaginal/.test(n)?'Uso vaginal':/colirio/.test(n)?'Uso oftálmico':/otologic/.test(n)?'Uso otológico':/nasal/.test(n)?'Uso nasal':/aerossol|inala|nebuliz/.test(n)?'Uso inalatório':/adesivo/.test(n)?'Uso transdérmico':/injetav/.test(n)?'Uso intramuscular':/implante|dispositivo/.test(n)?'Uso subcutâneo':/creme|gel|pomada|locao|xampu|topic|dermatol/.test(n)?'Uso tópico':'Uso oral';
+  const un=/comprimido/.test(n)?'comprimido':/capsula/.test(n)?'cápsula':/sache|po para solucao oral/.test(n)?'sachê':/gotas|colirio|otologic|nebuliz/.test(n)?'gotas':/aerossol|spray/.test(n)?'jato':/adesivo/.test(n)?'adesivo':/goma/.test(n)?'goma':/pastilha/.test(n)?'pastilha':/injetav/.test(n)?'ampola':/dispositivo|implante/.test(n)?'dispositivo':/vaginal/.test(n)?'aplicador':/creme|gel|pomada|locao|xampu/.test(n)?'aplicação':/suspens|solucao|xarope|emulsao|frasco|caneta/.test(n)?'mL':'comprimido';
+  return {form,str,via,un}}
+let BLD=null;
+const bldNew=(o={})=>Object.assign({i:-1,name:'',f:-1,pres:'',other:'',dose:'1',un:'comprimido',via:'Uso oral',fr:'1 vez ao dia',dur:'d',nd:'7',qty:'',qtyEd:false,obs:''},o);
+function bldSetFarm(fi){const b=BLD;b.f=fi;if(fi>=0&&b.i<0)b.dur=/anti-?hipertens|antidiab|depress|convuls|coagul|betabloq|tireoide|diuretico|hipolipem|agregante|humor|psicot|cardiovasc|bloqueador|contracept/.test(norm(FARM[fi][6]||''))?'c':'d';const P=fi>=0?farmPres(FARM[fi]):[];b.pres=P[0]||'';b.other='';if(b.pres){const pi=presInfo(b.pres);b.un=pi.un;b.via=pi.via}b.qtyEd=false}
+function bldFromItem(i){const x=RXB[i],nt=norm(x.txt),fi=FARM.findIndex(f=>new RegExp(norm(f[1])).test(nt));BLD=bldNew({i,name:fi>=0?FARM[fi][0].split(' (')[0]:x.txt.split('\n')[0].replace(/\s*\.{3,}.*$/,''),via:x.via});
+  if(fi>=0){bldSetFarm(fi);const P=farmPres(FARM[fi]),hit=P.find(p=>{const s=presInfo(p).str;return s&&nt.includes(norm(s))});if(hit){BLD.pres=hit;const pi=presInfo(hit);BLD.un=pi.un;BLD.via=pi.via}}
+  if(/uso contínuo/i.test(x.txt))BLD.dur='c';
+  const fr=BFR.map(f=>f[0]).sort((a,b)=>b.length-a.length).find(f=>x.txt.includes(f));if(fr)BLD.fr=fr;
+  const dm=x.txt.match(/\n(?:Tomar|Aplicar|Pingar|Inalar|Colar|Colocar sob a língua)\s+([\d.,½\/]+)/);if(dm)BLD.dose=dm[1];
+  const pm=x.txt.match(/por (\d+) (dias?|semanas?|m[eê]s(?:es)?)/);if(pm){BLD.nd=pm[1];BLD.dur=pm[2][0]==='d'?'d':pm[2][0]==='s'?'s':'m'}
+  const rest=x.txt.split('\n').slice(1).filter(l=>!/^uso contínuo\.?$/i.test(l.trim())).join('\n').trim();if(rest)BLD.keep=rest;
+  const qm=x.txt.split('\n')[0].match(/\.{3,}\s*(.+)$/);if(qm&&!/\[/.test(qm[1])){BLD.qty=qm[1].trim();BLD.qtyEd=true}}
+const bldNum=s=>{const t=String(s||'').trim().replace('½','0.5').replace(/^(\d+)\/(\d+)$/,(m,a,b)=>a/b).replace(',','.');const n=parseFloat(t);return isFinite(n)?n:null};
+function bldDays(b){const n=bldNum(b.nd)||0;return b.dur==='d'?n:b.dur==='s'?n*7:b.dur==='m'?n*30:b.dur==='c'?30:b.dur==='u'?0:null}
+function bldQty(b){if(b.qtyEd)return b.qty;const d=bldNum(b.dose)||1,fr=(BFR.find(x=>x[0]===b.fr)||[0,1])[1],days=bldDays(b);
+  if(BCOUNT.test(b.un)){const n=b.dur==='u'?Math.ceil(d):days?Math.ceil(d*fr*days):0;return n?`${n} ${n>1?BU[b.un]:b.un}`:`[quantidade] ${BU[b.un]}`}
+  return /loção|xampu|solução/.test(b.pres+b.other)?'1 frasco':b.un==='aplicação'?'1 tubo':b.un==='aplicador'?'1 tubo com aplicadores':'1 frasco'}
+function bldText(b){
+  const p=b.pres==='__o'?b.other.trim():b.pres,pi=p?presInfo(p):{form:'',str:''},plain=/^(comprimido|cápsula)$/i.test(pi.form);
+  const nm=(b.name||'[remédio]').trim(),fm=pi.form.replace(/^pó para suspensão$/,'suspensão oral'),l1=`${nm}${pi.str?' '+pi.str:''}${fm&&!plain?' '+fm:''}`.replace(/\s+/g,' ')+` ...... ${bldQty(b)}`;
+  const vb={'Uso oral':'Tomar','Uso sublingual':'Colocar sob a língua','Uso tópico':'Aplicar','Uso vaginal':'Aplicar','Uso oftálmico':'Pingar','Uso otológico':'Pingar','Uso nasal':'Aplicar','Uso inalatório':'Inalar','Uso transdérmico':'Colar','Uso retal':'Aplicar','Uso intramuscular':'Aplicar','Uso subcutâneo':'Aplicar'}[b.via]||'Usar';
+  const d=String(b.dose||'').trim()||'1',dn=bldNum(d),u=b.un==='aplicação'?'':' '+(dn!=null&&dn>1&&b.un!=='mL'&&b.un!=='UI'?BU[b.un]:b.un);
+  const where={'Uso vaginal':' via vaginal','Uso intramuscular':' via intramuscular','Uso subcutâneo':' via subcutânea','Uso nasal':' em cada narina','Uso oftálmico':' no(s) olho(s)','Uso otológico':' no ouvido','Uso sublingual':''}[b.via]||'';
+  const n=String(b.nd||'').trim(),dur=b.dur==='d'?` por ${n||'__'} dia${n==='1'?'':'s'}`:b.dur==='s'?` por ${n||'__'} semana${n==='1'?'':'s'}`:b.dur==='m'?` por ${n||'__'} ${n==='1'?'mês':'meses'}`:b.dur==='u'?' em dose única':'';
+  const fr=b.dur==='u'?'':' '+b.fr,obs=b.obs.trim()?' '+b.obs.trim().replace(/\.$/,''):'';
+  if(b.keep)return l1+'\n'+b.keep+(b.dur==='c'?'\nUso contínuo.':'');
+  return l1+'\n'+`${vb}${b.un==='aplicação'?'':' '+d}${u}${where}${fr}${obs}${dur}.`.replace(/\s+/g,' ')+(b.dur==='c'?'\nUso contínuo.':'')}
+function bldStatus(b){
+  if(b.f<0)return `<span class="chip tag warn">Fora da lista do kit: confira na REMUME</span>`;
+  const f=FARM[b.f],c=FCOMP[f[2]],ms=FMUN.map(([k,n])=>inMun(f,k)?n:null).filter(Boolean);
+  const off=b.pres==='__o'||f[2]==='N';
+  return `<span class="chip tag ${off?'bad':c[0]}" title="${esc(c[2])}">${off?(f[2]==='N'?'Não consta na RENAME':'Apresentação fora da lista do SUS'):esc(c[1])+' · '+esc(c[2])}</span>${ms.length?`<span class="chip tag ok">REMUME ${esc(ms.join(', '))} ✓</span>`:''}`}
+function renderBld(box,onDone){
+  const ae=document.activeElement;if(ae&&box.contains(ae))ae.blur();
+  const b=BLD;if(!b){box.innerHTML='';return}
+  const P=b.f>=0?farmPres(FARM[b.f]):[];
+  box.innerHTML=`<article class="card rxcard"><h3>${b.i>=0?'Ajustar remédio':'Montar remédio'}</h3>
+    <div class="field"><label for="bd-n">Remédio</label><input id="bd-n" list="bd-dl" value="${esc(b.name)}" placeholder="Digite: losartana, amoxicilina..." autocomplete="off"><datalist id="bd-dl">${FARM.map(f=>`<option value="${esc(f[0].split(' (')[0])}">`).join('')}</datalist></div>
+    <div class="bar farmb" id="bd-st">${b.name?bldStatus(b):''}</div>
+    ${P.length||b.name?`<div class="lbl">Apresentação${P.length?' disponível no SUS':''}</div><div class="chips dzt" id="bd-p">${P.map(p=>`<button class="chip" type="button" data-bp="${esc(p)}" aria-selected="${b.pres===p}">${esc(p)}</button>`).join('')}<button class="chip" type="button" data-bp="__o" aria-selected="${b.pres==='__o'||!P.length}">Outra</button></div>
+    <div class="field" id="bd-ow"${b.pres==='__o'||!P.length?'':' hidden'}><label for="bd-o">Outra apresentação</label><input id="bd-o" value="${esc(b.other)}" placeholder="ex.: comprimido 25 mg"></div>`:''}
+    <div class="grid2" style="margin-top:8px">
+      <div class="field"><label for="bd-d">Dose por vez</label><input id="bd-d" inputmode="decimal" value="${esc(b.dose)}"></div>
+      <div class="field"><label for="bd-u">Unidade</label><select id="bd-u">${Object.keys(BU).map(u=>`<option${b.un===u?' selected':''}>${u}</option>`).join('')}</select></div>
+      <div class="field"><label for="bd-f">Frequência</label><select id="bd-f">${BFR.map(([f])=>`<option${b.fr===f?' selected':''}>${f}</option>`).join('')}</select></div>
+      <div class="field"><label for="bd-du">Duração</label><select id="bd-du">${BDUR.map(([k,l])=>`<option value="${k}"${b.dur===k?' selected':''}>${l}</option>`).join('')}</select></div>
+      <div class="field" id="bd-ndw"${/[dsm]/.test(b.dur)?'':' hidden'}><label for="bd-nd">Quantos</label><input id="bd-nd" inputmode="numeric" value="${esc(b.nd)}"></div>
+      <div class="field"><label for="bd-v">Via</label><select id="bd-v">${VIAS.map(v=>`<option${b.via===v?' selected':''}>${v}</option>`).join('')}</select></div>
+      <div class="field"><label for="bd-q">Quantidade total</label><input id="bd-q" value="${esc(bldQty(b))}"></div>
+      <div class="field"><label for="bd-ob">Como / onde (opcional)</label><input id="bd-ob" value="${esc(b.obs)}" placeholder="ex.: após o café; nas lesões"></div>
+    </div>
+    ${b.keep?'<p class="note">Mantendo o “como usar” original. Mude dose, frequência ou duração para refazer a frase.</p>':''}<pre class="rx" id="bd-pv"></pre>
+    <div class="bar"><button class="btn primary small" id="bd-ok" type="button">${b.i>=0?'Salvar alteração':'Adicionar à receita'}</button><button class="btn small" id="bd-x" type="button">${b.i>=0?'Cancelar':'Limpar'}</button></div></article>`;
+  const pv=()=>{$('#bd-pv').textContent=bldText(b);const q=$('#bd-q');if(!b.qtyEd)q.value=bldQty(b)};pv();
+  const on=(id,k,re)=>{const el=$(id);if(el)el[el.tagName==='SELECT'?'onchange':'oninput']=()=>{b[k]=el.value;if(k!=='other'&&b.keep){b.keep=null;re=1}if(re)renderBld(box,onDone);else pv()}};
+  on('#bd-o','other');on('#bd-d','dose');on('#bd-u','un');on('#bd-f','fr');on('#bd-du','dur',1);on('#bd-nd','nd');on('#bd-v','via');on('#bd-ob','obs');
+  $('#bd-q').oninput=e=>{b.qty=e.target.value;b.qtyEd=!!e.target.value.trim();pv()};
+  const nm=$('#bd-n');nm.onchange=()=>{b.name=nm.value.trim();const n=norm(b.name),fi=FARM.findIndex(f=>norm(f[0].split(' (')[0])===n||n&&new RegExp(norm(f[1])).test(n));if(fi>=0){b.name=FARM[fi][0].split(' (')[0];bldSetFarm(fi)}else{b.f=-1;b.pres='__o'}renderBld(box,onDone)};
+  nm.oninput=()=>{b.name=nm.value;pv()};
+  box.querySelectorAll('[data-bp]').forEach(x=>x.onclick=()=>{b.pres=x.dataset.bp;if(b.pres!=='__o'){const pi=presInfo(b.pres);b.un=pi.un;b.via=pi.via}if(!b.keep)b.qtyEd=false;renderBld(box,onDone)});
+  $('#bd-ok').onclick=()=>{if(!b.name.trim()){toast('Escolha o remédio');return}const it={via:b.via,txt:bldText(b)};if(b.i>=0)RXB[b.i]=it;else RXB.push(it);saveRxb();toast(b.i>=0?'Remédio ajustado':`Na receita: ${RXB.length} remédio(s)`);BLD=null;onDone()};
+  $('#bd-x').onclick=()=>{BLD=b.i>=0?null:bldNew();onDone()};
+}
 function renderRXB(m){
   m.innerHTML=`<section class="panel"><div class="ph"><h2>Receita montada</h2><span class="code">${RXB.length} remédio(s)</span></div>
-    <p class="note">Toque em “+ Receita” nas Prescrições, na prescrição padrão do SOAP, em Por doença ou na Farmácia do SUS. Os remédios entram aqui numerados e agrupados por via, como na receita normal, e separados por tipo de receituário. Fica só nesta aba do navegador.</p>
+    <p class="note">Toque em “+ Receita” nas Prescrições, na prescrição padrão do SOAP, em Por doença ou na Farmácia do SUS. Ou monte aqui: escolha o remédio, a apresentação do SUS e ajuste dose, frequência, duração e quantidade para a pessoa. Os remédios entram numerados e agrupados por via, como na receita normal, e separados por tipo de receituário. Fica só nesta aba do navegador.</p>
+    <div id="rxb-bld"></div>
     <div id="rxb-list"></div>
-    <details class="card"><summary class="lbl" style="cursor:pointer">+ Digitar um remédio</summary><div class="field" style="margin-top:8px"><label for="rxb-free">Nome, dose e quantidade na 1ª linha; como tomar embaixo</label><textarea id="rxb-free" rows="3" placeholder="Losartana 50 mg ...... 30 comprimidos&#10;Tomar 1 comprimido por dia."></textarea></div>
+    <details class="card"><summary class="lbl" style="cursor:pointer">+ Digitar em texto livre</summary><div class="field" style="margin-top:8px"><label for="rxb-free">Nome, dose e quantidade na 1ª linha; como tomar embaixo</label><textarea id="rxb-free" rows="3" placeholder="Losartana 50 mg ...... 30 comprimidos&#10;Tomar 1 comprimido por dia."></textarea></div>
       <div class="bar"><select id="rxb-via" aria-label="Via">${VIAS.map(v=>`<option>${v}</option>`).join('')}</select><button class="btn small" id="rxb-add" type="button">Adicionar</button></div></details>
     <div class="bar sticky-bar"><button class="btn primary" id="rxb-cp" type="button">Copiar</button><button class="btn" id="rxb-pr" type="button">Imprimir</button><button class="btn" id="rxb-cs" type="button">+ Consulta</button><button class="btn" id="rxb-es" type="button">Levar ao esquema</button><button class="btn" id="rxb-clr" type="button">Limpar</button></div>
     <div id="sheet" class="card atsheet rxsheet"></div></section>`;
   const draw=()=>{const G=rxbGroups(),box=$('#rxb-list');m.querySelector('.ph .code').textContent=RXB.length+' remédio(s)';
     if(!RXB.length){box.innerHTML='<div class="card"><p class="note">Nenhum remédio ainda.</p></div>';return}
     box.innerHTML=G.map(([k,idx])=>{let n=0;const vs=[...new Set(idx.map(i=>RXB[i].via))];
-      return `<article class="card rxcard"><h3>${esc(RXK[k][0])}</h3>${RXK[k][1]?`<p class="note">${esc(RXK[k][1])}</p>`:''}`+vs.map(v=>`<div class="lbl">${esc(v.toUpperCase())}</div>`+idx.filter(i=>RXB[i].via===v).map(i=>{n++;return `<div class="rxbi"><b>${n}.</b><textarea class="soap rxta" data-rt="${i}" spellcheck="false" aria-label="Remédio ${n}">${esc(RXB[i].txt)}</textarea><div class="rxbb"><button class="btn small" data-up="${i}" type="button" aria-label="Subir">↑</button><button class="btn small" data-dn="${i}" type="button" aria-label="Descer">↓</button><button class="btn small" data-rm="${i}" type="button" aria-label="Tirar">✕</button></div></div>`}).join('')).join('')
+      return `<article class="card rxcard"><h3>${esc(RXK[k][0])}</h3>${RXK[k][1]?`<p class="note">${esc(RXK[k][1])}</p>`:''}`+vs.map(v=>`<div class="lbl">${esc(v.toUpperCase())}</div>`+idx.filter(i=>RXB[i].via===v).map(i=>{n++;return `<div class="rxbi"><b>${n}.</b><textarea class="soap rxta" data-rt="${i}" spellcheck="false" aria-label="Remédio ${n}">${esc(RXB[i].txt)}</textarea><div class="rxbb"><button class="btn small" data-aj="${i}" type="button">Ajustar dose</button><button class="btn small" data-up="${i}" type="button" aria-label="Subir">↑</button><button class="btn small" data-dn="${i}" type="button" aria-label="Descer">↓</button><button class="btn small" data-rm="${i}" type="button" aria-label="Tirar">✕</button></div></div>`}).join('')).join('')
         +`<pre class="rx">${esc(rxbText(idx))}</pre>${farmBadges(idx.map(i=>RXB[i].txt).join('\n'))}</article>`}).join('');
     box.querySelectorAll('[data-rt]').forEach(t=>{const fit=()=>{t.style.height='auto';t.style.height=(t.scrollHeight+4)+'px'};fit();t.oninput=()=>{fit();RXB[+t.dataset.rt].txt=t.value;saveRxb()};t.onchange=draw});
     const mv=(i,d)=>{const j=i+d;if(j<0||j>=RXB.length)return;[RXB[i],RXB[j]]=[RXB[j],RXB[i]];saveRxb();draw()};
     box.querySelectorAll('[data-up]').forEach(b=>b.onclick=()=>mv(+b.dataset.up,-1));box.querySelectorAll('[data-dn]').forEach(b=>b.onclick=()=>mv(+b.dataset.dn,1));
-    box.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{RXB.splice(+b.dataset.rm,1);saveRxb();draw()})};
-  draw();
+    box.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{RXB.splice(+b.dataset.rm,1);if(BLD&&BLD.i>=0)BLD=null;saveRxb();draw()});
+    box.querySelectorAll('[data-aj]').forEach(b=>b.onclick=()=>{bldFromItem(+b.dataset.aj);bld();$('#rxb-bld').scrollIntoView({behavior:'smooth',block:'start'})})};
+  const bld=()=>{if(!BLD)BLD=bldNew();renderBld($('#rxb-bld'),()=>{bld();draw()})};
+  draw();bld();
   $('#rxb-add').onclick=()=>{const t=$('#rxb-free').value.trim();if(!t){toast('Digite o remédio');return}RXB.push({via:$('#rxb-via').value,txt:t});$('#rxb-free').value='';saveRxb();draw()};
   $('#rxb-cp').onclick=()=>{if(!RXB.length){toast('Receita vazia');return}copy(rxbAll())};
   $('#rxb-cs').onclick=()=>{if(!RXB.length){toast('Receita vazia');return}addCons('rx','Receita montada',rxbAll())};
