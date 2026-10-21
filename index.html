@@ -197,6 +197,17 @@ textarea.nota{font-family:var(--f-ui);font-size:.9rem}
 .pdt td:first-child{white-space:normal;width:38%}
 .gl{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.9rem}
 .gsvg svg{width:100%;max-width:420px;height:auto;display:block;margin:0 auto;color:var(--fg)}
+.atsheet{background:#fff;color:#111;padding:28px 24px;font:15px/1.6 Georgia,'Times New Roman',serif;gap:22px}
+.ath{text-align:center;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.85rem}
+.att{text-align:center;font-weight:700;letter-spacing:.06em}
+.atb{white-space:normal;text-align:justify}
+.atf{text-align:center}
+.mi[data-s="urg"] .mic{background:var(--bad-soft);color:var(--bad)}
+.mi[data-s="urg"][aria-current="true"] .mic{background:var(--bad);color:#fff}
+.cons-btn{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--accent);font:600 .82rem var(--f-ui);padding:7px 11px;border-radius:999px;cursor:pointer}
+#cons-n{background:var(--accent2);color:#fff;border-radius:999px;padding:0 6px;font-size:.72rem;line-height:1.5}
+.cs-it{grid-template-columns:1fr auto}
+@media (max-width:420px){.cons-btn span{display:none}.cons-btn{padding:7px 9px}}
 .lnk{background:none;border:0;padding:0;color:var(--accent);font:600 .84rem var(--f-ui);text-align:left;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 .out{font-weight:600}
 .sec-h{margin:6px 0 0;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
@@ -209,6 +220,7 @@ textarea.nota{font-family:var(--f-ui);font-size:.9rem}
     <div class="top">
       <button class="menu-btn" id="menu-btn" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
       <div class="ttl"><span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><rect x="1" y="1" width="22" height="22" rx="7" fill="var(--accent)"/><path d="M12 6.5v11M6.5 12h11" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="18.5" cy="5.5" r="3" fill="var(--accent2)"/></svg></span><h1>Kit APS</h1><span class="sec-name" id="sec-name"></span></div>
+      <button class="cons-btn" id="cons-btn" type="button" aria-label="Abrir modo consulta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6v3H9z M7 4.5H5V21h14V4.5h-2 M12 10v6 M9 13h6"/></svg><span>Consulta</span><b id="cons-n" hidden>0</b></button>
     </div>
     <div class="search"><input id="q" type="search" placeholder="Buscar template, cálculo, remédio ou orientação" aria-label="Buscar no kit" autocomplete="off"><div id="qres" hidden role="listbox"></div></div>
     <div class="chips favs" id="favs" hidden aria-label="Favoritos"></div>
@@ -1717,7 +1729,7 @@ function renderMEV(m,id){
       <div id="mv-edit" hidden></div>
       <div class="opts soft" style="grid-template-columns:1fr">${c.items.map((t,i)=>`<label class="opt"><input type="checkbox" id="mv-${i}" checked><span>${esc(t)}</span></label>`).join('')}</div>
       <p class="note">Desmarque o que não se aplica antes de copiar ou levar para a folha.</p></div>
-    <div class="bar sticky-bar"><button class="btn primary small" id="mv-print">Imprimir</button><button class="btn small" id="mv-img">Baixar imagem</button><button class="btn small" id="mv-cp">Copiar orientações</button><button class="btn small" id="mv-pr">Copiar p/ prontuário</button><button class="btn small" id="mv-esq">Levar à folha</button></div>
+    <div class="bar sticky-bar"><button class="btn primary small" id="mv-print">Imprimir</button><button class="btn small" id="mv-img">Baixar imagem</button><button class="btn small" id="mv-cp">Copiar orientações</button><button class="btn small" id="mv-pr">Copiar p/ prontuário</button><button class="btn small" id="mv-esq">Levar à folha</button><button class="btn small" id="mv-cs" type="button">+ Consulta</button></div>
     <div class="card"><div class="lbl">Registro no prontuário</div><pre class="rx">${esc(c.pr)}</pre></div>
     <div class="field"><label for="mv-nome">Nome do paciente na folha (opcional)</label><input id="mv-nome"></div>
     <div class="lbl">Folha para imprimir</div>
@@ -1735,6 +1747,7 @@ function renderMEV(m,id){
   $('#mv-cp').onclick=()=>copy(c.t+'\n'+sel().map(i=>'• '+i).join('\n'));
   $('#mv-pr').onclick=()=>copy(c.pr);
   $('#mv-ed').onclick=()=>mevEditor(id);
+  $('#mv-cs').onclick=()=>addCons('or',c.t,c.pr);
   $('#mv-esq').onclick=()=>{const s=sel();if(!s.length){toast('Marque ao menos uma orientação');return}
     if(ESQ.ex){ESQ.rows=[];ESQ.ex=false;ESQ.nome='';ESQ.cuid=new Set(['agua','todo','trazer'])}
     const cur=ESQ.extra.split('\n').map(x=>x.trim()).filter(Boolean);s.forEach(x=>{if(!cur.includes(x))cur.push(x)});ESQ.extra=cur.join('\n');
@@ -1952,6 +1965,55 @@ fx_vert:{s:'Vertigem',t:'Vertigem e tontura',src:'TiTrATE · HINTS · AAO-HNS (V
   {k:'step',h:'Tratar',li:['Epley: pode repetir na mesma consulta; ensinar exercícios em casa (Brandt-Daroff)','Crise: dimenidrinato 50 mg 6/6 h ou meclizina 25 mg 8/8 h por no máximo 3 dias (atrasam a compensação)','Neurite com até 72 h: prednisona 60 mg/dia por 5 dias e reduzir (benefício modesto)','Reabilitação vestibular; prevenção de quedas']},
   {k:'step',a:'Sem melhora ou atípico',h:'Reavaliar e encaminhar',li:['VPPB que não resolve após 2–3 manobras, nistagmo atípico: otorrinolaringologia','Perda auditiva súbita: otorrino com urgência (até 72 h para corticoide)','Suspeita central: emergência (neuroimagem)']}],
  post:[{k:'info',h:'Revisar sempre',li:['Medicações: anti-hipertensivos, sedativos, anticonvulsivantes, aminoglicosídeos','PA deitado e em pé, glicemia, anemia, arritmia','Ansiedade e tontura postural-perceptual persistente (TPPP) em quadros crônicos']}]},
+u_has:{s:'Crise hipertensiva',t:'Crise hipertensiva na UBS',src:'Diretrizes Brasileiras de HA 2020 · protocolos de urgência',k:'crise hipertensiva urgencia emergencia hipertensiva pressao alta captopril clonidina eclampsia sulfato de magnesio hidralazina edema agudo',
+ flow:[
+  {k:'step',h:'Confirmar a medida',li:['Repetir após 15–30 min de repouso, manguito adequado','Procurar e tratar dor, ansiedade, retenção urinária, abstinência (pseudocrise): analgesia ou ansiolítico, e não anti-hipertensivo']},
+  {k:'dec',h:'Há lesão aguda de órgão-alvo?',br:[
+   ['bad','Emergência hipertensiva','PA ≥ 180/120 com dor torácica, dispneia/edema agudo de pulmão, déficit neurológico, confusão, alteração visual, dor lancinante no dorso, ou gestante com sinais de pré-eclâmpsia grave','→ SAMU 192. Monitorar, acesso venoso, O2 se SpO2 &lt; 94%. Não baixar a PA bruscamente na UBS'],
+   ['warn','PA muito elevada sem lesão aguda','PA ≥ 180/120, assintomática ou com sintomas inespecíficos (cefaleia leve, tontura)','→ Não é emergência: oral, observar e reavaliar em 24–72 h']]},
+  {k:'step',h:'Sem lesão aguda: conduta',li:['Retomar ou ajustar os anti-hipertensivos de uso habitual (muitos casos são falta de adesão)','Se precisar reduzir na unidade: captopril 25 mg VO (pode repetir em 1 h) ou clonidina 0,1–0,2 mg VO','Meta: reduzir no máximo 20–25% nas primeiras horas, sem buscar normalizar','Nunca usar nifedipino sublingual ou de liberação rápida']},
+  {k:'step',h:'Emergência: enquanto aguarda o SAMU',li:['Edema agudo de pulmão: sentar, O2, furosemida 40 mg IV, dinitrato de isossorbida 5 mg SL se PAS &gt; 100','Síndrome coronariana: AAS 300 mg mastigado, nitrato SL (ver Dor torácica)','AVC: não reduzir a PA na UBS (salvo &gt; 220/120); glicemia capilar, decúbito a 30°, hora do início dos sintomas','Suspeita de dissecção de aorta: não dar AAS, transferir com urgência']}],
+ post:[{k:'bad',h:'Gestante ≥ 20 semanas com PA ≥ 160/110 ou sintomas',li:['Sulfato de magnésio: ataque 4 g IV em 20 min (ou esquema IM: 10 g, 5 g em cada glúteo), se cefaleia, escotomas, epigastralgia ou convulsão','Hidralazina 5 mg IV, repetir a cada 20 min até PAD 90–100 (máx. 30 mg); alternativa nifedipino 10 mg VO (não sublingual)','Decúbito lateral esquerdo, transferir para maternidade de referência']}]},
+
+u_hipo:{s:'Hipoglicemia',t:'Hipoglicemia',src:'SBD · protocolos de urgência',k:'hipoglicemia glicemia baixa glicose 50% glucagon regra dos 15 insulina sulfonilureia',
+ ped:[{l:'Glicose 10% IV em bolus (0,2 g/kg)',mk:2,max:250,u:'mL'},{l:'Glucagon IM',b:kg=>kg<25?0.5:1,u:'mg'}],
+ flow:[
+  {k:'step',h:'Confirmar',li:['Glicemia capilar &lt; 70 mg/dL, ou sintomas (tremor, sudorese, palpitação, fome, confusão) em pessoa com DM','Sem glicosímetro e suspeita forte: tratar como hipoglicemia']},
+  {k:'dec',h:'Consegue engolir com segurança?',br:[
+   ['ok','Sim, consciente','Alerta e colaborativo','→ Regra dos 15: 15 g de açúcar (1 colher de sopa de açúcar em água, 150 mL de suco ou refrigerante comum). Repetir a glicemia em 15 min e repetir até &gt; 70'],
+   ['bad','Não, rebaixado ou convulsionando','Não dar nada pela boca','→ Glicose 50% 40–50 mL IV (adulto) ou glucagon 1 mg IM/SC. Criança: glicose 10% 2 mL/kg IV']]},
+  {k:'step',h:'Depois de corrigir',li:['Lanche com carboidrato complexo (pão, biscoito) se a próxima refeição está longe','Etilista ou desnutrido: tiamina 100 mg IM/IV antes ou junto da glicose','Repetir a glicemia em 1 h']},
+  {k:'step',h:'Quando transferir',li:['Uso de sulfonilureia (glibenclamida) ou insulina de longa ação: risco de recorrência por horas, observar em serviço de urgência','Não recupera a consciência em 10–15 min após glicose, ou hipoglicemia recorrente','Hipoglicemia sem diabetes conhecido']}],
+ post:[{k:'info',h:'Na consulta seguinte',li:['Procurar a causa: refeição pulada, exercício, álcool, dose errada, piora da função renal','Ajustar o tratamento: reduzir insulina em 10–20% ou trocar glibenclamida por gliclazida','Ensinar a regra dos 15 ao paciente e à família']}]},
+
+u_anaf:{s:'Anafilaxia',t:'Anafilaxia',src:'WAO · ASBAI · protocolos de urgência',k:'anafilaxia alergia choque anafilatico adrenalina epinefrina urticaria edema de glote picada vacina',
+ ped:[{l:'Adrenalina 1 mg/mL IM na coxa (0,01 mg/kg; máx. 0,3 mg até 40 kg, 0,5 mg acima)',b:kg=>Math.min(0.01*kg,kg<40?0.3:0.5),u:'mg',c:1},{l:'Soro fisiológico 0,9% se hipotensão (20 mL/kg)',mk:20,max:1000,u:'mL'}],
+ pre:[{k:'bad',h:'Suspeitar quando',li:['Início súbito (minutos a horas) de pele ou mucosa (urticária, angioedema) + falta de ar, sibilância, estridor ou queda da PA','Ou 2 ou mais sistemas (pele, respiratório, circulatório, gastrointestinal) após exposição provável (picada, alimento, medicamento, vacina)','Ou hipotensão logo após alérgeno conhecido']}],
+ flow:[
+  {k:'step',h:'Adrenalina IM imediatamente',li:['Adrenalina 1 mg/mL (1:1000) na face anterolateral da coxa','Adulto: 0,5 mg (0,5 mL). Criança: 0,01 mg/kg (máx. 0,3 mg até 12 anos; 0,5 mg acima)','Repetir a cada 5–15 min se não melhorar. Não existe contraindicação absoluta']},
+  {k:'step',h:'Ao mesmo tempo',li:['Chamar ajuda e acionar o SAMU 192','Deitar com pernas elevadas (dispneia: sentado; gestante: decúbito lateral esquerdo); não levantar de repente','O2 em alto fluxo; acesso venoso','Hipotensão: SF 0,9% 1–2 L rápido no adulto (criança 20 mL/kg)']},
+  {k:'step',h:'Adjuvantes (não substituem a adrenalina)',li:['Broncoespasmo: salbutamol spray 4–8 jatos com espaçador','Prometazina 25–50 mg IM ou difenidramina 50 mg IV para prurido e urticária','Hidrocortisona 200 mg IV ou metilprednisolona 1–2 mg/kg (pode reduzir reação tardia)']},
+  {k:'step',a:'Depois',h:'Observação e alta',li:['Observar por 6–12 h (ou 24 h se grave ou com adrenalina repetida): em geral em serviço de urgência','Orientar evitar o gatilho, prescrever anti-histamínico e corticoide por 3 dias, encaminhar ao alergista','Notificar se reação a vacina ou medicamento']}]},
+
+u_asma:{s:'Crise de asma',t:'Crise de asma na UBS',src:'GINA · PCDT Asma · protocolos de urgência',k:'asma crise broncoespasmo chiado falta de ar salbutamol ipratropio prednisona prednisolona nebulizacao',
+ ped:[{l:'Salbutamol spray 100 mcg com espaçador (1 jato/2 kg)',b:kg=>Math.min(10,Math.max(2,Math.round(kg/2))),u:'jatos'},{l:'Prednisolona VO (1–2 mg/kg, máx. 40 mg)',mk:1,max:40,u:'mg'},{l:'Ipratrópio spray 20 mcg (crise grave)',b:kg=>kg<20?4:8,u:'jatos'}],
+ pre:[{k:'bad',h:'Gravidade: acionar o SAMU',li:['Fala só palavras, agitação, senta inclinado para frente, uso de musculatura acessória','FR &gt; 30 (adulto), FC &gt; 120, SpO2 &lt; 90%','Risco de morte: sonolência, confusão, tórax silencioso, cianose, bradicardia']}],
+ flow:[
+  {k:'step',h:'Broncodilatador já',li:['Salbutamol spray 100 mcg com espaçador: adulto 4–10 jatos a cada 20 min na 1ª hora','Criança: 1 jato a cada 2 kg (mínimo 2, máximo 10), com espaçador e máscara se menor de 4 anos','O2 para SpO2 93–95% (criança 94–98%)']},
+  {k:'step',h:'Corticoide sistêmico',li:['Adulto: prednisona 40–50 mg VO','Criança: prednisolona 1–2 mg/kg (máx. 40 mg)','Na 1ª hora, de preferência']},
+  {k:'dec',a:'Reavaliar em 1 hora',h:'Resposta',br:[
+   ['ok','Boa','Fala frases, FR e FC em queda, SpO2 &gt; 94%','→ Alta com corticoide por 5–7 dias (criança 3–5), corticoide inalatório + alívio, técnica revisada e retorno em 2–7 dias'],
+   ['bad','Ruim ou piora','Mantém sinais de gravidade','→ SAMU. Associar ipratrópio (4–8 jatos de 20 mcg) ao salbutamol e manter O2 até a transferência']]}],
+ post:[{k:'info',h:'Se não tiver espaçador',li:['Garrafa PET de 500 mL cortada como espaçador artesanal','Nebulização: salbutamol 2,5–5 mg (0,5–1 mL da solução 5 mg/mL) + ipratrópio 0,5 mg (adulto) em 3–4 mL de SF, com O2 6–8 L/min']}]},
+
+u_tor:{s:'Dor torácica',t:'Dor torácica: síndrome coronariana',src:'SBC · protocolos de urgência na APS',k:'dor toracica peito infarto iam sca angina ecg aas nitrato isossorbida samu',
+ flow:[
+  {k:'step',h:'Nos primeiros 10 minutos',li:['ECG de 12 derivações','Sinais vitais, SpO2, glicemia capilar','Acionar o SAMU 192 se suspeita de SCA, mesmo com ECG normal']},
+  {k:'step',h:'Tratar enquanto aguarda',li:['AAS 300 mg mastigado (sem alergia, sangramento ativo ou suspeita de dissecção)','Dinitrato de isossorbida 5 mg SL se dor persistente e PAS &gt; 90, até 3 doses a cada 5 min (não usar se sildenafila/tadalafila nas últimas 24–48 h ou suspeita de IAM de VD)','O2 só se SpO2 &lt; 90%','Acesso venoso, monitorar, manter em repouso; enviar o ECG à regulação']},
+  {k:'dec',h:'ECG',br:[
+   ['bad','Supra de ST ou BRE novo','IAM com supra','→ Regulação para reperfusão (meta porta-agulha &lt; 30 min ou angioplastia &lt; 90–120 min); seguir orientação do médico regulador (clopidogrel, anticoagulante)'],
+   ['warn','Infra de ST, onda T invertida ou normal','Pode ser SCA sem supra','→ Transferir para troponina e observação. ECG normal não exclui']]}],
+ post:[{k:'bad',h:'Não esquecer',li:['Dissecção de aorta: dor súbita lancinante para o dorso, diferença de PA entre os braços; não dar AAS','TEP: dispneia súbita, taquicardia, fatores de risco (ver Wells)','Pneumotórax hipertensivo: dispneia, murmúrio abolido, hipotensão']}]},
 fx_tor:{s:'Dor torácica',t:'Dor torácica na UBS',src:'SBC · Protocolos de urgência na APS',k:'dor toracica peito infarto iam sca angina ecg aas samu',
  flow:[
   {k:'step',h:'Avaliação imediata',li:['Sinais vitais, SpO2, glicemia; ECG em até 10 minutos','Dor em aperto ou peso, retroesternal, irradiada para braço, pescoço ou mandíbula, &gt; 20 min, com sudorese, náusea ou dispneia','Idoso, mulher e diabético: sintomas atípicos (dispneia, mal-estar, dor epigástrica)']},
@@ -1972,17 +2034,23 @@ function fxPlain(f){
     (n.li||[]).forEach(x=>L.push('- '+fxText(x)));(n.br||[]).forEach(b=>L.push('- '+fxText(b[1])+': '+fxText(b[2])+' '+fxText(b[3])))});
   L.push('','Fonte: '+f.src);return L.join('\n');
 }
+const URG={kg:''};
 function renderFX(m,id){
   const f=F[id];
   m.innerHTML=`<section class="panel">
     <div class="ph"><h2>${esc(f.t)}</h2><span class="code">${esc(f.src)}</span></div>
     ${(f.pre||[]).map(fxNode).join('')}
+    ${f.ped?`<div class="card"><div class="lbl">Doses pelo peso</div><div class="field"><label for="fx-kg">Peso (kg)</label><input id="fx-kg" inputmode="decimal" value="${URG.kg}"></div><table class="scale pdt" id="fx-pd"><tbody></tbody></table></div>`:''}
     <div class="flow">${f.flow.map((n,i)=>(i?`<div class="arrow">${n.a?`<span>${n.a}</span>`:''}</div>`:'')+fxNode(n)).join('')}</div>
     ${(f.post||[]).map(fxNode).join('')}
     <div class="field"><label for="fx-nota">Minhas anotações (protocolo do município, contatos, observações)</label><textarea id="fx-nota" class="nota" rows="3"></textarea></div>
     <div class="bar"><button class="btn primary small" id="fx-copy" type="button">Copiar resumo</button></div>
     <p class="note">Resumo para consulta rápida. Confira o protocolo vigente do Ministério da Saúde e do seu município, a disponibilidade na REMUME e ajuste para a pessoa (idade, gestação, função renal, alergias).</p>
   </section>`;
+  if(f.ped){const upd=()=>{const kg=num($('#fx-kg').value);URG.kg=$('#fx-kg').value;
+    $('#fx-pd tbody').innerHTML=f.ped.map(d=>{if(!(kg>0))return `<tr><td>${esc(d.l)}</td><td>—</td></tr>`;let v=d.b?d.b(kg):d.mk*kg,cap=false;if(d.max&&v>d.max){v=d.max;cap=true}
+      return `<tr><td>${esc(d.l)}</td><td><b>${nf(v)} ${esc(d.u)}</b>${d.c?` = ${nf(v/d.c)} mL`:''}${cap?' (dose máxima)':''}</td></tr>`}).join('')};
+    $('#fx-kg').oninput=upd;upd()}
   const nk='kitaps:nota:'+id,na=$('#fx-nota');na.value=store.get(nk)||'';
   na.oninput=()=>{if(na.value.trim())store.set(nk,na.value);else store.del(nk)};
   $('#fx-copy').onclick=()=>copy(fxPlain(f)+(na.value.trim()?'\n\nAnotações: '+na.value.trim():''));
@@ -2056,7 +2124,7 @@ function mevEditor(id){
   const r=$('#ed-reset');if(r)r.onclick=()=>confirm2(r,()=>{delete ED['mev:'+id];saveEd();rerender();toast('Texto original restaurado')});
 }
 /* Backup: tudo que a pessoa personalizou (SOAP, prescrições, MEV, anotações, favoritos, unidade) */
-const BK=['kitaps:soap:','kitaps:ed','kitaps:favs','kitaps:unidade','kitaps:nota:'];
+const BK=['kitaps:soap:','kitaps:ed','kitaps:favs','kitaps:unidade','kitaps:nota:','kitaps:at:','kitaps:medico','kitaps:crm','kitaps:cidade'];
 function lsKeys(){try{return Object.keys(localStorage)}catch(e){return []}}
 function myKeys(){return lsKeys().filter(k=>BK.some(p=>k===p||k.startsWith(p))).sort()}
 async function saveFile(blob,fname,okMsg){
@@ -2246,7 +2314,7 @@ function renderPEDI(m){
       <div class="field" id="pd-gtf" hidden><label for="pd-gt">Gotas por mL (confira na bula do frasco)</label><input id="pd-gt" inputmode="numeric"></div>
     </div>
     ${resultBox('pd-r')}
-    <div class="bar"><button class="btn primary small" id="pd-cp" type="button">Copiar prescrição</button><button class="btn small" id="pd-esq" type="button">Levar ao esquema do paciente</button></div>
+    <div class="bar"><button class="btn primary small" id="pd-cp" type="button">Copiar prescrição</button><button class="btn small" id="pd-cs" type="button">+ Consulta</button><button class="btn small" id="pd-esq" type="button">Levar ao esquema do paciente</button></div>
     <div class="lbl" id="pd-tl"></div>
     <table class="scale pdt" id="pd-tb"><tbody></tbody></table>
     <p class="note">Doses usuais para crianças com função renal e hepática normais, conforme bulas, SBP e protocolos do MS. O teto por tomada já é aplicado. Confira alergias, a apresentação disponível na REMUME e, nas gotas, quantas gotas há em 1 mL na bula do frasco.</p>
@@ -2293,6 +2361,7 @@ function renderPEDI(m){
   ['#pd-iu','#pd-pr','#pd-rg'].forEach(s=>$(s).onchange=upd);
   upd();
   $('#pd-cp').onclick=()=>{if(rx)copy(rx);else toast('Informe o peso primeiro')};
+  $('#pd-cs').onclick=()=>{if(rx)addCons('rx',PEDM[$('#pd-med').value].n+' (pediátrico)',rx);else toast('Informe o peso primeiro')};
   $('#pd-esq').onclick=()=>{if(!rx){toast('Informe o peso primeiro');return}const n=addToEsq(rx);toast(n?'Remédio levado ao esquema do paciente':'Não consegui ler esta receita')};
 }
 const PEDI_ST={kg:'12',id:'3',iu:'a',med:'paracetamol'};
@@ -2618,10 +2687,11 @@ function renderGD(m,id){
       ${x.svg?`<div class="gsvg">${x.svg}</div>`:''}
       ${x.li?`<ul class="gl">${x.li.map(l=>`<li>${l}</li>`).join('')}</ul>`:''}
       ${x.rows?`<table class="scale pdt"><tbody>${x.rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</tbody></table>`:''}
-      ${x.normal?`<div class="lbl">Texto normal para o O do SOAP</div><pre class="rx">${esc(x.normal)}</pre>`:''}
+      ${x.normal?`<div class="lbl">Texto normal para o O do SOAP</div><pre class="rx">${esc(x.normal)}</pre><div class="bar"><button class="btn small" data-cs="${i}" type="button">+ Consulta</button></div>`:''}
     </div>`).join('')}
     <p class="note">Resumo para consulta rápida. Confira o protocolo vigente do MS e do seu município.</p>
   </section>`;
+  m.querySelectorAll('[data-cs]').forEach(b=>b.onclick=()=>addCons('ef',g.t,g.sec[+b.dataset.cs].normal));
   m.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{const x=g.sec[+b.dataset.c];
     copy(x.normal?x.normal:fxText(x.h)+'\n'+(x.li||[]).map(l=>'- '+fxText(l)).join('\n')+(x.rows||[]).map(r=>'- '+fxText(r[0])+': '+fxText(r[1])).join('\n'))});
   if(g.calc==='lip'){let line='';
@@ -2633,11 +2703,229 @@ function renderGD(m,id){
     ['#lp-ct','#lp-hdl','#lp-tg'].forEach(s=>$(s).oninput=upd);upd();bindCopy(()=>line)}
 }
 
-const E={esquema:'Esquema',meu:'Minhas edições'};
+/* Atestados e declarações: campos preenchíveis, modelo editável (kitaps:at:<id>), copiar e imprimir */
+const AT={
+ at_comp:{s:'Comparecimento',t:'Declaração de comparecimento',f:['inicio','fim'],
+  body:`DECLARAÇÃO DE COMPARECIMENTO
+
+Declaro, para os devidos fins, que {nome}{doc} compareceu a esta unidade de saúde no dia {data}, das {inicio} às {fim}, para atendimento médico.`},
+ at_afast:{s:'Afastamento',t:'Atestado de afastamento',f:['dias','apartir','cid'],
+  body:`ATESTADO MÉDICO
+
+Atesto, para os devidos fins, que {nome}{doc} foi atendido(a) nesta data e necessita de afastamento de suas atividades por {dias} ({diasext}) dia(s), a partir de {apartir}{cid}.`},
+ at_acomp:{s:'Acompanhante',t:'Declaração de acompanhante',f:['acomp','inicio','fim'],
+  body:`DECLARAÇÃO DE ACOMPANHANTE
+
+Declaro, para os devidos fins, que {acomp} esteve nesta unidade de saúde no dia {data}, das {inicio} às {fim}, acompanhando {nome} em atendimento médico.`},
+ at_apto:{s:'Aptidão física',t:'Atestado de aptidão física',f:['ativ'],
+  body:`ATESTADO DE APTIDÃO FÍSICA
+
+Atesto, para os devidos fins, que {nome}{doc}, avaliado(a) clinicamente nesta data, não apresenta contraindicação à prática de {ativ}.`}
+};
+const AT_FOOT=`{cidade}, {dataext}.
+
+
+
+______________________________
+{medico}
+{crm}`;
+const ATF={inicio:['Horário de chegada','time'],fim:['Horário de saída','time'],dias:['Dias de afastamento','number'],apartir:['A partir de','date'],cid:['CID-10 (opcional)','text'],acomp:['Nome do acompanhante','text'],ativ:['Atividade','text']};
+const EXT=['zero','um','dois','três','quatro','cinco','seis','sete','oito','nove','dez','onze','doze','treze','quatorze','quinze','dezesseis','dezessete','dezoito','dezenove'],EXTD=['','','vinte','trinta','quarenta','cinquenta','sessenta','setenta','oitenta','noventa'];
+const ext=n=>n<20?EXT[n]:n<100?EXTD[Math.floor(n/10)]+(n%10?' e '+EXT[n%10]:''):String(n);
+const AT_ST={nome:'',doc:'',data:'',inicio:'',fim:'',dias:'1',apartir:'',cid:'',cidok:false,acomp:'',ativ:'atividades físicas e esportivas'};
+function atText(id){
+  const a=AT[id],S=AT_ST,tpl=store.get('kitaps:at:'+id)??a.body;
+  const d=parseD(S.data)||today(),ap=parseD(S.apartir)||d,n=Math.max(1,Math.round(num(S.dias)||1));
+  const mes=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  const V={nome:S.nome||'[nome]',doc:S.doc?', '+S.doc:'',data:brD(d),inicio:S.inicio||'[__:__]',fim:S.fim||'[__:__]',dias:n,diasext:ext(n),apartir:brD(ap),
+    cid:S.cid&&S.cidok?`, por motivo de doença classificada como CID-10 ${S.cid.toUpperCase()}, informado com autorização do(a) paciente`:'',
+    acomp:S.acomp||'[nome do acompanhante]',ativ:S.ativ||'[atividade]',cidade:store.get('kitaps:cidade')||'[cidade]',
+    dataext:`${d.getDate()} de ${mes[d.getMonth()]} de ${d.getFullYear()}`,medico:store.get('kitaps:medico')||'[nome do médico]',crm:store.get('kitaps:crm')||'CRM [ ]',unidade:store.get('kitaps:unidade')||''};
+  const fill=t=>t.replace(/\{(\w+)\}/g,(m,k)=>V[k]!=null?V[k]:m);
+  return {body:fill(tpl),foot:fill(AT_FOOT),uni:V.unidade};
+}
+function renderAT(m,id){
+  const a=AT[id],S=AT_ST;if(!S.data)S.data=isoD(today());if(!S.apartir)S.apartir=S.data;
+  const ed=store.get('kitaps:at:'+id)!=null;
+  m.innerHTML=`<section class="panel">
+    <div class="ph"><h2>${esc(a.t)}${edTag(ed)}</h2><span class="code">copiar ou imprimir</span></div>
+    <div class="card"><div class="grid2">
+      <div class="field"><label for="at-nome">Nome do(a) paciente</label><input id="at-nome" value="${esc(S.nome)}" autocomplete="off"></div>
+      <div class="field"><label for="at-doc">Documento (opcional)</label><input id="at-doc" value="${esc(S.doc)}" placeholder="CPF, RG ou CNS"></div>
+      <div class="field"><label for="at-data">Data do atendimento</label><input id="at-data" type="date" value="${S.data}"></div>
+      ${a.f.map(k=>`<div class="field"><label for="at-${k}">${ATF[k][0]}</label><input id="at-${k}" type="${ATF[k][1]}" value="${esc(S[k])}"${k==='dias'?' inputmode="numeric" min="1"':''}></div>`).join('')}
+    </div>
+    ${a.f.includes('cid')?`<label class="opt"><input type="checkbox" id="at-cidok"${S.cidok?' checked':''}><span>Paciente autorizou incluir o CID (Resolução CFM 1.658/2002)</span></label>`:''}
+    </div>
+    <details class="card"><summary>Seus dados (salvos neste aparelho)</summary><div class="grid2" style="margin-top:10px">
+      <div class="field"><label for="at-med">Nome do(a) médico(a)</label><input id="at-med" value="${esc(store.get('kitaps:medico')||'')}"></div>
+      <div class="field"><label for="at-crm">CRM</label><input id="at-crm" value="${esc(store.get('kitaps:crm')||'')}" placeholder="CRM-UF 00000"></div>
+      <div class="field"><label for="at-uni">Unidade de saúde</label><input id="at-uni" value="${esc(store.get('kitaps:unidade')||'')}"></div>
+      <div class="field"><label for="at-cid2">Cidade</label><input id="at-cid2" value="${esc(store.get('kitaps:cidade')||'')}"></div></div></details>
+    <div class="bar sticky-bar"><button class="btn primary small" id="at-cp" type="button">Copiar</button><button class="btn small" id="at-pr" type="button">Imprimir</button><button class="btn small" id="at-ed" type="button">${icon('edit',14)} Editar modelo</button></div>
+    <div id="at-edit" hidden></div>
+    <div id="sheet" class="card atsheet"></div>
+    <p class="note">O nome e os dados do paciente não ficam salvos. Se Imprimir não abrir aqui, copie o texto ou use o app instalado. Os campos entre { } no modelo são preenchidos automaticamente.</p>
+  </section>`;
+  const draw=()=>{const t=atText(id);$('#sheet').innerHTML=`${t.uni?`<div class="ath">${esc(t.uni)}</div>`:''}${(()=>{const L=t.body.split('\n'),h=L[0]&&L[0]===L[0].toUpperCase()&&L[0].trim()?L.shift():'';return (h?`<div class="att">${esc(h)}</div>`:'')+`<div class="atb">${esc(L.join('\n').trim()).replace(/\n/g,'<br>')}</div>`})()}<div class="atf">${esc(t.foot).replace(/\n/g,'<br>')}</div>`};
+  const bind=(sel,k,save)=>{const e=$(sel);if(!e)return;e.oninput=e.onchange=()=>{if(save){if(e.value.trim())store.set(save,e.value.trim());else store.del(save)}else S[k]=e.type==='checkbox'?e.checked:e.value;draw()}};
+  bind('#at-nome','nome');bind('#at-doc','doc');bind('#at-data','data');a.f.forEach(k=>bind('#at-'+k,k));bind('#at-cidok','cidok');
+  bind('#at-med',0,'kitaps:medico');bind('#at-crm',0,'kitaps:crm');bind('#at-uni',0,'kitaps:unidade');bind('#at-cid2',0,'kitaps:cidade');
+  draw();
+  $('#at-cp').onclick=()=>{const t=atText(id);copy((t.uni?t.uni+'\n\n':'')+t.body+'\n\n'+t.foot)};
+  $('#at-pr').onclick=printSheet;
+  $('#at-ed').onclick=()=>{const box=$('#at-edit');box.hidden=false;
+    box.innerHTML=`<div class="card edf"><div class="field"><label for="ed-at">Modelo do texto</label><textarea id="ed-at" rows="8">${esc(store.get('kitaps:at:'+id)??a.body)}</textarea></div>
+      <p class="note">Campos: {nome} {doc} {data} {inicio} {fim} {dias} {diasext} {apartir} {cid} {acomp} {ativ}</p>
+      <div class="bar"><button class="btn primary small" id="ed-save" type="button">Salvar</button><button class="btn small" id="ed-cancel" type="button">Cancelar</button>${ed?'<button class="btn small danger" id="ed-reset" type="button">Restaurar original</button>':''}</div></div>`;
+    $('#ed-cancel').onclick=rerender;
+    $('#ed-save').onclick=()=>{const v=$('#ed-at').value.trim();if(!v||v===a.body)store.del('kitaps:at:'+id);else store.set('kitaps:at:'+id,v);rerender();toast('Modelo salvo neste aparelho')};
+    const r=$('#ed-reset');if(r)r.onclick=()=>confirm2(r,()=>{store.del('kitaps:at:'+id);rerender();toast('Modelo original restaurado')})};
+}
+
+/* Exame físico: ilustrações esquemáticas próprias (SVG inline, currentColor) */
+const SVGT=(vb,body)=>`<svg viewBox="${vb}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" font-family="system-ui,sans-serif" role="img">${body}</svg>`;
+const DOT=(x,y,l,dx=10,dy=4,c='var(--accent)',fs=11)=>`<circle cx="${x}" cy="${y}" r="6" style="fill:${c}" stroke="none"/><text x="${x+dx}" y="${y+dy}" font-size="${fs}" fill="currentColor" stroke="none">${l}</text>`;
+const EFSVG={
+ cv:SVGT('-75 0 450 260','<path d="M70 20 Q150 0 230 20 L250 240 Q150 260 50 240 Z" opacity=".5"/><path d="M150 18 V170" opacity=".6"/><path d="M95 60 Q150 75 205 60 M85 95 Q150 110 215 95 M80 130 Q150 145 220 130 M78 165 Q150 180 222 165" opacity=".25"/>'
+  +DOT(132,62,'Aórtico (2º EIC D)',-152,5,undefined,15)+DOT(168,62,'Pulmonar (2º EIC E)',10,5,undefined,15)+DOT(166,96,'Aórtico acessório (3º EIC E)',10,5,undefined,15)+DOT(150,140,'Tricúspide (4º–5º EIC E, BEE)',-218,5,undefined,15)+DOT(200,160,'Mitral (5º EIC E, LHC)',10,5,undefined,15)),
+ abd:SVGT('0 0 300 250','<rect x="40" y="15" width="220" height="220" rx="30" opacity=".5"/><path d="M113 15 V235 M187 15 V235 M40 88 H260 M40 162 H260" opacity=".4" stroke-dasharray="4 4"/>'
+  +[['Hipocôndrio D',76,55],['Epigástrio',150,55],['Hipocôndrio E',224,55],['Flanco D',76,128],['Mesogástrio',150,128],['Flanco E',224,128],['Fossa ilíaca D',76,200],['Hipogástrio',150,200],['Fossa ilíaca E',224,200]].map(r=>`<text x="${r[1]}" y="${r[2]}" font-size="9" text-anchor="middle" fill="currentColor" stroke="none">${r[0]}</text>`).join('')
+  +'<circle style="fill:var(--accent2)" cx="92" cy="178" r="5" stroke="none"/><text style="fill:var(--accent2)" x="100" y="174" font-size="9.5" stroke="none">McBurney</text>'),
+ resp:SVGT('0 0 300 250','<path d="M70 20 Q150 0 230 20 L248 230 Q150 250 52 230 Z" opacity=".5"/><path d="M150 15 V235" opacity=".5" stroke-dasharray="3 4"/><path d="M95 40 L120 70 M205 40 L180 70" opacity=".35"/>'
+  +[[112,70],[188,70],[108,110],[192,110],[104,150],[196,150],[100,190],[200,190]].map((p,i)=>`<circle style="fill:var(--accent)" cx="${p[0]}" cy="${p[1]}" r="9" stroke="none"/><text x="${p[0]}" y="${p[1]+4}" font-size="10" text-anchor="middle" fill="#fff" stroke="none">${i+1}</text>`).join('')
+  +'<text x="150" y="246" font-size="11" text-anchor="middle" fill="currentColor" stroke="none">Dorso: compare sempre um lado com o outro</text>'),
+ oto:SVGT('0 0 300 230','<circle cx="150" cy="110" r="90" opacity=".6"/><circle cx="150" cy="110" r="78" opacity=".2"/><path d="M150 30 L150 112" stroke-width="5" opacity=".7"/><circle cx="150" cy="114" r="4" fill="currentColor"/><path style="fill:var(--accent-soft);stroke:var(--accent)" d="M152 118 L205 175 L168 188 Z"/><path d="M118 40 Q150 25 182 40" opacity=".6"/>'
+  +'<text x="200" y="40" font-size="11" fill="currentColor" stroke="none">pars flácida</text><text x="160" y="80" font-size="11" fill="currentColor" stroke="none">cabo do martelo</text><text style="fill:var(--accent)" x="298" y="200" font-size="11" text-anchor="end" stroke="none">triângulo luminoso</text><text x="150" y="226" font-size="11" text-anchor="middle" fill="currentColor" stroke="none">Membrana timpânica direita (luz às 5 h)</text>'),
+ mama:SVGT('0 0 300 230','<circle cx="150" cy="115" r="85" opacity=".6"/><circle style="fill:var(--accent-soft);stroke:var(--accent)" cx="150" cy="115" r="10"/><path d="M150 30 V200 M65 115 H235" opacity=".4" stroke-dasharray="4 4"/><path style="stroke:var(--accent2)" d="M75 75 Q40 40 30 20"/>'
+  +'<text x="98" y="78" font-size="11" text-anchor="middle" fill="currentColor" stroke="none">QSE</text><text x="202" y="78" font-size="11" text-anchor="middle" fill="currentColor" stroke="none">QSI</text><text x="98" y="160" font-size="11" text-anchor="middle" fill="currentColor" stroke="none">QIE</text><text x="202" y="160" font-size="11" text-anchor="middle" fill="currentColor" stroke="none">QII</text><text style="fill:var(--accent2)" x="14" y="16" font-size="10" stroke="none">prolongamento axilar</text><text x="150" y="224" font-size="11" text-anchor="middle" fill="currentColor" stroke="none">Mama direita, vista de frente</text>'),
+ lasegue:SVGT('-45 0 390 170','<path d="M20 140 H280" opacity=".4"/><circle cx="40" cy="122" r="10"/><path d="M50 128 H150"/><path d="M150 128 L250 132" opacity=".35" stroke-dasharray="4 4"/><path d="M150 128 L230 60" stroke-width="2.4"/><path d="M230 60 l14 -4" stroke-width="2.4"/><path style="stroke:var(--accent)" d="M190 128 A40 40 0 0 0 182 102"/><text style="fill:var(--accent)" x="196" y="112" font-size="11" stroke="none">30–70°</text><path d="M95 128 l-4 12 M120 128 l-3 12" opacity=".5"/><text x="150" y="162" font-size="11" text-anchor="middle" fill="currentColor" stroke="none">Elevar a perna estendida: positivo se dor irradiada abaixo do joelho</text>'),
+ dix:SVGT('-10 0 350 190','<path d="M10 120 H140" opacity=".4"/><circle cx="40" cy="58" r="10"/><path style="stroke:var(--accent)" d="M35 58 l-6 -4"/><path d="M40 68 V100 M40 100 H85 M85 100 V120 M40 78 L62 90"/><text style="fill:var(--accent)" x="70" y="40" font-size="10" stroke="none">cabeça 45° para o lado</text><path style="stroke:var(--accent)" d="M150 85 l20 0 m-6 -5 l6 5 -6 5"/>'
+  +'<path d="M185 130 H310" opacity=".4"/><circle cx="196" cy="140" r="10"/><path d="M206 132 H290 M290 132 V150" /><path d="M188 130 L180 120" opacity=".4"/><text style="fill:var(--accent)" x="240" y="172" font-size="10" text-anchor="middle" stroke="none">deitar rápido, cabeça 20–30° pendente</text><text x="160" y="186" font-size="10" text-anchor="middle" fill="currentColor" stroke="none">Observar nistagmo por 30–60 s; repetir do outro lado</text>'),
+ pe:SVGT('0 0 220 300','<path d="M110 20 C150 20 165 60 160 110 C156 160 168 200 160 245 C152 285 70 290 62 250 C55 210 70 170 64 120 C58 70 70 20 110 20 Z" opacity=".6"/>'
+  +DOT(96,48,'hálux',14,4)+DOT(80,110,'1ª',-26,4)+DOT(112,104,'3ª',-6,-10)+DOT(146,112,'5ª',10,4)+'<text x="110" y="292" font-size="11" text-anchor="middle" fill="currentColor" stroke="none">Hálux e cabeças metatarsais (1ª, 3ª, 5ª)</text>')
+};
+Object.assign(GD,{
+ ef_geral:{s:'Geral',t:'Ectoscopia e sinais vitais',src:'semiologia',k:'exame fisico geral ectoscopia sinais vitais pressao arterial tecnica',sec:[
+  {h:'Técnica',li:['Estado geral, nível de consciência, fácies, postura e marcha ao entrar na sala','Mucosas: coradas ou hipocoradas (graduar +/4+), úmidas ou secas; cianose, icterícia (esclera, sob luz natural)','Edema: cacifo na região pré-tibial e maleolar, graduar +/4+','PA: repouso de 5 min, sentado, braço na altura do coração, manguito com bolsa cobrindo 80% do braço; 2–3 medidas e usar a média; na 1ª consulta medir nos dois braços','Circunferência abdominal: ponto médio entre a última costela e a crista ilíaca, ao final da expiração']},
+  {h:'Achados alterados',rows:[['PA diferente &gt; 15 mmHg entre os braços','Usar o braço de maior valor; investigar doença arterial (e dissecção se dor).'],['Queda de PAS ≥ 20 ou PAD ≥ 10 em pé (1–3 min)','Hipotensão ortostática: revisar medicamentos, hidratação, disautonomia.'],['Mucosas hipocoradas','Hemograma.'],['Icterícia','Bilirrubinas, enzimas hepáticas, hemograma.']]},
+  {h:'Texto normal',normal:'BEG, LOTE, corado(a), hidratado(a), acianótico(a), anictérico(a), afebril, eupneico(a) em ar ambiente.\nPA [ ]x[ ] mmHg | FC [ ] bpm | FR [ ] irpm | Tax [ ] °C | SpO2 [ ]% em ar ambiente\nPeso [ ] kg | Altura [ ] m | IMC [ ] kg/m² | CA [ ] cm'}]},
+ ef_cv:{s:'Cardiovascular',t:'Aparelho cardiovascular',src:'semiologia',k:'exame cardiovascular ausculta cardiaca focos sopro ictus pulsos edema estase jugular',sec:[
+  {h:'Focos de ausculta',svg:EFSVG.cv,li:['Ausculte com o diafragma (sons agudos) e a campânula (B3, B4, estenose mitral)','Foco mitral em decúbito lateral esquerdo; foco aórtico com a pessoa sentada, inclinada para frente, em expiração','Ictus: 5º EIC E na linha hemiclavicular, 1–2 polpas digitais','Estase jugular: cabeceira a 45°, medir acima do ângulo de Louis (&gt; 3–4 cm é anormal); refluxo hepatojugular','Pulsos: radiais, femorais, poplíteos, pediosos e tibiais posteriores; comparar os lados','Sopros: tempo (sistólico/diastólico), foco, irradiação, intensidade 1 a 6']},
+  {h:'Achados alterados',rows:[['Ritmo irregularmente irregular','Fibrilação atrial: ECG, CHA₂DS₂-VASc.'],['Sopro sistólico aórtico irradiado para carótidas','Estenose aórtica: ecocardiograma; se síncope, angina ou dispneia, prioridade.'],['Sopro sistólico mitral irradiado para axila','Insuficiência mitral: ecocardiograma.'],['B3, estase jugular, estertores, edema','Insuficiência cardíaca congestiva: BNP/eco, diurético.'],['Ictus desviado para baixo e para fora','Cardiomegalia: ECG, Rx, eco.'],['Pulsos pediosos ausentes, pele fria, sem pelos','Doença arterial periférica: índice tornozelo-braquial.'],['Edema unilateral com dor na panturrilha','TVP: Wells.']]},
+  {h:'Texto normal',normal:'Ictus não visível, palpável no 5º EIC E na LHC, 1 polpa digital. RCR em 2T, BNF, sem sopros. Sem estase jugular a 45°. Pulsos periféricos palpáveis e simétricos. TEC < 3 s. Sem edema de MMII.'}]},
+ ef_resp:{s:'Respiratório',t:'Aparelho respiratório',src:'semiologia',k:'exame respiratorio ausculta pulmonar murmurio estertores sibilos fremito percussao',sec:[
+  {h:'Sequência',svg:EFSVG.resp,li:['Inspeção: padrão e frequência respiratória, tiragem, uso de musculatura acessória, formato do tórax, baqueteamento digital','Palpação: expansibilidade (mãos nas bases) e frêmito toracovocal ("trinta e três")','Percussão: som claro pulmonar; macicez (consolidação, derrame), hipersonoridade/timpanismo (enfisema, pneumotórax)','Ausculta: de cima para baixo, comparando os lados, com respiração pela boca; anterior, lateral e posterior']},
+  {h:'Achados alterados',rows:[['Estertores finos localizados + FTV aumentado + febre','Pneumonia (CURB-65, Rx se disponível).'],['Macicez + FTV e MV abolidos','Derrame pleural: Rx e encaminhar.'],['Timpanismo + MV abolido + dispneia súbita','Pneumotórax: urgência.'],['Sibilos difusos','Asma, DPOC, bronquiolite, congestão.'],['Estertores finos bibasais "em velcro"','Fibrose pulmonar (ou congestão): Rx, TC, pneumologia.'],['Estridor','Obstrução alta (crupe, corpo estranho, anafilaxia): urgência.']]},
+  {h:'Texto normal',normal:'Tórax simétrico, eupneico(a), sem uso de musculatura acessória. Expansibilidade preservada. FTV preservado e simétrico. Som claro pulmonar à percussão. MV presente bilateralmente, sem ruídos adventícios.'}]},
+ ef_abd:{s:'Abdome',t:'Abdome',src:'semiologia',k:'exame abdome abdominal palpacao blumberg murphy giordano rovsing psoas hepatimetria ascite baco',sec:[
+  {h:'Regiões e sequência',svg:EFSVG.abd,li:['Ordem: inspeção, ausculta, percussão e palpação (a ausculta antes, para não alterar os ruídos)','Palpação superficial e depois profunda, começando longe da dor','Fígado: hepatimetria 6–12 cm na LHC; borda à inspiração profunda','Baço: posição de Schuster (decúbito lateral direito); espaço de Traube','Ascite: macicez móvel de decúbito, piparote']},
+  {h:'Sinais e o que sugerem',rows:[['Blumberg (dor à descompressão brusca)','Irritação peritoneal: abdome agudo, encaminhar.'],['Rovsing, psoas, obturador, dor em McBurney','Apendicite.'],['Murphy (parada da inspiração à palpação do hipocôndrio D)','Colecistite aguda.'],['Giordano (punho-percussão lombar dolorosa)','Pielonefrite ou litíase.'],['Massa pulsátil periumbilical','Aneurisma de aorta: USG; se dor, urgência.'],['Hepatomegalia','Enzimas, USG; pensar em esteatose, ICC, álcool, hepatites.']]},
+  {h:'Texto normal',normal:'Abdome plano, RHA presentes, timpânico à percussão, flácido, indolor à palpação superficial e profunda, sem massas ou visceromegalias palpáveis. Blumberg e Murphy negativos. Giordano negativo bilateralmente.'}]},
+ ef_neuro:{s:'Neurológico',t:'Exame neurológico',src:'semiologia',k:'exame neurologico forca reflexos babinski romberg coordenacao pares cranianos meningeos glasgow',sec:[
+  {h:'Roteiro rápido',li:['Estado mental: consciência (Glasgow), orientação, linguagem','Pares cranianos: pupilas e reflexo fotomotor, movimentos oculares, mímica facial, língua e palato','Força (0 a 5): manobras de Mingazzini e Barré; comparar os lados','Reflexos: bicipital (C5–6), tricipital (C7), patelar (L4), aquileu (S1); cutâneo-plantar (Babinski)','Sensibilidade tátil, dolorosa e vibratória; coordenação: índex-nariz, calcanhar-joelho, movimentos alternados','Romberg (pés juntos, olhos fechados) e marcha; sinais meníngeos: rigidez de nuca, Kernig, Brudzinski']},
+  {h:'Achados alterados',rows:[['Déficit súbito: face caída, braço que cai, fala alterada','AVC: SAMU 192, anotar a hora do início, glicemia capilar.'],['Babinski (extensão do hálux)','Lesão do trato piramidal.'],['Romberg positivo','Ataxia sensitiva (B12, neuropatia, tabes) ou vestibular.'],['Ataxia, dismetria e nistagmo','Lesão cerebelar: investigar com urgência se aguda.'],['Rigidez de nuca com febre','Meningite: urgência.'],['Tremor de repouso, rigidez, bradicinesia','Parkinsonismo: revisar medicamentos (metoclopramida, antipsicóticos), neurologia.']]},
+  {h:'Texto normal',normal:'Vígil, orientado(a) em tempo e espaço, Glasgow 15. Pupilas isocóricas e fotorreagentes. Pares cranianos sem alterações. Força grau V nos 4 membros, tônus preservado. Reflexos profundos presentes e simétricos (2+), cutâneo-plantar em flexão bilateral. Sensibilidade preservada. Coordenação sem alterações. Romberg negativo. Marcha atípica. Sem sinais meníngeos.'}]},
+ ef_cp:{s:'Cabeça e pescoço',t:'Cabeça e pescoço: oroscopia, otoscopia, linfonodos, tireoide',src:'semiologia',k:'otoscopia membrana timpanica otite oroscopia amigdala linfonodo tireoide rinoscopia',sec:[
+  {h:'Otoscopia',svg:EFSVG.oto,li:['Tracionar o pavilhão para cima e para trás no adulto (para baixo e para trás na criança) e usar o maior espéculo que caiba','Segurar o otoscópio como uma caneta, com a mão apoiada na cabeça da pessoa','Normal: membrana íntegra, translúcida, cinza-perolada, cabo do martelo visível, triângulo luminoso anteroinferior']},
+  {h:'Achados alterados',rows:[['MT abaulada, opaca e hiperemiada, com otalgia','Otite média aguda (amoxicilina; ver Doses pediátricas).'],['MT opaca, retraída, nível líquido, sem dor','Otite média com efusão: observar 3 meses.'],['Conduto edemaciado, dor ao tracionar o pavilhão','Otite externa: gotas otológicas, evitar água.'],['Amígdalas com exsudato','Centor/McIsaac.'],['Linfonodo &gt; 1 cm, endurecido, fixo, supraclavicular ou por mais de 4–6 semanas','Investigar (hemograma, sorologias, imagem, biópsia).'],['Nódulo de tireoide','TSH e USG de tireoide.']]},
+  {h:'Texto normal',normal:'Oroscopia: mucosas úmidas e coradas, amígdalas grau [ ], sem hiperemia ou exsudato. Otoscopia: CAE pérvio, MT íntegras, translúcidas, com triângulo luminoso presente bilateralmente. Rinoscopia anterior: mucosa rósea, sem secreção. Linfonodos cervicais não palpáveis. Tireoide de tamanho normal, sem nódulos palpáveis.'}]},
+ ef_pele:{s:'Pele',t:'Pele e anexos',src:'semiologia dermatológica',k:'pele lesao dermatologico macula papula placa nodulo vesicula hanseniase sensibilidade abcde',sec:[
+  {h:'Como descrever uma lesão',li:['Tipo: mácula (plana), pápula (&lt; 1 cm elevada), placa (&gt; 1 cm), nódulo, vesícula, bolha, pústula, úlcera, crosta, escama, liquenificação','Cor, tamanho (em cm), forma, limites, superfície, número e distribuição (localizada, simétrica, em dermátomo)','Lesões pigmentadas: ABCDE e sinal do patinho feio (ver Melanoma)','Mancha hipocrômica, eritematosa ou área dormente: testar sensibilidade térmica, dolorosa e tátil (hanseníase)']},
+  {h:'Achados alterados',rows:[['Lesão com alteração de sensibilidade','Suspeita de hanseníase: avaliar nervos, baciloscopia, notificar.'],['Lesão pigmentada assimétrica, irregular ou que mudou','Ver Melanoma; encaminhar à dermatologia com prioridade.'],['Úlcera em perna','Venosa (maléolo medial, edema, dermatite ocre) x arterial (pé, dolorosa, pulsos ausentes): ITB antes de compressão.']]},
+  {h:'Texto normal',normal:'Pele íntegra, normocorada, hidratada, sem lesões. Fâneros sem alterações.'}]},
+ ef_mama:{s:'Mamas',t:'Exame das mamas',src:'semiologia · INCA',k:'mama exame clinico das mamas nodulo descarga papilar axila quadrantes',sec:[
+  {h:'Técnica',svg:EFSVG.mama,li:['Inspeção estática (braços ao longo do corpo) e dinâmica (mãos na cintura pressionando e braços elevados): assimetria, retrações, abaulamentos, pele em casca de laranja','Palpação em decúbito dorsal, braço sob a cabeça, com as polpas digitais em movimentos circulares, cobrindo toda a mama e o prolongamento axilar','Axilas, fossas supra e infraclaviculares sentada','Expressão mamilar só se houver queixa de descarga']},
+  {h:'Achados alterados',rows:[['Nódulo endurecido, irregular, aderido','Mamografia diagnóstica e USG; encaminhar à mastologia com prioridade.'],['Retração de pele ou mamilo, casca de laranja','Suspeita de câncer: investigar com prioridade.'],['Descarga espontânea, uniductal, sanguinolenta ou cristalina','Investigar (mamografia, USG).'],['Descarga bilateral, multiductal, à expressão','Geralmente benigna: revisar medicamentos, prolactina e TSH se láctea.']]},
+  {h:'Texto normal',normal:'Mamas simétricas, sem abaulamentos ou retrações, mamilos sem alterações. À palpação, sem nódulos ou espessamentos. Sem descarga papilar. Axilas e fossas supraclaviculares livres.'}]},
+ ef_gin:{s:'Ginecológico',t:'Exame ginecológico',src:'semiologia · INCA',k:'ginecologico especular preventivo citopatologico colo toque bimanual vulva',sec:[
+  {h:'Técnica',li:['Explicar, pedir consentimento, oferecer acompanhante; posição ginecológica','Inspeção da vulva e do períneo','Espéculo do tamanho adequado, introduzido oblíquo e girado; visualizar paredes, conteúdo e colo','Coleta do citopatológico: espátula de Ayre na ectocérvice (giro de 360°) e escova na endocérvice; lâmina identificada e fixada logo','Toque bimanual: colo (mobilização dolorosa?), útero (posição, volume, mobilidade) e anexos']},
+  {h:'Achados alterados',rows:[['Dor à mobilização do colo + febre ou dor pélvica','Doença inflamatória pélvica: tratar e reavaliar em 72 h.'],['Lesão visível no colo','Encaminhar à colposcopia independente do citopatológico.'],['Útero aumentado e irregular','Mioma: USG transvaginal.'],['Massa anexial','USG transvaginal; urgência se dor intensa (torção) ou atraso menstrual (gestação ectópica).']]},
+  {h:'Texto normal',normal:'Vulva e períneo sem lesões. Ao exame especular: paredes vaginais íntegras, conteúdo fisiológico, colo epitelizado, sem lesões visíveis. Coletado citopatológico [sim/não]. Toque bimanual: colo fibroelástico, indolor à mobilização, útero em AVF, de volume normal, anexos não palpáveis.'}]},
+ ef_ped:{s:'Lactente',t:'Exame físico do lactente',src:'semiologia pediátrica · Caderneta da Criança',k:'exame fisico crianca lactente recem-nascido fontanela reflexo vermelho ortolani barlow moro testiculos',sec:[
+  {h:'Pontos que não podem faltar',li:['Peso, comprimento e perímetro cefálico nas curvas da Caderneta','Fontanelas: anterior fecha entre 9 e 18 meses; abaulada (hipertensão intracraniana) ou deprimida (desidratação)','Reflexo vermelho com oftalmoscópio a 50 cm, em ambiente escuro','Pulsos femorais (coarctação de aorta) e ausculta cardíaca','Quadril: Ortolani e Barlow até 3 meses; depois, limitação da abdução e assimetria de pregas','Genitália: testículos na bolsa, hipospádia, aderência de pequenos lábios','Reflexos primitivos: Moro e preensão palmar somem até 4–6 meses']},
+  {h:'Achados alterados',rows:[['Reflexo vermelho ausente, assimétrico ou leucocoria','Oftalmologia com urgência (catarata congênita, retinoblastoma).'],['Pulsos femorais fracos ou ausentes','Cardiologia pediátrica (coarctação).'],['Ortolani ou Barlow positivos','USG de quadril e ortopedia.'],['Testículo fora da bolsa após 6 meses','Cirurgia pediátrica.'],['PC fora de −2 a +2 escores-z ou crescendo rápido','Investigar (microcefalia, hidrocefalia).']]},
+  {h:'Texto normal',normal:'BEG, ativo(a), reativo(a), corado(a), hidratado(a), acianótico(a), anictérico(a). Fontanela anterior normotensa, [ ] x [ ] cm. Reflexo vermelho presente bilateralmente. ACV: RCR 2T, BNF, sem sopros; pulsos femorais palpáveis. AR: MV+ sem RA. Abdome flácido, sem visceromegalias. Genitália típica, testículos tópicos. Ortolani e Barlow negativos. Reflexos primitivos presentes e simétricos.'}]},
+ efp_lomb:{s:'Lombalgia',t:'Lombalgia e ciática',src:'semiologia ortopédica',k:'lombalgia lasegue ciatica radiculopatia l4 l5 s1 dermatomos schober exame',sec:[
+  {h:'Lasègue',svg:EFSVG.lasegue,li:['Decúbito dorsal; elevar a perna estendida segurando o calcanhar','Positivo: dor irradiada abaixo do joelho entre 30° e 70° (dor só lombar ou atrás da coxa não conta)','Lasègue cruzado (dor ao elevar a perna sadia): muito específico para hérnia discal','Schober: marcar 10 cm acima de L5; na flexão deve aumentar ≥ 5 cm']},
+  {h:'Raiz acometida',rows:[['L4','Fraqueza para estender o joelho; reflexo patelar diminuído; sensibilidade na face medial da perna.'],['L5','Fraqueza para estender o hálux e andar nos calcanhares; sensibilidade no dorso do pé.'],['S1','Fraqueza para andar na ponta dos pés; reflexo aquileu diminuído; sensibilidade na borda lateral e planta do pé.'],['Anestesia em sela, retenção urinária','Síndrome da cauda equina: urgência.']]},
+  {h:'Texto normal',normal:'Coluna lombar sem deformidades, sem dor à palpação de processos espinhosos, contratura paravertebral [ausente]. Mobilidade preservada (Schober [ ] cm). Lasègue negativo bilateralmente. Força preservada em MMII (L4, L5, S1), reflexos patelar e aquileu presentes e simétricos, sensibilidade preservada.'}]},
+ efp_ombro:{s:'Ombro doloroso',t:'Ombro doloroso',src:'semiologia ortopédica',k:'ombro dor manguito rotador neer hawkins jobe patte speed capsulite tendinite bursite',sec:[
+  {h:'Testes',rows:[['Arco doloroso (dor entre 60° e 120° de abdução)','Síndrome do impacto / tendinopatia do supraespinal.'],['Neer (elevação passiva com o braço em rotação interna) e Hawkins (flexão a 90° + rotação interna)','Impacto subacromial.'],['Jobe (braços a 90°, 30° à frente, polegares para baixo, resistir)','Supraespinal (dor = tendinopatia; fraqueza = possível rotura).'],['Patte (rotação externa contra resistência com cotovelo a 90°)','Infraespinal.'],['Gerber / lift-off (afastar a mão das costas)','Subescapular.'],['Speed (flexão contra resistência com antebraço supinado)','Tendão da cabeça longa do bíceps.'],['Perda da rotação externa passiva e ativa','Capsulite adesiva (ombro congelado), comum em DM.'],['Fraqueza importante após trauma, idade &gt; 60','Possível rotura do manguito: USG e ortopedia.']]},
+  {h:'Texto normal',normal:'Ombro [D/E] sem deformidades ou atrofias, sem dor à palpação. ADM ativa e passiva preservada. Arco doloroso ausente. Testes de Neer, Hawkins, Jobe, Patte, Gerber e Speed negativos.'}]},
+ efp_joelho:{s:'Joelho',t:'Joelho',src:'semiologia ortopédica · regra de Ottawa',k:'joelho lachman gaveta mcmurray menisco ligamento derrame ottawa',sec:[
+  {h:'Testes',rows:[['Derrame (sinal da tecla ou da ondulação)','Lesão intra-articular, artrose agudizada, gota, infecção (febre: puncionar/urgência).'],['Lachman (joelho a 20–30°, anteriorizar a tíbia) e gaveta anterior (90°)','Ligamento cruzado anterior.'],['Gaveta posterior','Ligamento cruzado posterior.'],['McMurray e Apley (rotação com flexão/compressão)','Lesão meniscal.'],['Estresse em valgo e varo a 30°','Ligamentos colaterais medial e lateral.'],['Dor à compressão patelar','Síndrome femoropatelar.']]},
+  {h:'Raio-X após trauma (Ottawa)',li:['Idade ≥ 55 anos','Dor isolada na patela ou na cabeça da fíbula','Incapaz de fletir até 90°','Incapaz de dar 4 passos logo após o trauma e na consulta']},
+  {h:'Texto normal',normal:'Joelho [D/E] sem edema, derrame ou sinais flogísticos. ADM preservada, sem crepitação. Lachman e gavetas negativos, McMurray negativo, estresse em varo e valgo estável.'}]},
+ efp_vert:{s:'Vertigem',t:'Exame na vertigem',src:'AAO-HNS · HINTS',k:'vertigem dix-hallpike epley head roll hints nistagmo tontura vppb',sec:[
+  {h:'Dix-Hallpike',svg:EFSVG.dix,li:['Sentado na maca, virar a cabeça 45° para o lado testado','Deitar rápido com a cabeça 20–30° abaixo da maca, segurando-a; observar os olhos por 30–60 s','Positivo (VPPB de canal posterior): nistagmo torcional para cima, com latência de segundos e duração &lt; 1 min, que cansa ao repetir']},
+  {h:'Manobra de Epley (lado positivo)',li:['1. Posição final do Dix-Hallpike por 30–60 s','2. Girar a cabeça 90° para o outro lado, manter 30–60 s','3. Rolar o corpo para o mesmo lado, olhando para o chão, 30–60 s','4. Sentar devagar; pode repetir 2–3 vezes']},
+  {h:'Vertigem contínua: HINTS',rows:[['Impulso cefálico','Alterado (sacada corretiva) sugere periférico; normal em vertigem contínua sugere central.'],['Nistagmo','Horizontal unidirecional: periférico. Muda de direção com o olhar ou vertical: central.'],['Skew (teste de cobertura)','Desvio vertical presente: central.'],['Qualquer achado central ou ataxia intensa','Emergência (suspeita de AVC).']]},
+  {h:'Texto normal',normal:'Nistagmo espontâneo ausente. Dix-Hallpike negativo bilateralmente. Head roll negativo. Impulso cefálico normal. Romberg negativo, marcha sem alterações. Exame neurológico sem déficits.'}]},
+ efp_tunel:{s:'Punho e mão',t:'Túnel do carpo e punho',src:'semiologia ortopédica',k:'tunel do carpo phalen tinel finkelstein de quervain mao formigamento',sec:[
+  {h:'Testes',rows:[['Phalen (flexão máxima dos punhos por 60 s)','Parestesia no 1º ao 3º dedos: síndrome do túnel do carpo.'],['Tinel (percussão sobre o túnel do carpo)','Choque no território do mediano: túnel do carpo.'],['Atrofia tenar, fraqueza para abduzir o polegar','Túnel do carpo avançado: eletroneuromiografia e cirurgia.'],['Finkelstein (polegar na palma, desvio ulnar)','Dor no processo estiloide radial: tenossinovite de De Quervain.']]},
+  {h:'Texto normal',normal:'Punhos e mãos sem edema ou deformidades, sem atrofias. Phalen e Tinel negativos bilateralmente. Finkelstein negativo. Força e sensibilidade preservadas.'}]},
+ efp_pe:{s:'Pé diabético',t:'Pé diabético',src:'IWGDF · SBD',k:'pe diabetico monofilamento diapasao neuropatia pulsos itb ulcera calosidade',sec:[
+  {h:'Monofilamento 10 g',svg:EFSVG.pe,li:['Mostrar antes na mão da pessoa; depois, olhos fechados','Aplicar perpendicular à pele até curvar, por cerca de 2 s, nos 4 pontos (hálux, 1ª, 3ª e 5ª cabeças metatarsais), evitando calos','Perda da sensibilidade em qualquer ponto = neuropatia (perda da sensibilidade protetora)','Diapasão 128 Hz na falange distal do hálux; reflexo aquileu; pulsos pediosos e tibiais posteriores']},
+  {h:'Risco e seguimento (IWGDF)',rows:[['0: sem perda de sensibilidade e sem doença arterial','Exame anual.'],['1: perda de sensibilidade ou doença arterial','A cada 6–12 meses; orientar calçados e autoexame.'],['2: perda de sensibilidade + doença arterial ou deformidade','A cada 3–6 meses; calçado adequado, podologia.'],['3: úlcera ou amputação prévia, ou DRC terminal','A cada 1–3 meses; equipe especializada.'],['Úlcera ativa, pé quente e edemaciado (Charcot) ou isquemia','Encaminhar com prioridade; infecção grave: urgência.']]},
+  {h:'Texto normal',normal:'Pés com pele íntegra, sem calosidades, fissuras ou micoses, unhas sem alterações, sem deformidades. Monofilamento 10 g: sensível nos 4 pontos bilateralmente. Diapasão 128 Hz: vibração presente. Reflexo aquileu presente. Pulsos pediosos e tibiais posteriores palpáveis e simétricos.'}]}
+});
+
+/* Modo consulta: junta SOAP, exame físico, cálculos, receitas e orientações da mesma pessoa (só nesta sessão do navegador) */
+const CK={ef:'Exame físico',calc:'Escalas e cálculos',rx:'Prescrição',or:'Orientações'};
+let CONS={soap:'',text:'',it:[],tx:{}};
+try{const v=JSON.parse(sessionStorage.getItem('kitaps:cons')||'null');if(v&&Array.isArray(v.it))CONS=Object.assign({tx:{}},v)}catch(e){}
+function saveCons(){try{sessionStorage.setItem('kitaps:cons',JSON.stringify(CONS))}catch(e){}updConsBadge()}
+function updConsBadge(){const b=$('#cons-n');if(!b)return;const n=CONS.it.length+(CONS.text?1:0);b.textContent=n;b.hidden=!n}
+function addCons(k,t,x){
+  if(!x||!x.trim()){toast('Nada para levar ainda');return}
+  const t2=String(t).replace(/\s+/g,' ').replace(/(editada|minha|editado)$/i,'').trim();
+  if(CONS.it.some(i=>i.k===k&&i.x===x)){toast('Já está na consulta');return}
+  CONS.it.push({k,t:t2,x:x.trim()});saveCons();toast('Adicionado ao modo consulta');
+}
+function consCompose(){
+  let t=(CONS.text||'').replace(/\s+$/,'');
+  const by=k=>CONS.it.filter(i=>i.k===k);
+  const ef=by('ef').map(i=>i.x).join('\n'),ca=by('calc').map(i=>'- '+i.x).join('\n'),rx=by('rx').map(i=>i.x).join('\n\n'),or=by('or').map(i=>i.x).join('\n');
+  const after=(re,block)=>{const m=t.match(re);if(m){const p=m.index+m[0].length;t=t.slice(0,p)+'\n'+block+t.slice(p)}else t+=(t?'\n\n':'')+block};
+  const before=(re,block)=>{const m=t.match(re);if(m)t=t.slice(0,m.index)+block+'\n\n'+t.slice(m.index);else t+=(t?'\n\n':'')+block};
+  if(ef)after(/^O:[^\n]*$/m,ef);
+  if(ca)before(/^A:[^\n]*$/m,'Escalas e cálculos:\n'+ca);
+  if(rx)t+=(t?'\n\n':'')+'Prescrição:\n'+rx;
+  if(or)t+=(t?'\n\n':'')+'Orientações:\n'+or;
+  return t.trim();
+}
+function renderCONS(m){
+  const opts=Object.keys(T).map(id=>`<option value="${id}"${CONS.soap===id?' selected':''}>${esc(T[id].t)}</option>`).join('');
+  m.innerHTML=`<section class="panel">
+    <div class="ph"><h2>Modo consulta</h2><span class="code">tudo da mesma pessoa, de uma vez</span></div>
+    <p class="note">Escolha o SOAP e vá adicionando o que usar no kit com os botões <b>+ Consulta</b> (cálculos e escalas, prescrições, doses pediátricas, MEV e textos de exame físico). No fim, copie tudo de uma vez. Fica só nesta sessão do navegador; "Nova consulta" apaga.</p>
+    <div class="card"><div class="field"><label for="cs-soap">Template SOAP</label><select id="cs-soap"><option value="">Sem SOAP (só os itens)</option>${opts}</select></div>
+      <textarea class="soap" id="cs-ta" spellcheck="false" style="min-height:40vh" aria-label="SOAP da consulta"></textarea></div>
+    <div class="card"><div class="lbl">Itens adicionados (${CONS.it.length})</div>
+      ${CONS.it.length?Object.keys(CK).filter(k=>CONS.it.some(i=>i.k===k)).map(k=>`<div class="sec-h">${CK[k]}</div>${CONS.it.map((i,n)=>i.k!==k?'':`<div class="edrow cs-it"><span class="ql">${esc(i.t)}</span><span class="note" style="grid-column:1/-1;white-space:pre-wrap">${esc(i.x.length>220?i.x.slice(0,220)+'…':i.x)}</span><button class="btn small" data-rm="${n}" type="button" aria-label="Remover ${esc(i.t)}">Remover</button></div>`).join('')}`).join(''):'<p class="note">Nada ainda. Use + Consulta nas calculadoras, escalas, prescrições, MEV e exame físico.</p>'}
+      <div class="bar"><button class="btn small" data-go="calc" type="button">Calculadoras</button><button class="btn small" data-go="esc" type="button">Escalas</button><button class="btn small" data-go="presc" type="button">Prescrições</button><button class="btn small" data-go="ef" type="button">Exame físico</button><button class="btn small" data-go="mev" type="button">MEV</button></div>
+    </div>
+    <div class="lbl">Texto final</div><pre class="rx" id="cs-out"></pre>
+    <div class="bar sticky-bar"><button class="btn primary" id="cs-cp" type="button">Copiar tudo</button><button class="btn danger" id="cs-new" type="button">Nova consulta</button></div>
+  </section>`;
+  const ta=$('#cs-ta'),out=()=>{$('#cs-out').textContent=consCompose()||'(vazio)'};
+  const loadSoap=id=>{if(CONS.soap)CONS.tx[CONS.soap]=CONS.text;CONS.soap=id;CONS.text=id?(CONS.tx[id]??store.get('kitaps:soap:'+id)??T[id].body):'';ta.value=CONS.text;ta.hidden=!id;saveCons();out()};
+  ta.value=CONS.text;ta.hidden=!CONS.soap;
+  $('#cs-soap').onchange=e=>loadSoap(e.target.value);
+  ta.oninput=()=>{CONS.text=ta.value;saveCons();out()};
+  m.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{CONS.it.splice(+b.dataset.rm,1);saveCons();renderCONS(m);addHead()});
+  m.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>openSection(b.dataset.go));
+  $('#cs-cp').onclick=()=>{const t=consCompose();if(t)copy(t);else toast('Nada para copiar ainda')};
+  const nb=$('#cs-new');nb.onclick=()=>confirm2(nb,()=>{CONS={soap:'',text:'',it:[],tx:{}};saveCons();renderCONS(m);addHead();toast('Nova consulta')});
+  out();
+}
+
+const E={esquema:'Esquema',meu:'Minhas edições',consulta:'Modo consulta'};
 const SECS={soap:Object.keys(T),calc:Object.keys(C),presc:Object.keys(P),mev:Object.keys(M),esq:Object.keys(E),fx:Object.keys(F)};
 let cur={sec:'soap',id:'has'};
 
-function chipLabel(id){return T[id]?({vertigem:'Vertigem',hipotireo:'Hipotireoidismo',obesidade:'Obesidade',asma:'Asma',dpoc:'DPOC',idoso:'Idoso',puerperio:'Puerpério',contracepcao:'Contracepção',tabagismo:'Tabagismo',itu:'ITU',ist:'IST',dengue:'Dengue',cefaleia:'Cefaleia',lombalgia:'Lombalgia',has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:F[id]?F[id].s:GD[id]?GD[id].s:E[id])}
+function chipLabel(id){return T[id]?({vertigem:'Vertigem',hipotireo:'Hipotireoidismo',obesidade:'Obesidade',asma:'Asma',dpoc:'DPOC',idoso:'Idoso',puerperio:'Puerpério',contracepcao:'Contracepção',tabagismo:'Tabagismo',itu:'ITU',ist:'IST',dengue:'Dengue',cefaleia:'Cefaleia',lombalgia:'Lombalgia',has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:F[id]?F[id].s:GD[id]?GD[id].s:AT[id]?AT[id].s:E[id])}
 
 /* Navegação: menu de seções (agrupadas) + abas internas; favoritos */
 const SICON={
@@ -2656,35 +2944,43 @@ const SICON={
  idoso:'M10 3.5a1.8 1.8 0 1 0 0 3.6 1.8 1.8 0 0 0 0-3.6z M10 8.5v6 M10 14.5l-2.5 6.5 M10 14.5l2.5 6.5 M10 9.5l-3 4 M10 9.5l4.5 2.5 M16.5 12v9 M16.5 12c0-1.5-1.8-1.8-2.2-.5',
  pedi:'M9 2h6 M10 2v3 M14 2v3 M8 9a4 4 0 0 1 8 0v10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2z M8 13h3 M8 17h3',
  exames:'M9 3h6 M10 3v12.5a2 2 0 0 0 4 0V3 M10 10h4 M16 8h4 M18 6v4',
+ doc:'M6 3h9l4 4v14H6z M15 3v4h4 M9 14l2 2 4-4',
+ urg:'M12 3l9.5 16.5h-19z M12 10v4 M12 17h.01',
+ steth:'M6 3v6a5 5 0 0 0 10 0V3 M5 3h2 M15 3h2 M11 14v1.5a5 5 0 0 0 10 0V13 M21 11a2 2 0 1 0 0 .01',
+ cons:'M9 3h6v3H9z M7 4.5H5V21h14V4.5h-2 M12 10v6 M9 13h6',
  edit:'M4 20h4L19 9l-4-4L4 16z M13.5 6.5l4 4',
  fx:'M5 3h6v5H5z M13 16h6v5h-6z M8 8v4h8v4 M16 3l3 3-3 3',
  box:'M4 7l8-4 8 4v10l-8 4-8-4z M4 7l8 4 8-4 M12 11v10'
 };
 const icon=(k,sz=20)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${SICON[k]}"/></svg>`;
-const SECTAG={soap:'SOAP',calc:'Cálc.',presc:'Rx',mev:'MEV',fx:'Fluxo',gd:'Guia',esq:''};
+const SECTAG={soap:'SOAP',calc:'Cálc.',presc:'Rx',mev:'MEV',fx:'Fluxo',gd:'Guia',at:'Doc',esq:''};
 const SECTIONS=[
+ {g:'Atendimento',k:'urg',t:'Urgência na UBS',ic:'urg',ids:['u_has','u_hipo','u_anaf','u_asma','u_tor']},
+ {g:'Atendimento',k:'cons',t:'Modo consulta',ic:'cons',ids:['consulta']},
  {g:'Atendimento',k:'soap',t:'Templates SOAP',ic:'soap',ids:['has','dm','drc','hipotireo','obesidade','asma','dpoc','hpb','idoso','prenatal','puerperio','contracepcao','puericultura','mental','ansiedade','tabagismo','ivas','gea','itu','ist','dengue','cefaleia','vertigem','lombalgia']},
+ {g:'Atendimento',k:'ef',t:'Exame físico',ic:'steth',ids:['ef_geral','ef_cv','ef_resp','ef_abd','ef_neuro','ef_cp','ef_pele','ef_mama','ef_gin','ef_ped','efp_lomb','efp_ombro','efp_joelho','efp_vert','efp_tunel','efp_pe']},
  {g:'Atendimento',k:'presc',t:'Prescrições',ic:'presc',ids:Object.keys(P)},
- {g:'Atendimento',k:'fx',t:'Fluxogramas',ic:'fx',ids:['fx_has','fluxodm',...Object.keys(F).filter(k=>k!=='fx_has')]},
+ {g:'Atendimento',k:'fx',t:'Fluxogramas',ic:'fx',ids:['fx_has','fluxodm',...Object.keys(F).filter(k=>k!=='fx_has'&&!k.startsWith('u_'))]},
  {g:'Atendimento',k:'mev',t:'Estilo de vida (MEV)',ic:'mev',ids:Object.keys(M)},
+ {g:'Atendimento',k:'docs',t:'Atestados e declarações',ic:'doc',ids:Object.keys(AT)},
  {g:'Atendimento',k:'esq',t:'Folha do paciente',ic:'esq',ids:['esquema']},
  {g:'Ferramentas',k:'calc',t:'Calculadoras',ic:'calc',ids:['ig','tfg','drcest','cg','imc','rcv','insulina','cacorr','curb65','wells_tvp','wells_tep','chads','hasbled']},
  {g:'Ferramentas',k:'pedi',t:'Doses pediátricas',ic:'pedi',ids:['pedi']},
  {g:'Ferramentas',k:'esc',t:'Escalas e questionários',ic:'esc',ids:['phq9','gad7','audit','fager','ipss','melanoma','marcos','centor','minicog','ivcf20','katz','lawton','quedas','pps','dhi']},
  {g:'Ferramentas',k:'exames',t:'Interpretação de exames',ic:'exames',ids:['ex_hemo','ex_tsh','ex_eas','ex_lip']},
  {g:'Ferramentas',k:'prot',t:'Protocolos e prevenção',ic:'prot',ids:['pn_exames','rastreio','vacinas','ajustes']},
- {g:'Linhas de cuidado',k:'cronicos',t:'Crônicos',ic:'cronicos',ln:1,ids:['has','dm','drc','hpb','hipotireo','obesidade','asma','dpoc','tabagismo','fx_has','fluxodm','fx_lip','fx_tireo','fx_asma','fx_dpoc','tfg','drcest','cg','imc','rcv','insulina','chads','hasbled','ipss','rastreio','vacinas','ajustes','melanoma','rx_cv','rx_anal','mev_has','mev_dm','mev_obes','mev_lip','mev_drc','mev_icc','mev_hpb','esquema']},
- {g:'Linhas de cuidado',k:'mulher',t:'Saúde da mulher',ic:'mulher',ln:1,ids:['prenatal','pn_exames','puerperio','contracepcao','ist','itu','ig','imc','rastreio','vacinas','ajustes','fx_sif','fx_itu','rx_aco','rx_ist','rx_hiv','rx_atb','mev_gest','esquema']},
- {g:'Linhas de cuidado',k:'crianca',t:'Saúde da criança',ic:'crianca',ln:1,ids:['puericultura','marcos','pedi','imc','vacinas','fx_diar','fx_dengue','fx_farin','rx_par','rx_sint','mev_cri','esquema']},
+ {g:'Linhas de cuidado',k:'cronicos',t:'Crônicos',ic:'cronicos',ln:1,ids:['has','dm','drc','hpb','hipotireo','obesidade','asma','dpoc','tabagismo','fx_has','fluxodm','efp_pe','fx_lip','fx_tireo','fx_asma','fx_dpoc','tfg','drcest','cg','imc','rcv','insulina','chads','hasbled','ipss','rastreio','vacinas','ajustes','melanoma','rx_cv','rx_anal','mev_has','mev_dm','mev_obes','mev_lip','mev_drc','mev_icc','mev_hpb','esquema']},
+ {g:'Linhas de cuidado',k:'mulher',t:'Saúde da mulher',ic:'mulher',ln:1,ids:['prenatal','pn_exames','ef_mama','ef_gin','puerperio','contracepcao','ist','itu','ig','imc','rastreio','vacinas','ajustes','fx_sif','fx_itu','rx_aco','rx_ist','rx_hiv','rx_atb','mev_gest','esquema']},
+ {g:'Linhas de cuidado',k:'crianca',t:'Saúde da criança',ic:'crianca',ln:1,ids:['puericultura','marcos','pedi','ef_ped','imc','vacinas','fx_diar','fx_dengue','fx_farin','rx_par','rx_sint','mev_cri','esquema']},
  {g:'Linhas de cuidado',k:'mental',t:'Saúde mental',ic:'mental',ln:1,ids:['mental','ansiedade','tabagismo','fx_dep','fx_ans','phq9','gad7','audit','fager','rx_ad','rx_ans','rx_ap','rx_tab','mev_dep','mev_ans','mev_sono','mev_alc','mev_tab','esquema']},
- {g:'Linhas de cuidado',k:'idoso',t:'Saúde do idoso',ic:'idoso',ln:1,ids:['idoso','vertigem','dhi','fx_vert','ivcf20','katz','lawton','minicog','quedas','pps','cg','has','dm','hpb','drc','ajustes','vacinas','rastreio','tfg','rcv','phq9','fx_has','fluxodm','fx_dep','fx_lomb','rx_anal','mev_has','mev_dm','mev_sono','esquema']},
- {g:'Linhas de cuidado',k:'agudos',t:'Agudos',ic:'agudos',ln:1,ids:['ivas','gea','itu','ist','dengue','cefaleia','lombalgia','vertigem','dhi','fx_vert','curb65','centor','wells_tvp','wells_tep','fx_dengue','fx_farin','fx_sinus','fx_pac','fx_itu','fx_diar','fx_tor','fx_cef','fx_lomb','fx_tb','rx_atb','rx_sint','rx_anal','rx_par','rx_ist','rx_hiv','mev_ivas','mev_diar','esquema']},
+ {g:'Linhas de cuidado',k:'idoso',t:'Saúde do idoso',ic:'idoso',ln:1,ids:['idoso','vertigem','dhi','fx_vert','efp_pe','ivcf20','katz','lawton','minicog','quedas','pps','cg','has','dm','hpb','drc','ajustes','vacinas','rastreio','tfg','rcv','phq9','fx_has','fluxodm','fx_dep','fx_lomb','rx_anal','mev_has','mev_dm','mev_sono','esquema']},
+ {g:'Linhas de cuidado',k:'agudos',t:'Agudos',ic:'agudos',ln:1,ids:['ivas','gea','itu','ist','dengue','cefaleia','lombalgia','vertigem','dhi','fx_vert','efp_vert','efp_lomb','efp_ombro','efp_joelho','curb65','centor','wells_tvp','wells_tep','fx_dengue','fx_farin','fx_sinus','fx_pac','fx_itu','fx_diar','fx_tor','fx_cef','fx_lomb','fx_tb','rx_atb','rx_sint','rx_anal','rx_par','rx_ist','rx_hiv','mev_ivas','mev_diar','esquema']},
  {g:'Meu kit',k:'meu',t:'Minhas edições',ic:'edit',ids:['meu']}
 ];
 const SECM=Object.fromEntries(SECTIONS.map(s=>[s.k,s]));
-const secOf=id=>T[id]?'soap':C[id]?'calc':P[id]?'presc':M[id]?'mev':F[id]?'fx':GD[id]?'gd':'esq';
+const secOf=id=>T[id]?'soap':C[id]?'calc':P[id]?'presc':M[id]?'mev':F[id]?'fx':GD[id]?'gd':AT[id]?'at':'esq';
 let CURS=SECM[store.get('kitaps:sec')]?store.get('kitaps:sec'):'soap';
-let FAV=[];try{FAV=JSON.parse(store.get('kitaps:favs')||'[]').filter(id=>T[id]||C[id]||P[id]||M[id]||F[id]||GD[id]||E[id])}catch(e){FAV=[]}
+let FAV=[];try{FAV=JSON.parse(store.get('kitaps:favs')||'[]').filter(id=>T[id]||C[id]||P[id]||M[id]||F[id]||GD[id]||AT[id]||E[id])}catch(e){FAV=[]}
 const saveFav=()=>store.set('kitaps:favs',JSON.stringify(FAV));
 function renderMenu(){
   const nav=$('#menu-list');let g='',h='';
@@ -2728,6 +3024,7 @@ function go(id,sk){
   const ch=document.getElementById('chip-'+id);if(ch&&ch.scrollIntoView)ch.scrollIntoView({block:'nearest',inline:'nearest'});
   window.scrollTo(0,0);
 }
+$('#cons-btn').onclick=()=>go('consulta');updConsBadge();
 $('#menu-btn').onclick=()=>document.body.classList.contains('menu-open')?closeMenu():openMenu();
 $('#menu-bg').onclick=closeMenu;
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
@@ -2737,10 +3034,11 @@ function render(){
   const m=$('#main');
   if(cur.sec==='soap')return renderSoap(m,cur.id);
   if(cur.sec==='presc')return renderPresc(m,cur.id);
-  if(cur.sec==='esq')return cur.id==='meu'?renderMeu(m):renderESQ(m);
+  if(cur.sec==='esq')return cur.id==='meu'?renderMeu(m):cur.id==='consulta'?renderCONS(m):renderESQ(m);
   if(cur.sec==='mev')return renderMEV(m,cur.id);
   if(cur.sec==='fx')return renderFX(m,cur.id);
   if(cur.sec==='gd')return renderGD(m,cur.id);
+  if(cur.sec==='at')return renderAT(m,cur.id);
   if(cur.id==='marcos')return renderMARCOS(m);
   if(SC[cur.id])return renderSC(m,cur.id);
   if(NC[cur.id])return numCalc(m,NC[cur.id]);
@@ -2752,21 +3050,22 @@ function renderPresc(m,id){
   m.innerHTML=`<section class="panel">
     <div class="ph"><h2>${esc(c.t)}</h2><span class="code">adultos</span></div>
     <div class="rec"><b>Receituário:</b> ${esc(c.rec)}.</div>
-    ${c.items.map((it,i)=>`<article class="card rxcard"><h3>${esc(it.t)}${edTag(it.ed,it.own)}</h3><pre class="rx" id="rx-${i}">${esc(it.rx)}</pre><div class="bar"><button class="btn primary small" data-i="${i}">Copiar prescrição</button><button class="btn small" data-e="${i}">Levar ao esquema do paciente</button><button class="btn small" data-ed="${i}" aria-label="Editar ${esc(it.t)}">${icon('edit',14)} Editar</button></div>${it.n?`<p class="note">${esc(it.n)}</p>`:''}${(()=>{const ds=drugsIn(it.rx);return ds.length?`<details><summary>Ajustes: DRC, gestação, lactação, idoso</summary><div style="display:grid;gap:8px;margin-top:8px">${ds.map(d=>drugCard(d,{tfg:num(store.get('kitaps:tfg'))})).join('')}</div></details>`:''})()}</article>`).join('')}
+    ${c.items.map((it,i)=>`<article class="card rxcard"><h3>${esc(it.t)}${edTag(it.ed,it.own)}</h3><pre class="rx" id="rx-${i}">${esc(it.rx)}</pre><div class="bar"><button class="btn primary small" data-i="${i}">Copiar prescrição</button><button class="btn small" data-e="${i}">Levar ao esquema do paciente</button><button class="btn small" data-cs="${i}" type="button">+ Consulta</button><button class="btn small" data-ed="${i}" aria-label="Editar ${esc(it.t)}">${icon('edit',14)} Editar</button></div>${it.n?`<p class="note">${esc(it.n)}</p>`:''}${(()=>{const ds=drugsIn(it.rx);return ds.length?`<details><summary>Ajustes: DRC, gestação, lactação, idoso</summary><div style="display:grid;gap:8px;margin-top:8px">${ds.map(d=>drugCard(d,{tfg:num(store.get('kitaps:tfg'))})).join('')}</div></details>`:''})()}</article>`).join('')}
     <article class="card rxcard" id="rx-newcard"><div class="bar"><button class="btn small" id="rx-new" type="button">+ Nova prescrição nesta classe</button></div></article>
     <p class="note">Doses para adultos com função renal e hepática normais. Confira alergias, gestação, interações e a disponibilidade na REMUME do seu município. Use Editar para ajustar ao seu protocolo: fica salvo neste aparelho.</p>
   </section>`;
   m.querySelectorAll('button[data-ed]').forEach(b=>b.onclick=()=>rxEditor(b.closest('article'),id,+b.dataset.ed));
+  m.querySelectorAll('button[data-cs]').forEach(b=>b.onclick=()=>{const it=c.items[+b.dataset.cs];addCons('rx',it.t,it.rx)});
   $('#rx-new').onclick=()=>rxEditor($('#rx-newcard'),id,null);
   m.querySelectorAll('button[data-i]').forEach(b=>b.onclick=()=>copy(c.items[+b.dataset.i].rx));
   m.querySelectorAll('button[data-e]').forEach(b=>b.onclick=()=>{const n=addToEsq(c.items[+b.dataset.e].rx);toast(n?n+' remédio(s) no esquema do paciente':'Não consegui ler esta receita')});
 }
 
-const SOAPLINK={has:[['fx_has','Fluxograma HAS'],['rcv','Risco CV'],['tfg','TFG'],['mev_has','MEV']],dm:[['fluxodm','Fluxograma DM2'],['insulina','Insulina'],['tfg','TFG'],['mev_dm','MEV']],
- drc:[['drcest','Estágio DRC'],['tfg','TFG'],['cg','Cockcroft-Gault'],['ajustes','Ajustes de dose']],hpb:[['ipss','IPSS']],prenatal:[['pn_exames','Exames do pré-natal'],['ig','IG/DPP'],['vacinas','Vacinas']],
- puericultura:[['marcos','Marcos do desenvolvimento'],['pedi','Doses pediátricas'],['vacinas','Vacinas']],mental:[['phq9','PHQ-9'],['fx_dep','Fluxograma']],ansiedade:[['gad7','GAD-7'],['fx_ans','Fluxograma']],
+const SOAPLINK={has:[['fx_has','Fluxograma HAS'],['rcv','Risco CV'],['tfg','TFG'],['mev_has','MEV']],dm:[['fluxodm','Fluxograma DM2'],['efp_pe','Exame do pé'],['insulina','Insulina'],['tfg','TFG'],['mev_dm','MEV']],
+ drc:[['drcest','Estágio DRC'],['tfg','TFG'],['cg','Cockcroft-Gault'],['ajustes','Ajustes de dose']],hpb:[['ipss','IPSS']],prenatal:[['pn_exames','Exames do pré-natal'],['ef_mama','Exame das mamas'],['ig','IG/DPP'],['vacinas','Vacinas']],
+ puericultura:[['marcos','Marcos do desenvolvimento'],['ef_ped','Exame do lactente'],['pedi','Doses pediátricas'],['vacinas','Vacinas']],mental:[['phq9','PHQ-9'],['fx_dep','Fluxograma']],ansiedade:[['gad7','GAD-7'],['fx_ans','Fluxograma']],
  idoso:[['ivcf20','IVCF-20'],['katz','Katz'],['lawton','Lawton'],['minicog','Mini-Cog'],['quedas','Quedas'],['ajustes','Beers']],asma:[['fx_asma','Fluxograma']],dpoc:[['fx_dpoc','Fluxograma']],
- vertigem:[['dhi','DHI'],['fx_vert','Fluxograma']],tabagismo:[['fager','Fagerström']],itu:[['fx_itu','Fluxograma']],dengue:[['fx_dengue','Fluxograma']],cefaleia:[['fx_cef','Fluxograma']],lombalgia:[['fx_lomb','Fluxograma']],
+ vertigem:[['dhi','DHI'],['fx_vert','Fluxograma'],['efp_vert','Exame: Dix-Hallpike e Epley']],tabagismo:[['fager','Fagerström']],itu:[['fx_itu','Fluxograma']],dengue:[['fx_dengue','Fluxograma']],cefaleia:[['fx_cef','Fluxograma']],lombalgia:[['fx_lomb','Fluxograma'],['efp_lomb','Exame: Lasègue e raízes']],
  hipotireo:[['fx_tireo','Fluxograma']],ivas:[['centor','Centor'],['fx_farin','Faringite'],['fx_sinus','Sinusite']],gea:[['fx_diar','Fluxograma']],ist:[['fx_sif','Sífilis']]};
 function renderSoap(m,id){
   const t=T[id],key='kitaps:soap:'+id,saved=store.get(key);
@@ -2777,6 +3076,7 @@ function renderSoap(m,id){
     <div class="bar sticky-bar">
       <button class="btn primary" id="cp">Copiar SOAP</button>
       <button class="btn" id="rs">Restaurar modelo</button>
+      <button class="btn" id="uc" type="button">Usar no modo consulta</button>
     </div>
     ${(SOAPLINK[id]||[]).filter(x=>known(x[0])).length?`<div class="lbl">Ferramentas relacionadas</div><div class="bar">${SOAPLINK[id].filter(x=>known(x[0])).map(x=>`<button class="chip" data-go="${x[0]}" type="button">${esc(x[1])}</button>`).join('')}</div>`:''}
   </section>`;
@@ -2784,13 +3084,15 @@ function renderSoap(m,id){
   const ta=$('#ta-'+id);ta.value=saved!=null?saved:t.body;
   ta.oninput=()=>store.set(key,ta.value);
   $('#cp').onclick=()=>copy(ta.value,ta);
+  $('#uc').onclick=()=>{if(CONS.soap)CONS.tx[CONS.soap]=CONS.text;CONS.soap=id;CONS.text=ta.value;CONS.tx[id]=ta.value;saveCons();go('consulta')};
   const rs=$('#rs');
   rs.onclick=()=>{if(rs.dataset.c){ta.value=t.body;store.del(key);rs.textContent='Restaurar modelo';delete rs.dataset.c;toast('Modelo restaurado')}else{rs.dataset.c=1;rs.textContent='Toque de novo para confirmar';setTimeout(()=>{if(rs.isConnected){rs.textContent='Restaurar modelo';delete rs.dataset.c}},3000)}};
 }
 
 function resultBox(id){return `<div class="result" id="${id}"></div>`}
-function copyBtn(){return `<div class="bar"><button class="btn primary small" id="cpres">Copiar resultado</button></div>`}
-function bindCopy(getText){$('#cpres').onclick=()=>{const t=getText();if(t)copy(t);else toast('Preencha os campos primeiro')}}
+function copyBtn(){return `<div class="bar"><button class="btn primary small" id="cpres">Copiar resultado</button><button class="btn small" id="addcons" type="button">+ Consulta</button></div>`}
+function bindCopy(getText){$('#cpres').onclick=()=>{const t=getText();if(t)copy(t);else toast('Preencha os campos primeiro')};
+  const a=$('#addcons');if(a)a.onclick=()=>{const t=getText();if(!t){toast('Preencha os campos primeiro');return}const h=$('#main .ph h2');addCons('calc',h?h.textContent:'Cálculo',t)}}
 
 /* Datas */
 const DAY=864e5;
@@ -3694,7 +3996,7 @@ function renderIPSS(m){
 }
 
 const h=(location.hash||'').slice(1);
-const known=id=>!!(T[id]||C[id]||P[id]||M[id]||F[id]||GD[id]||E[id]);
+const known=id=>!!(T[id]||C[id]||P[id]||M[id]||F[id]||GD[id]||AT[id]||E[id]);
 const start=known(h)?h:(store.get('kitaps:last')||'has');
 go(known(start)?start:'has');
 /* ---------- Busca única ---------- */
@@ -3708,8 +4010,10 @@ function buildIdx(){
     c.items.forEach((it,i)=>{const drugs=(it.rx.match(/^\d+\.\s*([^\n.]+?)\s*\.{3,}/gm)||[]).map(x=>x.replace(/^\d+\.\s*/,'').replace(/\s*\.{3,}$/,''));
       L.push({id,i,sec:'Prescrições',lab:it.t,sub:c.s+(drugs.length?' · '+drugs.join(', '):''),key:norm(it.t+' '+c.t+' '+drugs.join(' ')+' '+it.n)})})});
   Object.entries(M).forEach(([id,c])=>L.push({id,sec:'MEV',lab:'MEV: '+c.t,key:norm('mev estilo de vida orientacoes '+c.t+' '+c.s)}));
-  Object.entries(GD).forEach(([id,g])=>L.push({id,sec:'Guia',lab:g.t,key:norm('exame exames interpretacao conduta '+g.t+' '+g.s+' '+g.k)}));
+  Object.entries(AT).forEach(([id,a])=>L.push({id,sec:'Documento',lab:a.t,key:norm('atestado declaracao documento '+a.t+' '+a.s+' afastamento comparecimento acompanhante aptidao academia')}));
+  Object.entries(GD).forEach(([id,g])=>L.push({id,sec:id.startsWith('ef')?'Exame físico':'Guia',lab:g.t,key:norm('exame exames interpretacao conduta '+g.t+' '+g.s+' '+g.k)}));
   Object.entries(F).forEach(([id,f])=>L.push({id,sec:'Fluxograma',lab:f.t,key:norm('fluxograma conduta '+f.t+' '+f.s+' '+f.k)}));
+  L.push({id:'consulta',sec:'Atendimento',lab:'Modo consulta',key:norm('modo consulta juntar tudo soap prescricao calculos copiar tudo atendimento')});
   L.push({id:'meu',sec:'Meu kit',lab:'Minhas edições e backup',key:norm('editar edicoes minhas backup exportar importar restaurar salvar arquivo personalizar')});
   L.push({id:'esquema',sec:'Paciente',lab:'Esquema de remédios do paciente',key:norm('esquema paciente folha imprimir horarios manha tarde noite figuras analfabeto')});
   return L;
