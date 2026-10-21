@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="Kit APS">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
-.upd{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;border:0;border-radius:999px;background:var(--accent);color:var(--accent-fg);font:600 .9rem var(--f-ui);padding:10px 18px;box-shadow:0 4px 14px rgb(0 0 0/.25);cursor:pointer}</style>
+.upd{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;border:0;border-radius:999px;background:var(--accent);color:var(--accent-fg);font:600 .9rem var(--f-ui);padding:10px 18px;box-shadow:0 4px 14px rgb(0 0 0/.25);cursor:pointer}</style>
 </head>
 <body>
 <style>
@@ -122,7 +122,16 @@ h2{margin:0;font-size:1.05rem;text-wrap:balance}
 .note{color:var(--muted);font-size:.82rem;margin:0}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:grid;gap:12px}
 
-textarea.soap{width:100%;min-height:60vh;resize:vertical;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--fg);font:13.5px/1.55 var(--f-mono);padding:12px}.rxadj{grid-column:2;display:grid;gap:4px;font-size:.84rem;line-height:1.4}.rxint .chip.tag,.rxadj .chip.tag{white-space:nowrap}.soap.efn{min-height:80px;resize:none;overflow:hidden}
+textarea.soap{width:100%;min-height:60vh;resize:vertical;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--fg);font:13.5px/1.55 var(--f-mono);padding:12px}.rxadj{grid-column:2;display:grid;gap:4px;font-size:.84rem;line-height:1.4}.rxint .chip.tag,.rxadj .chip.tag{white-space:nowrap}#bnav{display:none}
+@media (max-width:999px){body.has-bnav #bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}#bnav button{flex:1;min-width:0;border:0;background:none;color:var(--muted);display:grid;justify-items:center;gap:1px;padding:7px 2px 6px;font:600 .68rem var(--f-ui);cursor:pointer}#bnav small{font-size:.68rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}#bnav button[aria-current="page"]{color:var(--accent)}body.has-bnav main{padding-bottom:70px}body.has-bnav .sticky-bar{bottom:58px}}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;flex:none}.seg button{border:0;background:none;padding:6px 14px;font:600 .85rem var(--f-ui);color:var(--fg);cursor:pointer}.seg [aria-selected="true"]{background:var(--accent);color:var(--accent-fg)}
+.inig{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}@media (min-width:700px){.inig{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.init{display:grid;gap:4px;justify-items:start;align-content:start;text-align:left;padding:16px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--fg);cursor:pointer;min-height:122px;font:inherit}.init b{font-size:1rem;line-height:1.25}.init small{color:var(--muted);font-size:.8rem;line-height:1.3}.inii{color:var(--accent);background:var(--accent-soft);border-radius:12px;padding:8px;display:inline-grid;margin-bottom:4px}.inil{display:grid;gap:6px}
+.card.gd>.lbl-row{position:sticky;top:var(--hh,0px);z-index:2;background:var(--surface);margin:-14px -14px 0;padding:12px 14px 8px;border-radius:var(--r) var(--r) 0 0}
+.card.gd.acc>.lbl-row>span{cursor:pointer}.card.gd.acc>.lbl-row>span::before{content:'▾ ';color:var(--muted)}.card.gd.acc-x>.lbl-row>span::before{content:'▸ '}.card.gd.acc-x>:not(.lbl-row){display:none}.card.gd.acc-x>.lbl-row{position:static}
+.soapnav{position:sticky;top:var(--hh,0px);z-index:3;display:flex;gap:6px;background:var(--bg);padding:6px 0}.soapnav button{flex:1;max-width:64px;border:1px solid var(--line);border-radius:999px;background:var(--surface);font:700 .9rem var(--f-ui);padding:6px 0;color:var(--fg);cursor:pointer}.soapnav button[aria-current="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}.soapnav button:disabled{opacity:.35}
+@media print{#bnav,.soapnav,.accbar{display:none!important}.card.gd.acc-x>:not(.lbl-row){display:revert}}
+.soap.efn{min-height:80px;resize:none;overflow:hidden}
 .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .btn{border:1px solid var(--line);background:var(--surface);color:var(--fg);font:600 .88rem var(--f-ui);padding:9px 14px;border-radius:8px;cursor:pointer}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
@@ -263,6 +272,7 @@ textarea.soap.rxta{min-height:0;overflow:hidden}
 .farmb .chip.tag{white-space:normal;max-width:100%;text-align:left}
 .dzt{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.dzt .chip{white-space:normal;text-align:left}
 .dzhead{margin-bottom:6px}
+@media(max-width:999px){.sticky-bar{flex-wrap:nowrap;overflow-x:auto}.sticky-bar .btn{flex:none}}
 </style>
 
 <header>
@@ -1905,7 +1915,110 @@ Fortalecer rede de apoio: [família, grupo de apoio ao luto, comunidade religios
 [Insônia: higiene do sono; evitar benzodiazepínico]
 [Atestado: [ ] dias] [Orientado sobre direitos: licença nojo, pensão, auxílio]
 Paciente ciente e concordante com a conduta, nega dúvidas.
-Retorno em [2–4] semanas`}
+Retorno em [2–4] semanas`},
+demencia:{t:'Demência (declínio cognitivo)',code:'CIAP-2 P70 · CID-10 F03 / G30',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+Cuidador principal: [ ] | Escolaridade: [ ] anos
+
+S:
+Paciente vem acompanhado(a) de [familiar], que refere esquecimento de fatos recentes há [ ] meses/anos, com piora [lenta e progressiva / em degraus / rápida]. Dificuldade para [lidar com dinheiro, remédios, compras, cozinhar, se orientar na rua, usar o telefone]. [Repete perguntas, perde objetos, se perde em lugares conhecidos.] Alterações de comportamento: [nega / irritabilidade, apatia, agitação, alucinações, delírios, insônia, perambulação]. Humor: [ ]. Quedas: [nega / __ no último ano]. Incontinência: [nega].
+Nega início súbito, febre, trauma craniano recente, uso novo de remédio sedativo ou anticolinérgico. Nega déficit motor focal. Família: [como está o cuidador, sobrecarga, rede de apoio].
+
+O:
+PA [ ]x[ ] mmHg (sentado e em pé) | FC [ ] bpm | Peso [ ] kg
+Atenção e consciência: [vígil, sem flutuação (afasta delirium)]
+Mini-Cog: [ ]/5 | MEEM: [ ]/30 (corte para escolaridade: [ ]) | Teste do relógio: [ ]
+Katz: [ ] | Lawton: [ ]
+Humor: PHQ-9 [ ] / GDS-15 [ ]
+Exame neurológico: [sem déficit focal, sem sinais extrapiramidais, marcha (preservada)]
+Acuidade visual e auditiva: [ ]
+
+A:
+Síndrome demencial [leve / moderada / grave], provável [doença de Alzheimer / vascular / mista / corpos de Lewy], com [preservação / perda] de autonomia para AIVD/ABVD. [Sem sinais de delirium.] Causas reversíveis: [em investigação / afastadas].
+
+P:
+Investigar causas reversíveis: hemograma, B12, TSH, glicemia, creatinina, sódio, cálcio, TGO/TGP, VDRL e HIV
+Neuroimagem (TC ou RM de crânio) se [início < 65 anos, evolução rápida, sinal focal, trauma, ou na primeira avaliação]
+Revisar remédios: suspender ou reduzir anticolinérgicos, benzodiazepínicos e sedativos
+[Anticolinesterásico pelo PCDT (CEAF): donepezila 5 mg/dia por 4–6 semanas, depois 10 mg à noite] / [Encaminhar à neurologia/geriatria se dúvida diagnóstica ou início precoce]
+Sintomas de comportamento: primeiro medidas não farmacológicas; [se risco ou sofrimento intenso: quetiapina 12,5–25 mg à noite, menor dose e menor tempo]
+Orientados paciente e cuidador sobre rotina, segurança em casa, prevenção de quedas e direitos (benefícios, curatela quando necessário)
+Apoio ao cuidador: eMulti, grupo de cuidadores, CRAS
+Paciente e acompanhante cientes e concordantes com a conduta, negam dúvidas.
+Retorno em [4–12] semanas`},
+parkinson:{t:'Doença de Parkinson',code:'CIAP-2 N87 · CID-10 G20',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+
+S:
+Paciente refere tremor [de repouso, em mão D/E, tipo "contar moedas"] há [ ] meses/anos, com lentidão para [vestir, abotoar, escrever, andar], letra pequena, passos curtos e [rigidez / dor no ombro]. Lado mais afetado: [D/E]. Quedas: [nega / __]. Congelamento da marcha: [nega]. Sintomas não motores: [constipação, perda do olfato, sono agitado com sonhos, depressão, ansiedade, tontura ao levantar, urgência urinária, esquecimento].
+Nega uso de [haloperidol, risperidona, metoclopramida, flunarizina, cinarizina] (parkinsonismo por remédio). Nega início súbito ou AVC. [Em uso de levodopa __ mg __x/dia: efeito dura __ h, discinesias __.]
+
+O:
+PA deitado [ ]x[ ] e em pé [ ]x[ ] mmHg (hipotensão ortostática se queda ≥ 20/10)
+Tremor de repouso: [presente em __, melhora com o movimento]
+Rigidez: [roda denteada em __] | Bradicinesia: [toque dos dedos com redução progressiva da amplitude à __]
+Marcha: [passos curtos, redução do balanço dos braços, giro em bloco] | Teste do empurrão: [ ]
+Fácies: [hipomímica] | Voz: [hipofônica]
+Cognição: Mini-Cog [ ] | Humor: PHQ-9 [ ]
+
+A:
+[Síndrome parkinsoniana / doença de Parkinson provável], [unilateral / bilateral], estágio Hoehn & Yahr [ ], com [impacto funcional leve / moderado / importante]. [Sem sinais de alarme para parkinsonismo atípico.]
+
+P:
+[Iniciar levodopa + carbidopa 250/25 mg ½ comprimido 8/8 h, longe das refeições com proteína, aumentar conforme resposta] / [Ajustar dose da levodopa]
+Suspender remédios que pioram (metoclopramida, flunarizina, cinarizina, haloperidol)
+Fisioterapia e atividade física regular (marcha, equilíbrio, força); fonoaudiologia se voz ou deglutição alteradas
+Tratar constipação, hipotensão ortostática, depressão e insônia
+Encaminhar à neurologia para confirmação diagnóstica e se [início < 50 anos, sinais atípicos (quedas precoces, demência precoce, disautonomia grave, sem resposta à levodopa), flutuações ou discinesias]
+Orientado sobre prevenção de quedas, horários do remédio e não suspender a levodopa de repente
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [4–8] semanas`},
+epilepsia:{t:'Epilepsia e crise convulsiva',code:'CIAP-2 N88 · CID-10 G40',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+Anticonvulsivante: [ ] | Última crise: [ ] | Frequência: [ ]
+
+S:
+Paciente [e acompanhante relatam] crise com [perda de consciência, enrijecimento e abalos dos 4 membros / parada do olhar / abalos de um lado / automatismos] com duração de [ ] minutos, seguida de [confusão e sonolência]. [Mordedura lateral da língua / liberação de urina.] Primeira crise: [sim / não, crises desde __]. Fatores desencadeantes: [privação de sono, álcool, febre, falta do remédio, luz piscando, estresse]. Adesão: [ ].
+Nega trauma craniano recente, febre com rigidez de nuca, gestação. [Mulher em idade fértil: método contraceptivo __, desejo de gestar __.] Efeitos adversos: [sonolência, tontura, alteração de humor, rash].
+
+O:
+PA [ ]x[ ] mmHg | FC [ ] bpm | Glicemia capilar [ ] mg/dL
+Estado de consciência: [ ] | Exame neurológico: [sem déficit focal]
+Mordedura de língua: [ ] | Lesões por queda: [ ]
+Pele: [sem rash]
+
+A:
+[Primeira crise convulsiva não provocada / Epilepsia focal ou generalizada], [controlada / não controlada], [com boa / má adesão].
+
+P:
+[Primeira crise: EEG e neuroimagem (TC ou RM), glicemia, eletrólitos, hemograma; encaminhar à neurologia]
+[Manter / iniciar / ajustar anticonvulsivante: __] (no SUS: carbamazepina, ácido valproico, fenitoína, fenobarbital; lamotrigina e levetiracetam pelo CEAF)
+Mulher em idade fértil: evitar ácido valproico; ácido fólico 5 mg/dia se pode engravidar; contracepção (carbamazepina, fenitoína e fenobarbital reduzem o efeito da pílula: preferir DIU ou injetável trimestral)
+Orientado sobre não dirigir até 1 ano sem crises (conforme legislação), evitar nadar sozinho, altura e privação de sono; não suspender o remédio sem orientação
+Orientados os familiares sobre o que fazer durante a crise e quando chamar o SAMU (crise > 5 minutos ou repetida)
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [4–12] semanas`}
 };
 
 /* ---------- Calculadoras ---------- */
@@ -2607,7 +2720,52 @@ rx_pan:{s:'Pânico, TOC e luto',t:'Pânico, TOC e luto',rec:RS+' (antidepressivo
    Tomar 1 cápsula pela manhã por 2 semanas. Depois, 2 cápsulas pela manhã. A dose pode chegar a 3 cápsulas por dia.`,n:'No TOC: doses maiores (40–60 mg) e resposta lenta (8–12 semanas). Manter 1–2 anos após resposta. Alternativas: sertralina até 200 mg; clomipramina 25–150 mg (ECG se cardiopatia). Sempre junto com TCC.'},
  {t:'Luto: insônia (curto prazo)',rx:`Uso oral
 1. Trazodona 50 mg ...... 14 comprimidos
-   Tomar 1/2 a 1 comprimido à noite, 30 minutos antes de deitar, por até 2 semanas.`,n:'Luto não se trata com remédio: escuta, apoio e retorno. Evitar benzodiazepínico. Se depressão associada (tristeza contínua, anedonia, culpa, ideação): tratar como depressão. Alternativa para insônia: higiene do sono e melatonina.'}]}
+   Tomar 1/2 a 1 comprimido à noite, 30 minutos antes de deitar, por até 2 semanas.`,n:'Luto não se trata com remédio: escuta, apoio e retorno. Evitar benzodiazepínico. Se depressão associada (tristeza contínua, anedonia, culpa, ideação): tratar como depressão. Alternativa para insônia: higiene do sono e melatonina.'}]},
+rx_dem:{s:'Demência',t:'Demência: anticolinesterásicos, memantina e comportamento',rec:RS+' (quetiapina e risperidona: '+RC+'). Donepezila, rivastigmina, galantamina e memantina saem pelo CEAF com LME e laudo',items:[
+ {t:'Donepezila (Alzheimer leve a moderado)',rx:`Uso oral contínuo
+1. Donepezila 5 mg ...... 30 comprimidos
+   Tomar 1 comprimido à noite, ao deitar. Depois de 4 a 6 semanas, se tolerar bem, passar para 10 mg à noite.`,n:'PCDT Doença de Alzheimer (CEAF): LME, MEEM e exames da investigação. Efeitos: náusea, diarreia, perda de apetite, sonhos vívidos (se incomodar, tomar de manhã). Cuidado com bradicardia, bloqueio AV e síncope: ECG antes se FC < 60 ou cardiopatia; evitar junto com betabloqueador em dose alta. Avaliar resposta (cognição, função, comportamento) em 3 a 6 meses.'},
+ {t:'Rivastigmina (cápsula ou adesivo)',rx:`Uso oral contínuo
+1. Rivastigmina 1,5 mg ...... 60 cápsulas
+   Tomar 1 cápsula de 12 em 12 horas, junto com o café da manhã e o jantar. A cada 4 semanas, se tolerar, aumentar para 3 mg, 4,5 mg e até 6 mg de 12 em 12 horas.`,n:'Alternativa à donepezila (também para demência na doença de Parkinson). O adesivo (4,6 mg/24 h, depois 9,5 mg/24 h) dá menos náusea: trocar 1 vez por dia, em local diferente das costas ou do braço. Se ficar 3 dias ou mais sem tomar, recomeçar da dose inicial.'},
+ {t:'Memantina (moderada a grave)',rx:`Uso oral contínuo
+1. Memantina 10 mg ...... 60 comprimidos
+   Semana 1: ½ comprimido (5 mg) de manhã. Semana 2: ½ comprimido de 12 em 12 horas. Semana 3: 1 comprimido de manhã e ½ à noite. A partir da semana 4: 1 comprimido de 12 em 12 horas.`,n:'Pode ser usada sozinha ou junto com o anticolinesterásico. TFG 5 a 29: máximo 5 mg de 12 em 12 horas (10 mg/dia). Efeitos: tontura, cefaleia, constipação, sonolência.'},
+ {t:'Agitação ou psicose na demência (dose baixa)',rx:`Uso oral
+1. Quetiapina 25 mg ...... 30 comprimidos
+   Tomar ½ a 1 comprimido à noite. Reavaliar em 4 semanas; tentar reduzir e suspender em até 12 semanas.`,n:'Só depois de medidas sem remédio (rotina, luz, atividade, tratar dor, constipação, infecção e retenção urinária) e se houver risco ou sofrimento intenso. Antipsicótico em demência aumenta AVC e mortalidade: conversar com a família e registrar. Alternativa: risperidona 0,25 a 0,5 mg à noite. Na demência por corpos de Lewy e no Parkinson, evitar haloperidol e risperidona (preferir quetiapina).'}]},
+rx_park:{s:'Parkinson',t:'Doença de Parkinson',rec:RS+' (biperideno: '+RC+'). Pramipexol e outros antiparkinsonianos especiais saem pelo CEAF com LME',items:[
+ {t:'Levodopa + carbidopa (início)',rx:`Uso oral contínuo
+1. Levodopa + carbidopa 250/25 mg ...... 45 comprimidos
+   Tomar ½ comprimido de 8 em 8 horas, 30 minutos antes ou 1 hora depois das refeições. Aumentar conforme orientação médica.`,n:'Começar baixo e subir a cada 1 a 2 semanas até melhora funcional (geralmente 300 a 600 mg/dia de levodopa, em 3 a 4 tomadas). Proteína na mesma hora atrapalha a absorção. Efeitos: náusea (tomar com bolacha ou fruta), hipotensão postural, sonolência, alucinações. Nunca suspender de repente (risco de síndrome parecida com a neuroléptica maligna). Para náusea, domperidona; não usar metoclopramida.'},
+ {t:'Levodopa + benserazida (alternativa)',rx:`Uso oral contínuo
+1. Levodopa + benserazida 100/25 mg ...... 90 comprimidos
+   Tomar 1 comprimido de 8 em 8 horas, 30 minutos antes ou 1 hora depois das refeições. Aumentar conforme orientação médica.`,n:'Mesmo efeito da levodopa + carbidopa; escolher a que a farmácia municipal tiver. Existe também a apresentação 200/50 mg e a dispersível (efeito mais rápido, útil de manhã).'},
+ {t:'Pramipexol (jovem, sintomas leves)',rx:`Uso oral contínuo
+1. Pramipexol 0,125 mg ...... 90 comprimidos
+   Tomar 1 comprimido de 8 em 8 horas por 1 semana; depois 2 comprimidos de 8 em 8 horas. Aumentar conforme orientação médica.`,n:'CEAF (PCDT Doença de Parkinson). Geralmente iniciado pela neurologia em pessoas mais jovens. Efeitos: sonolência súbita (não dirigir se acontecer), inchaço nas pernas, alucinações e compulsões (jogo, compras, comida, sexo): perguntar à família em toda consulta. TFG 20 a 50: de 12 em 12 horas; TFG < 20: 1 vez ao dia. Evitar em idoso com demência.'},
+ {t:'Biperideno (tremor em jovem)',rx:`Uso oral contínuo
+1. Biperideno 2 mg ...... 60 comprimidos
+   Tomar ½ comprimido de 12 em 12 horas por 1 semana; depois 1 comprimido de 12 em 12 horas.`,n:'Só para tremor importante em pessoa jovem sem alteração cognitiva. Evitar em idoso (confusão, retenção urinária, constipação, glaucoma de ângulo fechado: Beers). Retirar devagar.'},
+ {t:'Constipação no Parkinson',rx:`Uso oral
+1. Lactulose 667 mg/mL ...... 1 frasco
+   Tomar 15 mL 1 a 2 vezes por dia, ajustando para evacuar todo dia ou em dias alternados.`,n:'Junto com fibras, 2 litros de água por dia (se não houver restrição) e atividade física. Constipação é muito comum e piora a absorção da levodopa.'}]},
+rx_epi:{s:'Epilepsia',t:'Epilepsia: anticonvulsivantes do SUS',rec:RC+'. Lamotrigina, levetiracetam e topiramato saem pelo CEAF com LME',items:[
+ {t:'Carbamazepina (crise focal)',rx:`Uso oral contínuo
+1. Carbamazepina 200 mg ...... 60 comprimidos
+   Tomar ½ comprimido de 12 em 12 horas por 1 semana; depois 1 comprimido de 12 em 12 horas. Aumentar conforme orientação médica.`,n:'Dose usual 400 a 1.200 mg/dia. Hemograma, sódio e TGO/TGP antes, em 1 a 2 meses e depois a cada 6 a 12 meses. Rash nas primeiras 8 semanas: suspender e avaliar (Stevens-Johnson; mais risco em asiáticos com HLA-B*1502). Indutor enzimático: reduz o efeito da pílula, da varfarina e de outros anticonvulsivantes. Pode piorar crises de ausência e mioclônicas.'},
+ {t:'Ácido valproico (crise generalizada)',rx:`Uso oral contínuo
+1. Ácido valproico 500 mg ...... 60 comprimidos
+   Tomar 1 comprimido de 12 em 12 horas, após as refeições. Aumentar conforme orientação médica.`,n:'Começar com 250 mg de 12 em 12 horas se preferir (cápsula de 250 mg). Dose usual 15 a 30 mg/kg/dia. EVITAR em mulher que pode engravidar (malformações e atraso no desenvolvimento): se for a única opção, contracepção eficaz e ácido fólico. Hemograma (plaquetas), TGO/TGP e peso no início e a cada 6 a 12 meses. Dobra o nível da lamotrigina.'},
+ {t:'Fenitoína',rx:`Uso oral contínuo
+1. Fenitoína 100 mg ...... 90 comprimidos
+   Tomar 1 comprimido de 8 em 8 horas, sempre nos mesmos horários.`,n:'Pode ser dada em dose única à noite (300 mg) se houver boa adesão. Nível sérico 10 a 20 mcg/mL; aumentos pequenos de dose sobem muito o nível. Efeitos: hiperplasia gengival (escovar bem, dentista), hirsutismo, ataxia, nistagmo, osteoporose. Indutor enzimático (pílula, varfarina).'},
+ {t:'Fenobarbital',rx:`Uso oral contínuo
+1. Fenobarbital 100 mg ...... 30 comprimidos
+   Tomar 1 comprimido à noite, ao deitar.`,n:'Dose usual 1 a 3 mg/kg/dia (adulto 60 a 180 mg à noite). Sedação, alteração de humor e de memória; evitar em idoso. Não suspender de repente (crise de abstinência). Indutor enzimático (pílula, varfarina). Útil quando há dificuldade de adesão (meia-vida longa).'},
+ {t:'Ácido fólico (mulher em idade fértil com anticonvulsivante)',rx:`Uso oral contínuo
+1. Ácido fólico 5 mg ...... 30 comprimidos
+   Tomar 1 comprimido por dia.`,n:'Para toda mulher em idade fértil em uso de anticonvulsivante, de preferência começando 3 meses antes de engravidar. Junto com contracepção eficaz: carbamazepina, fenitoína e fenobarbital reduzem o efeito da pílula (preferir DIU ou injetável trimestral).'}]}
 };
 /* ---------- Esquema do paciente (folha com figuras) ---------- */
 const COLORS=['#e03131','#1971c2','#2f9e44','#f08c00','#9c36b5','#0c8599','#c2255c','#5c940d','#495057'];
@@ -3090,7 +3248,34 @@ mev_ia:{s:'Introdução alimentar',t:'Introdução alimentar (6 meses a 2 anos)'
  'No prato: 1 cereal ou tubérculo, 1 feijão, 1 carne ou ovo e legumes e verduras. Fruta inteira amassada como lanche.',
  'Sem sal, açúcar, mel, café, refrigerante, suco de caixinha, biscoito recheado e salgadinho antes dos 2 anos.',
  'Ofereça água nos intervalos. A criança pode recusar no começo: ofereça de novo várias vezes.',
- 'Coma junto com a criança, sem tela, e respeite quando ela mostrar que está satisfeita.']}
+ 'Coma junto com a criança, sem tela, e respeite quando ela mostrar que está satisfeita.']},
+mev_dem:{s:'Demência',t:'Demência: rotina, segurança e cuidado com quem cuida',pr:'Orientados paciente e cuidador sobre rotina diária, estímulo cognitivo e físico, segurança em casa, prevenção de quedas, organização dos remédios, sinais de delirium e apoio ao cuidador.',items:[
+ 'Mantenha uma rotina com horários fixos para acordar, comer, tomar banho e dormir. Deixe um calendário e um relógio grandes à vista.',
+ 'Caminhe ou faça alguma atividade física todos os dias, de preferência de manhã, com luz do sol.',
+ 'Converse, ouça músicas de que a pessoa gosta, veja fotos antigas e faça tarefas simples juntos, sem corrigir ou discutir.',
+ 'Guarde os remédios em caixa organizadora por dia e horário; quem dá o remédio é o cuidador.',
+ 'Tire tapetes soltos, deixe luz acesa à noite no caminho do banheiro e tranque gás, facas, remédios e produtos de limpeza.',
+ 'Use óculos e aparelho auditivo se tiver. Coloque nome, endereço e telefone em uma pulseira ou no bolso.',
+ 'Procure a unidade logo se a pessoa piorar de repente, ficar muito sonolenta ou agitada, com febre ou sem urinar: pode ser infecção ou efeito de remédio.',
+ 'Quem cuida também precisa de cuidado: divida as tarefas com a família, descanse e procure o grupo de cuidadores e o CRAS.']},
+mev_park:{s:'Parkinson',t:'Parkinson: movimento, remédio na hora certa e quedas',pr:'Orientado sobre atividade física regular, fisioterapia, horários da levodopa longe das refeições com proteína, prevenção de quedas e de constipação, levantar devagar e não suspender o remédio sozinho.',items:[
+ 'Faça exercício todos os dias: caminhada, dança, bicicleta, alongamento e treino de equilíbrio. Isso melhora o Parkinson.',
+ 'Tome a levodopa nos horários certos, 30 minutos antes ou 1 hora depois das refeições com carne, ovo, leite ou feijão.',
+ 'Nunca pare o remédio de repente. Se faltar na farmácia, avise a unidade.',
+ 'Levante devagar da cama e da cadeira: sente-se um pouco antes de ficar em pé.',
+ 'Ao andar, dê passos grandes e conte o ritmo; se travar, pare, respire e comece com o pé de trás.',
+ 'Tire tapetes soltos, use barra no banheiro, sapato fechado e luz à noite.',
+ 'Coma frutas, verduras e fibras e beba água para evitar intestino preso.',
+ 'Fale alto e devagar e faça os exercícios de voz e de engolir que a fono ensinar.']},
+mev_epi:{s:'Epilepsia',t:'Epilepsia: remédio todo dia e vida segura',pr:'Orientado sobre uso diário e regular do anticonvulsivante, sono adequado, evitar álcool, não dirigir até 1 ano sem crises, não nadar sozinho e evitar alturas, diário de crises e conduta dos familiares durante a crise.',items:[
+ 'Tome o remédio todos os dias no mesmo horário. Não pare sozinho, mesmo sem crises.',
+ 'Durma bem, de 7 a 8 horas por noite. Ficar sem dormir provoca crise.',
+ 'Evite bebida alcoólica.',
+ 'Anote no caderno o dia, o horário e como foi cada crise. Traga na consulta.',
+ 'Não dirija até ficar 1 ano sem crise e com liberação médica. Não nade sozinho e evite trabalhar em altura ou com máquinas perigosas.',
+ 'Prefira banho de chuveiro com a porta destrancada, sem banheira.',
+ 'Mulher: use um método seguro para não engravidar e avise antes de planejar a gravidez. Tome o ácido fólico.',
+ 'Ensine a família o que fazer na crise e quando chamar o SAMU 192.']}
 };
 function mevSVG(c,items,nome){
   const W=800,F='Arial, Helvetica, sans-serif';let y=0,o='';
@@ -3636,7 +3821,41 @@ fx_luto:{s:'Luto',t:'Luto: esperado, complicado e prolongado',src:'DSM-5-TR (202
    ['warn','Depressão associada','Tristeza contínua, anedonia generalizada, culpa e inutilidade não ligadas à perda, ideação suicida','→ Tratar a depressão (psicoterapia e ISRS se indicado)'],
    ['bad','Luto prolongado','Mais de 12 meses (6 meses na criança), saudade intensa diária, dificuldade de aceitar, prejuízo importante','→ Psicoterapia focada no luto (e-Multi, CAPS, psicologia)']]},
   {k:'step',h:'O que fazer na consulta',li:['Perguntar como foi a morte e como a pessoa está; deixar falar e chorar','Explicar que o luto não tem prazo fixo e que datas especiais podem piorar','Identificar problemas práticos: renda, pensão, guarda de filhos, inventário, moradia','Evitar benzodiazepínico de rotina; insônia: higiene do sono e, se preciso, curto prazo']},
-  {k:'step',h:'Fatores de risco para luto complicado',li:['Morte súbita, violenta, por suicídio, ou de filho','Relação muito dependente ou conflituosa com quem morreu','Pouco apoio, depressão ou trauma prévios, outras perdas recentes','Criança enlutada: falar a verdade em linguagem simples, manter rotina, avisar a escola']}]}
+  {k:'step',h:'Fatores de risco para luto complicado',li:['Morte súbita, violenta, por suicídio, ou de filho','Relação muito dependente ou conflituosa com quem morreu','Pouco apoio, depressão ou trauma prévios, outras perdas recentes','Criança enlutada: falar a verdade em linguagem simples, manter rotina, avisar a escola']}]},
+fx_dem:{s:'Demência',t:'Declínio cognitivo e demência na APS',src:'PCDT Doença de Alzheimer (MS) · Caderneta da Pessoa Idosa · TelessaúdeRS',k:'demencia alzheimer esquecimento memoria declinio cognitivo cuidador delirium mini-cog meem donepezila rivastigmina memantina',
+ pre:[{k:'bad',h:'Primeiro afastar delirium',li:['Início agudo, flutuação, desatenção: delirium (infecção, desidratação, remédio, retenção urinária, dor) é urgência','Piora rápida em semanas, febre, sinal focal ou trauma: investigar logo (imagem)']}],
+ flow:[
+  {k:'step',h:'Rastrear e confirmar',li:['Queixa de memória do paciente ou da família, ou perda de autonomia','Mini-Cog na consulta; se alterado, MEEM (corte por escolaridade) e teste do relógio','Avaliar funcionalidade (Katz, Lawton) e humor (depressão pode imitar demência)','Demência = déficit cognitivo + perda de função no dia a dia']},
+  {k:'step',h:'Investigar causas tratáveis',li:['Hemograma, B12, TSH, glicemia, creatinina, sódio, cálcio, TGO/TGP, VDRL, HIV','Neuroimagem (TC ou RM) na avaliação inicial, principalmente se &lt; 65 anos, evolução rápida ou sinal focal','Revisar remédios: anticolinérgicos, benzodiazepínicos, opioides, antipsicóticos']},
+  {k:'dec',h:'Tratamento',br:[
+   ['ok','Alzheimer leve a moderado','PCDT (CEAF)','→ Donepezila, rivastigmina ou galantamina; avaliar resposta em 3–6 meses. Cuidado com bradicardia e síncope'],
+   ['ok','Moderado a grave','PCDT (CEAF)','→ Memantina, isolada ou associada'],
+   ['warn','Agitação, psicose, insônia','Primeiro sem remédio','→ Rotina, luz, atividade, tratar dor e infecção; se risco: quetiapina ou risperidona em dose baixa, reavaliar em 4–12 semanas']]},
+  {k:'step',h:'Cuidar de quem cuida',li:['Plano de cuidado com a família: segurança em casa, quedas, direção de veículo, finanças','Sobrecarga do cuidador: escala de Zarit, grupos, eMulti, CRAS','Diretivas antecipadas e cuidados paliativos nas fases avançadas']},
+  {k:'end',h:'Encaminhar à neurologia ou geriatria',li:['Início antes de 65 anos, evolução rápida, sinais atípicos (Lewy, frontotemporal) ou dúvida diagnóstica','Para iniciar anticolinesterásico, conforme a regulação local (LME do CEAF)']}]},
+fx_park:{s:'Parkinson',t:'Doença de Parkinson na APS',src:'PCDT Doença de Parkinson (MS) · MDS 2015',k:'parkinson tremor repouso rigidez bradicinesia levodopa carbidopa benserazida pramipexol quedas',
+ pre:[{k:'warn',h:'Parkinsonismo por remédio',li:['Haloperidol, risperidona, metoclopramida, flunarizina, cinarizina, ácido valproico: suspender e reavaliar em 3–6 meses antes de diagnosticar Parkinson']}],
+ flow:[
+  {k:'step',h:'Diagnóstico clínico',li:['Bradicinesia obrigatória + tremor de repouso e/ou rigidez','Início assimétrico, evolução lenta e boa resposta à levodopa reforçam','Sinais de alerta para parkinsonismo atípico: quedas no 1º ano, demência precoce, disautonomia grave, simetria, sem resposta à levodopa']},
+  {k:'dec',h:'Tratamento',br:[
+   ['ok','Sintomas que atrapalham a vida','Qualquer idade','→ Levodopa + carbidopa (ou benserazida) em dose baixa, subir conforme resposta; tomar 30 min antes ou 1 h depois das refeições com proteína'],
+   ['ok','Jovem, sintomas leves','Neurologia','→ Agonista dopaminérgico (pramipexol) pelo CEAF; atenção a sonolência e compulsões'],
+   ['warn','Tremor importante, jovem','Cautela','→ Biperideno: evitar em idosos (confusão, retenção urinária)']]},
+  {k:'step',h:'Sintomas não motores',li:['Constipação: fibras, água, lactulose','Hipotensão ortostática: levantar devagar, mais líquido e sal se possível, rever anti-hipertensivos','Depressão e ansiedade: ISRS; alucinações: reduzir remédios e, se precisar, quetiapina','Evitar haloperidol e metoclopramida (pioram o Parkinson)']},
+  {k:'end',h:'Encaminhar à neurologia',li:['Confirmação diagnóstica, início antes de 50 anos, sinais atípicos','Flutuações (efeito que acaba antes da hora), discinesias, quedas ou demência']}]},
+fx_epi:{s:'Epilepsia',t:'Crise convulsiva e epilepsia na APS',src:'PCDT Epilepsia (MS) · ILAE 2017',k:'epilepsia convulsao crise convulsiva ataque desmaio eeg carbamazepina valproato fenitoina fenobarbital lamotrigina levetiracetam estado de mal',
+ pre:[{k:'bad',h:'Emergência: SAMU 192',li:['Crise que dura mais de 5 minutos ou crises repetidas sem recuperar a consciência (estado de mal)','Primeira crise com febre e rigidez de nuca, trauma craniano, gestante (eclâmpsia), hipoglicemia','Na UBS: decúbito lateral, oxigênio, glicemia capilar; diazepam 10 mg IV lento (ou 0,2–0,5 mg/kg retal) se crise > 5 minutos']}],
+ flow:[
+  {k:'step',h:'Foi mesmo crise epiléptica?',li:['Diferenciar de síncope (rápida recuperação, palidez, abalos breves), crise psicogênica, hipoglicemia, AIT','Testemunha descreve: início, duração, olhos, abalos, mordedura lateral da língua, confusão depois']},
+  {k:'dec',h:'Primeira crise',br:[
+   ['warn','Provocada (álcool, hipoglicemia, febre, remédio)','Tratar a causa','→ Geralmente não precisa de anticonvulsivante'],
+   ['ok','Não provocada','Investigar','→ EEG, TC ou RM, glicemia, eletrólitos; neurologia. Iniciar anticonvulsivante após 2 crises ou 1 crise com EEG/imagem alterados']]},
+  {k:'dec',h:'Escolha do anticonvulsivante',br:[
+   ['ok','Crise focal','1ª linha','→ Carbamazepina (200 mg 12/12 h, subir) ou lamotrigina (CEAF)'],
+   ['ok','Generalizada','Homem ou sem chance de gestar','→ Ácido valproico; lamotrigina ou levetiracetam se mulher em idade fértil'],
+   ['warn','Mulher em idade fértil','Evitar valproato','→ Teratogênico; ácido fólico 5 mg/dia; indutores (carbamazepina, fenitoína, fenobarbital) reduzem o efeito da pílula']]},
+  {k:'step',h:'Seguimento',li:['Monoterapia na menor dose que controla; aumentar devagar','Hemograma, sódio e TGO/TGP com carbamazepina e valproato; rash nas primeiras semanas: suspender e avaliar (Stevens-Johnson)','Orientações: sono regular, evitar álcool, não dirigir até 1 ano sem crises, não nadar sozinho']},
+  {k:'end',h:'Encaminhar à neurologia',li:['Primeira crise não provocada','Crises não controladas com 2 anticonvulsivantes, gestação ou desejo de gestar, efeitos adversos importantes','Dúvida diagnóstica']}]}
 };
 function fxNode(n){
   const cls=n.k==='info'?'':n.k;
@@ -4378,7 +4597,7 @@ function renderGD(m,id){
     ${(g.rel||[]).filter(x=>known(x[0])).length?`<div class="lbl">Ferramentas relacionadas</div><div class="bar">${g.rel.filter(x=>known(x[0])).map(x=>`<button class="chip" data-go="${x[0]}" type="button">${esc(x[1])}</button>`).join('')}</div>`:''}
     <p class="note">Resumo para consulta rápida. Confira o protocolo vigente do MS e do seu município.</p>
   </section>`;
-  m.querySelectorAll('[data-cs]').forEach(b=>b.onclick=()=>addCons('ef',g.t,efnGet(id,g.sec[+b.dataset.cs])));bindToc(m);
+  m.querySelectorAll('[data-cs]').forEach(b=>b.onclick=()=>addCons('ef',g.t,efnGet(id,g.sec[+b.dataset.cs])));bindToc(m);accInit(m,id);
   m.querySelectorAll('[data-en]').forEach(t=>{const i=+t.dataset.en,x=g.sec[i],k=efnKey(id,x),fit=()=>{t.style.height='auto';t.style.height=(t.scrollHeight+4)+'px'};fit();
     t.oninput=()=>{fit();const v=t.value;if(v.trim()&&v!==x.normal)store.set(k,v);else store.del(k);const ed=!!store.get(k);m.querySelector(`[data-er="${i}"]`).hidden=!ed;m.querySelector(`[data-et="${i}"]`).textContent=ed?'Seu texto, salvo neste aparelho':'Edite à vontade: fica salvo neste aparelho'}});
   m.querySelectorAll('[data-er]').forEach(b=>b.onclick=()=>confirm2(b,()=>{const i=+b.dataset.er,x=g.sec[i],t=m.querySelector(`[data-en="${i}"]`);store.del(efnKey(id,x));t.value=x.normal;t.oninput();toast('Modelo restaurado')}));
@@ -5321,6 +5540,15 @@ const FARM=[
  ['Amiodarona','amiodarona','B','comprimido 200 mg','Evitar (tireoide fetal).','Evitar.','Antiarrítmico'],
  ['Benzoato de benzila','benzoato de benzila','B','loção 25%','Preferir permetrina.','Compatível.','Escabicida'],
  ['Hidroxizina','hidroxizina','N','comprimido 25 mg; xarope 2 mg/mL','Evitar no 1º trimestre.','Evitar (sedação).','Anti-histamínico'],
+ ['Donepezila','donepezila','Esp','comprimido 5 e 10 mg (PCDT Alzheimer, LME)','Sem indicação.','Sem indicação.','Demência'],
+ ['Rivastigmina','rivastigmina','Esp','cápsula 1,5, 3, 4,5 e 6 mg; solução oral 2 mg/mL; adesivo 4,6 e 9,5 mg/24 h (PCDT Alzheimer)','Sem indicação.','Sem indicação.','Demência'],
+ ['Galantamina','galantamina','Esp','cápsula de liberação prolongada 8, 16 e 24 mg (PCDT Alzheimer)','Sem indicação.','Sem indicação.','Demência'],
+ ['Memantina','memantina','Esp','comprimido 10 mg (PCDT Alzheimer)','Sem indicação.','Sem indicação.','Demência'],
+ ['Levodopa + carbidopa','levodopa ?\\+ ?carbidopa|carbidopa','B','comprimido 250/25 mg','Evitar se possível (dados limitados).','Evitar (reduz o leite).','Antiparkinsoniano'],
+ ['Levodopa + benserazida','levodopa ?\\+ ?benserazida|benserazida','B','comprimido 100/25 e 200/50 mg; cápsula HBS 100/25 mg; dispersível 100/25 mg','Evitar se possível (dados limitados).','Evitar (reduz o leite).','Antiparkinsoniano'],
+ ['Pramipexol','pramipexol','Esp','comprimido 0,125, 0,25 e 1 mg (PCDT Parkinson)','Evitar (dados limitados).','Evitar (reduz o leite).','Antiparkinsoniano'],
+ ['Levetiracetam','levetiracetam','Esp','comprimido 250, 500 e 750 mg; solução oral 100 mg/mL (PCDT epilepsia)','Uma das opções mais seguras na gestação.','Compatível.','Anticonvulsivante'],
+ ['Topiramato','topiramato','Esp','comprimido 25, 50 e 100 mg (PCDT epilepsia)','Evitar (fenda labial, baixo peso).','Compatível com cautela.','Anticonvulsivante'],
 ];
 const FCOMP={B:['ok','RENAME básico','na UBS'],E:['ok','RENAME estratégico','pelo programa do MS'],Esp:['warn','RENAME especializado','farmácia do estado (CEAF), com LME e critérios do PCDT'],N:['bad','Não consta na RENAME','compra própria ou lista municipal'],'?':['warn','Conferir','pode estar na RENAME ou só em algumas REMUMEs']};
 const FMUN=[['ararangua','Araranguá','https://saude.ararangua.sc.gov.br/atendimento-de-saude/farmacia-municipal','Página oficial da Farmácia Municipal. Não consegui abrir daqui para copiar a lista: cole a REMUME abaixo.'],['arroio','Balneário Arroio do Silva','https://arroiodosilva.sc.gov.br/','Não encontrei REMUME publicada on-line (busca em 21/10/2026). Peça a lista à farmácia municipal e cole abaixo.']];
@@ -5674,7 +5902,7 @@ Object.assign(OR,{
   {h:'Datas do INR',k:'table',cols:['Data','INR','Dose da semana'],rows:4,lab:['','','','']},
   {h:'Emergência: ligue 192 se',k:'alarm',i:[['tontura','Fala enrolada, boca torta, fraqueza de um lado'],['sangue','Sangramento que não para, vômito com sangue'],['vaso','Fezes pretas ou urina com sangue'],['tontura','Dor de cabeça muito forte ou pancada na cabeça']]}]},
  or_corr:{s:'Corrimento',t:'Corrimento vaginal: cuidados',sub:'Para o tratamento funcionar e o corrimento não voltar',col:'#c2255c',cp:1,b:[
-  {h:'Cuidados',k:'mini',i:[['agua','Lave só por fora, com água e sabonete neutro'],['pillno','Não faça ducha vaginal'],['roupa','Calcinha de algodão; durma sem calcinha'],['toalha','Seque bem depois do banho e da piscina'],['semana','Use o remédio todos os dias, até o fim'],['garrafa','Com metronidazol: sem álcool até 1 dia depois']]},
+  {h:'Cuidados',k:'mini',i:[['copo','Lave só por fora, com água e sabonete neutro'],['pillno','Não faça ducha vaginal'],['roupa','Calcinha de algodão; durma sem calcinha'],['toalha','Seque bem depois do banho e da piscina'],['semana','Use o remédio todos os dias, até o fim'],['garrafa','Com metronidazol: sem álcool até 1 dia depois']]},
   {h:'Parceria',k:'mini',i:[['familia','Se o médico pedir, a parceria trata junto'],['pill','Use camisinha até o fim do tratamento e sempre que puder']]},
   {h:'Volte se',k:'alarm',i:[['barriga','Dor na barriga ou febre'],['relogio','Sem melhora em 1 semana ou se voltar'],['sangue','Sangramento depois da relação'],['gestante','Está grávida']]}]},
  or_ia:{s:'Introdução alimentar',t:'Comida do bebê: introdução alimentar',sub:'A partir dos 6 meses, mantendo o leite do peito',col:'#2b8a3e',cp:1,b:[
@@ -5689,11 +5917,31 @@ Object.assign(OR,{
   {h:'Depois de um abortamento',k:'grid',i:[['sangue','Sangue leve por até 2 semanas é normal'],['copo','Beba água e coma bem; tome o ferro se receitado'],['pillno','Não use absorvente interno nem ducha por 2 semanas'],['coracao','Tristeza é normal: fale com a equipe se precisar de apoio']]},
   {h:'Atenção',k:'note',i:[['agulha','Se o seu sangue é Rh negativo, você precisa da injeção anti-D em até 3 dias'],['pill','Você pode engravidar de novo logo. Se não quiser agora, peça um método para evitar gravidez']]}]}
 });
+Object.assign(OI,{agua:ICO.agua,comida:ICO.comida});
+{const X='<path d="M16 16l68 68" stroke="#e03131" stroke-width="7" stroke-linecap="round"/>';OI.cafeno=(OI.cafe||'')+X;OI.celno=(OI.cel||'')+X}
+Object.assign(OI,{
+ lado:`<rect x="8" y="70" width="84" height="8" rx="4" fill="#dee2e6" ${K}/><circle cx="22" cy="54" r="11" fill="#ffe8cc" ${K}/><path d="M33 56q16-12 34-8 14 4 22 18H34z" fill="#74c0fc" ${K}/><path d="M60 50l-6-16" ${K}/>`,
+ casa:`<path d="M12 48L50 16l38 32" fill="none" ${K}/><path d="M22 42v44h56V42" fill="#fff3bf" ${K}/><rect x="42" y="60" width="16" height="26" fill="#ffa94d" ${K}/>`,
+ cerebro:`<path d="M50 20q-14-8-24 2-12 2-10 16-8 8-2 18 0 14 14 14 6 10 22 6V20z" fill="#fcc2d7" ${K}/><path d="M50 20q14-8 24 2 12 2 10 16 8 8 2 18 0 14-14 14-6 10-22 6V20z" fill="#fcc2d7" ${K}/><path d="M32 40q8 0 8 10M68 40q-8 0-8 10" fill="none" ${K}/>`
+});
+Object.assign(OR,{
+ or_epi:{s:'Crise convulsiva',t:'Crise convulsiva: o que fazer',sub:'Para a família, a escola e o trabalho',col:'#5f3dc4',cp:1,b:[
+  {h:'Durante a crise',k:'mini',i:[['relogio','Fique calmo e marque o tempo no relógio'],['lado','Deite de lado, com algo macio embaixo da cabeça'],['maos','Afaste móveis e objetos; afrouxe a roupa no pescoço'],['pillno','Não coloque nada na boca e não segure a língua'],['copo','Não dê água nem remédio até acordar bem'],['familia','Fique junto até a pessoa voltar ao normal']]},
+  {h:'Depois da crise',k:'mini',i:[['cama','É normal ficar confuso e com sono: deixe descansar de lado'],['caderno','Anote o dia, a hora, quanto durou e como foi'],['pill','Tome o remédio todo dia, sem parar sozinho']]},
+  {h:'Diário de crises',k:'table',cols:['Data e hora','Quanto durou','Como foi'],rows:4,lab:['','','','']},
+  {h:'Ligue 192 (SAMU) se',k:'alarm',i:[['relogio','A crise passar de 5 minutos'],['tremor','Uma crise atrás da outra, sem acordar entre elas'],['ar','Dificuldade para respirar depois da crise'],['sangue','Machucou a cabeça ou caiu na água'],['gestante','For a primeira crise, gestante ou diabético']]}]},
+ or_dem:{s:'Demência: cuidador',t:'Cuidando de quem tem demência',sub:'Rotina, casa segura e cuidado com quem cuida',col:'#0b7285',cp:1,b:[
+  {h:'Rotina',k:'mini',i:[['relogio','Horários fixos para comer, tomar banho e dormir'],['sol','Caminhar e pegar sol de manhã'],['familia','Conversar, ouvir música e ver fotos juntos'],['pill','O cuidador dá os remédios, em caixa por horário']]},
+  {h:'Casa segura',k:'mini',i:[['casa','Tirar tapetes soltos e deixar luz à noite'],['pillno','Trancar remédios, gás, facas e produtos de limpeza'],['cel','Nome e telefone no bolso ou em pulseira'],['olho','Usar óculos e aparelho auditivo']]},
+  {k:'line',i:['Não discuta nem corrija: mude de assunto, fale devagar e com frases curtas. A doença é que faz esquecer.']},
+  {h:'Quem cuida também precisa de cuidado',k:'mini',i:[['familia','Divida as tarefas com a família'],['cama','Descanse e tenha um tempo para você'],['unidade','Grupo de cuidadores, CRAS e a equipe da unidade']]},
+  {h:'Procure a unidade logo se',k:'alarm',i:[['tontura','Piorou de repente, muito sonolento ou agitado'],['termo','Febre, tosse, ardência ou sem urinar'],['sapato','Caiu ou parou de andar'],['comida','Parou de comer ou de beber']]}]}
+});
 Object.keys(OR).forEach(k=>E[k]=OR[k].s);
 const SECS={soap:Object.keys(T),calc:Object.keys(C),presc:Object.keys(P),mev:Object.keys(M),esq:Object.keys(E),fx:Object.keys(F)};
 let cur={sec:'soap',id:'has'};
 
-function chipLabel(id){return id==='receita'?'Receita montada':id==='labs'?'Preencher exames':id==='enc'?'Encaminhamento':DZ[id]?chipLabel(DZ[id].s):T[id]?({sua:'SUA',corrimento:'Corrimento vaginal',sop:'SOMP',febre:'Febre sem foco',dermatite:'Dermatites',micose:'Micoses',escabiose:'Escabiose',acne:'Acne',gota:'Gota',fa:'Fibrilação atrial',panico:'Pânico',toc:'TOC',luto:'Luto',esquizofrenia:'Esquizofrenia',sang1:'Sangramento 1ª metade',sang2:'Sangramento 2ª metade',oma:'Otite média',otext:'Otite externa',conj:'Conjuntivite',oa:'Osteoartrite',insonia:'Insônia',anemia:'Anemia ferropriva',b12:'Deficiência de B12',vertigem:'Vertigem',hipotireo:'Hipotireoidismo',obesidade:'Obesidade',asma:'Asma',dpoc:'DPOC',idoso:'Idoso',puerperio:'Puerpério',contracepcao:'Contracepção',climaterio:'Climatério',tabagismo:'Tabagismo',itu:'ITU',ist:'IST',dengue:'Dengue',cefaleia:'Cefaleia',lombalgia:'Lombalgia',has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:F[id]?F[id].s:GD[id]?GD[id].s:AT[id]?AT[id].s:E[id])}
+function chipLabel(id){return id==='inicio'?'Início':id==='receita'?'Receita montada':id==='labs'?'Preencher exames':id==='enc'?'Encaminhamento':DZ[id]?chipLabel(DZ[id].s):T[id]?({demencia:'Demência',parkinson:'Parkinson',epilepsia:'Epilepsia',sua:'SUA',corrimento:'Corrimento vaginal',sop:'SOMP',febre:'Febre sem foco',dermatite:'Dermatites',micose:'Micoses',escabiose:'Escabiose',acne:'Acne',gota:'Gota',fa:'Fibrilação atrial',panico:'Pânico',toc:'TOC',luto:'Luto',esquizofrenia:'Esquizofrenia',sang1:'Sangramento 1ª metade',sang2:'Sangramento 2ª metade',oma:'Otite média',otext:'Otite externa',conj:'Conjuntivite',oa:'Osteoartrite',insonia:'Insônia',anemia:'Anemia ferropriva',b12:'Deficiência de B12',vertigem:'Vertigem',hipotireo:'Hipotireoidismo',obesidade:'Obesidade',asma:'Asma',dpoc:'DPOC',idoso:'Idoso',puerperio:'Puerpério',contracepcao:'Contracepção',climaterio:'Climatério',tabagismo:'Tabagismo',itu:'ITU',ist:'IST',dengue:'Dengue',cefaleia:'Cefaleia',lombalgia:'Lombalgia',has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:F[id]?F[id].s:GD[id]?GD[id].s:AT[id]?AT[id].s:E[id])}
 
 /* Navegação: menu de seções (agrupadas) + abas internas; favoritos */
 const SICON={
@@ -5724,7 +5972,7 @@ const SICON={
 const icon=(k,sz=20)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${SICON[k]}"/></svg>`;
 const SECTAG={soap:'SOAP',calc:'Cálc.',presc:'Rx',mev:'MEV',fx:'Fluxo',gd:'Guia',at:'Doc',esq:''};
 /* Por doença: uma página por doença com SOAP, fluxograma, receitas, MEV e folha do paciente em abas */
-const DZ={dz_has:{s:'has',fx:'fx_has',rx:'rx_cv',mev:'mev_has',or:'or_mrpa'},dz_dm:{s:'dm',fx:'fluxodm',rx:'rx_dm rx_glp1 rx_lip',mev:'mev_dm',or:'or_glic or_glic_ins or_hipo or_pe or_glp1'},dz_drc:{s:'drc',fx:'',rx:'rx_cv rx_dm',mev:'mev_drc',or:''},dz_hipotireo:{s:'hipotireo',fx:'fx_tireo',rx:'rx_end',mev:'',or:''},dz_obesidade:{s:'obesidade',fx:'',rx:'rx_glp1',mev:'mev_obes',or:'or_glp1'},dz_asma:{s:'asma',fx:'fx_asma',rx:'rx_resp',mev:'',or:'or_bomb'},dz_dpoc:{s:'dpoc',fx:'fx_dpoc',rx:'rx_resp',mev:'mev_tab',or:'or_bomb'},dz_hpb:{s:'hpb',fx:'',rx:'rx_uro',mev:'mev_hpb',or:''},dz_idoso:{s:'idoso',fx:'',rx:'',mev:'',or:''},dz_prenatal:{s:'prenatal',fx:'',rx:'rx_gest',mev:'mev_gest',or:''},dz_sang1:{s:'sang1',fx:'fx_sang1 u_sang',rx:'rx_abort',mev:'',or:'or_sang'},dz_sang2:{s:'sang2',fx:'fx_sang2 u_sang',rx:'rx_abort',mev:'',or:'or_sang'},dz_puerperio:{s:'puerperio',fx:'',rx:'rx_gest rx_aco',mev:'',or:''},dz_contracepcao:{s:'contracepcao',fx:'',rx:'rx_aco',mev:'',or:''},dz_climaterio:{s:'climaterio',fx:'',rx:'rx_trh',mev:'',or:''},dz_puericultura:{s:'puericultura',fx:'',rx:'rx_ped',mev:'mev_cri mev_ia',or:'or_ia'},dz_mental:{s:'mental',fx:'fx_dep',rx:'rx_ad rx_bip rx_ap',mev:'mev_dep',or:''},dz_esquizofrenia:{s:'esquizofrenia',fx:'',rx:'rx_esq rx_ap',mev:'',or:''},dz_ansiedade:{s:'ansiedade',fx:'fx_ans',rx:'rx_ad rx_ans',mev:'mev_ans',or:''},dz_tabagismo:{s:'tabagismo',fx:'',rx:'rx_tab rx_alc',mev:'mev_tab mev_alc',or:''},dz_insonia:{s:'insonia',fx:'fx_ins',rx:'rx_sono',mev:'mev_sono',or:'or_sono'},dz_ivas:{s:'ivas',fx:'fx_farin fx_sinus fx_pac',rx:'rx_sint rx_atb',mev:'mev_ivas',or:''},dz_oma:{s:'oma',fx:'fx_ouvido',rx:'rx_oto',mev:'mev_oto',or:''},dz_otext:{s:'otext',fx:'fx_ouvido',rx:'rx_oto',mev:'mev_oto',or:''},dz_conj:{s:'conj',fx:'fx_conj',rx:'rx_oto',mev:'mev_oto',or:''},dz_gea:{s:'gea',fx:'fx_diar',rx:'rx_sint rx_par',mev:'mev_diar',or:'or_soro'},dz_itu:{s:'itu',fx:'fx_itu',rx:'rx_atb',mev:'',or:''},dz_ist:{s:'ist',fx:'fx_sif',rx:'rx_ist rx_hiv',mev:'',or:''},dz_dengue:{s:'dengue',fx:'fx_dengue',rx:'',mev:'',or:'or_dengue'},dz_cefaleia:{s:'cefaleia',fx:'fx_cef',rx:'rx_anal',mev:'',or:''},dz_vertigem:{s:'vertigem',fx:'fx_vert',rx:'',mev:'',or:''},dz_lombalgia:{s:'lombalgia',fx:'fx_lomb',rx:'rx_anal',mev:'',or:''},dz_oa:{s:'oa',fx:'fx_oa',rx:'rx_oa rx_anal',mev:'mev_oa',or:''},dz_anemia:{s:'anemia',fx:'fx_anemia',rx:'rx_anemia',mev:'mev_anemia',or:''},dz_b12:{s:'b12',fx:'fx_b12',rx:'rx_anemia',mev:'',or:''},dz_sua:{s:'sua',fx:'fx_sua',rx:'rx_gin rx_anemia',mev:'mev_sua',or:''},dz_corrimento:{s:'corrimento',fx:'fx_corr',rx:'rx_gin rx_ist',mev:'mev_corr',or:'or_corr'},dz_sop:{s:'sop',fx:'fx_sop',rx:'rx_gin rx_aco',mev:'mev_sop',or:''},dz_febre:{s:'febre',fx:'fx_febre',rx:'rx_febre',mev:'mev_febre',or:'or_febre'},dz_dermatite:{s:'dermatite',fx:'fx_derm',rx:'rx_pele',mev:'mev_derm',or:''},dz_micose:{s:'micose',fx:'fx_mic',rx:'rx_pele',mev:'mev_mic',or:''},dz_escabiose:{s:'escabiose',fx:'fx_escab',rx:'rx_pele',mev:'mev_escab',or:'or_escab'},dz_acne:{s:'acne',fx:'fx_acne',rx:'rx_pele rx_aco',mev:'mev_acne',or:''},dz_gota:{s:'gota',fx:'fx_gota',rx:'rx_gota',mev:'mev_gota',or:''},dz_fa:{s:'fa',fx:'fx_fa',rx:'rx_fa',mev:'mev_fa',or:'or_anticoag'},dz_panico:{s:'panico',fx:'fx_pan',rx:'rx_pan rx_ad',mev:'mev_pan',or:''},dz_toc:{s:'toc',fx:'fx_toc',rx:'rx_pan rx_ad',mev:'mev_toc',or:''},dz_luto:{s:'luto',fx:'fx_luto',rx:'rx_pan',mev:'mev_luto',or:''}};
+const DZ={dz_has:{s:'has',fx:'fx_has',rx:'rx_cv',mev:'mev_has',or:'or_mrpa'},dz_dm:{s:'dm',fx:'fluxodm',rx:'rx_dm rx_glp1 rx_lip',mev:'mev_dm',or:'or_glic or_glic_ins or_hipo or_pe or_glp1'},dz_drc:{s:'drc',fx:'',rx:'rx_cv rx_dm',mev:'mev_drc',or:''},dz_hipotireo:{s:'hipotireo',fx:'fx_tireo',rx:'rx_end',mev:'',or:''},dz_obesidade:{s:'obesidade',fx:'',rx:'rx_glp1',mev:'mev_obes',or:'or_glp1'},dz_asma:{s:'asma',fx:'fx_asma',rx:'rx_resp',mev:'',or:'or_bomb'},dz_dpoc:{s:'dpoc',fx:'fx_dpoc',rx:'rx_resp',mev:'mev_tab',or:'or_bomb'},dz_hpb:{s:'hpb',fx:'',rx:'rx_uro',mev:'mev_hpb',or:''},dz_idoso:{s:'idoso',fx:'',rx:'',mev:'',or:''},dz_prenatal:{s:'prenatal',fx:'',rx:'rx_gest',mev:'mev_gest',or:''},dz_sang1:{s:'sang1',fx:'fx_sang1 u_sang',rx:'rx_abort',mev:'',or:'or_sang'},dz_sang2:{s:'sang2',fx:'fx_sang2 u_sang',rx:'rx_abort',mev:'',or:'or_sang'},dz_puerperio:{s:'puerperio',fx:'',rx:'rx_gest rx_aco',mev:'',or:''},dz_contracepcao:{s:'contracepcao',fx:'',rx:'rx_aco',mev:'',or:''},dz_climaterio:{s:'climaterio',fx:'',rx:'rx_trh',mev:'',or:''},dz_puericultura:{s:'puericultura',fx:'',rx:'rx_ped',mev:'mev_cri mev_ia',or:'or_ia'},dz_mental:{s:'mental',fx:'fx_dep',rx:'rx_ad rx_bip rx_ap',mev:'mev_dep',or:''},dz_esquizofrenia:{s:'esquizofrenia',fx:'',rx:'rx_esq rx_ap',mev:'',or:''},dz_ansiedade:{s:'ansiedade',fx:'fx_ans',rx:'rx_ad rx_ans',mev:'mev_ans',or:''},dz_tabagismo:{s:'tabagismo',fx:'',rx:'rx_tab rx_alc',mev:'mev_tab mev_alc',or:''},dz_insonia:{s:'insonia',fx:'fx_ins',rx:'rx_sono',mev:'mev_sono',or:'or_sono'},dz_ivas:{s:'ivas',fx:'fx_farin fx_sinus fx_pac',rx:'rx_sint rx_atb',mev:'mev_ivas',or:''},dz_oma:{s:'oma',fx:'fx_ouvido',rx:'rx_oto',mev:'mev_oto',or:''},dz_otext:{s:'otext',fx:'fx_ouvido',rx:'rx_oto',mev:'mev_oto',or:''},dz_conj:{s:'conj',fx:'fx_conj',rx:'rx_oto',mev:'mev_oto',or:''},dz_gea:{s:'gea',fx:'fx_diar',rx:'rx_sint rx_par',mev:'mev_diar',or:'or_soro'},dz_itu:{s:'itu',fx:'fx_itu',rx:'rx_atb',mev:'',or:''},dz_ist:{s:'ist',fx:'fx_sif',rx:'rx_ist rx_hiv',mev:'',or:''},dz_dengue:{s:'dengue',fx:'fx_dengue',rx:'',mev:'',or:'or_dengue'},dz_cefaleia:{s:'cefaleia',fx:'fx_cef',rx:'rx_anal',mev:'',or:''},dz_vertigem:{s:'vertigem',fx:'fx_vert',rx:'',mev:'',or:''},dz_lombalgia:{s:'lombalgia',fx:'fx_lomb',rx:'rx_anal',mev:'',or:''},dz_oa:{s:'oa',fx:'fx_oa',rx:'rx_oa rx_anal',mev:'mev_oa',or:''},dz_anemia:{s:'anemia',fx:'fx_anemia',rx:'rx_anemia',mev:'mev_anemia',or:''},dz_b12:{s:'b12',fx:'fx_b12',rx:'rx_anemia',mev:'',or:''},dz_sua:{s:'sua',fx:'fx_sua',rx:'rx_gin rx_anemia',mev:'mev_sua',or:''},dz_corrimento:{s:'corrimento',fx:'fx_corr',rx:'rx_gin rx_ist',mev:'mev_corr',or:'or_corr'},dz_sop:{s:'sop',fx:'fx_sop',rx:'rx_gin rx_aco',mev:'mev_sop',or:''},dz_febre:{s:'febre',fx:'fx_febre',rx:'rx_febre',mev:'mev_febre',or:'or_febre'},dz_dermatite:{s:'dermatite',fx:'fx_derm',rx:'rx_pele',mev:'mev_derm',or:''},dz_micose:{s:'micose',fx:'fx_mic',rx:'rx_pele',mev:'mev_mic',or:''},dz_escabiose:{s:'escabiose',fx:'fx_escab',rx:'rx_pele',mev:'mev_escab',or:'or_escab'},dz_acne:{s:'acne',fx:'fx_acne',rx:'rx_pele rx_aco',mev:'mev_acne',or:''},dz_gota:{s:'gota',fx:'fx_gota',rx:'rx_gota',mev:'mev_gota',or:''},dz_fa:{s:'fa',fx:'fx_fa',rx:'rx_fa',mev:'mev_fa',or:'or_anticoag'},dz_panico:{s:'panico',fx:'fx_pan',rx:'rx_pan rx_ad',mev:'mev_pan',or:''},dz_toc:{s:'toc',fx:'fx_toc',rx:'rx_pan rx_ad',mev:'mev_toc',or:''},dz_luto:{s:'luto',fx:'fx_luto',rx:'rx_pan',mev:'mev_luto',or:''},dz_demencia:{s:'demencia',fx:'fx_dem',rx:'rx_dem',mev:'mev_dem',or:'or_dem'},dz_parkinson:{s:'parkinson',fx:'fx_park',rx:'rx_park',mev:'mev_park',or:''},dz_epilepsia:{s:'epilepsia',fx:'fx_epi',rx:'rx_epi',mev:'mev_epi',or:'or_epi'}};
 Object.values(DZ).forEach(d=>['fx','rx','mev','or'].forEach(k=>d[k]=d[k]?d[k].split(' '):[]));
 const DZSUB={};
 function dzParts(id){const d=DZ[id],L=[['soap:'+d.s,'SOAP']];
@@ -5749,19 +5997,20 @@ function renderDZ(m,id){
   show(sel);
 }
 const SECTIONS=[
+ {g:'Atendimento',k:'ini',t:'Início',ic:'box',ids:['inicio']},
  {g:'Atendimento',k:'urg',t:'Urgência na UBS',ic:'urg',ids:['u_has','u_hipo','u_anaf','u_asma','u_tor','u_sang','fx_sang1','fx_sang2','abort_gd']},
  {g:'Atendimento',k:'cons',t:'Modo consulta',ic:'cons',ids:['consulta']},
  {g:'Atendimento',k:'rxb',t:'Receita montada',ic:'presc',ids:['receita']},
  {g:'Atendimento',k:'lbf',t:'Preencher exames',ic:'exames',ids:['labs']},
  {g:'Atendimento',k:'enc',t:'Encaminhamento',ic:'doc',ids:['enc']},
  {g:'Atendimento',k:'doenca',t:'Por doença',ic:'box',ids:Object.keys(DZ)},
- {g:'Atendimento',k:'soap',t:'Templates SOAP',ic:'soap',ids:['has','dm','drc','hipotireo','obesidade','asma','dpoc','hpb','idoso','prenatal','sang1','sang2','puerperio','contracepcao','climaterio','puericultura','mental','esquizofrenia','ansiedade','tabagismo','insonia','ivas','oma','otext','conj','gea','itu','ist','dengue','cefaleia','vertigem','lombalgia','oa','anemia','b12','sua','corrimento','sop','febre','dermatite','micose','escabiose','acne','gota','fa','panico','toc','luto']},
+ {g:'Atendimento',k:'soap',t:'Templates SOAP',ic:'soap',ids:['has','dm','drc','hipotireo','obesidade','asma','dpoc','hpb','idoso','prenatal','sang1','sang2','puerperio','contracepcao','climaterio','puericultura','mental','esquizofrenia','ansiedade','tabagismo','insonia','ivas','oma','otext','conj','gea','itu','ist','dengue','cefaleia','vertigem','lombalgia','oa','anemia','b12','sua','corrimento','sop','febre','dermatite','micose','escabiose','acne','gota','fa','panico','toc','luto','demencia','parkinson','epilepsia']},
  {g:'Atendimento',k:'ef',t:'Exame físico',ic:'steth',ids:['ef_geral','ef_cv','ef_resp','ef_abd','ef_neuro','ef_cp','ef_pele','ef_mama','ef_gin','ef_ped','ef_reflex','efp_osteo','efp_cerv','efp_lomb','efp_ombro','efp_joelho','efp_vert','efp_tunel','efp_pe','efp_ulc','efp_ven','efp_art']},
  {g:'Atendimento',k:'presc',t:'Prescrições',ic:'presc',ids:['farmacia','atb_guia',...Object.keys(P)]},
  {g:'Atendimento',k:'fx',t:'Fluxogramas',ic:'fx',ids:['fx_has','fluxodm',...Object.keys(F).filter(k=>k!=='fx_has'&&!k.startsWith('u_'))]},
  {g:'Atendimento',k:'mev',t:'Estilo de vida (MEV)',ic:'mev',ids:Object.keys(M)},
  {g:'Atendimento',k:'docs',t:'Atestados e declarações',ic:'doc',ids:Object.keys(AT)},
- {g:'Atendimento',k:'esq',t:'Folha do paciente',ic:'esq',ids:['esquema','or_dengue','or_soro','or_hipo','or_pe','or_bomb','or_glp1','or_sang','or_sono','or_mrpa','or_glic_ins','or_glic','or_febre','or_escab','or_anticoag','or_corr','or_ia']},
+ {g:'Atendimento',k:'esq',t:'Folha do paciente',ic:'esq',ids:['esquema','or_dengue','or_soro','or_hipo','or_pe','or_bomb','or_glp1','or_sang','or_sono','or_mrpa','or_glic_ins','or_glic','or_febre','or_escab','or_anticoag','or_corr','or_ia','or_epi','or_dem']},
  {g:'Ferramentas',k:'calc',t:'Calculadoras',ic:'calc',ids:['ig','tfg','drcest','cg','imc','rcv','insulina','cacorr','curb65','wells_tvp','wells_tep','chads','hasbled','itb','mrpa','glicres','fib4','fli']},
  {g:'Ferramentas',k:'farm',t:'Farmácia do SUS',ic:'presc',ids:['farmacia','ajustes']},
  {g:'Ferramentas',k:'pedi',t:'Doses pediátricas',ic:'pedi',ids:['pedi']},
@@ -5769,11 +6018,11 @@ const SECTIONS=[
  {g:'Ferramentas',k:'exames',t:'Interpretação de exames',ic:'exames',ids:['labs','ex_hemo','ex_tsh','ex_eas','ex_lip','ex_hep','ex_gaso','ex_espiro','ex_mamo','ex_cito','pn_img','fatorr','fib4','fli','gasocalc','espcalc']},
  {g:'Ferramentas',k:'ecg',t:'Interpretação de ECG',ic:'ecg',ids:['ecg_passo','ecg_taqui','ecg_bradi','ecg_eixo','ecg_sobrec','ecg_bloq','ecg_isq','ecg_qt','ecg_padroes','fcecg','eixo','qtc','sve']},
  {g:'Ferramentas',k:'prot',t:'Protocolos e prevenção',ic:'prot',ids:['pn_exames','pn_img','abort_gd','trh','tb','tbdose','hans','ia_gd','rastreio','vacinas','ajustes']},
- {g:'Linhas de cuidado',k:'cronicos',t:'Crônicos',ic:'cronicos',ln:1,ids:['has','dm','drc','hpb','hipotireo','obesidade','asma','dpoc','tabagismo','oa','anemia','b12','fx_oa','fx_anemia','fx_b12','rx_oa','rx_anemia','mev_oa','mev_anemia','mrpa','glicres','or_mrpa','or_glic_ins','or_glic','rx_dm','rx_lip','rx_resp','rx_end','rx_uro','glp1','rx_glp1','or_hipo','or_pe','or_bomb','or_glp1','fx_has','fluxodm','efp_pe','efp_art','efp_ven','efp_ulc','itb','ecg_sobrec','sve','ex_espiro','ex_hep','fib4','hans','tb','fx_lip','fx_tireo','fx_asma','fx_dpoc','tfg','drcest','cg','imc','rcv','insulina','chads','hasbled','ipss','rastreio','vacinas','ajustes','melanoma','rx_cv','rx_anal','mev_has','mev_dm','mev_obes','mev_lip','mev_drc','mev_icc','mev_hpb','gota','fa','fx_gota','fx_fa','rx_gota','rx_fa','mev_gota','mev_fa','or_anticoag','esquema']},
+ {g:'Linhas de cuidado',k:'cronicos',t:'Crônicos',ic:'cronicos',ln:1,ids:['has','dm','drc','hpb','hipotireo','obesidade','asma','dpoc','tabagismo','oa','anemia','b12','fx_oa','fx_anemia','fx_b12','rx_oa','rx_anemia','mev_oa','mev_anemia','mrpa','glicres','or_mrpa','or_glic_ins','or_glic','rx_dm','rx_lip','rx_resp','rx_end','rx_uro','glp1','rx_glp1','or_hipo','or_pe','or_bomb','or_glp1','fx_has','fluxodm','efp_pe','efp_art','efp_ven','efp_ulc','itb','ecg_sobrec','sve','ex_espiro','ex_hep','fib4','hans','tb','fx_lip','fx_tireo','fx_asma','fx_dpoc','tfg','drcest','cg','imc','rcv','insulina','chads','hasbled','ipss','rastreio','vacinas','ajustes','melanoma','rx_cv','rx_anal','mev_has','mev_dm','mev_obes','mev_lip','mev_drc','mev_icc','mev_hpb','gota','fa','fx_gota','fx_fa','rx_gota','rx_fa','mev_gota','mev_fa','or_anticoag','epilepsia','fx_epi','rx_epi','mev_epi','or_epi','esquema']},
  {g:'Linhas de cuidado',k:'mulher',t:'Saúde da mulher',ic:'mulher',ln:1,ids:['prenatal','sang1','sang2','abort_gd','fx_sang1','fx_sang2','u_sang','rx_abort','or_sang','farmacia','pn_exames','pn_img','anemia','rx_anemia','ef_mama','ef_gin','ex_mamo','ex_cito','puerperio','contracepcao','climaterio','trh','mrs','rx_trh','ist','itu','ig','imc','rastreio','vacinas','ajustes','fx_sif','fx_itu','rx_gest','rx_aco','rx_ist','rx_hiv','rx_atb','mev_gest','sua','corrimento','sop','fx_sua','fx_corr','fx_sop','rx_gin','mev_sua','mev_corr','mev_sop','or_corr','esquema']},
  {g:'Linhas de cuidado',k:'crianca',t:'Saúde da criança',ic:'crianca',ln:1,ids:['puericultura','marcos','pedi','ef_ped','oma','conj','anemia','fx_ouvido','fx_conj','fx_anemia','rx_oto','rx_anemia','imc','vacinas','fx_diar','fx_dengue','fx_farin','rx_ped','rx_par','rx_sint','rx_tdah','snap','or_soro','mev_cri','febre','fx_febre','rx_febre','mev_febre','or_febre','ia_gd','mev_ia','or_ia','escabiose','fx_escab','or_escab','dermatite','esquema']},
  {g:'Linhas de cuidado',k:'mental',t:'Saúde mental',ic:'mental',ln:1,ids:['mental','esquizofrenia','ansiedade','insonia','tabagismo','fx_dep','fx_ans','fx_ins','isi','rx_sono','or_sono','phq9','gad7','audit','fager','rx_ad','rx_ans','rx_ap','rx_bip','rx_esq','rx_alc','rx_bul','rx_tdah','rx_tab','ciwa','asrs','snap','mev_dep','mev_ans','mev_sono','mev_alc','mev_tab','panico','toc','luto','fx_pan','fx_toc','fx_luto','rx_pan','mev_pan','mev_toc','mev_luto','esquema']},
- {g:'Linhas de cuidado',k:'idoso',t:'Saúde do idoso',ic:'idoso',ln:1,ids:['idoso','vertigem','dhi','fx_vert','efp_vert','oa','insonia','b12','fx_oa','fx_ins','fx_b12','isi','efp_pe','efp_ulc','braden','push','efp_ven','efp_art','itb','ecg_bradi','qtc','ivcf20','katz','lawton','minicog','quedas','pps','cg','has','dm','hpb','drc','ajustes','vacinas','rastreio','tfg','rcv','phq9','fx_has','fluxodm','fx_dep','fx_lomb','rx_anal','mev_has','mev_dm','mev_sono','esquema']},
+ {g:'Linhas de cuidado',k:'idoso',t:'Saúde do idoso',ic:'idoso',ln:1,ids:['idoso','vertigem','dhi','fx_vert','efp_vert','oa','insonia','b12','fx_oa','fx_ins','fx_b12','isi','efp_pe','efp_ulc','braden','push','efp_ven','efp_art','itb','ecg_bradi','qtc','ivcf20','katz','lawton','minicog','quedas','pps','cg','has','dm','hpb','drc','ajustes','vacinas','rastreio','tfg','rcv','phq9','fx_has','fluxodm','fx_dep','fx_lomb','rx_anal','mev_has','mev_dm','mev_sono','demencia','parkinson','fx_dem','fx_park','rx_dem','rx_park','mev_dem','mev_park','or_dem','esquema']},
  {g:'Linhas de cuidado',k:'agudos',t:'Agudos',ic:'agudos',ln:1,ids:['ivas','oma','otext','conj','fx_ouvido','fx_conj','rx_oto','mev_oto','gea','itu','ist','dengue','cefaleia','lombalgia','vertigem','dhi','fx_vert','efp_vert','efp_lomb','efp_ombro','efp_joelho','curb65','centor','wells_tvp','wells_tep','ecg_isq','ecg_taqui','ecg_bradi','ex_gaso','gasocalc','atb_guia','tb','tbdose','fx_dengue','fx_farin','fx_sinus','fx_pac','fx_itu','fx_diar','fx_tor','fx_cef','fx_lomb','fx_tb','rx_atb','rx_sint','rx_anal','rx_par','rx_ist','rx_hiv','mev_ivas','mev_diar','or_dengue','or_soro','corrimento','febre','dermatite','micose','escabiose','fx_corr','fx_febre','fx_derm','fx_mic','fx_escab','rx_pele','rx_febre','mev_derm','mev_mic','mev_escab','or_escab','or_febre','esquema']},
  {g:'Meu kit',k:'meu',t:'Minhas edições',ic:'edit',ids:['meu']}
 ];
@@ -5806,7 +6055,7 @@ function renderFavs(){
   f.innerHTML=FAV.length?'<span class="favlbl" aria-hidden="true">★</span>'+FAV.map(id=>`<button class="chip fav" data-id="${id}" aria-selected="${id===cur.id}">${esc(chipLabel(id))}</button>`).join(''):'';
   f.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>go(b.dataset.id));
 }
-const GSYS=[['cv','has u_has u_tor fx_has fx_lip fx_tor rx_cv rx_lip mev_has mev_lip mev_icc ef_cv efp_ven efp_art rcv chads hasbled itb wells_tvp wells_tep mrpa or_mrpa ecg_passo ecg_taqui ecg_bradi ecg_eixo ecg_sobrec ecg_bloq ecg_isq ecg_qt ecg_padroes fcecg eixo qtc sve ex_lip fa fx_fa rx_fa mev_fa or_anticoag'],['endo','dm hipotireo obesidade u_hipo fluxodm fx_tireo rx_dm rx_end rx_glp1 glp1 mev_dm mev_obes or_hipo or_pe or_glp1 or_glic_ins or_glic efp_pe imc insulina glicres cacorr ex_tsh anemia b12 fx_anemia fx_b12 rx_anemia mev_anemia ex_hemo'],['resp','asma dpoc u_asma fx_asma fx_dpoc rx_resp or_bomb ef_resp ivas fx_farin fx_sinus mev_ivas fx_pac curb65 centor ex_espiro espcalc ex_gaso gasocalc oma otext conj fx_ouvido fx_conj rx_oto mev_oto ef_cp tabagismo rx_tab mev_tab fager'],['renal','drc hpb itu fx_itu rx_uro mev_drc mev_hpb tfg drcest cg ipss ex_eas'],['dig','gea fx_diar mev_diar or_soro ef_abd ex_hep fatorr fib4 fli'],['inf','ist dengue fx_dengue fx_sif fx_tb rx_atb rx_ist rx_hiv atb_guia or_dengue tb tbdose hans rx_par'],['neuro','cefaleia vertigem fx_cef fx_vert ef_neuro efp_vert dhi rx_anal'],['osteo','lombalgia oa fx_lomb fx_oa rx_oa mev_oa efp_lomb efp_ombro efp_joelho efp_tunel efp_cerv efp_osteo gota fx_gota rx_gota mev_gota'],['pele','ef_pele efp_ulc melanoma braden push dermatite micose escabiose acne fx_derm fx_mic fx_escab fx_acne rx_pele mev_derm mev_mic mev_escab mev_acne or_escab'],['mental','mental esquizofrenia ansiedade insonia fx_dep fx_ans fx_ins rx_bip rx_esq rx_alc rx_bul rx_tdah rx_ans rx_ad rx_ap rx_sono mev_dep mev_ans mev_sono mev_alc or_sono phq9 gad7 audit ciwa asrs snap isi panico toc luto fx_pan fx_toc fx_luto rx_pan mev_pan mev_toc mev_luto'],['mulher','prenatal sang1 sang2 puerperio contracepcao climaterio u_sang fx_sang1 fx_sang2 abort_gd rx_aco rx_trh rx_gest rx_abort mev_gest or_sang ef_mama ef_gin ex_mamo ex_cito pn_img pn_exames trh mrs ig sua corrimento sop fx_sua fx_corr fx_sop rx_gin mev_sua mev_corr mev_sop or_corr'],['crianca','puericultura ef_ped ef_reflex rx_ped mev_cri marcos pedi febre fx_febre rx_febre mev_febre or_febre ia_gd mev_ia or_ia'],['idoso','idoso minicog ivcf20 katz lawton quedas pps']];
+const GSYS=[['cv','has u_has u_tor fx_has fx_lip fx_tor rx_cv rx_lip mev_has mev_lip mev_icc ef_cv efp_ven efp_art rcv chads hasbled itb wells_tvp wells_tep mrpa or_mrpa ecg_passo ecg_taqui ecg_bradi ecg_eixo ecg_sobrec ecg_bloq ecg_isq ecg_qt ecg_padroes fcecg eixo qtc sve ex_lip fa fx_fa rx_fa mev_fa or_anticoag'],['endo','dm hipotireo obesidade u_hipo fluxodm fx_tireo rx_dm rx_end rx_glp1 glp1 mev_dm mev_obes or_hipo or_pe or_glp1 or_glic_ins or_glic efp_pe imc insulina glicres cacorr ex_tsh anemia b12 fx_anemia fx_b12 rx_anemia mev_anemia ex_hemo'],['resp','asma dpoc u_asma fx_asma fx_dpoc rx_resp or_bomb ef_resp ivas fx_farin fx_sinus mev_ivas fx_pac curb65 centor ex_espiro espcalc ex_gaso gasocalc oma otext conj fx_ouvido fx_conj rx_oto mev_oto ef_cp tabagismo rx_tab mev_tab fager'],['renal','drc hpb itu fx_itu rx_uro mev_drc mev_hpb tfg drcest cg ipss ex_eas'],['dig','gea fx_diar mev_diar or_soro ef_abd ex_hep fatorr fib4 fli'],['inf','ist dengue fx_dengue fx_sif fx_tb rx_atb rx_ist rx_hiv atb_guia or_dengue tb tbdose hans rx_par'],['neuro','cefaleia vertigem fx_cef fx_vert ef_neuro efp_vert dhi rx_anal demencia parkinson epilepsia fx_dem fx_park fx_epi rx_dem rx_park rx_epi mev_dem mev_park mev_epi or_epi or_dem'],['osteo','lombalgia oa fx_lomb fx_oa rx_oa mev_oa efp_lomb efp_ombro efp_joelho efp_tunel efp_cerv efp_osteo gota fx_gota rx_gota mev_gota'],['pele','ef_pele efp_ulc melanoma braden push dermatite micose escabiose acne fx_derm fx_mic fx_escab fx_acne rx_pele mev_derm mev_mic mev_escab mev_acne or_escab'],['mental','mental esquizofrenia ansiedade insonia fx_dep fx_ans fx_ins rx_bip rx_esq rx_alc rx_bul rx_tdah rx_ans rx_ad rx_ap rx_sono mev_dep mev_ans mev_sono mev_alc or_sono phq9 gad7 audit ciwa asrs snap isi panico toc luto fx_pan fx_toc fx_luto rx_pan mev_pan mev_toc mev_luto'],['mulher','prenatal sang1 sang2 puerperio contracepcao climaterio u_sang fx_sang1 fx_sang2 abort_gd rx_aco rx_trh rx_gest rx_abort mev_gest or_sang ef_mama ef_gin ex_mamo ex_cito pn_img pn_exames trh mrs ig sua corrimento sop fx_sua fx_corr fx_sop rx_gin mev_sua mev_corr mev_sop or_corr'],['crianca','puericultura ef_ped ef_reflex rx_ped mev_cri marcos pedi febre fx_febre rx_febre mev_febre or_febre ia_gd mev_ia or_ia'],['idoso','idoso minicog ivcf20 katz lawton quedas pps demencia parkinson']];
 const GRP={cv:['Cardio','Coração e vasos'],endo:['Endócrino','Endócrino, nutrição e sangue'],resp:['Respiratório','Respiratório, ouvido e olhos'],renal:['Rins','Rins e urologia'],dig:['Digestivo','Digestivo e fígado'],inf:['Infecções','Infecções'],neuro:['Neuro','Neurológico e dor'],osteo:['Músculos','Músculos e articulações'],pele:['Pele','Pele e feridas'],mental:['Mental','Saúde mental'],mulher:['Mulher','Saúde da mulher'],crianca:['Criança','Saúde da criança'],idoso:['Idoso','Saúde do idoso'],geral:['Geral','Geral']};
 const GOF={};GSYS.forEach(([k,v])=>v.split(' ').forEach(id=>GOF[id]=k));
 const gOf=id=>GOF[id]||(DZ[id]&&GOF[DZ[id].s])||'geral',GORD=Object.keys(GRP);
@@ -5854,7 +6103,7 @@ function go(id,sk){
   else if(!SECM[CURS].ids.includes(id)){const s=SECTIONS.find(s=>!s.ln&&s.ids.includes(id))||SECTIONS.find(s=>s.ids.includes(id));if(s)CURS=s.k}
   store.set('kitaps:sec',CURS);store.set('kitaps:lasts-'+CURS,id);store.set('kitaps:last',id);
   try{history.replaceState(null,'','#'+id)}catch(e){}
-  renderChips();render();addHead();addStar();
+  renderChips();render();addHead();addStar();navMark();setHH();
   const ch=document.getElementById('chip-'+id);if(ch&&ch.scrollIntoView)ch.scrollIntoView({block:'nearest',inline:'nearest'});
   window.scrollTo(0,0);
 }
@@ -5868,6 +6117,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
 function render(){
   store.set('kitaps:last-'+cur.sec,cur.id);
   const m=$('#main');
+  if(cur.id==='inicio')return renderINI(m);
   if(cur.id==='receita')return renderRXB(m);
   if(cur.id==='labs')return renderLABS(m);
   if(cur.id==='enc')return renderENC(m);
@@ -5911,7 +6161,7 @@ const SOAPLINK={has:[['labs','Preencher exames'],['fx_has','Fluxograma HAS'],['r
  hipotireo:[['fx_tireo','Fluxograma']],ivas:[['atb_guia','Antibióticos'],['centor','Centor'],['fx_farin','Faringite'],['fx_sinus','Sinusite']],gea:[['fx_diar','Fluxograma']],ist:[['fx_sif','Sífilis'],['atb_guia','Antibióticos']],climaterio:[['trh','Guia de TRH'],['mrs','Escala MRS'],['rx_trh','Receitas de TRH'],['ex_mamo','Mamografia'],['ex_cito','Preventivo']]};
 [['dm','glp1','GLP-1'],['dm','rx_glp1','Receita GLP-1'],['dm','or_hipo','Folha: hipoglicemia'],['dm','or_pe','Folha: pé diabético'],['obesidade','glp1','GLP-1'],['obesidade','rx_glp1','Receita GLP-1'],['mental','rx_bip','Bipolar'],['mental','rx_esq','Antipsicóticos'],['mental','asrs','ASRS-18'],['ansiedade','rx_bip','Bipolar'],['tabagismo','rx_alc','Álcool e drogas'],['tabagismo','ciwa','CIWA-Ar'],['mental','rx_alc','Álcool e drogas'],['dengue','or_dengue','Folha do paciente'],['gea','or_soro','Folha: soro caseiro'],['asma','or_bomb','Folha: bombinha'],['dpoc','or_bomb','Folha: bombinha']].forEach(([k,id,l])=>(SOAPLINK[k]=SOAPLINK[k]||[]).push([id,l]));
 /* Prescrição padrão no fim de cada SOAP: referências a P [classe, item] ou receita própria */
-const SRX={sua:[['rx_gin',0],['rx_gin',1],['rx_gin',2]],corrimento:[['rx_gin',3],['rx_gin',4],['rx_gin',5]],sop:[['rx_gin',6],['rx_aco',0]],febre:[['rx_febre',0],['rx_febre',1],['rx_febre',2],['rx_febre',3]],dermatite:[['rx_pele',0],['rx_pele',1]],micose:[['rx_pele',2],['rx_pele',3],['rx_pele',4]],escabiose:[['rx_pele',5],['rx_pele',6]],acne:[['rx_pele',7],['rx_pele',8],['rx_aco',0]],gota:[['rx_gota',0],['rx_gota',1],['rx_gota',2],['rx_gota',3]],fa:[['rx_fa',0],['rx_fa',1],['rx_fa',2],['rx_fa',3]],panico:[['rx_pan',0],['rx_pan',1],['rx_pan',2]],toc:[['rx_pan',3]],luto:[['rx_pan',4]],has:[['rx_cv',0],['rx_cv',2],['rx_cv',3],['rx_cv',4]],dm:[['rx_dm',0],['rx_dm',1],['rx_dm',2],['rx_dm',3],['rx_lip',0]],drc:[['rx_cv',0],['rx_dm',2]],
+const SRX={demencia:[['rx_dem',0],['rx_dem',2],['rx_dem',3]],parkinson:[['rx_park',0],['rx_park',1],['rx_park',4]],epilepsia:[['rx_epi',0],['rx_epi',1],['rx_epi',4]],sua:[['rx_gin',0],['rx_gin',1],['rx_gin',2]],corrimento:[['rx_gin',3],['rx_gin',4],['rx_gin',5]],sop:[['rx_gin',6],['rx_aco',0]],febre:[['rx_febre',0],['rx_febre',1],['rx_febre',2],['rx_febre',3]],dermatite:[['rx_pele',0],['rx_pele',1]],micose:[['rx_pele',2],['rx_pele',3],['rx_pele',4]],escabiose:[['rx_pele',5],['rx_pele',6]],acne:[['rx_pele',7],['rx_pele',8],['rx_aco',0]],gota:[['rx_gota',0],['rx_gota',1],['rx_gota',2],['rx_gota',3]],fa:[['rx_fa',0],['rx_fa',1],['rx_fa',2],['rx_fa',3]],panico:[['rx_pan',0],['rx_pan',1],['rx_pan',2]],toc:[['rx_pan',3]],luto:[['rx_pan',4]],has:[['rx_cv',0],['rx_cv',2],['rx_cv',3],['rx_cv',4]],dm:[['rx_dm',0],['rx_dm',1],['rx_dm',2],['rx_dm',3],['rx_lip',0]],drc:[['rx_cv',0],['rx_dm',2]],
  hpb:[['rx_uro',0],['rx_uro',1],['rx_uro',2]],hipotireo:[['rx_end',0]],obesidade:[['rx_glp1',1],['rx_glp1',2],['rx_glp1',3]],asma:[['rx_resp',0],['rx_resp',1]],dpoc:[['rx_resp',2]],
  prenatal:[['rx_gest',0],['rx_gest',1],['rx_anal',6]],puerperio:[['rx_gest',2],['rx_aco',1]],contracepcao:[['rx_aco',0],['rx_aco',1],['rx_aco',2],['rx_aco',3],['rx_aco',4]],climaterio:[['rx_trh',0],['rx_trh',2],['rx_trh',5]],
  puericultura:[['rx_ped',0],['rx_ped',1]],mental:[['rx_ad',0],['rx_ad',1],['rx_ad',2]],ansiedade:[['rx_ad',1],['rx_ad',2],['rx_ans',2]],tabagismo:[['rx_tab',0],['rx_tab',1],['rx_tab',2]],
@@ -6220,9 +6470,9 @@ const ENC=[
   {k:'colo',m:'Colonoscopia',s:[],cid:'K92.1',pri:'P',hip:'[Sangue oculto positivo / hematoquezia / alteração do hábito intestinal]',crit:['Sangue oculto nas fezes positivo no rastreamento','Sangramento retal com idade ≥ 45 anos ou anemia ferropriva sem causa','Mudança persistente do hábito intestinal com sinais de alarme'],env:['Resultado do sangue oculto','Hemograma, ferritina','Antecedente familiar de câncer colorretal']}]},
  {k:'neuro',n:'Neurologia',r:[
   {k:'cef',m:'Cefaleia',s:['cefaleia'],cid:'G43.9',pri:'E',hip:'Cefaleia [migrânea / tensional / em salvas] refratária',crit:['Cefaleia primária refratária a 2 profiláticos em dose e tempo adequados','Cefaleia com sinal de alarme sem urgência (padrão novo após 50 anos, piora progressiva): prioritário; déficit focal, pior da vida ou febre com rigidez: EMERGÊNCIA'],env:['Diário de cefaleia','Profiláticos usados, doses e tempo','Exame neurológico e fundo de olho, se feito','Imagem, se feita']},
-  {k:'epi',m:'Epilepsia',s:[],cid:'G40.9',pri:'P',hip:'Epilepsia [ ]',crit:['Primeira crise não provocada sem investigação','Crises não controladas com anticonvulsivante em dose adequada','Gestante ou desejo de gestar em uso de anticonvulsivante'],env:['Descrição das crises e frequência','Anticonvulsivantes e doses','EEG e imagem, se feitos']},
-  {k:'dem',m:'Declínio cognitivo / demência',s:['idoso'],cid:'F03',pri:'E',hip:'Síndrome demencial [ ]',crit:['Declínio cognitivo com início antes de 65 anos, evolução rápida ou sinais neurológicos focais','Dúvida diagnóstica após investigação inicial na APS'],env:['Mini-Cog/MEEM e escores funcionais (Katz, Lawton)','B12, TSH, VDRL, HIV, glicemia, creatinina, hemograma, cálcio','TC ou RM de crânio, se feitas','Medicações em uso']},
-  {k:'park',m:'Parkinsonismo / tremor',s:['idoso'],cid:'G20',pri:'E',hip:'Parkinsonismo [ ]',crit:['Suspeita de doença de Parkinson para confirmação e início de tratamento','Tremor com dúvida diagnóstica ou incapacitante'],env:['Descrição do tremor, rigidez, bradicinesia','Medicações em uso (antipsicóticos, metoclopramida)']}]},
+  {k:'epi',m:'Epilepsia',s:['epilepsia'],cid:'G40.9',pri:'P',hip:'Epilepsia [ ]',crit:['Primeira crise não provocada sem investigação','Crises não controladas com anticonvulsivante em dose adequada','Gestante ou desejo de gestar em uso de anticonvulsivante'],env:['Descrição das crises e frequência','Anticonvulsivantes e doses','EEG e imagem, se feitos']},
+  {k:'dem',m:'Declínio cognitivo / demência',s:['idoso','demencia'],cid:'F03',pri:'E',hip:'Síndrome demencial [ ]',crit:['Declínio cognitivo com início antes de 65 anos, evolução rápida ou sinais neurológicos focais','Dúvida diagnóstica após investigação inicial na APS'],env:['Mini-Cog/MEEM e escores funcionais (Katz, Lawton)','B12, TSH, VDRL, HIV, glicemia, creatinina, hemograma, cálcio','TC ou RM de crânio, se feitas','Medicações em uso']},
+  {k:'park',m:'Parkinsonismo / tremor',s:['idoso','parkinson'],cid:'G20',pri:'E',hip:'Parkinsonismo [ ]',crit:['Suspeita de doença de Parkinson para confirmação e início de tratamento','Tremor com dúvida diagnóstica ou incapacitante'],env:['Descrição do tremor, rigidez, bradicinesia','Medicações em uso (antipsicóticos, metoclopramida)']}]},
  {k:'psiq',n:'Psiquiatria / CAPS',r:[
   {k:'grave',m:'Transtorno mental grave',s:['esquizofrenia','mental'],cid:'F20.9',pri:'P',hip:'[Esquizofrenia / transtorno bipolar / psicose] ',crit:['Primeiro episódio psicótico','Transtorno bipolar ou esquizofrenia sem controle com tratamento na APS','Risco de suicídio alto ou agitação grave: URGÊNCIA (CAPS, SAMU ou emergência)'],env:['Medicações em uso, doses e resposta','Escalas aplicadas (PHQ-9, risco de suicídio)','Glicemia, perfil lipídico, ECG se antipsicótico']},
   {k:'dep',m:'Depressão ou ansiedade refratária',s:['mental','ansiedade','panico','toc'],cid:'F32.[ ]',pri:'E',hip:'[Depressão / ansiedade / TOC / pânico] refratário',crit:['Sem resposta a 2 antidepressivos em dose e tempo adequados, com psicoterapia','Dúvida diagnóstica (bipolaridade, psicose)'],env:['PHQ-9/GAD-7 seriados','Antidepressivos usados, doses e tempo','Acompanhamento com psicologia/eMulti']}]},
@@ -6346,7 +6596,7 @@ const RXG={
  aco:'etinilestradiol|levonorgestrel|desogestrel|noretisterona|medroxiprogesterona|ciproterona|drospirenona',indu:'carbamazepina|fenitoina|fenobarbital|rifampicina|topiramato|oxcarbazepina',
  beta:'propranolol|atenolol|metoprolol|carvedilol|bisoprolol',vd:'diltiazem|verapamil',digo:'digoxina',digoi:'amiodarona|claritromicina|verapamil|diltiazem|espironolactona',
  quin:'ciprofloxacino|levofloxacino',sild:'sildenafila|sildenafil|tadalafila',nitr:'isossorbida|nitroglicerina',bupro:'bupropiona',conv:'tramadol|bupropiona|clozapina',
- tamox:'tamoxifeno',isrsf:'fluoxetina|paroxetina|bupropiona',alop:'alopurinol',aza:'azatioprina'};
+ tamox:'tamoxifeno',dopa:'levodopa|pramipexol',antid:'haloperidol|risperidona|metoclopramida|flunarizina|cinarizina|clorpromazina|levomepromazina',ache:'donepezila|rivastigmina|galantamina',anticol:'biperideno|amitriptilina|prometazina|dexclorfeniramina|hidroxizina|clomipramina|imipramina|oxibutinina|escopolamina',valp:'acido valproico|valproato|divalproato',lamo:'lamotrigina',isrsf:'fluoxetina|paroxetina|bupropiona',alop:'alopurinol',aza:'azatioprina'};
 /* [grupo A, grupo B, gravidade, o que fazer] */
 const RXI=[
  ['ieca','bra','grave','Duplo bloqueio do sistema renina-angiotensina: não associar (hipercalemia, lesão renal).'],
@@ -6375,6 +6625,10 @@ const RXI=[
  ['sild','nitr','grave','Hipotensão grave: contraindicado associar.'],
  ['bupro','conv','moderada','Reduz o limiar convulsivo: evitar a associação, principalmente com história de convulsão.'],
  ['tamox','isrsf','moderada','Fluoxetina, paroxetina e bupropiona reduzem o efeito do tamoxifeno: preferir sertralina em dose baixa, escitalopram ou venlafaxina.'],
+ ['dopa','antid','grave','Antagonista da dopamina piora o Parkinson e anula a levodopa: evitar; para náusea, domperidona; para psicose, quetiapina.'],
+ ['ache','beta','moderada','Bradicardia e síncope: ECG e FC antes; reduzir o betabloqueador ou observar tontura e desmaio.'],
+ ['ache','anticol','moderada','Efeitos opostos: o anticolinérgico anula o remédio da demência e piora a confusão. Trocar o anticolinérgico.'],
+ ['valp','lamo','grave','Valproato dobra o nível da lamotrigina (risco de Stevens-Johnson): usar metade da dose da lamotrigina e subir mais devagar.'],
  ['alop','aza','grave','Alopurinol aumenta muito a azatioprina (aplasia medular): evitar ou reduzir a azatioprina a 25%.']];
 const rxgRe={};const rxgM=(g,t)=>(rxgRe[g]=rxgRe[g]||new RegExp(RXG[g])).exec(t);
 function rxInter(texts){const N=texts.map(t=>norm(t.split('\n')[0]+' '+t)),out=[];
@@ -6422,6 +6676,56 @@ function rxPtHTML(){const [t,src]=rxTfg();
     <div class="grid2" style="margin-top:8px"><div class="field"><label for="rxp-tfg">TFG (mL/min/1,73 m²)</label><input id="rxp-tfg" inputmode="decimal" value="${esc(RXP.tfg)}" placeholder="${t&&!RXP.tfg?nf(t,0)+' '+src:'vazio = do Preencher exames'}"></div>
     <div class="field"><label for="rxp-ch">Hepatopatia (Child-Pugh)</label><select id="rxp-ch"><option value="">Sem hepatopatia</option>${['A','B','C'].map(k=>`<option value="${k}"${RXP.ch===k?' selected':''}>Child-Pugh ${k}</option>`).join('')}</select></div></div>
     <p class="note">${t?`TFG ${nf(t,0)} ${esc(src)}. `:'Sem TFG: digite aqui ou preencha a creatinina e a idade em Preencher exames. '}Os ajustes aparecem embaixo de cada remédio. Detalhes em Ajustes de dose.</p></details>`}
+/* Início (painel ou lista), barra de atalhos no celular, seções em sanfona e navegação S/O/A/P */
+const NAVO={inicio:['Início','box',()=>go('inicio')],doenca:['Por doença','soap',()=>openSection('doenca')],receita:['Receita','presc',()=>go('receita')],labs:['Exames','exames',()=>go('labs')],
+ consulta:['Consulta','cons',()=>go('consulta')],enc:['Encaminhar','doc',()=>go('enc')],urg:['Urgência','urg',()=>openSection('urg')],calc:['Calcular','calc',()=>openSection('calc')],
+ soap:['SOAP','soap',()=>openSection('soap')],ef:['Exame físico','steth',()=>openSection('ef')],farmacia:['Farmácia','presc',()=>go('farmacia')]};
+const navSel=()=>{try{const v=JSON.parse(store.get('kitaps:nav')||'null');if(Array.isArray(v)&&v.length)return v.filter(k=>NAVO[k]).slice(0,4)}catch(e){}return ['inicio','doenca','receita','labs']};
+function navDraw(){let b=$('#bnav');if(!b){b=document.createElement('nav');b.id='bnav';b.setAttribute('aria-label','Atalhos');document.body.appendChild(b);document.body.classList.add('has-bnav')}
+  const L=navSel();b.innerHTML=L.map(k=>`<button type="button" data-nv="${k}"><span>${icon(NAVO[k][1])}</span><small>${esc(NAVO[k][0])}</small></button>`).join('')+`<button type="button" data-nv="menu"><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></span><small>Menu</small></button>`;
+  b.querySelectorAll('[data-nv]').forEach(x=>x.onclick=()=>{const k=x.dataset.nv;if(k==='menu'){document.body.classList.contains('menu-open')?closeMenu():openMenu();return}closeMenu();NAVO[k][2]()});navMark()}
+function navMark(){const b=$('#bnav');if(!b||typeof cur==='undefined')return;b.querySelectorAll('[data-nv]').forEach(x=>{const k=x.dataset.nv;
+  const on=k===cur.id||(k==='doenca'&&cur.sec==='dz')||(k==='inicio'&&cur.id==='inicio')||((k==='urg'||k==='calc'||k==='soap'||k==='ef')&&CURS===k&&cur.id!=='inicio');x.setAttribute('aria-current',on?'page':'false')})}
+const INIT=[['receita','Receita montada','presc','Monte a receita com o SUS',()=>go('receita')],['labs','Preencher exames','exames','Resultados viram texto',()=>go('labs')],
+ ['doenca','Por doença','soap','SOAP, fluxo, receita e MEV',()=>openSection('doenca')],['urg','Urgência','urg','Condutas na UBS',()=>openSection('urg')],
+ ['calc','Calculadoras','calc','TFG, IMC, risco CV…',()=>openSection('calc')],['consulta','Modo consulta','cons','Tudo da mesma pessoa',()=>go('consulta')]];
+function renderINI(m){const v=store.get('kitaps:homev')||'painel',sel=navSel();
+  m.innerHTML=`<section class="panel"><div class="ph"><h2>Kit APS</h2><div class="seg" role="tablist" aria-label="Como ver o início"><button type="button" role="tab" data-hv="painel" aria-selected="${v==='painel'}">Painel</button><button type="button" role="tab" data-hv="lista" aria-selected="${v==='lista'}">Lista</button></div></div>
+    ${v==='painel'?`<div class="inig">${INIT.map(([k,t,ic,s],i)=>`<button class="init" type="button" data-ii="${i}"><span class="inii">${icon(ic,28)}</span><b>${esc(t)}</b><small>${esc(s)}</small></button>`).join('')}</div>
+      ${FAV&&FAV.length?`<div class="lbl">Favoritos</div><div class="bar">${FAV.map(id=>`<button class="chip" type="button" data-go="${id}">${esc(chipLabel(id))}</button>`).join('')}</div>`:''}`
+    :`<div class="inil">${[...new Set(SECTIONS.map(s=>s.g))].map(g=>`<div class="lbl">${esc(g)}</div>${SECTIONS.filter(s=>s.g===g&&s.k!=='ini').map(s=>`<button class="edrow" type="button" data-sk="${s.k}"><span class="qs">${icon(s.ic)}</span><span class="ql">${esc(s.t)}</span><span class="edtag">${s.ids.length>1?s.ids.length:''}</span></button>`).join('')}`).join('')}</div>`}
+    <details class="card"><summary class="lbl" style="cursor:pointer">Barra de atalhos do celular</summary><p class="note">Escolha até 4 atalhos (o Menu fica sempre no fim).</p>
+      <div class="opts soft" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">${Object.entries(NAVO).map(([k,o])=>`<label class="opt"><input type="checkbox" data-nk="${k}"${sel.includes(k)?' checked':''}><span>${esc(o[0])}</span></label>`).join('')}</div></details>
+    <p class="note">O kit abre nesta tela. Escolha "Painel" para os botões grandes ou "Lista" para ver todas as seções; a escolha fica guardada.</p></section>`;
+  m.querySelectorAll('[data-hv]').forEach(b=>b.onclick=()=>{store.set('kitaps:homev',b.dataset.hv);renderINI(m)});
+  m.querySelectorAll('[data-ii]').forEach(b=>b.onclick=()=>INIT[+b.dataset.ii][4]());
+  m.querySelectorAll('[data-sk]').forEach(b=>b.onclick=()=>openSection(b.dataset.sk));
+  m.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+  m.querySelectorAll('[data-nk]').forEach(c=>c.onchange=()=>{const L=[...m.querySelectorAll('[data-nk]:checked')].map(x=>x.dataset.nk);
+    if(L.length>4){c.checked=false;toast('No máximo 4 atalhos');return}if(!L.length){c.checked=true;toast('Deixe pelo menos 1');return}store.set('kitaps:nav',JSON.stringify(L));navDraw()})}
+/* Sanfona nas páginas longas (guias): lembra o que ficou fechado em cada página */
+function accInit(m,id){const cards=[...m.querySelectorAll('.card.gd')];if(cards.length<3)return;
+  const key='kitaps:acc:'+id;let C=[];try{C=JSON.parse(store.get(key)||'[]')}catch(e){}
+  const save=()=>{const L=cards.map((c,i)=>c.classList.contains('acc-x')?i:-1).filter(i=>i>=0);L.length?store.set(key,JSON.stringify(L)):store.del(key)};
+  cards.forEach((c,i)=>{const h=c.querySelector('.lbl-row>span');if(!h)return;c.classList.add('acc');if(C.includes(i))c.classList.add('acc-x');
+    h.setAttribute('role','button');h.tabIndex=0;h.setAttribute('aria-expanded',!C.includes(i));
+    const tg=()=>{c.classList.toggle('acc-x');h.setAttribute('aria-expanded',!c.classList.contains('acc-x'));save()};h.onclick=tg;h.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tg()}}});
+  const bar=document.createElement('div');bar.className='bar accbar';bar.innerHTML='<button class="btn small" type="button" data-acc="1">Abrir todas</button><button class="btn small" type="button" data-acc="0">Fechar todas</button>';
+  cards[0].before(bar);bar.querySelectorAll('[data-acc]').forEach(b=>b.onclick=()=>{const o=b.dataset.acc==='1';cards.forEach(c=>{c.classList.toggle('acc-x',!o);const h=c.querySelector('.lbl-row>span');if(h)h.setAttribute('aria-expanded',o)});save()})}
+/* SOAP: barra S/O/A/P fixa que mostra onde você está e pula para a parte */
+function soapNav(ta){const bar=document.createElement('div');bar.className='soapnav';const P=['S','O','A','P'];
+  bar.innerHTML=P.map(k=>`<button type="button" data-sp="${k}" aria-label="Ir para ${k}">${k}</button>`).join('');ta.before(bar);
+  let pos={};const mir=document.createElement('div');
+  const measure=()=>{const cs=getComputedStyle(ta);mir.style.cssText=`position:absolute;visibility:hidden;white-space:pre-wrap;word-wrap:break-word;box-sizing:border-box;width:${ta.clientWidth}px;font:${cs.font};padding:${cs.padding};line-height:${cs.lineHeight};letter-spacing:${cs.letterSpacing}`;document.body.appendChild(mir);
+    pos={};P.forEach(k=>{const mm=ta.value.match(new RegExp('^'+k+':','m'));if(mm){mir.textContent=ta.value.slice(0,mm.index);pos[k]=mir.scrollHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom)}});mir.remove()};
+  let hold=0,pick='';const mark=()=>{const y=ta.scrollTop+8,bot=ta.scrollTop+ta.clientHeight>=ta.scrollHeight-2;let a='';P.forEach(k=>{if(pos[k]!=null&&pos[k]<=y+ta.clientHeight*0.25)a=k});if(!a&&pos.S!=null)a='S';if(Date.now()<hold&&pick)a=pick;else if(bot&&ta.scrollTop>0&&pick&&pos[pick]!=null&&pos[pick]>=ta.scrollTop)a=pick;
+    bar.querySelectorAll('[data-sp]').forEach(b=>{b.setAttribute('aria-current',b.dataset.sp===a);b.disabled=pos[b.dataset.sp]==null})};
+  let tm;ta.addEventListener('input',()=>{clearTimeout(tm);tm=setTimeout(()=>{measure();mark()},300)});ta.addEventListener('scroll',mark);
+  bar.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{measure();const y=pos[b.dataset.sp];if(y==null)return;pick=b.dataset.sp;hold=Date.now()+600;ta.scrollTop=Math.max(0,y-4);
+    const r=ta.getBoundingClientRect(),hh=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hh'))||0;if(r.top<hh||r.top>innerHeight*0.6)window.scrollTo({top:scrollY+r.top-hh-bar.offsetHeight-8,behavior:'smooth'});mark()});
+  setTimeout(()=>{measure();mark()},0)}
+function setHH(){const h=document.querySelector('header');if(h)document.documentElement.style.setProperty('--hh',h.offsetHeight+'px')}
+addEventListener('resize',setHH);
 function renderRXB(m){
   m.innerHTML=`<section class="panel"><div class="ph"><h2>Receita montada</h2><span class="code">${RXB.length} remédio(s)</span></div>
     <p class="note">Toque em “+ Receita” nas Prescrições, na prescrição padrão do SOAP, em Por doença ou na Farmácia do SUS. Ou monte aqui: escolha o remédio, a apresentação do SUS e ajuste dose, frequência, duração e quantidade para a pessoa. Os remédios entram numerados e agrupados por via, como na receita normal, e separados por tipo de receituário. Fica só nesta aba do navegador.</p>
@@ -6498,6 +6802,9 @@ Object.assign(SOAPLINK,{sua:[['fx_sua','Fluxograma'],['rx_anemia','Ferro'],['ex_
  fa:[['fx_fa','Fluxograma'],['chads','CHA₂DS₂-VASc'],['hasbled','HAS-BLED'],['ecg_taqui','ECG: taquiarritmias'],['or_anticoag','Folha do paciente']],panico:[['fx_pan','Fluxograma'],['gad7','GAD-7'],['phq9','PHQ-9'],['rx_ans','Ansiolíticos']],
  toc:[['fx_toc','Fluxograma'],['phq9','PHQ-9'],['rx_ad','Antidepressivos']],luto:[['fx_luto','Fluxograma'],['phq9','PHQ-9'],['at_afast','Atestado']]});
 [['puericultura','ef_reflex','Reflexos primitivos'],['puericultura','ia_gd','Introdução alimentar'],['puericultura','or_ia','Folha: introdução alimentar'],['lombalgia','efp_osteo','Roteiro osteoarticular'],['oa','efp_lomb','Quadril: Patrick (FABER)'],['oa','efp_osteo','Roteiro osteoarticular']].forEach(([k,id,l])=>(SOAPLINK[k]=SOAPLINK[k]||[]).push([id,l]));
+Object.assign(SOAPLINK,{demencia:[['fx_dem','Fluxograma'],['minicog','Mini-Cog'],['katz','Katz'],['lawton','Lawton'],['ivcf20','IVCF-20'],['phq9','PHQ-9'],['ef_neuro','Exame neurológico'],['or_dem','Folha do cuidador']],
+ parkinson:[['fx_park','Fluxograma'],['ef_neuro','Exame neurológico'],['quedas','Risco de quedas'],['minicog','Mini-Cog'],['phq9','PHQ-9'],['ajustes','Ajustes no idoso']],
+ epilepsia:[['fx_epi','Fluxograma'],['ef_neuro','Exame neurológico'],['or_epi','Folha: crise convulsiva'],['farmacia','Farmácia do SUS']]});
 Object.assign(SOAPLINK,{esquizofrenia:[['rx_esq','Antipsicóticos'],['rx_ap','Risperidona e haloperidol'],['imc','IMC'],['rcv','Risco CV'],['qtc','QTc'],['farmacia','Farmácia do SUS']],sang1:[['fx_sang1','Fluxograma'],['abort_gd','Classificação'],['u_sang','Urgência'],['or_sang','Folha do paciente']],sang2:[['fx_sang2','Fluxograma'],['abort_gd','Classificação'],['u_sang','Urgência'],['or_sang','Folha do paciente']],oma:[['fx_ouvido','Fluxograma'],['atb_guia','Antibióticos (dose por peso)'],['ef_cp','Otoscopia'],['pedi','Doses pediátricas'],['mev_oto','Orientações']],otext:[['fx_ouvido','Fluxograma'],['ef_cp','Otoscopia'],['mev_oto','Orientações']],conj:[['fx_conj','Fluxograma'],['mev_oto','Orientações']],
  oa:[['fx_oa','Fluxograma'],['efp_joelho','Exame do joelho'],['imc','IMC'],['mev_oa','Exercícios']],insonia:[['fx_ins','Fluxograma'],['isi','ISI'],['phq9','PHQ-9'],['gad7','GAD-7'],['mev_sono','Higiene do sono'],['or_sono','Folha do paciente']],
  anemia:[['fx_anemia','Fluxograma'],['ex_hemo','Hemograma'],['pedi','Doses pediátricas'],['mev_anemia','Alimentação']],b12:[['fx_b12','Fluxograma'],['ex_hemo','Hemograma'],['mev_anemia','Alimentação']]});
@@ -6576,7 +6883,7 @@ function renderSoap(m,id){
     <div id="sheet" class="card atsheet rxsheet"></div>
   </section>`;
   m.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
-  const ta=$('#ta-'+id);ta.value=saved!=null?saved:t.body;
+  const ta=$('#ta-'+id);ta.value=saved!=null?saved:t.body;soapNav(ta);
   ta.oninput=()=>store.set(key,ta.value);
   srxDraw(id);
   $('#cp').onclick=()=>copy(ta.value,ta);
@@ -7275,7 +7582,16 @@ const DRUGS=[
 ['Dolutegravir','dolutegravir',0,'Sem ajuste.','Recomendado (PCDT).','Ver acima (HIV: aleitamento contraindicado no Brasil).',''],
 ['Tenofovir + entricitabina (PrEP)','entricitabina',60,'PrEP oral exige TFG ≥ 60.','Pode manter.','Pode manter.',''],
 ['AAS 100 mg','\\baas\\b|[aá]cido acetilsalic',0,'Sem ajuste em dose baixa.','Indicado para prevenção de pré-eclâmpsia em alto risco (12–36 semanas).','Dose baixa compatível.','Evitar iniciar para prevenção primária.'],
-['Biperideno','biperideno',0,'Sem ajuste.','Cautela.','Cautela.','Evitar (anticolinérgico).']
+['Biperideno','biperideno',0,'Sem ajuste.','Cautela.','Cautela.','Evitar (anticolinérgico).'],
+['Donepezila','donepezila',0,'Sem ajuste.','Sem indicação.','Sem indicação.','Bradicardia e síncope: cuidado com betabloqueador; evitar associar anticolinérgicos.'],
+['Memantina','memantina',30,'TFG 5–29: máx. 10 mg/dia (5 mg 12/12 h).','Sem indicação.','Sem indicação.',''],
+['Levodopa + carbidopa / benserazida','levodopa',0,'Sem ajuste.','Evitar se possível.','Evitar.','Hipotensão postural e alucinações: menor dose eficaz.'],
+['Pramipexol','pramipexol',50,'TFG 20–50: dividir em 2 tomadas; TFG < 20: 1 vez ao dia (dose menor).','Evitar.','Evitar.','Sonolência súbita, alucinações, compulsões: cautela no idoso.'],
+['Levetiracetam','levetiracetam',80,'TFG 50–79: máx. 2 g/dia; 30–49: máx. 1,5 g/dia; < 30: máx. 1 g/dia.','Preferido na gestação (com lamotrigina).','Compatível.','Irritabilidade e alteração de humor.'],
+['Carbamazepina','carbamazepina',0,'Sem ajuste (TFG < 10: 75% da dose).','Evitar: ácido fólico 5 mg se usar.','Compatível.','Hiponatremia (SIADH) e ataxia: dosar sódio.'],
+['Ácido valproico','valpro|divalproato',0,'Sem ajuste (fração livre aumenta: cuidado com nível sérico).','Contraindicado em idade fértil sem contracepção.','Compatível.','Tremor, ganho de peso, plaquetopenia.'],
+['Fenitoína','fenitoina',0,'Sem ajuste (hipoalbuminemia aumenta a fração livre).','Evitar se possível.','Compatível.','Ataxia, quedas, osteoporose.'],
+['Fenobarbital','fenobarbital',10,'TFG < 10: aumentar o intervalo.','Evitar se possível.','Cautela: sedação do bebê.','Evitar no idoso (sedação, quedas, confusão) — Beers.']
 ];
 const INTER=[
  ['IECA/BRA + espironolactona ou SMX-TMP','Hipercalemia: dosar potássio, cuidado se TFG baixa.'],
@@ -7494,9 +7810,10 @@ function renderIPSS(m){
 }
 
 const h=(location.hash||'').slice(1);
-const known=id=>!!(id==='labs'||id==='enc'||T[id]||C[id]||P[id]||M[id]||F[id]||GD[id]||AT[id]||E[id]);
-const start=known(h)?h:(store.get('kitaps:last')||'has');
-go(known(start)?start:'has');
+const known=id=>!!(id==='inicio'||id==='labs'||id==='enc'||T[id]||C[id]||P[id]||M[id]||F[id]||GD[id]||AT[id]||E[id]);
+const start=known(h)?h:'inicio';
+navDraw();go(known(start)?start:'inicio');
+{const t=document.querySelector('header .ttl');if(t){t.style.cursor='pointer';t.addEventListener('click',e=>{if(!e.target.closest('button,select,a'))go('inicio')})}}
 /* ---------- Busca única ---------- */
 const CKEY={enc:'encaminhamento referencia especialista regulacao sisreg telessaude contrarreferencia cardiologia endocrino nefro ortopedia neuro psiquiatria gineco uro dermato',ef_reflex:'reflexos primitivos neonatais moro busca succao preensao babinski marcha rtca recem-nascido',fli:'fatty liver index fli esteatose figado gorduroso masld dhgm triglicerideos ggt circunferencia abdominal',labs:'exames laboratoriais resultado preencher hemograma glicemia colesterol creatinina tfg tsh sorologias rotina prenatal menopausa crianca homem',farmacia:'farmacia do sus rename remume gestacao lactacao amamentacao seguro gravidez',isi:'insonia sono gravidade isi dormir',mrpa:'mrpa pressao em casa media residencial monitorizacao hipertensao avental branco mascarada',glicres:'glicemia capilar em casa automonitorizacao media hipoglicemia perfil glicemico insulina',ciwa:'abstinencia alcoolica alcool delirium tremens benzodiazepinico diazepam tiamina',asrs:'tdah deficit atencao hiperatividade adulto rastreio desatencao',snap:'tdah deficit atencao hiperatividade crianca escola professor rastreio',marcos:'desenvolvimento marcos caderneta puericultura atraso neuropsicomotor crianca suplementacao ferro vitamina',dhi:'tontura vertigem labirintite dizziness impacto',curb65:'pneumonia curb crb gravidade internacao',wells_tvp:'trombose tvp perna edema d-dimero doppler',wells_tep:'embolia tep pulmonar dispneia d-dimero',chads:'fibrilacao atrial fa anticoagulacao avc chads vasc',hasbled:'sangramento anticoagulacao has-bled varfarina',centor:'garganta faringite amigdalite mcisaac estreptococo',katz:'idoso avd atividades basicas dependencia funcionalidade',lawton:'idoso aivd atividades instrumentais funcionalidade',minicog:'idoso memoria demencia cognicao relogio rastreio',ivcf20:'idoso fragilidade vulnerabilidade ivcf',quedas:'idoso queda steadi tug equilibrio',pps:'paliativo cuidados paliativos funcionalidade karnofsky',drcest:'drc estagio kdigo albuminuria rac renal',cg:'clearance creatinina cockcroft gault ajuste dose renal',cacorr:'calcio albumina hipocalcemia hipercalcemia',pedi:'pediatria pediatrica crianca dose peso mg/kg gotas xarope suspensao paracetamol dipirona ibuprofeno amoxicilina azitromicina cefalexina prednisolona salbutamol albendazol sulfato ferroso vitamina',ig:'idade gestacional dpp dum usg gestacao gravidez parto',tfg:'creatinina rim renal ckd-epi filtracao drc',imc:'peso altura obesidade indice de massa corporal',phq9:'depressao humor rastreio',gad7:'ansiedade rastreio',audit:'alcool bebida etilismo',insulina:'nph regular diabetes titulacao dose glicemia hipoglicemia',fluxodm:'diabetes metformina fluxograma tratamento dm2 gliclazida dapagliflozina',melanoma:'pele nevo pinta lesao abcde glasgow cancer',rcv:'framingham colesterol risco cardiovascular estatina ldl',rastreio:'rastreamento preventivo citopatologico papanicolau preventivo mamografia colonoscopia sangue oculto psof densitometria osteoporose psa sorologias hiv sifilis hepatite',ajustes:'ajuste dose renal drc tfg gestacao gravidez lactacao amamentacao idoso beers interacao seguranca',vacinas:'vacina calendario vacinal pni imunizacao bcg penta hpv dtpa influenza gestante crianca idoso',fager:'cigarro tabagismo fumo fagerstrom anos-maco nicotina',ipss:'prostata hpb urinario luts',itb:'indice tornozelo braquial doenca arterial periferica claudicacao pulsos doppler',braden:'lesao por pressao escara acamado risco ulcera',push:'ulcera ferida cicatrizacao curativo lesao por pressao venosa',mrs:'menopausa climaterio fogacho ondas de calor trh kupperman',fcecg:'ecg frequencia cardiaca quadradinhos rr',eixo:'ecg eixo eletrico desvio di avf',qtc:'ecg qt corrigido bazett fridericia framingham',sve:'ecg sobrecarga ventricular esquerda hipertrofia sokolow cornell peguero',fatorr:'hepatograma transaminases fosfatase colestase hepatocelular',fib4:'fibrose hepatica esteatose figado gorduroso',gasocalc:'gasometria acidose alcalose anion gap winter',espcalc:'espirometria vef1 cvf tiffeneau obstrucao dpoc asma',tbdose:'tuberculose rhze dose peso comprimidos esquema basico'};
 let IDX=null;
