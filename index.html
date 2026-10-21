@@ -1738,7 +1738,9 @@ rx_anal:{s:'Analgésicos',t:'Analgésicos e anti-inflamatórios',rec:RS+' (opioi
 1. Paracetamol 750 mg ...... 20 comprimidos
    Tomar 1 a 2 comprimidos (até 1 g) no início da dor, se necessário de 6 em 6 horas. Máximo de 4 g por dia.
 2. Metoclopramida 10 mg ...... 10 comprimidos
-   Tomar 1 comprimido junto com o paracetamol, se náusea ou crise de enxaqueca, até de 8 em 8 horas.`,n:'Crise que não cede: sumatriptano 50 mg VO (dados tranquilizadores na gestação), ou na urgência metoclopramida 10 mg IV/IM, clorpromazina 0,1 mg/kg IM/IV ou prometazina 25 mg IM, com hidratação. Dipirona só pontual e evitar no 3º trimestre. Contraindicados: ergotamina e derivados (uterotônicos), AINE após 20 semanas, AAS em dose analgésica, valproato, topiramato. Profilaxia se crises frequentes: propranolol 20–40 mg 12/12 h ou amitriptilina 10–25 mg à noite. Cefaleia nova ou diferente após 20 semanas: medir PA e pensar em pré-eclâmpsia; sinais de alarme (pior dor da vida, déficit, febre, convulsão, puerpério): urgência.'}]},
+   Tomar 1 comprimido junto com o paracetamol, se náusea ou crise de enxaqueca, até de 8 em 8 horas.
+3. Rizatriptana 10 mg ...... 4 comprimidos
+   Se a dor não melhorar em 2 horas com o paracetamol, tomar 1 comprimido. Pode repetir após 2 horas se a dor voltar. Máximo de 2 comprimidos por dia.`,n:'Triptano se o paracetamol não resolver: rizatriptana 10 mg (5 mg se usa propranolol, máximo de 3 cp de 5 mg ao dia) ou sumatriptano 50 mg; os registros de gestantes não mostram aumento de malformações (sumatriptano tem mais dados). Não constam na RENAME: compra própria. Na urgência: metoclopramida 10 mg IV/IM, clorpromazina 0,1 mg/kg IM/IV ou prometazina 25 mg IM, com hidratação. Dipirona só pontual e evitar no 3º trimestre. Contraindicados: ergotamina e derivados (uterotônicos), AINE após 20 semanas, AAS em dose analgésica, valproato, topiramato. Profilaxia se crises frequentes: propranolol 20–40 mg 12/12 h ou amitriptilina 10–25 mg à noite. Cefaleia nova ou diferente após 20 semanas: medir PA e pensar em pré-eclâmpsia; sinais de alarme (pior dor da vida, déficit, febre, convulsão, puerpério): urgência.'}]},
 rx_tab:{s:'Tabagismo',t:'Tratamento do tabagismo',rec:RS+' (bupropiona: '+RC+')',items:[
  {t:'Adesivo de nicotina',rx:`Uso transdérmico
 1. Nicotina adesivo 21 mg ...... 28 adesivos
@@ -4362,6 +4364,8 @@ const FARM=[
  ['Tramadol','tramadol','N','cápsula 50 mg','Evitar uso prolongado e perto do parto.','Evitar ou usar dose única, observando sonolência no bebê.','Opioide'],
  ['Morfina','morfina','B','comprimido 10 e 30 mg; solução oral; injetável','Evitar uso prolongado (abstinência neonatal).','Compatível em dose baixa e por pouco tempo; observar sonolência.','Opioide'],
  ['Sumatriptano','sumatriptano','N','comprimido 50 mg','Cautela: dados tranquilizadores, usar se paracetamol não resolver.','Compatível.','Antienxaqueca'],
+ ['Rizatriptana','rizatriptana','N','comprimido 10 mg; orodispersível 10 mg','Cautela: dados de registro tranquilizadores, usar se paracetamol não resolver.','Compatível (dados limitados; sumatriptano tem mais dados).','Antienxaqueca'],
+ ['Ergotamina','ergotamina|di-?hidroergotamina','N','associações com cafeína e analgésicos','Contraindicada: uterotônica.','Evitar.','Antienxaqueca'],
  ['Butilbrometo de escopolamina','escopolamina|hioscina','B','comprimido 10 mg; solução oral; injetável','Cautela (uso pontual).','Compatível em uso pontual.','Antiespasmódico'],
  ['Omeprazol','omeprazol','B','cápsula 10 e 20 mg','Seguro.','Compatível.','Gastrintestinal'],
  ['Metoclopramida','metoclopramida','B','comprimido 10 mg; solução oral 4 mg/mL; injetável','Segura.','Compatível em uso curto.','Antiemético'],
