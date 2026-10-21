@@ -54,6 +54,24 @@ h1 small{font-weight:500;color:var(--muted);font-size:.8rem;margin-left:6px}
 .seg::-webkit-scrollbar{display:none}
 .seg button{flex:1;border:0;background:none;color:var(--muted);font:600 .8rem var(--f-ui);padding:6px 7px;white-space:nowrap;border-radius:999px;cursor:pointer}
 .seg button[aria-selected="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 2px rgb(0 0 0/.12)}
+.search{position:relative}
+.search input{padding:8px 12px;border-radius:999px;font-size:.92rem;background:var(--bg)}
+#qres{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 8px 24px rgb(0 0 0/.18);max-height:60vh;overflow-y:auto;z-index:8;display:grid}
+.qr{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;align-items:baseline;text-align:left;border:0;border-bottom:1px solid var(--line);background:none;color:var(--fg);font:inherit;padding:9px 12px;cursor:pointer}
+.qr:hover,.qr:focus-visible{background:var(--accent-soft)}
+.qr.none{display:block;color:var(--muted);font-size:.88rem;cursor:default}
+.qs{font:700 .66rem var(--f-ui);text-transform:uppercase;letter-spacing:.06em;color:var(--accent);white-space:nowrap}
+.ql{font-weight:600;font-size:.92rem}
+.qd{grid-column:2;font-size:.78rem;color:var(--muted)}
+.ttl{display:flex;align-items:baseline;gap:10px}
+.mode{border:0;background:none;color:var(--accent);font:600 .78rem var(--f-ui);padding:2px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.favs{padding-bottom:0;align-items:center}
+.favlbl{color:var(--warn);font-size:1rem;flex:none}
+.chip.fav{border-color:var(--warn)}
+.ctag{font:700 .62rem var(--f-ui);text-transform:uppercase;letter-spacing:.05em;opacity:.7;margin-right:5px}
+.star{margin-left:auto;border:1px solid var(--line);background:var(--surface);color:var(--warn);font:600 .78rem var(--f-ui);padding:4px 10px;border-radius:999px;cursor:pointer}
+.star[aria-pressed="true"]{background:var(--warn-soft);border-color:var(--warn)}
+.star span{color:var(--fg)}
 .chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none;margin-inline:-4px;padding-inline:4px}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:500 .85rem var(--f-ui);padding:6px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
@@ -146,15 +164,11 @@ footer{color:var(--muted);font-size:.78rem}
 <header>
   <div class="wrap">
     <div class="top">
-      <h1>Kit APS <small>bolso</small></h1>
-      <div class="seg" role="tablist" aria-label="Seção">
-        <button id="tab-soap" role="tab" aria-selected="true" data-sec="soap">SOAP</button>
-        <button id="tab-calc" role="tab" aria-selected="false" data-sec="calc">Cálculos</button>
-        <button id="tab-presc" role="tab" aria-selected="false" data-sec="presc">Prescrições</button>
-        <button id="tab-mev" role="tab" aria-selected="false" data-sec="mev">MEV</button>
-        <button id="tab-esq" role="tab" aria-selected="false" data-sec="esq">Paciente</button>
-      </div>
+      <div class="ttl"><h1>Kit APS</h1><button class="mode" id="mode" type="button">Ver por linha de cuidado</button></div>
+      <div class="seg" id="seg" role="tablist" aria-label="Seção"></div>
     </div>
+    <div class="search"><input id="q" type="search" placeholder="Buscar template, cálculo, remédio ou orientação" aria-label="Buscar no kit" autocomplete="off"><div id="qres" hidden role="listbox"></div></div>
+    <div class="chips favs" id="favs" hidden aria-label="Favoritos"></div>
     <div class="chips" id="chips" role="tablist" aria-label="Item"></div>
   </div>
 </header>
@@ -533,7 +547,7 @@ P:
 };
 
 /* ---------- Calculadoras ---------- */
-const C={ig:'IG / DPP',tfg:'TFG CKD-EPI',imc:'IMC',phq9:'PHQ-9',audit:'AUDIT',gad7:'GAD-7',insulina:'Insulina',fluxodm:'Fluxo DM2',melanoma:'Melanoma',rcv:'Risco CV',fager:'Tabagismo',ipss:'IPSS'};
+const C={ig:'IG / DPP',tfg:'TFG CKD-EPI',imc:'IMC',phq9:'PHQ-9',audit:'AUDIT',gad7:'GAD-7',insulina:'Insulina',fluxodm:'Fluxo DM2',melanoma:'Melanoma',rcv:'Risco CV',rastreio:'Rastreios',vacinas:'Vacinas',ajustes:'Ajustes de dose',fager:'Tabagismo',ipss:'IPSS'};
 /* ---------- Prescrições padrão (adultos) ---------- */
 const RS='Receita simples',RA='Receita simples em 2 vias (retenção na farmácia), validade 10 dias',RC='Receita de Controle Especial em 2 vias (lista C1), validade 30 dias',RB='Notificação de Receita B (azul) + receita, validade 30 dias, até 60 dias de tratamento',RA2='Receita de Controle Especial em 2 vias';
 const P={
@@ -958,10 +972,15 @@ function svgToPng(svg,img,out,fname){
   const vb=svg.match(/viewBox="0 0 (\d+) (\d+)"/),w=+vb[1],h=+vb[2],url='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
   const im=new Image();
   im.onload=()=>{try{const c=document.createElement('canvas');c.width=w*2;c.height=h*2;const x=c.getContext('2d');x.scale(2,2);x.drawImage(im,0,0);img.src=c.toDataURL('image/png')}catch(e){img.src=url}out.hidden=false;
-    if(fname){try{const a=document.createElement('a');a.href=img.src;a.download=fname;document.body.appendChild(a);a.click();a.remove()}catch(e){}}
+    if(fname)saveImage(img.src,fname);
     out.scrollIntoView({block:'start'})};
   im.onerror=()=>{img.src=url;out.hidden=false};
   im.src=url;
+}
+async function saveImage(dataUrl,fname){
+  let d=null;try{d=window.claude&&window.claude.use?await window.claude.use('downloads'):null}catch(e){}
+  if(d){try{const blob=await (await fetch(dataUrl)).blob();await d.save({filename:fname,data:blob});toast('Imagem salva')}catch(e){if(e&&e.code!=='declined')toast('Não deu para baixar aqui: toque e segure a imagem')}return}
+  try{const a=document.createElement('a');a.href=dataUrl;a.download=fname;document.body.appendChild(a);a.click();a.remove()}catch(e){}
 }
 function printSheet(){try{window.print()}catch(e){toast('Impressão bloqueada aqui: use Baixar imagem')}}
 function setFromText(text){
@@ -1218,20 +1237,62 @@ let cur={sec:'soap',id:'has'};
 
 function chipLabel(id){return T[id]?({has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:E[id])}
 
+/* Navegação: por tipo ou por linha de cuidado; favoritos */
+const SECN={soap:'SOAP',calc:'Cálculos',presc:'Prescrições',mev:'MEV',esq:'Paciente'};
+const SECTAG={soap:'SOAP',calc:'Cálc.',presc:'Rx',mev:'MEV',esq:''};
+const LINHAS={
+ cronicos:{t:'Crônicos',ids:['has','dm','drc','hpb','tfg','imc','rcv','insulina','fluxodm','ipss','rastreio','vacinas','ajustes','melanoma','rx_cv','rx_anal','mev_has','mev_dm','mev_obes','mev_lip','mev_drc','mev_icc','mev_hpb','esquema']},
+ mulher:{t:'Mulher',ids:['prenatal','ig','imc','rastreio','vacinas','ajustes','rx_aco','rx_ist','rx_hiv','rx_atb','mev_gest','esquema']},
+ crianca:{t:'Criança',ids:['puericultura','imc','vacinas','rx_par','rx_sint','mev_cri','esquema']},
+ mental:{t:'Mental',ids:['mental','ansiedade','phq9','gad7','audit','fager','rx_ad','rx_ans','rx_ap','rx_tab','mev_dep','mev_ans','mev_sono','mev_alc','mev_tab','esquema']},
+ agudos:{t:'Agudos',ids:['ivas','gea','rx_atb','rx_sint','rx_anal','rx_par','rx_ist','rx_hiv','mev_ivas','mev_diar','esquema']}
+};
+let VIEW=store.get('kitaps:view')==='linha'?'linha':'tipo',CURL=store.get('kitaps:linha')||'cronicos';
+if(!LINHAS[CURL])CURL='cronicos';
+const secOf=id=>T[id]?'soap':C[id]?'calc':P[id]?'presc':M[id]?'mev':'esq';
+let FAV=[];try{FAV=JSON.parse(store.get('kitaps:favs')||'[]').filter(id=>T[id]||C[id]||P[id]||M[id]||E[id])}catch(e){FAV=[]}
+const saveFav=()=>store.set('kitaps:favs',JSON.stringify(FAV));
+function renderSeg(){
+  const seg=$('#seg');
+  const items=VIEW==='linha'?Object.entries(LINHAS).map(([k,l])=>[k,l.t,k===CURL]):Object.entries(SECN).map(([k,l])=>[k,l,k===cur.sec]);
+  seg.innerHTML=items.map(([k,l,on])=>`<button role="tab" data-k="${k}" aria-selected="${on}">${l}</button>`).join('');
+  seg.querySelectorAll('button').forEach(b=>b.onclick=()=>{const k=b.dataset.k;
+    if(VIEW==='linha'){CURL=k;store.set('kitaps:linha',k);const last=store.get('kitaps:lastl-'+k);go(last&&LINHAS[k].ids.includes(last)?last:LINHAS[k].ids[0])}
+    else go(store.get('kitaps:last-'+k)||SECS[k][0])});
+  $('#mode').textContent=VIEW==='linha'?'Ver por tipo':'Ver por linha de cuidado';
+}
+function renderFavs(){
+  const f=$('#favs');f.hidden=!FAV.length;
+  f.innerHTML=FAV.length?'<span class="favlbl" aria-hidden="true">★</span>'+FAV.map(id=>`<button class="chip fav" data-id="${id}" aria-selected="${id===cur.id}">${esc(chipLabel(id))}</button>`).join(''):'';
+  f.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>go(b.dataset.id));
+}
 function renderChips(){
-  const c=$('#chips');c.innerHTML='';c.hidden=SECS[cur.sec].length<2;
-  SECS[cur.sec].forEach(id=>{const b=document.createElement('button');b.className='chip';b.id='chip-'+id;b.role='tab';b.textContent=chipLabel(id);b.setAttribute('aria-selected',id===cur.id);b.onclick=()=>go(id);c.appendChild(b)});
-  document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-selected',b.dataset.sec===cur.sec));
+  const c=$('#chips');c.innerHTML='';
+  const list=VIEW==='linha'?LINHAS[CURL].ids:SECS[cur.sec];
+  c.hidden=list.length<2;
+  list.forEach(id=>{const b=document.createElement('button');b.className='chip';b.id='chip-'+id;b.role='tab';
+    const tg=VIEW==='linha'?SECTAG[secOf(id)]:'';b.innerHTML=(tg?`<small class="ctag">${tg}</small>`:'')+esc(id==='esquema'&&VIEW==='linha'?'Folha do paciente':chipLabel(id));
+    b.setAttribute('aria-selected',id===cur.id);b.onclick=()=>go(id);c.appendChild(b)});
+  renderSeg();renderFavs();
+}
+function addStar(){
+  const ph=$('#main .ph');if(!ph)return;const id=cur.id,on=FAV.includes(id);
+  const b=document.createElement('button');b.className='star';b.type='button';b.setAttribute('aria-pressed',on);b.title=on?'Tirar dos favoritos':'Fixar nos favoritos';
+  b.innerHTML=on?'★ <span>Favorito</span>':'☆ <span>Fixar</span>';
+  b.onclick=()=>{const i=FAV.indexOf(id);if(i>=0)FAV.splice(i,1);else FAV.push(id);saveFav();toast(i>=0?'Removido dos favoritos':'Fixado nos favoritos');renderFavs();b.remove();addStar()};
+  ph.appendChild(b);
 }
 function go(id){
-  cur={sec:T[id]?'soap':C[id]?'calc':P[id]?'presc':M[id]?'mev':'esq',id};
+  cur={sec:secOf(id),id};
+  if(VIEW==='linha'&&!LINHAS[CURL].ids.includes(id)){const k=Object.keys(LINHAS).find(k=>LINHAS[k].ids.includes(id));if(k){CURL=k;store.set('kitaps:linha',k)}}
+  if(VIEW==='linha')store.set('kitaps:lastl-'+CURL,id);
   store.set('kitaps:last',id);
   try{history.replaceState(null,'','#'+id)}catch(e){}
-  renderChips();render();
+  renderChips();render();addStar();
   const ch=document.getElementById('chip-'+id);if(ch&&ch.scrollIntoView)ch.scrollIntoView({block:'nearest',inline:'nearest'});
   window.scrollTo(0,0);
 }
-document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{const sec=b.dataset.sec;go(store.get('kitaps:last-'+sec)||SECS[sec][0])});
+$('#mode').onclick=()=>{VIEW=VIEW==='linha'?'tipo':'linha';store.set('kitaps:view',VIEW);go(cur.id)};
 
 function render(){
   store.set('kitaps:last-'+cur.sec,cur.id);
@@ -1240,7 +1301,7 @@ function render(){
   if(cur.sec==='presc')return renderPresc(m,cur.id);
   if(cur.sec==='esq')return renderESQ(m);
   if(cur.sec==='mev')return renderMEV(m,cur.id);
-  ({ig:renderIG,tfg:renderTFG,imc:renderIMC,phq9:renderPHQ,audit:renderAUDIT,gad7:renderGAD,insulina:renderINS,fluxodm:renderFLUXO,melanoma:renderMEL,rcv:renderRCV,fager:renderFAGER,ipss:renderIPSS})[cur.id](m);
+  ({ig:renderIG,tfg:renderTFG,imc:renderIMC,phq9:renderPHQ,audit:renderAUDIT,gad7:renderGAD,insulina:renderINS,fluxodm:renderFLUXO,melanoma:renderMEL,rcv:renderRCV,rastreio:renderRAST,vacinas:renderVAC,ajustes:renderAJ,fager:renderFAGER,ipss:renderIPSS})[cur.id](m);
 }
 
 function renderPresc(m,id){
@@ -1248,7 +1309,7 @@ function renderPresc(m,id){
   m.innerHTML=`<section class="panel">
     <div class="ph"><h2>${esc(c.t)}</h2><span class="code">adultos</span></div>
     <div class="rec"><b>Receituário:</b> ${esc(c.rec)}.</div>
-    ${c.items.map((it,i)=>`<article class="card rxcard"><h3>${esc(it.t)}</h3><pre class="rx" id="rx-${i}">${esc(it.rx)}</pre><div class="bar"><button class="btn primary small" data-i="${i}">Copiar prescrição</button><button class="btn small" data-e="${i}">Levar ao esquema do paciente</button></div>${it.n?`<p class="note">${esc(it.n)}</p>`:''}</article>`).join('')}
+    ${c.items.map((it,i)=>`<article class="card rxcard"><h3>${esc(it.t)}</h3><pre class="rx" id="rx-${i}">${esc(it.rx)}</pre><div class="bar"><button class="btn primary small" data-i="${i}">Copiar prescrição</button><button class="btn small" data-e="${i}">Levar ao esquema do paciente</button></div>${it.n?`<p class="note">${esc(it.n)}</p>`:''}${(()=>{const ds=drugsIn(it.rx);return ds.length?`<details><summary>Ajustes: DRC, gestação, lactação, idoso</summary><div style="display:grid;gap:8px;margin-top:8px">${ds.map(d=>drugCard(d,{tfg:num(store.get('kitaps:tfg'))})).join('')}</div></details>`:''})()}</article>`).join('')}
     <p class="note">Doses para adultos com função renal e hepática normais. Confira alergias, gestação, interações e a disponibilidade na REMUME do seu município.</p>
   </section>`;
   m.querySelectorAll('button[data-i]').forEach(b=>b.onclick=()=>copy(c.items[+b.dataset.i].rx));
@@ -1369,6 +1430,7 @@ function renderTFG(m){
       <tr data-min="15"><td>G4 15–29</td><td>Grave. Encaminhar à nefrologia, manter coordenação do cuidado na APS.</td></tr>
       <tr data-min="0"><td>G5 &lt; 15</td><td>Falência renal. Nefrologia / preparo para terapia renal substitutiva.</td></tr>
     </tbody></table>
+    <div class="bar"><button class="btn small" id="tfg-aj">Ver ajustes de dose para esta TFG</button></div>
     <p class="note">Classificação KDIGO, usada pelas diretrizes do MS para DRC. O diagnóstico exige alteração persistente por mais de 3 meses. Use creatinina dosada por método rastreável (IDMS). Não validada para gestantes, menores de 18 anos ou extremos de massa muscular.</p>
   </section>`;
   let line='';
@@ -1382,10 +1444,12 @@ function renderTFG(m){
     r.className='result '+cls;
     r.innerHTML=`<div class="lbl">TFG estimada</div><div class="big">${gr}<small>mL/min/1,73 m²</small></div><div class="sub"><span class="pill ${cls}">${st}</span></div>`;
     const rows=[...m.querySelectorAll('#tfg-sc tr')];rows.find(t=>gr>=+t.dataset.min).classList.add('on');
+    store.set('kitaps:tfg',String(gr));
     line=`TFG (CKD-EPI 2021): ${gr} mL/min/1,73m² — ${st} (Cr ${fmt(cr,2)} mg/dL, ${age} anos, ${fem?'F':'M'})`;
   };
   m.querySelectorAll('input').forEach(i=>i.addEventListener('input',()=>{$('#tfg-ex').hidden=true;upd()}));
   upd();bindCopy(()=>line);
+  $('#tfg-aj').onclick=()=>go('ajustes');
 }
 
 function renderIMC(m){
@@ -1740,6 +1804,282 @@ function renderRCV(m){
   upd();bindCopy(()=>line);
 }
 
+/* Rastreios por idade e sexo */
+function rastreios(o){
+  const {age,fem,colo,sexo,hist,gest,fumo,am,fhmama,fhcolo,frat}=o;const R=[];
+  const add=(st,t,d,src,alt)=>R.push({st,t,d,src,alt});
+  // Colo do útero
+  if(colo){
+    if(hist)add('no','Citopatológico (colo do útero)','Não indicado após histerectomia total por causa benigna.','INCA 2016');
+    else if(age<25)add('no','Citopatológico (colo do útero)','Rastreio começa aos 25 anos.','INCA 2016');
+    else if(age<=64)add(sexo?'yes':'maybe','Citopatológico (colo do útero)',sexo?'25 a 64 anos: 2 exames anuais; se ambos normais, a cada 3 anos.':'Indicado a quem já teve atividade sexual (25 a 64 anos).','INCA 2016','Teste de DNA-HPV (a cada 5 anos, 25–64 anos) sendo implantado no SUS desde 2024: confira se já está disponível no seu município.');
+    else add('maybe','Citopatológico (colo do útero)','Acima de 64 anos: pode encerrar se tiver 2 exames negativos nos últimos 5 anos. Nunca rastreada: 2 exames com intervalo de 1 a 3 anos.','INCA 2016');
+  }
+  // Mama
+  if(fem){
+    if(age>=50&&age<=69)add('yes','Mamografia','50 a 69 anos: a cada 2 anos.','MS/INCA','SBM/CBR/FEBRASGO: anual dos 40 aos 74 anos. O MS anunciou em 2025 ampliação do acesso (40–49 sob demanda e até 74 anos): confira a nota técnica vigente.');
+    else if(age>=40&&age<50)add('maybe','Mamografia','40 a 49 anos: fora da faixa do rastreio organizado do MS; decisão compartilhada.','MS/INCA','SBM/CBR/FEBRASGO recomendam anual a partir de 40 anos.');
+    else if(age>69&&age<=74)add('maybe','Mamografia','70 a 74 anos: decisão compartilhada conforme saúde geral.','MS/INCA','Sociedades: manter até 74 anos ou mais se expectativa de vida > 7 anos.');
+    else add('no','Mamografia',age<40?'Rastreio não indicado antes dos 40 anos sem risco elevado.':'Acima de 74 anos: individualizar.','MS/INCA');
+    if(fhmama)add('maybe','Mama: risco elevado','História familiar importante (parente de 1º grau < 50 anos, câncer de mama bilateral ou masculino, ovário): rastreio anual a partir dos 35 anos e considerar encaminhamento para avaliação de risco.','INCA');
+  }
+  // Colorretal
+  if(age>=50&&age<=75)add('yes','Câncer colorretal','50 a 75 anos: pesquisa de sangue oculto nas fezes (imunoquímico) anual, ou colonoscopia a cada 10 anos.','Caderno AB 29','USPSTF: começar aos 45 anos.');
+  else if(age>=45&&age<50)add('maybe','Câncer colorretal','45 a 49 anos: USPSTF recomenda começar; no Brasil, a referência da APS é a partir dos 50.','USPSTF 2021');
+  else if(age>75&&age<=85)add('maybe','Câncer colorretal','76 a 85 anos: individualizar conforme rastreios prévios e saúde geral.','USPSTF 2021');
+  else add('no','Câncer colorretal','Fora da faixa de rastreio.','Caderno AB 29');
+  if(fhcolo)add('maybe','Colorretal: risco elevado','Parente de 1º grau com câncer colorretal ou adenoma avançado: colonoscopia a partir dos 40 anos (ou 10 anos antes do caso mais jovem), a cada 5 anos.','Consenso');
+  // Próstata
+  if(!fem&&age>=50&&age<=69)add('maybe','Próstata (PSA)','Rastreio populacional não recomendado pelo MS/INCA. Se a pessoa pedir, fazer decisão compartilhada sobre riscos e benefícios.','MS/INCA','SBU: oferecer a partir de 50 anos (45 se negro ou com história familiar).');
+  // Osteoporose
+  if(fem&&age>=65)add('yes','Densitometria óssea','Mulheres com 65 anos ou mais.','USPSTF / consensos');
+  else if(fem&&age>=50&&frat)add('maybe','Densitometria óssea','Pós-menopausa < 65 anos com fatores de risco (baixo peso, fratura prévia, corticoide, tabagismo, história familiar): considerar, idealmente com FRAX.','USPSTF / consensos');
+  else if(!fem&&age>=70)add('maybe','Densitometria óssea','Homens com 70 anos ou mais: evidência limitada; considerar se fatores de risco.','Consensos');
+  // Pulmão
+  if(fumo&&age>=50&&age<=80&&am>=20)add('maybe','Câncer de pulmão','50 a 80 anos com ≥ 20 anos-maço, fumante atual ou parou há < 15 anos: TC de baixa dose anual (USPSTF). Não é programa do SUS; oferecer cessação do tabagismo.','USPSTF 2021');
+  // AAA
+  if(!fem&&fumo&&age>=65&&age<=75)add('maybe','Aneurisma de aorta abdominal','Homem 65 a 75 anos que já fumou: USG de abdome uma vez.','USPSTF 2019');
+  // Cardiometabólico
+  if(age>=18)add('yes','Pressão arterial','Medir em toda consulta; ao menos anual a partir de 18 anos (a cada 2 anos se < 120x80 e sem fatores de risco).','Caderno AB 37');
+  if(age>=35&&age<=70)add('maybe','Diabetes','Glicemia de jejum/HbA1c se sobrepeso ou obesidade, HAS, história familiar ou outros fatores de risco; repetir a cada 3 anos se normal.','MS / USPSTF');
+  if((!fem&&age>=35)||(fem&&age>=45))add('yes','Dislipidemia','Perfil lipídico: homens ≥ 35 e mulheres ≥ 45 anos (mais cedo se risco cardiovascular aumentado).','Caderno AB 29');
+  // Sorologias
+  add('yes','HIV','Ao menos uma vez na vida; repetir após exposição de risco e periodicamente (a cada 3–6 meses) em populações-chave e PrEP.','MS');
+  add('yes','Sífilis','Pessoas com vida sexual ativa conforme risco; gestantes no 1º e 3º trimestres e no parto.','MS');
+  add('yes','Hepatite B','Testar ao menos uma vez (HBsAg); vacinar se não imune.','PCDT Hepatite B');
+  add(age>=40?'yes':'maybe','Hepatite C',age>=40?'Pessoas com 40 anos ou mais: testar ao menos uma vez.':'Testar se fatores de risco (uso de drogas, transfusão antes de 1993, HIV, diálise, tatuagem em locais sem controle, populações-chave).','PCDT Hepatite C');
+  if(gest)add('yes','Gestante','TR de HIV, sífilis, hepatites B e C no 1º trimestre (ou 1ª consulta), repetir HIV e sífilis no 3º trimestre e no parto; toxoplasmose, glicemia, urocultura conforme pré-natal.','MS');
+  return R;
+}
+function renderRAST(m){
+  m.innerHTML=`<section class="panel">
+    <div class="ph"><h2>Rastreios por idade e sexo</h2><span class="code">INCA · MS · USPSTF</span></div>
+    <div class="card">
+      <div class="grid2"><div class="field"><label for="ra-age">Idade (anos)</label><input id="ra-age" inputmode="numeric" value="52"></div></div>
+      <div class="sexo opts"><label class="opt"><input type="radio" name="ra-sx" id="ra-f" checked><span>Mulher</span></label><label class="opt"><input type="radio" name="ra-sx" id="ra-m"><span>Homem</span></label></div>
+      <div class="opts soft" style="grid-template-columns:1fr">
+        <label class="opt"><input type="checkbox" id="ra-colo" checked><span>Tem colo do útero</span></label>
+        <label class="opt"><input type="checkbox" id="ra-sexo" checked><span>Já teve atividade sexual</span></label>
+        <label class="opt"><input type="checkbox" id="ra-hist"><span>Histerectomia total por causa benigna</span></label>
+        <label class="opt"><input type="checkbox" id="ra-gest"><span>Gestante</span></label>
+        <label class="opt"><input type="checkbox" id="ra-fumo"><span>Fuma ou já fumou</span></label>
+        <label class="opt"><input type="checkbox" id="ra-fhm"><span>História familiar de câncer de mama/ovário</span></label>
+        <label class="opt"><input type="checkbox" id="ra-fhc"><span>Parente de 1º grau com câncer colorretal</span></label>
+        <label class="opt"><input type="checkbox" id="ra-frat"><span>Fatores de risco para osteoporose</span></label>
+      </div>
+      <div class="field" id="ra-amf" hidden><label for="ra-am">Anos-maço</label><input id="ra-am" inputmode="decimal" placeholder="cigarros/dia ÷ 20 × anos"></div>
+      <p class="ex" id="ra-ex">Exemplo: substitua pelos dados da pessoa</p>
+    </div>
+    <div id="ra-r" style="display:grid;gap:8px"></div>
+    ${copyBtn()}
+    <p class="note">Indicado = recomendação do MS/INCA para a faixa. Avaliar = decisão compartilhada, fator de risco ou divergência entre diretrizes. As recomendações mudam: confira as notas técnicas vigentes do INCA e do MS.</p>
+  </section>`;
+  let line='';
+  const upd=()=>{
+    const age=num($('#ra-age').value),fem=$('#ra-f').checked;$('#ra-amf').hidden=!$('#ra-fumo').checked;
+    m.querySelectorAll('#ra-colo,#ra-hist,#ra-gest,#ra-fhm,#ra-frat').forEach(e=>e.closest('label').hidden=!fem);
+    const r=$('#ra-r');if(!(age>=0&&age<120)){r.innerHTML='<div class="result"><div class="sub">Informe a idade.</div></div>';line='';return}
+    const R=rastreios({age,fem,colo:fem&&$('#ra-colo').checked,sexo:$('#ra-sexo').checked,hist:$('#ra-hist').checked,gest:fem&&$('#ra-gest').checked,fumo:$('#ra-fumo').checked,am:num($('#ra-am').value)||0,fhmama:fem&&$('#ra-fhm').checked,fhcolo:$('#ra-fhc').checked,frat:$('#ra-frat').checked});
+    const ST={yes:['Indicado','ok'],maybe:['Avaliar','warn'],no:['Não indicado','muted']};
+    const order={yes:0,maybe:1,no:2};R.sort((a,b)=>order[a.st]-order[b.st]);
+    r.innerHTML=R.map(x=>`<div class="node" style="${x.st==='no'?'opacity:.7':''}"><div class="ph"><h3>${esc(x.t)}</h3><span class="pill ${ST[x.st][1]==='muted'?'':ST[x.st][1]}" style="${ST[x.st][1]==='muted'?'color:var(--muted)':''}">${ST[x.st][0]}</span></div><div>${esc(x.d)}</div>${x.alt?`<div class="note">${esc(x.alt)}</div>`:''}<div class="code">${esc(x.src)}</div></div>`).join('');
+    const yes=R.filter(x=>x.st==='yes').map(x=>x.t),may=R.filter(x=>x.st==='maybe').map(x=>x.t);
+    line=`Rastreios (${fem?'mulher':'homem'}, ${age} anos): indicados: ${yes.join('; ')||'nenhum'}${may.length?'. Avaliar/decisão compartilhada: '+may.join('; '):''}.`;
+  };
+  m.querySelectorAll('input').forEach(i=>{i.addEventListener('input',()=>{$('#ra-ex').hidden=true;upd()});i.addEventListener('change',upd)});
+  upd();bindCopy(()=>line);
+}
+
+/* Calendário vacinal (PNI) */
+const VAC={
+ crianca:{t:'Criança',rows:[
+  ['Ao nascer','BCG (dose única); Hepatite B (dose ao nascer)'],
+  ['2 meses','Penta (DTP/Hib/Hep B) 1ª; VIP (poliomielite inativada) 1ª; Pneumocócica 10V 1ª; Rotavírus 1ª'],
+  ['3 meses','Meningocócica C 1ª'],
+  ['4 meses','Penta 2ª; VIP 2ª; Pneumocócica 10V 2ª; Rotavírus 2ª'],
+  ['5 meses','Meningocócica C 2ª'],
+  ['6 meses','Penta 3ª; VIP 3ª; Covid-19 (esquema conforme vacina disponível); Influenza (anual, 6 meses a < 6 anos)'],
+  ['9 meses','Febre amarela (1ª dose)'],
+  ['12 meses','Pneumocócica 10V reforço; Meningocócica C reforço; Tríplice viral 1ª'],
+  ['15 meses','DTP 1º reforço; VIP reforço; Hepatite A; Tetra viral (ou tríplice viral 2ª + varicela)'],
+  ['4 anos','DTP 2º reforço; Febre amarela reforço; Varicela 2ª dose'],
+  ['9 a 14 anos','HPV (dose única)'],
+  ['10 a 14 anos','Dengue (2 doses, intervalo de 3 meses) nos municípios e faixas definidos pelo MS'],
+  ['11 a 14 anos','Meningocócica ACWY (dose única)']],
+  n:'Atualize atrasos pelo esquema de resgate do PNI. Influenza para crianças entrou no calendário de rotina; covid-19 segue o esquema da vacina disponível na unidade.'},
+ adolescente:{t:'Adolescente',rows:[
+  ['10 a 19 anos','Hepatite B (3 doses, se não vacinado); dT (reforço a cada 10 anos); Febre amarela (se nunca vacinado); Tríplice viral (2 doses, se não vacinado)'],
+  ['9 a 14 anos','HPV (dose única); resgate em faixas ampliadas conforme campanhas do MS'],
+  ['11 a 14 anos','Meningocócica ACWY (dose única)'],
+  ['10 a 14 anos','Dengue (onde disponível)']],n:''},
+ adulto:{t:'Adulto (20 a 59)',rows:[
+  ['Hepatite B','3 doses (0, 1 e 6 meses) se não vacinado'],
+  ['dT','3 doses se não vacinado; reforço a cada 10 anos (5 anos em ferimento grave)'],
+  ['Febre amarela','Dose única se nunca vacinado (até 59 anos; acima, avaliar risco)'],
+  ['Tríplice viral','2 doses até 29 anos; 1 dose de 30 a 59 anos (se não vacinado)'],
+  ['Influenza','Anual para grupos prioritários (campanha)'],
+  ['Covid-19','Grupos prioritários conforme orientação vigente'],
+  ['HPV','Imunossuprimidos e vítimas de violência sexual até 45 anos, conforme MS'],
+  ['dTpa','Profissionais de saúde que atendem recém-nascidos']],n:''},
+ idoso:{t:'Idoso (60+)',rows:[
+  ['Hepatite B','3 doses se não vacinado'],
+  ['dT','Reforço a cada 10 anos'],
+  ['Influenza','Anual'],
+  ['Covid-19','Doses periódicas (a cada 6 meses) conforme orientação vigente'],
+  ['Pneumocócica 23V','Acamados, institucionalizados ou com comorbidades (via CRIE/indicação)'],
+  ['Febre amarela','Avaliar risco/benefício se nunca vacinado']],n:'Herpes-zóster e VSR para idosos não estão no calendário de rotina do SUS (conferir CRIE e atualizações).'},
+ gestante:{t:'Gestante',rows:[
+  ['dTpa','1 dose a cada gestação, a partir de 20 semanas'],
+  ['dT','Completar esquema de 3 doses se incompleto (a última pode ser a dTpa)'],
+  ['Hepatite B','3 doses se não vacinada'],
+  ['Influenza','Dose única na campanha, em qualquer idade gestacional'],
+  ['Covid-19','1 dose a cada gestação'],
+  ['VSR (vírus sincicial respiratório)','28 a 36 semanas, se disponível: incorporação recente, confirme na sua unidade']],
+  n:'Contraindicadas na gestação: tríplice viral, varicela, HPV e dengue. Febre amarela: só em situação de risco, avaliar. Puérpera não vacinada: tríplice viral e febre amarela no pós-parto (FA: adiar se amamentando bebê < 6 meses).'}
+};
+function renderVAC(m){
+  const k=store.get('kitaps:vac')||'crianca';
+  const g=VAC[VAC[k]?k:'crianca'];
+  m.innerHTML=`<section class="panel">
+    <div class="ph"><h2>Calendário vacinal</h2><span class="code">PNI / MS</span></div>
+    <div class="chips" style="flex-wrap:wrap;padding-bottom:0">${Object.entries(VAC).map(([kk,v])=>`<button class="chip" data-v="${kk}" aria-selected="${v===g}">${v.t}</button>`).join('')}</div>
+    <div class="card"><table class="scale"><tbody>${g.rows.map(([a,b])=>`<tr><td>${esc(a)}</td><td>${esc(b)}</td></tr>`).join('')}</tbody></table>${g.n?`<p class="note">${esc(g.n)}</p>`:''}</div>
+    ${copyBtn()}
+    <p class="note">O calendário do PNI muda com frequência (troca da VOP pela VIP, HPV em dose única, dengue, influenza infantil e VSR na gestação foram mudanças recentes). Confira sempre o calendário vigente do MS antes de orientar.</p>
+  </section>`;
+  m.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{store.set('kitaps:vac',b.dataset.v);renderVAC(m);addStar()});
+  bindCopy(()=>`Calendário vacinal (${g.t}):\n`+g.rows.map(([a,b])=>`${a}: ${b}`).join('\n'));
+}
+
+function norm(s){return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()}
+/* Ajustes de dose: DRC (TFG), gestação, lactação, idoso (Beers 2023). [nome, regex, limiar TFG, DRC, gestação, lactação, Beers] */
+const DRUGS=[
+['Amoxicilina','amoxicilina(?! ?\\+)',30,'TFG 10–30: 250–500 mg 12/12 h. TFG < 10: 250–500 mg 24/24 h.','Segura.','Compatível.',''],
+['Amoxicilina + clavulanato','amoxicilina ?\\+ ?clavulanato',30,'TFG < 30: não usar 875/125; usar 500/125 mg 12/12 h (TFG 10–30) ou 24/24 h (< 10).','Segura.','Compatível.',''],
+['Azitromicina','azitromicina',0,'Sem ajuste (cautela se TFG < 10).','Segura.','Compatível.','Soma risco de QT longo com outros fármacos.'],
+['Claritromicina','claritromicina',30,'TFG < 30: reduzir a dose em 50%.','Evitar: preferir azitromicina.','Compatível com cautela.','Interação grave com sinvastatina (suspender a estatina durante o uso).'],
+['Cefalexina','cefalexina',30,'TFG 15–29: 500 mg 8/8–12/12 h. TFG < 15: 250–500 mg 12/12–24/24 h.','Segura.','Compatível.',''],
+['Clindamicina','clindamicina',0,'Sem ajuste.','Segura.','Compatível (observar diarreia no bebê).',''],
+['Nitrofurantoína','nitrofuranto',30,'Evitar se TFG < 30 (ineficaz e tóxica).','Pode usar; evitar a partir de 38 semanas e no trabalho de parto.','Evitar se bebê < 1 mês, prematuro ou com deficiência de G6PD.','Evitar se TFG < 30 ou uso prolongado (toxicidade pulmonar e hepática).'],
+['Fosfomicina','fosfomicina',10,'Dose única sem ajuste; evitar se TFG < 10.','Segura.','Compatível.',''],
+['Sulfametoxazol + trimetoprima','sulfametoxazol',30,'TFG 15–30: metade da dose. TFG < 15: evitar. Risco de hipercalemia.','Evitar no 1º trimestre e no fim da gestação.','Evitar se bebê < 1 mês, prematuro, ictérico ou com G6PD.','Cautela com IECA/BRA e TFG baixa (hipercalemia).'],
+['Metronidazol','metronidazol',0,'Sem ajuste habitual.','Pode usar (conforme PCDT IST).','Compatível nas doses usuais; após dose única de 2 g, suspender a amamentação por 12–24 h.',''],
+['Fluconazol','fluconazol',50,'Dose única sem ajuste; doses repetidas: TFG ≤ 50, metade da dose.','Evitar: preferir tratamento tópico.','Compatível.',''],
+['Benzilpenicilina benzatina','penicilina|benzilpenicilina',0,'Sem ajuste.','Segura (única opção para sífilis na gestação).','Compatível.',''],
+['Ceftriaxona','ceftriaxona',0,'Sem ajuste.','Segura.','Compatível.',''],
+['Pílula combinada / injetável mensal','etinilestradiol|valerato de estradiol',0,'Sem ajuste.','Não usar.','Evitar antes de 6 semanas pós-parto (reduz leite); preferir progestágeno isolado.','Contraindicada em tabagistas ≥ 35 anos.'],
+['Progestágenos (noretisterona, medroxiprogesterona, levonorgestrel)','noretisterona 0,35|medroxiprogesterona|levonorgestrel 1,5',0,'Sem ajuste.','Não indicado.','Compatíveis.',''],
+['Clonazepam','clonazepam',0,'Sem ajuste formal; cautela.','Evitar uso prolongado e no fim da gestação.','Uso curto em dose baixa; observar sonolência do bebê.','Evitar: quedas, fraturas, delirium. Alternativas: TCC, ISRS, higiene do sono.'],
+['Diazepam','diazepam',0,'Sem ajuste formal; cautela.','Evitar uso prolongado e no fim da gestação.','Evitar (meia-vida longa no bebê).','Evitar: quedas, fraturas, delirium.'],
+['Hidroxizina','hidroxizina',50,'TFG < 50: reduzir a dose em 50%.','Evitar no 1º trimestre.','Evitar uso prolongado.','Evitar (anticolinérgico): confusão, retenção urinária, constipação.'],
+['Fluoxetina','fluoxetina',0,'Sem ajuste.','Pode usar.','Compatível, mas a sertralina é preferida (meia-vida longa).','Cautela: hiponatremia e quedas.'],
+['Sertralina','sertralina',0,'Sem ajuste.','Primeira escolha entre os ISRS.','Primeira escolha.','Cautela: hiponatremia e quedas.'],
+['Escitalopram','escitalopram',20,'Sem ajuste; cautela se TFG < 20.','Pode usar.','Compatível.','Cautela: hiponatremia, quedas; máx. 10 mg/dia.'],
+['Amitriptilina','amitriptilina',0,'Sem ajuste.','Pode usar.','Compatível; preferir nortriptilina.','Evitar (muito anticolinérgico, sedação, hipotensão). Alternativa: nortriptilina em dose baixa ou ISRS.'],
+['Nortriptilina','nortriptilina',0,'Sem ajuste.','Pode usar.','Compatível (tricíclico preferido).','Cautela (anticolinérgico, hipotensão); menos que amitriptilina.'],
+['Haloperidol','haloperidol',0,'Sem ajuste.','Pode usar.','Compatível com monitoramento.','Evitar para comportamento na demência e no delirium, exceto risco de dano: aumenta mortalidade e AVC.'],
+['Prometazina','prometazina',0,'Sem ajuste.','Pode usar.','Uso curto.','Evitar (anticolinérgico forte).'],
+['Risperidona','risperidona',30,'TFG < 30: iniciar 0,5 mg 12/12 h e titular devagar.','Dados limitados: usar se benefício superar risco.','Cautela, dados limitados.','Evitar na demência, exceto risco de dano.'],
+['Dipirona','dipirona',0,'Sem ajuste formal; evitar doses altas prolongadas em DRC grave.','Evitar no 3º trimestre.','Uso esporádico aceitável; preferir paracetamol.',''],
+['Paracetamol','paracetamol',10,'TFG < 10: intervalo mínimo de 8 h.','Analgésico de escolha.','Compatível (escolha).','Máx. 3 g/dia.'],
+['Ibuprofeno / naproxeno / diclofenaco','ibuprofeno|naproxeno|diclofenaco',30,'Evitar se TFG < 30; evitar uso prolongado em qualquer DRC. Nunca com IECA/BRA + diurético.','Evitar a partir de 20 semanas; contraindicado ≥ 30 semanas.','Ibuprofeno compatível (AINE de escolha).','Evitar uso crônico (sangramento, IRA, IC). Se usar, curto e com IBP.'],
+['Butilbrometo de escopolamina','escopolamina',0,'Sem ajuste.','Cautela.','Uso curto.','Evitar (antiespasmódico anticolinérgico).'],
+['Codeína','code[ií]na',30,'Evitar se TFG < 30 (acúmulo de metabólitos).','Evitar uso prolongado.','Evitar (risco de depressão respiratória no bebê).','Cautela: constipação, sedação, quedas.'],
+['Tramadol','tramadol',30,'TFG < 30: 12/12 h, máx. 200 mg/dia.','Evitar.','Evitar.','Cautela: hiponatremia, convulsão, síndrome serotoninérgica com ISRS.'],
+['Sumatriptano','sumatriptano',0,'Sem ajuste habitual.','Pode usar se necessário.','Compatível.','Evitar se doença cardiovascular.'],
+['Nicotina (adesivo/goma)','nicotina',0,'Sem ajuste.','Preferível ao cigarro se a abordagem comportamental falhar.','Preferível ao cigarro.',''],
+['Bupropiona','bupropiona',90,'DRC moderada a grave: 150 mg 1x/dia.','Evitar (dados limitados).','Evitar.','Cautela (convulsão, insônia).'],
+['Loratadina','loratadina',30,'TFG < 30: 10 mg em dias alternados.','Anti-histamínico preferido.','Compatível (preferido).',''],
+['Dexclorfeniramina','dexclorfeniramina',0,'Sem ajuste.','Pode usar.','Pode reduzir o leite e sedar o bebê; preferir loratadina.','Evitar (anticolinérgico de 1ª geração).'],
+['Metoclopramida','metoclopramida',60,'TFG < 60: metade da dose.','Segura.','Compatível.','Evitar (sintomas extrapiramidais), exceto uso curto ≤ 5 dias.'],
+['Ondansetrona','ondansetrona',0,'Sem ajuste.','Evitar no 1º trimestre se possível; segura depois.','Compatível.','Soma risco de QT longo.'],
+['Omeprazol','omeprazol',0,'Sem ajuste.','Pode usar.','Compatível.','Evitar > 8 semanas sem indicação clara (C. difficile, fraturas, B12).'],
+['Albendazol','albendazol',0,'Sem ajuste.','Evitar (contraindicado no 1º trimestre).','Compatível em dose única.',''],
+['Ivermectina','ivermectina',0,'Sem ajuste.','Evitar.','Compatível em dose única.',''],
+['Permetrina','permetrina',0,'Sem ajuste.','Segura.','Compatível.',''],
+['Losartana','losartana',30,'Sem ajuste de dose; K e creatinina em 1–2 semanas; suspender na desidratação.','Contraindicada (fetotoxicidade).','Preferir enalapril.',''],
+['Enalapril / captopril','enalapril|captopril',30,'TFG < 30: iniciar enalapril 2,5 mg/dia e titular; K e creatinina em 1–2 semanas.','Contraindicados (fetotoxicidade): suspender ao descobrir a gestação.','Compatíveis.',''],
+['Anlodipino','anlodipino',0,'Sem ajuste.','Pode usar (nifedipino é mais estudado).','Compatível.','Cautela: edema.'],
+['Nifedipino retard','nifedipino',0,'Sem ajuste.','Seguro.','Compatível.','Evitar a forma de liberação imediata.'],
+['Hidroclorotiazida / clortalidona','hidroclorotiazida|clortalidona',30,'Pouco eficaz se TFG < 30 (clortalidona ainda age até ~15); usar furosemida.','Evitar iniciar na gestação.','Dose baixa compatível; pode reduzir o leite.','Cautela: hiponatremia, hipocalemia, quedas.'],
+['Atenolol','atenolol',35,'TFG 15–35: máx. 50 mg/dia. TFG < 15: máx. 25 mg/dia.','Evitar (restrição de crescimento).','Evitar; preferir propranolol.',''],
+['Propranolol','propranolol',0,'Sem ajuste.','Pode usar.','Compatível.',''],
+['Carvedilol','carvedilol',0,'Sem ajuste.','Dados limitados.','Dados limitados.',''],
+['Metildopa','metildopa',0,'Sem ajuste habitual.','Anti-hipertensivo de escolha.','Compatível; trocar no puerpério se depressão.','Evitar (central: bradicardia, hipotensão, sedação).'],
+['Espironolactona','espironolactona',30,'Evitar se TFG < 30 ou K > 5,0.','Evitar.','Compatível.','Evitar na IC com TFG < 30.'],
+['Furosemida','furosemida',0,'Pode precisar de doses maiores na DRC avançada.','Evitar, exceto edema pulmonar.','Pode reduzir o leite.','Cautela: hiponatremia, hipocalemia, incontinência.'],
+['Doxazosina','doxazosina',0,'Sem ajuste.','Não indicado.','Não indicado.','Evitar como anti-hipertensivo (hipotensão ortostática); na HPB, cautela.'],
+['Finasterida','finasterida',0,'Sem ajuste.','Gestantes não devem manipular comprimidos partidos.','Não indicado.',''],
+['Metformina','metformina',45,'TFG ≥ 45: dose plena. 30–44: máx. 1 g/dia, não iniciar. < 30: suspender. Suspender antes de contraste iodado se TFG < 60.','Pode usar (insulina é a primeira linha no DMG).','Compatível.',''],
+['Gliclazida','gliclazida',30,'Cautela se TFG < 30 (hipoglicemia).','Evitar: usar insulina.','Compatível com cautela.','Sulfonilureias: evitar como 1ª/2ª linha (hipoglicemia); gliclazida é a de menor risco.'],
+['Glibenclamida','glibenclamida',60,'Evitar se TFG < 60.','Evitar: usar insulina.','Compatível com monitoramento.','Evitar (hipoglicemia prolongada). Alternativa: gliclazida ou insulina basal.'],
+['Dapagliflozina','dapagliflozina',25,'Não iniciar se TFG < 25; manter até diálise (efeito na glicemia cai se TFG < 45).','Contraindicada.','Contraindicada.','Cautela: desidratação, infecção genital.'],
+['Insulina','insulina|nph',30,'Necessidade cai na DRC avançada: reduzir dose e monitorar hipoglicemia.','Segura (primeira escolha).','Compatível.','Evitar Regular em escala móvel sem insulina basal.'],
+['Sinvastatina','sinvastatina',30,'TFG < 30: iniciar com 5–10 mg.','Suspender.','Suspender.','Com anlodipino: máx. 20 mg.'],
+['Atorvastatina','atorvastatina',0,'Sem ajuste.','Suspender.','Suspender.',''],
+['Tenofovir (TDF) + lamivudina','tenofovir 300 mg \\(tdf\\/3tc\\)|lamivudina 300',60,'TFG < 60: discutir alternativa (PCDT); < 50 exige ajuste de intervalo (separar os componentes).','Recomendado (PCDT).','No Brasil, aleitamento contraindicado para mulheres vivendo com HIV (fórmula fornecida pelo SUS).',''],
+['Dolutegravir','dolutegravir',0,'Sem ajuste.','Recomendado (PCDT).','Ver acima (HIV: aleitamento contraindicado no Brasil).',''],
+['Tenofovir + entricitabina (PrEP)','entricitabina',60,'PrEP oral exige TFG ≥ 60.','Pode manter.','Pode manter.',''],
+['AAS 100 mg','\\baas\\b|[aá]cido acetilsalic',0,'Sem ajuste em dose baixa.','Indicado para prevenção de pré-eclâmpsia em alto risco (12–36 semanas).','Dose baixa compatível.','Evitar iniciar para prevenção primária.'],
+['Biperideno','biperideno',0,'Sem ajuste.','Cautela.','Cautela.','Evitar (anticolinérgico).']
+];
+const INTER=[
+ ['IECA/BRA + espironolactona ou SMX-TMP','Hipercalemia: dosar potássio, cuidado se TFG baixa.'],
+ ['IECA/BRA + diurético + AINE','Lesão renal aguda ("triple whammy"): evitar o AINE.'],
+ ['ISRS + tramadol, sumatriptano ou outro serotoninérgico','Síndrome serotoninérgica (agitação, tremor, febre, diarreia).'],
+ ['Claritromicina (ou fluconazol) + sinvastatina','Rabdomiólise: suspender a estatina durante o antibiótico.'],
+ ['Anlodipino + sinvastatina','Limitar sinvastatina a 20 mg/dia.'],
+ ['Benzodiazepínico + opioide ou álcool','Sedação e depressão respiratória.'],
+ ['Azitromicina, claritromicina, haloperidol, ondansetrona, escitalopram, tricíclicos','Somam prolongamento do QT: evitar associações, ECG se fatores de risco.'],
+ ['Metronidazol + álcool','Reação tipo dissulfiram: sem álcool até 24 h (48 h com secnidazol) após a última dose.'],
+ ['Dolutegravir + antiácidos, cálcio, ferro, zinco','Tomar o DTG 2 h antes ou 6 h depois.'],
+ ['Dolutegravir + metformina','Aumenta a metformina: máx. 1 g/dia e monitorar.'],
+ ['Rifampicina + dolutegravir ou anticoncepcional hormonal','Reduz o efeito: DTG 12/12 h; usar método não hormonal ou DIU.'],
+ ['Bupropiona ou tramadol + outros que reduzem o limiar convulsivo','Risco de convulsão.'],
+ ['Metformina + contraste iodado','Suspender se TFG < 60 e reiniciar após 48 h com função renal estável.']
+];
+const drugsIn=t=>{const tt=norm(t);return DRUGS.filter(d=>new RegExp(norm(d[1])).test(tt))};
+function drugCard(d,o){
+  const [n,,lim,drc,ge,la,be]=d;const rows=[];const all=!o.gest&&!o.lact&&!o.idoso;
+  const low=o.tfg>0&&lim>0&&o.tfg<lim;
+  rows.push(['DRC',drc,low]);
+  if(all||o.gest)rows.push(['Gestação',ge,/contraindicad|não usar|evitar|suspender/i.test(ge)]);
+  if(all||o.lact)rows.push(['Lactação',la,/contraindicad|evitar|suspender/i.test(la)]);
+  if((all||o.idoso)&&be)rows.push(['Idoso (Beers)',be,/^evitar/i.test(be)]);
+  const flag=rows.some(r=>r[2]);
+  return `<div class="node" style="${flag?'border-color:var(--warn)':''}"><h3>${esc(n)}</h3><div class="rows">${rows.map(([k,v,w])=>`<div><span>${k}</span><span style="text-align:right;${w?'color:var(--warn);font-weight:600':''}">${esc(v)}</span></div>`).join('')}</div></div>`;
+}
+function renderAJ(m){
+  const t0=store.get('kitaps:tfg')||'';
+  m.innerHTML=`<section class="panel">
+    <div class="ph"><h2>Ajustes de dose e segurança</h2><span class="code">DRC · gestação · lactação · Beers</span></div>
+    <div class="card">
+      <div class="grid2"><div class="field"><label for="aj-tfg">TFG (mL/min/1,73 m²)</label><input id="aj-tfg" inputmode="decimal" value="${esc(t0)}" placeholder="da calculadora de TFG"></div>
+      <div class="field"><label for="aj-q">Filtrar remédio</label><input id="aj-q" type="search" placeholder="ex.: metformina"></div></div>
+      <div class="opts soft" style="grid-template-columns:repeat(auto-fit,minmax(100px,1fr))">
+        <label class="opt"><input type="checkbox" id="aj-g"><span>Gestante</span></label>
+        <label class="opt"><input type="checkbox" id="aj-l"><span>Lactante</span></label>
+        <label class="opt"><input type="checkbox" id="aj-i"><span>Idoso (65+)</span></label>
+        <label class="opt"><input type="checkbox" id="aj-w"><span>Só alertas</span></label>
+      </div>
+      ${t0?`<p class="note">TFG ${esc(t0)} trazida da última conta na calculadora de TFG.</p>`:''}
+    </div>
+    <div id="aj-r" style="display:grid;gap:8px"></div>
+    <details class="card"><summary>Interações importantes na APS</summary><div class="rows" style="margin-top:8px">${INTER.map(([a,b])=>`<div><span>${esc(a)}</span><span style="text-align:right">${esc(b)}</span></div>`).join('')}</div></details>
+    <p class="note">Resumo para consulta rápida. Ajustes renais por TFG estimada (CKD-EPI); em extremos de peso, considere clearance por Cockcroft-Gault. Gestação e lactação: preferir fontes como e-lactancia.org e o manual do MS "Amamentação e uso de medicamentos". Idoso: critérios de Beers (AGS 2023). Confira bula e protocolo local.</p>
+  </section>`;
+  const upd=()=>{
+    const o={tfg:num($('#aj-tfg').value),gest:$('#aj-g').checked,lact:$('#aj-l').checked,idoso:$('#aj-i').checked};
+    const q=norm($('#aj-q').value.trim()),w=$('#aj-w').checked;
+    let L=DRUGS.filter(d=>!q||norm(d[0]+' '+d[1]).includes(q));
+    let html=L.map(d=>drugCard(d,o));
+    if(w)html=html.filter(h=>h.includes('var(--warn)'));
+    $('#aj-r').innerHTML=html.join('')||'<p class="note">Nenhum remédio com esses filtros.</p>';
+  };
+  m.querySelectorAll('input').forEach(i=>{i.addEventListener('input',upd);i.addEventListener('change',upd)});
+  upd();
+}
+
 /* Lesão pigmentada suspeita de melanoma */
 const MEL={
  g7:{t:'Lista de 7 pontos de Glasgow (ponderada)',items:[
@@ -1902,7 +2242,40 @@ function renderIPSS(m){
 const h=(location.hash||'').slice(1);
 const start=(T[h]||C[h]||P[h]||M[h]||E[h])?h:(store.get('kitaps:last')||'has');
 go(T[start]||C[start]||P[start]||M[start]||E[start]?start:'has');
-window.__test={ckdepi,usgLimit,framingham,parseList};
+/* ---------- Busca única ---------- */
+const CKEY={ig:'idade gestacional dpp dum usg gestacao gravidez parto',tfg:'creatinina rim renal ckd-epi filtracao drc',imc:'peso altura obesidade indice de massa corporal',phq9:'depressao humor rastreio',gad7:'ansiedade rastreio',audit:'alcool bebida etilismo',insulina:'nph regular diabetes titulacao dose glicemia hipoglicemia',fluxodm:'diabetes metformina fluxograma tratamento dm2 gliclazida dapagliflozina',melanoma:'pele nevo pinta lesao abcde glasgow cancer',rcv:'framingham colesterol risco cardiovascular estatina ldl',rastreio:'rastreamento preventivo citopatologico papanicolau preventivo mamografia colonoscopia sangue oculto psof densitometria osteoporose psa sorologias hiv sifilis hepatite',ajustes:'ajuste dose renal drc tfg gestacao gravidez lactacao amamentacao idoso beers interacao seguranca',vacinas:'vacina calendario vacinal pni imunizacao bcg penta hpv dtpa influenza gestante crianca idoso',fager:'cigarro tabagismo fumo fagerstrom anos-maco nicotina',ipss:'prostata hpb urinario luts'};
+let IDX=null;
+function buildIdx(){
+  const L=[];
+  Object.entries(T).forEach(([id,t])=>L.push({id,sec:'SOAP',lab:t.t,key:norm(t.t+' '+chipLabel(id)+' '+t.code)}));
+  Object.entries(C).forEach(([id,l])=>L.push({id,sec:'Cálculos',lab:({fluxodm:'Fluxograma do DM2',rcv:'Risco cardiovascular',fager:'Tabagismo (Fagerström)'})[id]||l,key:norm(l+' '+(CKEY[id]||''))}));
+  Object.entries(P).forEach(([id,c])=>{L.push({id,sec:'Prescrições',lab:c.t,key:norm(c.t+' '+c.s)});
+    c.items.forEach((it,i)=>{const drugs=(it.rx.match(/^\d+\.\s*([^\n.]+?)\s*\.{3,}/gm)||[]).map(x=>x.replace(/^\d+\.\s*/,'').replace(/\s*\.{3,}$/,''));
+      L.push({id,i,sec:'Prescrições',lab:it.t,sub:c.s+(drugs.length?' · '+drugs.join(', '):''),key:norm(it.t+' '+c.t+' '+drugs.join(' ')+' '+it.n)})})});
+  Object.entries(M).forEach(([id,c])=>L.push({id,sec:'MEV',lab:'MEV: '+c.t,key:norm('mev estilo de vida orientacoes '+c.t+' '+c.s)}));
+  L.push({id:'esquema',sec:'Paciente',lab:'Esquema de remédios do paciente',key:norm('esquema paciente folha imprimir horarios manha tarde noite figuras analfabeto')});
+  return L;
+}
+function searchKit(q){
+  IDX=IDX||buildIdx();const toks=norm(q).split(/\s+/).filter(Boolean);if(!toks.length)return [];
+  return IDX.map(e=>{if(!toks.every(t=>e.key.includes(t)))return null;const l=norm(e.lab);let sc=0;toks.forEach(t=>{if(l.startsWith(t))sc+=4;else if(l.includes(t))sc+=2});if(e.i==null)sc+=1;return [sc,e]}).filter(Boolean).sort((a,b)=>b[0]-a[0]).slice(0,14).map(x=>x[1]);
+}
+function openResult(e){
+  $('#q').value='';$('#qres').hidden=true;$('#q').blur();
+  go(e.id);
+  if(e.i!=null){const el=document.getElementById('rx-'+e.i);if(el){const card=el.closest('article');const top=card.getBoundingClientRect().top+window.scrollY-(document.querySelector('header').offsetHeight+12);window.scrollTo(0,top);card.style.outline='3px solid var(--accent)';setTimeout(()=>card.style.outline='',1800)}}
+}
+(function(){
+  const q=$('#q'),box=$('#qres');let res=[];
+  const draw=()=>{res=searchKit(q.value);
+    if(!q.value.trim()){box.hidden=true;return}
+    box.innerHTML=res.length?res.map((e,k)=>`<button class="qr" data-k="${k}" role="option"><span class="qs">${esc(e.sec)}</span><span class="ql">${esc(e.lab)}</span>${e.sub?`<span class="qd">${esc(e.sub)}</span>`:''}</button>`).join(''):'<div class="qr none">Nada encontrado. Tente outro termo (ex.: losartana, gestante, PHQ).</div>';
+    box.hidden=false;box.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>openResult(res[+b.dataset.k]))};
+  q.addEventListener('input',draw);q.addEventListener('focus',()=>{if(q.value.trim())draw()});
+  q.addEventListener('keydown',e=>{if(e.key==='Enter'&&res[0]){e.preventDefault();openResult(res[0])}if(e.key==='Escape'){q.value='';box.hidden=true}});
+  document.addEventListener('click',e=>{if(!e.target.closest('.search'))box.hidden=true});
+})();
+window.__test={ckdepi,usgLimit,framingham,parseList,searchKit};
 })();
 </script>
 
