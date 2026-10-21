@@ -231,7 +231,8 @@ textarea.nota{font-family:var(--f-ui);font-size:.9rem}
 @media print{.side{display:none!important}}
 .rxp{white-space:pre-wrap;font:14px/1.65 var(--f-mono);min-height:40vh}
 textarea.soap.rxta{min-height:0;overflow:hidden}
-.srxv{margin:0;padding-bottom:4px}
+.srxv{margin:0;padding-bottom:4px;flex-wrap:wrap;overflow:visible}
+.srxv .chip{flex:0 1 auto;max-width:100%;white-space:normal;text-align:left}
 .rxpac{display:flex;gap:8px;align-items:flex-end}.rxpac span{flex:1;border-bottom:1px solid #111;height:1.2em}
 .mi[data-s="urg"] .mic{background:var(--bad-soft);color:var(--bad)}
 .mi[data-s="urg"][aria-current="true"] .mic{background:var(--bad);color:#fff}
@@ -316,11 +317,12 @@ Risco cardiovascular: [baixo/intermediário/alto] ([escore]).
 Lesão de órgão-alvo: [não identificada]
 
 P:
-1. [Manter/ajustar] [medicação, dose, posologia]
-2. MEV: sal < 5 g/dia, atividade física ≥ 150 min/sem, controle do peso, cessar tabagismo, reduzir álcool
-3. Exames: [ ]
-4. Orientada(o) sobre sinais de alarme (dor torácica, falta de ar, déficit neurológico, cefaleia intensa)
-5. Retorno em [ ] meses / [consulta de enfermagem para aferição em __ semanas]`},
+[Manter/ajustar] [medicação, dose, posologia]
+MEV: sal < 5 g/dia, atividade física ≥ 150 min/sem, controle do peso, cessar tabagismo, reduzir álcool
+Exames: [ ]
+Orientada(o) sobre sinais de alarme (dor torácica, falta de ar, déficit neurológico, cefaleia intensa)
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] meses / [consulta de enfermagem para aferição em __ semanas]`},
 dm:{t:'Diabetes mellitus',code:'CIAP-2 T90/T89 · CID-10 E11/E10',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -352,12 +354,13 @@ Pé diabético: risco [0/1/2/3].
 Complicações: [nefropatia/retinopatia/neuropatia — nenhuma conhecida]
 
 P:
-1. [Manter/ajustar] [medicação]
-2. Orientações: alimentação, atividade física, autocuidado com os pés, hipoglicemia
-3. Exames: HbA1c em [3/6] meses, [ ]
-4. Retinografia/oftalmologia anual: [solicitada/em dia]
-5. Vacinas: influenza [ ], pneumocócica [ ], hepatite B [ ]
-6. Retorno em [ ] meses`},
+[Manter/ajustar] [medicação]
+Orientações: alimentação, atividade física, autocuidado com os pés, hipoglicemia
+Exames: HbA1c em [3/6] meses, [ ]
+Retinografia/oftalmologia anual: [solicitada/em dia]
+Vacinas: influenza [ ], pneumocócica [ ], hepatite B [ ]
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] meses / alta`},
 drc:{t:'Doença renal crônica',code:'CIAP-2 U99 · CID-10 N18',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -392,13 +395,14 @@ DRC estágio [G__A__] (TFG [ ], albuminúria [A1 < 30 / A2 30–300 / A3 > 300 m
 PA [controlada/não controlada] (meta < 130x80). Complicações: [anemia / distúrbio mineral-ósseo / acidose / hipercalemia — ausentes].
 
 P:
-1. Nefroproteção: [IECA/BRA em dose máxima tolerada se albuminúria — enalapril/losartana __]; [dapagliflozina 10 mg/dia se elegível]; controle de PA, glicemia e lipídios (estatina)
-2. Evitar AINE e outros nefrotóxicos; ajustar doses pela TFG (metformina: máx. 1 g/dia se TFG 30–44, suspender < 30)
-3. Orientações: dieta com pouco sal (< 5 g/dia), proteína [0,8 g/kg/dia], cessar tabagismo, atividade física
-4. Vacinas: hepatite B (esquema dobrado se TFG < 30), influenza, pneumocócica
-5. Exames: [Cr/TFG, RAC, K e EAS a cada __ meses; Hb, Ca, P, PTH se G3 ou mais]
-6. Encaminhar à nefrologia se: TFG < 30, perda > 5 mL/min/ano, RAC > 300 mg/g persistente, hematúria com proteinúria, K > 5,5 persistente, HAS resistente ou suspeita de causa secundária
-7. Retorno em [ ] meses`},
+Nefroproteção: [IECA/BRA em dose máxima tolerada se albuminúria — enalapril/losartana __]; [dapagliflozina 10 mg/dia se elegível]; controle de PA, glicemia e lipídios (estatina)
+Evitar AINE e outros nefrotóxicos; ajustar doses pela TFG (metformina: máx. 1 g/dia se TFG 30–44, suspender < 30)
+Orientações: dieta com pouco sal (< 5 g/dia), proteína [0,8 g/kg/dia], cessar tabagismo, atividade física
+Vacinas: hepatite B (esquema dobrado se TFG < 30), influenza, pneumocócica
+Exames: [Cr/TFG, RAC, K e EAS a cada __ meses; Hb, Ca, P, PTH se G3 ou mais]
+Encaminhar à nefrologia se: TFG < 30, perda > 5 mL/min/ano, RAC > 300 mg/g persistente, hematúria com proteinúria, K > 5,5 persistente, HAS resistente ou suspeita de causa secundária
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] meses / alta`},
 prenatal:{t:'Pré-natal',code:'CIAP-2 W78 · CID-10 Z34',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -430,12 +434,13 @@ A:
 Gestação tópica, [ ] sem [ ] d, [risco habitual/alto risco: motivo].
 
 P:
-1. Suplementação: [ácido fólico 0,4 mg/dia | sulfato ferroso 40 mg Fe elementar/dia]
-2. Exames solicitados: [ ]
-3. Vacinas: [ ]
-4. Orientações: sinais de alarme, alimentação, amamentação, plano de parto, maternidade de referência
-5. Consulta odontológica: [agendada]
-6. Retorno em [ ] semanas`},
+Suplementação: [ácido fólico 0,4 mg/dia | sulfato ferroso 40 mg Fe elementar/dia]
+Exames solicitados: [ ]
+Vacinas: [ ]
+Orientações: sinais de alarme, alimentação, amamentação, plano de parto, maternidade de referência
+Consulta odontológica: [agendada]
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] semanas / alta`},
 puericultura:{t:'Puericultura',code:'CIAP-2 A98 · CID-10 Z00.1',body:
 `INFORMAÇÕES IMPORTANTES
 Gestação e parto: [IG ao nascer __ sem, parto __, intercorrências: nega]
@@ -465,10 +470,11 @@ Criança de [ ] com crescimento [adequado] e desenvolvimento [adequado] para a i
 Situação vacinal: [em dia].
 
 P:
-1. Orientações: [AME até 6 m / alimentação complementar], prevenção de acidentes, sono seguro
-2. Suplementação: [ ]
-3. Vacinas do dia: [ ]
-4. Retorno: [conforme calendário — 1ª sem, 1, 2, 4, 6, 9, 12, 18, 24 m]`},
+Orientações: [AME até 6 m / alimentação complementar], prevenção de acidentes, sono seguro
+Suplementação: [ ]
+Vacinas do dia: [ ]
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno: [conforme calendário — 1ª sem, 1, 2, 4, 6, 9, 12, 18, 24 m]`},
 mental:{t:'Saúde mental',code:'CIAP-2 P76/P74 · CID-10 F32/F41',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -499,11 +505,12 @@ A:
 Risco de suicídio: [baixo/moderado/alto].
 
 P:
-1. Escuta qualificada, psicoeducação, construção de PTS
-2. Medicação: [ ]
-3. Plano de segurança combinado; CVV 188 (24 h)
-4. Compartilhamento: [eMulti/psicologia/CAPS/grupo]
-5. Retorno em [ ] semanas`},
+Escuta qualificada, psicoeducação, construção de PTS
+Medicação: [ ]
+Plano de segurança combinado; CVV 188 (24 h)
+Compartilhamento: [eMulti/psicologia/CAPS/grupo]
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] semanas / alta`},
 ivas:{t:'IVAS',code:'CIAP-2 R74 · CID-10 J06.9',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -532,11 +539,13 @@ A:
 IVAS, provável etiologia viral. Sem sinais de gravidade.
 
 P:
-1. Sintomáticos: [dipirona/paracetamol] se dor ou febre
-2. Lavagem nasal com SF 0,9%, hidratação, repouso
-3. Sinais de alarme: falta de ar, febre > 3 dias, piora após melhora, dor de ouvido intensa
-4. Antibiótico não indicado no momento
-5. Atestado: [ ] dias | Retorno se piora ou sem melhora em [ ] dias`},
+Sintomáticos: [dipirona/paracetamol] se dor ou febre
+Lavagem nasal com SF 0,9%, hidratação, repouso
+Sinais de alarme: falta de ar, febre > 3 dias, piora após melhora, dor de ouvido intensa
+Antibiótico não indicado no momento
+Atestado: [ ] dias
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno se piora ou sem melhora em [ ] dias / alta`},
 gea:{t:'Diarreia e vômitos',code:'CIAP-2 D73/D11/D10 · CID-10 A09',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -566,13 +575,15 @@ Gastroenterite aguda, provável etiologia [viral], [sem desidratação / com des
 Sinais de alarme: [ausentes]
 
 P:
-1. Plano [A]: sais de reidratação oral após cada evacuação ou vômito, aumentar a ingesta de líquidos, manter a alimentação habitual em pequenas porções
-2. [Plano B: SRO 50–100 mL/kg em 4–6 h na unidade, reavaliando a cada hora]
-3. Sintomáticos: [ondansetrona 4 mg 8/8 h ou metoclopramida 10 mg 8/8 h, se vômitos] | [dipirona 500 mg 6/6 h, se febre ou dor]
-4. Antibiótico não indicado no momento ([indicar se disenteria com febre/toxemia, suspeita de cólera ou imunossupressão])
-5. Evitar antidiarreico (loperamida) se febre ou sangue nas fezes
-6. Orientados sinais de alarme: vômitos que impedem a hidratação, sangue nas fezes, febre persistente, sonolência, redução da urina, tontura, dor abdominal intensa
-7. Atestado: [ ] dias | Retorno em [24–48 h] ou antes se sinais de alarme`},
+Plano [A]: sais de reidratação oral após cada evacuação ou vômito, aumentar a ingesta de líquidos, manter a alimentação habitual em pequenas porções
+[Plano B: SRO 50–100 mL/kg em 4–6 h na unidade, reavaliando a cada hora]
+Sintomáticos: [ondansetrona 4 mg 8/8 h ou metoclopramida 10 mg 8/8 h, se vômitos] | [dipirona 500 mg 6/6 h, se febre ou dor]
+Antibiótico não indicado no momento ([indicar se disenteria com febre/toxemia, suspeita de cólera ou imunossupressão])
+Evitar antidiarreico (loperamida) se febre ou sangue nas fezes
+Orientados sinais de alarme: vômitos que impedem a hidratação, sangue nas fezes, febre persistente, sonolência, redução da urina, tontura, dor abdominal intensa
+Atestado: [ ] dias
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [24–48 h] ou antes se sinais de alarme`},
 ansiedade:{t:'Ansiedade',code:'CIAP-2 P74/P01 · CID-10 F41.1/F41.0',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -604,13 +615,15 @@ A:
 Comorbidades: [depressão, uso de álcool] | Risco de suicídio: [baixo]
 
 P:
-1. Psicoeducação sobre ansiedade; técnicas de respiração e relaxamento
-2. Atividade física regular, higiene do sono, reduzir cafeína e álcool
-3. Psicoterapia/TCC: [encaminhar à psicologia/eMulti / grupo na UBS]
-4. Medicação: [ISRS — sertralina 25 mg/dia por 1 semana, depois 50 mg / fluoxetina 10–20 mg/dia]; orientar latência de 2–4 semanas e efeitos iniciais
-5. Evitar benzodiazepínico de uso contínuo; se já em uso, plano de desmame
-6. Compartilhar com CAPS se grave, refratário ou com risco
-7. Reaplicar GAD-7 e retorno em [2–4] semanas`},
+Psicoeducação sobre ansiedade; técnicas de respiração e relaxamento
+Atividade física regular, higiene do sono, reduzir cafeína e álcool
+Psicoterapia/TCC: [encaminhar à psicologia/eMulti / grupo na UBS]
+Medicação: [ISRS — sertralina 25 mg/dia por 1 semana, depois 50 mg / fluoxetina 10–20 mg/dia]; orientar latência de 2–4 semanas e efeitos iniciais
+Evitar benzodiazepínico de uso contínuo; se já em uso, plano de desmame
+Compartilhar com CAPS se grave, refratário ou com risco
+Reaplicar GAD-7 no retorno
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [2–4] semanas`},
 hpb:{t:'Hiperplasia prostática benigna',code:'CIAP-2 Y85 · CID-10 N40',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -642,11 +655,13 @@ LUTS sugestivos de HPB, sintomas [leves/moderados/graves] (IPSS [ ]).
 Sem sinais de complicação [retenção, hematúria, ITU de repetição, litíase, lesão renal].
 
 P:
-1. Medidas comportamentais: reduzir líquidos 2 h antes de dormir, reduzir cafeína e álcool, micção dupla, revisar medicações
-2. [Doxazosina __ mg à noite (titular; orientar hipotensão postural)] / [Finasterida 5 mg/dia se próstata > 30–40 g ou PSA > 1,5]
-3. PSA: [decisão compartilhada sobre riscos e benefícios]
-4. Encaminhar à urologia se: retenção urinária, hematúria, ITU de repetição, litíase vesical, lesão renal por obstrução, toque retal suspeito ou PSA alterado, falha do tratamento clínico
-5. Reaplicar IPSS e retorno em [4–12] semanas`},
+Medidas comportamentais: reduzir líquidos 2 h antes de dormir, reduzir cafeína e álcool, micção dupla, revisar medicações
+[Doxazosina __ mg à noite (titular; orientar hipotensão postural)] / [Finasterida 5 mg/dia se próstata > 30–40 g ou PSA > 1,5]
+PSA: [decisão compartilhada sobre riscos e benefícios]
+Encaminhar à urologia se: retenção urinária, hematúria, ITU de repetição, litíase vesical, lesão renal por obstrução, toque retal suspeito ou PSA alterado, falha do tratamento clínico
+Reaplicar IPSS no retorno
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [4–12] semanas / alta`},
 vertigem:{t:'Vertigem e tontura',code:'CIAP-2 N17/H82 · CID-10 R42/H81',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -677,13 +692,14 @@ A:
 [VPPB de canal posterior D/E / neurite vestibular / doença de Ménière provável / migrânea vestibular / hipotensão ortostática / suspeita de causa central].
 
 P:
-1. [Manobra de Epley realizada à D/E, com melhora / orientada a repetir em casa]
-2. [Dimenidrinato 50 mg 6/6 h ou meclizina 25 mg 8/8 h por no máximo 3 dias, só na crise]
-3. [Prednisona 60 mg/dia por 5 dias e reduzir, se neurite vestibular com até 72 h]
-4. Reabilitação vestibular / exercícios de Brandt-Daroff [ ]
-5. Prevenção de quedas; não dirigir durante as crises
-6. Sinais de alarme (fraqueza, fala enrolada, visão dupla, cefaleia súbita, não consegue andar): procurar urgência
-7. Retorno em [ ] dias`},
+[Manobra de Epley realizada à D/E, com melhora / orientada a repetir em casa]
+[Dimenidrinato 50 mg 6/6 h ou meclizina 25 mg 8/8 h por no máximo 3 dias, só na crise]
+[Prednisona 60 mg/dia por 5 dias e reduzir, se neurite vestibular com até 72 h]
+Reabilitação vestibular / exercícios de Brandt-Daroff [ ]
+Prevenção de quedas; não dirigir durante as crises
+Sinais de alarme (fraqueza, fala enrolada, visão dupla, cefaleia súbita, não consegue andar): procurar urgência
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] dias / alta`},
 idoso:{t:'Pessoa idosa (avaliação multidimensional)',code:'CIAP-2 A98 · CID-10 Z00.0',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -717,14 +733,15 @@ Pessoa idosa [robusta / em risco de fragilização / frágil] (IVCF-20 [ ]: 0–
 Problemas identificados: [polifarmácia / risco de quedas / declínio cognitivo / sintomas depressivos / incontinência / déficit sensorial / risco nutricional / sobrecarga do cuidador].
 
 P:
-1. Revisão de medicações: [desprescrever/ajustar __] (critérios de Beers, aba Ajustes de dose)
-2. Prevenção de quedas: ambiente seguro (iluminação, tapetes, barras), calçado adequado, revisar hipotensão ortostática e sedativos
-3. Atividade física com exercícios de força e equilíbrio; avaliação nutricional
-4. Vacinas: influenza anual, covid-19, pneumocócica, dT a cada 10 anos, hepatite B [ ]
-5. Rastreios conforme idade: [ ] (aba Rastreios)
-6. Encaminhamentos: [eMulti/fisioterapia/fonoaudiologia/oftalmologia/geriatria]
-7. Orientações ao cuidador e plano de cuidados compartilhado
-8. Retorno em [ ] meses`},
+Revisão de medicações: [desprescrever/ajustar __] (critérios de Beers, aba Ajustes de dose)
+Prevenção de quedas: ambiente seguro (iluminação, tapetes, barras), calçado adequado, revisar hipotensão ortostática e sedativos
+Atividade física com exercícios de força e equilíbrio; avaliação nutricional
+Vacinas: influenza anual, covid-19, pneumocócica, dT a cada 10 anos, hepatite B [ ]
+Rastreios conforme idade: [ ] (aba Rastreios)
+Encaminhamentos: [eMulti/fisioterapia/fonoaudiologia/oftalmologia/geriatria]
+Orientações ao cuidador e plano de cuidados compartilhado
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] meses / alta`},
 asma:{t:'Asma',code:'CIAP-2 R96 · CID-10 J45',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -752,12 +769,13 @@ Asma [controlada / parcialmente controlada / não controlada] (GINA [ ]/4 itens)
 Risco futuro: [exacerbações no último ano, técnica, adesão, tabagismo].
 
 P:
-1. [Manter/subir/reduzir etapa]: [budesonida + formoterol __ / beclometasona __ + salbutamol se necessário]
-2. Revisada técnica inalatória com espaçador; plano de ação escrito entregue
-3. Controle ambiental e de gatilhos; cessar tabagismo [se aplicável]; tratar rinite
-4. Vacina influenza anual [ ] e covid-19 [ ]
-5. Sinais de alarme: falta de ar que não melhora com o alívio, dificuldade para falar, lábios roxos
-6. Retorno em [ ] meses`},
+[Manter/subir/reduzir etapa]: [budesonida + formoterol __ / beclometasona __ + salbutamol se necessário]
+Revisada técnica inalatória com espaçador; plano de ação escrito entregue
+Controle ambiental e de gatilhos; cessar tabagismo [se aplicável]; tratar rinite
+Vacina influenza anual [ ] e covid-19 [ ]
+Sinais de alarme: falta de ar que não melhora com o alívio, dificuldade para falar, lábios roxos
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] meses / alta`},
 dpoc:{t:'DPOC',code:'CIAP-2 R95 · CID-10 J44',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -785,13 +803,14 @@ A:
 DPOC GOLD [1–4] (VEF1 [ ]%), grupo [A/B/E], [estável / com exacerbações frequentes].
 
 P:
-1. [Manter/ajustar] broncodilatador: [ ]
-2. Cessação do tabagismo: [abordagem, TRN/bupropiona]
-3. Revisada técnica inalatória; plano para exacerbação
-4. Vacinas: influenza, pneumocócica, covid-19, dTpa [ ]
-5. Atividade física / reabilitação pulmonar [ ]
-6. SpO2 ≤ 88% em repouso: [avaliar oxigenoterapia — gasometria/encaminhamento]
-7. Retorno em [ ] meses`},
+[Manter/ajustar] broncodilatador: [ ]
+Cessação do tabagismo: [abordagem, TRN/bupropiona]
+Revisada técnica inalatória; plano para exacerbação
+Vacinas: influenza, pneumocócica, covid-19, dTpa [ ]
+Atividade física / reabilitação pulmonar [ ]
+SpO2 ≤ 88% em repouso: [avaliar oxigenoterapia — gasometria/encaminhamento]
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] meses / alta`},
 hipotireo:{t:'Hipotireoidismo',code:'CIAP-2 T86 · CID-10 E03',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -818,11 +837,12 @@ A:
 Hipotireoidismo [primário], [controlado / não controlado] (TSH [ ]).
 
 P:
-1. Levotiroxina [manter / ajustar para __ mcg/dia]
-2. Orientações: tomar em jejum, mesmo horário, longe de cálcio, ferro e antiácidos
-3. TSH em [6–8 semanas após ajuste / 12 meses se estável]
-4. Se gestação: avisar logo, aumentar a dose em cerca de 25–30% e controlar TSH a cada 4 semanas
-5. Retorno em [ ] meses`},
+Levotiroxina [manter / ajustar para __ mcg/dia]
+Orientações: tomar em jejum, mesmo horário, longe de cálcio, ferro e antiácidos
+TSH em [6–8 semanas após ajuste / 12 meses se estável]
+Se gestação: avisar logo, aumentar a dose em cerca de 25–30% e controlar TSH a cada 4 semanas
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] meses / alta`},
 obesidade:{t:'Obesidade',code:'CIAP-2 T82 · CID-10 E66',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -848,13 +868,14 @@ A:
 Obesidade grau [I (30–34,9) / II (35–39,9) / III (≥ 40)], com [ ] comorbidades associadas.
 
 P:
-1. Meta inicial: perder 5–10% do peso em 6 meses
-2. Plano alimentar baseado no Guia Alimentar (comida de verdade, menos ultraprocessados e bebidas açucaradas)
-3. Atividade física: ≥ 150 min/semana, com início gradual
-4. Abordagem comportamental; grupo de reeducação alimentar [ ]
-5. Encaminhamento: [nutrição/eMulti]; avaliar cirurgia bariátrica se IMC ≥ 40, ou ≥ 35 com comorbidade, após falha do tratamento clínico
-6. Exames: [ ]
-7. Retorno em [ ] semanas`},
+Meta inicial: perder 5–10% do peso em 6 meses
+Plano alimentar baseado no Guia Alimentar (comida de verdade, menos ultraprocessados e bebidas açucaradas)
+Atividade física: ≥ 150 min/semana, com início gradual
+Abordagem comportamental; grupo de reeducação alimentar [ ]
+Encaminhamento: [nutrição/eMulti]; avaliar cirurgia bariátrica se IMC ≥ 40, ou ≥ 35 com comorbidade, após falha do tratamento clínico
+Exames: [ ]
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] semanas / alta`},
 tabagismo:{t:'Tabagismo (cessação)',code:'CIAP-2 P17 · CID-10 F17',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -878,11 +899,12 @@ A:
 Tabagismo com dependência [baixa/média/elevada] (Fagerström [ ]), [motivado(a)] para a cessação.
 
 P:
-1. Abordagem breve e combinação da data para parar: [ ]
-2. Grupo de cessação do tabagismo (PNCT) [ ]
-3. Farmacoterapia: [adesivo de nicotina __ mg + goma/pastilha 2 mg se fissura] / [bupropiona 150 mg 1x/dia por 3 dias, depois 12/12 h]
-4. Orientações: lidar com a fissura, evitar gatilhos, ganho de peso, sintomas de abstinência
-5. Retorno em [1–2] semanas`},
+Abordagem breve e combinação da data para parar: [ ]
+Grupo de cessação do tabagismo (PNCT) [ ]
+Farmacoterapia: [adesivo de nicotina __ mg + goma/pastilha 2 mg se fissura] / [bupropiona 150 mg 1x/dia por 3 dias, depois 12/12 h]
+Orientações: lidar com a fissura, evitar gatilhos, ganho de peso, sintomas de abstinência
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [1–2] semanas`},
 puerperio:{t:'Puerpério',code:'CIAP-2 W18 · CID-10 Z39.2',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -909,13 +931,14 @@ A:
 Puerpério [imediato/tardio/remoto] de parto [normal/cesárea], [sem intercorrências].
 
 P:
-1. Aleitamento: orientações de pega e posição; [ ]
-2. Sulfato ferroso 40 mg Fe elementar/dia até 3 meses pós-parto
-3. Contracepção: [ ] (compatível com amamentação)
-4. Vacinas: [ ] | Exames: [TOTG 75 g se diabetes gestacional; TR sífilis/HIV se indicado]
-5. Consulta do RN e teste do pezinho: [ ]
-6. Sinais de alarme: febre, sangramento aumentado, dor em panturrilha, cefaleia intensa, tristeza profunda
-7. Retorno em [ ]`},
+Aleitamento: orientações de pega e posição; [ ]
+Sulfato ferroso 40 mg Fe elementar/dia até 3 meses pós-parto
+Contracepção: [ ] (compatível com amamentação)
+Vacinas: [ ] | Exames: [TOTG 75 g se diabetes gestacional; TR sífilis/HIV se indicado]
+Consulta do RN e teste do pezinho: [ ]
+Sinais de alarme: febre, sangramento aumentado, dor em panturrilha, cefaleia intensa, tristeza profunda
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] / alta`},
 contracepcao:{t:'Planejamento reprodutivo',code:'CIAP-2 W14 · CID-10 Z30',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -941,12 +964,13 @@ A:
 Planejamento reprodutivo. Critérios de elegibilidade (OMS) para [método]: categoria [1/2].
 
 P:
-1. Método escolhido: [DIU de cobre / implante / injetável trimestral / mensal / pílula combinada / minipílula]
-2. Orientações de uso, efeitos esperados e sinais de alarme
-3. Preservativo para prevenção de IST; testes rápidos [HIV, sífilis, hepatites] oferecidos
-4. Contracepção de emergência: orientada
-5. Ácido fólico se planeja gestar
-6. Retorno em [ ]`},
+Método escolhido: [DIU de cobre / implante / injetável trimestral / mensal / pílula combinada / minipílula]
+Orientações de uso, efeitos esperados e sinais de alarme
+Preservativo para prevenção de IST; testes rápidos [HIV, sífilis, hepatites] oferecidos
+Contracepção de emergência: orientada
+Ácido fólico se planeja gestar
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] / alta`},
 climaterio:{t:'Climatério e terapia hormonal',code:'CIAP-2 X11 · CID-10 N95.1',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -975,13 +999,14 @@ Candidata a TRH: [sim, menos de 60 anos e menos de 10 anos de menopausa, sem con
 Risco cardiovascular: [baixo/intermediário/alto].
 
 P:
-1. TRH: [estradiol gel 0,06% __ dose(s) ao dia na pele do braço / estradiol 1 mg VO 1x/dia] + [progesterona micronizada 100 mg à noite contínuo / 200 mg à noite do dia 1 ao 12 de cada mês] (útero presente) / estrogênio isolado (histerectomizada)
-2. [Estriol creme vaginal 1 mg/g: 1 aplicação à noite por 3 semanas, depois 2x/semana]
-3. [Alternativa não hormonal: __]
-4. MEV: atividade física regular com fortalecimento, alimentação rica em cálcio, controle do peso, evitar gatilhos das ondas de calor, cessar tabagismo, reduzir álcool
-5. Rastreios: [mamografia / preventivo / densitometria] solicitados ou em dia
-6. Orientada sobre efeitos esperados (mastalgia e sangramento leve nos primeiros meses) e sinais de alarme (sangramento após 6 meses, dor e edema na panturrilha, falta de ar súbita, dor torácica, déficit neurológico, nódulo na mama)
-7. Retorno em [6–12 semanas] para avaliar resposta, depois anual`},
+TRH: [estradiol gel 0,06% __ dose(s) ao dia na pele do braço / estradiol 1 mg VO 1x/dia] + [progesterona micronizada 100 mg à noite contínuo / 200 mg à noite do dia 1 ao 12 de cada mês] (útero presente) / estrogênio isolado (histerectomizada)
+[Estriol creme vaginal 1 mg/g: 1 aplicação à noite por 3 semanas, depois 2x/semana]
+[Alternativa não hormonal: __]
+MEV: atividade física regular com fortalecimento, alimentação rica em cálcio, controle do peso, evitar gatilhos das ondas de calor, cessar tabagismo, reduzir álcool
+Rastreios: [mamografia / preventivo / densitometria] solicitados ou em dia
+Orientada sobre efeitos esperados (mastalgia e sangramento leve nos primeiros meses) e sinais de alarme (sangramento após 6 meses, dor e edema na panturrilha, falta de ar súbita, dor torácica, déficit neurológico, nódulo na mama)
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [6–12 semanas] para avaliar resposta, depois anual`},
 oma:{t:'Otite média aguda',code:'CIAP-2 H71 · CID-10 H66.9',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -1009,11 +1034,12 @@ A:
 Otite média aguda [unilateral/bilateral], [sem / com] otorreia, [leve / grave (otalgia moderada a intensa, febre ≥ 39 °C ou dor > 48 h)]. Sem sinais de complicação.
 
 P:
-1. Analgesia: [dipirona / paracetamol / ibuprofeno] nas doses por peso
-2. [Antibiótico: amoxicilina __ mg/kg/dia de 12/12 h por __ dias / Observação vigilante por 48–72 h com retorno garantido]
-3. Lavagem nasal com SF 0,9%; não pingar nada no ouvido
-4. Sinais de alarme: dor ou inchaço atrás da orelha, febre persistente após 48–72 h de antibiótico, sonolência, rigidez de nuca, paralisia facial
-5. Retorno em 48–72 h se sem melhora; reavaliar otoscopia em [ ] semanas se efusão persistente`},
+Analgesia: [dipirona / paracetamol / ibuprofeno] nas doses por peso
+[Antibiótico: amoxicilina __ mg/kg/dia de 12/12 h por __ dias / Observação vigilante por 48–72 h com retorno garantido]
+Lavagem nasal com SF 0,9%; não pingar nada no ouvido
+Sinais de alarme: dor ou inchaço atrás da orelha, febre persistente após 48–72 h de antibiótico, sonolência, rigidez de nuca, paralisia facial
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em 48–72 h se sem melhora; reavaliar otoscopia em [ ] semanas se efusão persistente`},
 otext:{t:'Otite externa',code:'CIAP-2 H70 · CID-10 H60.9',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -1037,12 +1063,13 @@ A:
 Otite externa aguda difusa [D/E], [leve/moderada], sem sinais de otite externa necrotizante.
 
 P:
-1. Gotas otológicas: [ciprofloxacino 0,3% (+ hidrocortisona)] __ gotas de 12/12 h por 7 dias
-2. Analgesia: [dipirona / ibuprofeno]
-3. Manter o ouvido seco (algodão com vaselina no banho); não usar cotonete; sem piscina por 7–10 dias
-4. [Edema importante: mecha (pavio) no CAE / limpeza do CAE]
-5. Sinais de alarme: febre, dor intensa e progressiva, inchaço da face ou atrás da orelha, paralisia facial
-6. Retorno se sem melhora em 48–72 h`},
+Gotas otológicas: [ciprofloxacino 0,3% (+ hidrocortisona)] __ gotas de 12/12 h por 7 dias
+Analgesia: [dipirona / ibuprofeno]
+Manter o ouvido seco (algodão com vaselina no banho); não usar cotonete; sem piscina por 7–10 dias
+[Edema importante: mecha (pavio) no CAE / limpeza do CAE]
+Sinais de alarme: febre, dor intensa e progressiva, inchaço da face ou atrás da orelha, paralisia facial
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno se sem melhora em 48–72 h`},
 conj:{t:'Conjuntivite',code:'CIAP-2 F70/F71 · CID-10 H10.9',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -1067,13 +1094,15 @@ A:
 Conjuntivite aguda [viral / bacteriana / alérgica] [uni/bilateral], sem sinais de gravidade.
 
 P:
-1. [Viral: compressas frias, lágrima artificial; sem antibiótico]
-   [Bacteriana: colírio de tobramicina / ciprofloxacino 0,3% 1 gota de 4/4 h por 7 dias]
-   [Alérgica: compressas frias, lágrima artificial, colírio antialérgico (cetotifeno / olopatadina) 12/12 h]
-2. Limpeza com SF 0,9% e gaze, de dentro para fora; lavar as mãos; não compartilhar toalha e fronha
-3. Afastamento: [viral/bacteriana: escola ou trabalho por __ dias enquanto houver secreção]
-4. Sinais de alarme: dor forte, piora da visão, fotofobia, sem melhora em 7 dias → oftalmologia
-5. Não usar colírio com corticoide sem avaliação oftalmológica`},
+[Viral: compressas frias, lágrima artificial; sem antibiótico]
+[Bacteriana: colírio de tobramicina / ciprofloxacino 0,3% 1 gota de 4/4 h por 7 dias]
+[Alérgica: compressas frias, lágrima artificial, colírio antialérgico (cetotifeno / olopatadina) 12/12 h]
+Limpeza com SF 0,9% e gaze, de dentro para fora; lavar as mãos; não compartilhar toalha e fronha
+Afastamento: [viral/bacteriana: escola ou trabalho por __ dias enquanto houver secreção]
+Sinais de alarme: dor forte, piora da visão, fotofobia, sem melhora em 7 dias → oftalmologia
+Não usar colírio com corticoide sem avaliação oftalmológica
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] dias / alta`},
 oa:{t:'Osteoartrite de joelho e quadril',code:'CIAP-2 L89/L90 · CID-10 M16/M17',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -1100,13 +1129,14 @@ A:
 Osteoartrite de [joelho/quadril] [D/E/bilateral], diagnóstico clínico (idade ≥ 45 anos, dor mecânica, rigidez matinal ≤ 30 min). Sem sinais de alarme.
 
 P:
-1. Exercício: fortalecimento de quadríceps e glúteos + aeróbico, 3 vezes por semana [encaminhar à fisioterapia / grupo de atividade física / e-Multi]
-2. Perda de peso: meta de 5–10% do peso [ ]
-3. Analgesia: [AINE tópico (diclofenaco gel) no joelho / AINE oral por curto período / paracetamol ou dipirona]
-4. [Bengala do lado oposto / palmilha / calçado adequado]
-5. Imagem: [não necessária para o diagnóstico / RX de __ AP e perfil com carga para avaliar gravidade ou cirurgia]
-6. [Infiltração com corticoide se crise com derrame / encaminhar à ortopedia se dor refratária com limitação importante]
-7. Retorno em [ ] semanas`},
+Exercício: fortalecimento de quadríceps e glúteos + aeróbico, 3 vezes por semana [encaminhar à fisioterapia / grupo de atividade física / e-Multi]
+Perda de peso: meta de 5–10% do peso [ ]
+Analgesia: [AINE tópico (diclofenaco gel) no joelho / AINE oral por curto período / paracetamol ou dipirona]
+[Bengala do lado oposto / palmilha / calçado adequado]
+Imagem: [não necessária para o diagnóstico / RX de __ AP e perfil com carga para avaliar gravidade ou cirurgia]
+[Infiltração com corticoide se crise com derrame / encaminhar à ortopedia se dor refratária com limitação importante]
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] semanas / alta`},
 insonia:{t:'Insônia',code:'CIAP-2 P06 · CID-10 G47.0/F51.0',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -1131,12 +1161,13 @@ A:
 Insônia [aguda / crônica (≥ 3 noites por semana por ≥ 3 meses)] [de início / de manutenção], [associada a __ / sem causa secundária aparente].
 
 P:
-1. Higiene do sono e TCC-I: horário fixo para levantar, cama só para dormir, sair da cama se não dormir em 20 minutos, sem cochilos, restrição do tempo na cama para [__] h
-2. Diário do sono por 2 semanas
-3. Tratar causa associada: [ ]
-4. [Sem medicação / trazodona 50 mg à noite / mirtazapina 7,5–15 mg à noite / melatonina __ mg 1–2 h antes de deitar]
-5. [Desmame de benzodiazepínico / zolpidem: reduzir 10–25% da dose a cada 2 semanas]
-6. Retorno em [4] semanas com o diário do sono`},
+Higiene do sono e TCC-I: horário fixo para levantar, cama só para dormir, sair da cama se não dormir em 20 minutos, sem cochilos, restrição do tempo na cama para [__] h
+Diário do sono por 2 semanas
+Tratar causa associada: [ ]
+[Sem medicação / trazodona 50 mg à noite / mirtazapina 7,5–15 mg à noite / melatonina __ mg 1–2 h antes de deitar]
+[Desmame de benzodiazepínico / zolpidem: reduzir 10–25% da dose a cada 2 semanas]
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [4] semanas com o diário do sono`},
 anemia:{t:'Anemia ferropriva',code:'CIAP-2 B80 · CID-10 D50.9',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -1162,11 +1193,13 @@ A:
 Anemia ferropriva [leve (Hb ≥ 10) / moderada (8–10) / grave (< 8)], provável causa: [perda menstrual / baixa ingestão / gestação / a esclarecer].
 
 P:
-1. Sulfato ferroso [40 mg de ferro elementar 1 a 2 comprimidos por dia, em jejum ou 30 min antes do almoço, com suco cítrico]
-2. Investigar causa: [parasitológico de fezes / pesquisa de sangue oculto / EDA e colonoscopia (homem e mulher após a menopausa) / USG transvaginal (sangramento uterino)]
-3. Orientação alimentar: carnes, feijão com fonte de vitamina C, evitar café, chá e leite junto das refeições
-4. Hemograma e reticulócitos em 4 semanas (esperado: Hb sobe ≥ 1 g/dL); manter o ferro por 3 meses após normalizar a Hb (ferritina > 50)
-5. Sinais de alarme: falta de ar em repouso, dor no peito, desmaio, sangramento visível`},
+Sulfato ferroso [40 mg de ferro elementar 1 a 2 comprimidos por dia, em jejum ou 30 min antes do almoço, com suco cítrico]
+Investigar causa: [parasitológico de fezes / pesquisa de sangue oculto / EDA e colonoscopia (homem e mulher após a menopausa) / USG transvaginal (sangramento uterino)]
+Orientação alimentar: carnes, feijão com fonte de vitamina C, evitar café, chá e leite junto das refeições
+Hemograma e reticulócitos em 4 semanas (esperado: Hb sobe ≥ 1 g/dL); manter o ferro por 3 meses após normalizar a Hb (ferritina > 50)
+Sinais de alarme: falta de ar em repouso, dor no peito, desmaio, sangramento visível
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] dias / alta`},
 b12:{t:'Deficiência de vitamina B12',code:'CIAP-2 B81 · CID-10 D51.9/E53.8',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -1191,12 +1224,14 @@ A:
 Deficiência de vitamina B12 [com / sem] anemia [macrocítica], [com / sem] manifestações neurológicas, provável causa: [metformina / IBP / dieta / má absorção / a esclarecer (anemia perniciosa)].
 
 P:
-1. [Com sintomas neurológicos ou má absorção: cianocobalamina 1.000 mcg IM em dias alternados por 2 semanas, depois 1 vez por semana até melhora, depois mensal]
-   [Sem sintomas neurológicos e com absorção preservada: cianocobalamina oral 1.000–2.000 mcg/dia]
-2. Repor ácido fólico só depois de iniciar a B12 [se folato baixo]
-3. Investigar causa: [ ]
-4. Hemograma e reticulócitos em 1–2 semanas (crise reticulocitária) e em 8 semanas; B12 em 3 meses
-5. Manter reposição enquanto persistir a causa (por toda a vida na anemia perniciosa e após bariátrica)`},
+[Com sintomas neurológicos ou má absorção: cianocobalamina 1.000 mcg IM em dias alternados por 2 semanas, depois 1 vez por semana até melhora, depois mensal]
+[Sem sintomas neurológicos e com absorção preservada: cianocobalamina oral 1.000–2.000 mcg/dia]
+Repor ácido fólico só depois de iniciar a B12 [se folato baixo]
+Investigar causa: [ ]
+Hemograma e reticulócitos em 1–2 semanas (crise reticulocitária) e em 8 semanas; B12 em 3 meses
+Manter reposição enquanto persistir a causa (por toda a vida na anemia perniciosa e após bariátrica)
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] dias / alta`},
 sang1:{t:'Sangramento no início da gestação (abortamento)',code:'CIAP-2 W03/W82 · CID-10 O20.0/O03/O00',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -1223,13 +1258,14 @@ A:
 [Ameaça de abortamento / abortamento inevitável / incompleto / completo / retido / infectado / suspeita de gravidez ectópica / gestação de localização desconhecida / suspeita de mola] com [__] semanas, [estável hemodinamicamente]. Rh [ ].
 
 P:
-1. [Ameaça ou completo, estável: conduta expectante, analgesia (paracetamol / escopolamina), orientar sinais de alarme]
-   [Inevitável, incompleto, retido, infectado, ectópica, mola ou instável: encaminhado(a) à maternidade de referência __ (contato feito)]
-2. Exames: beta-hCG quantitativo [repetir em 48 h], USG transvaginal, hemograma, tipagem e Coombs indireto, teste rápido de sífilis e HIV
-3. Rh negativo com Coombs indireto negativo: imunoglobulina anti-D em até 72 h [aplicada / encaminhada]
-4. Acolhimento e escuta; oferecer contracepção se desejar (pode iniciar logo após o abortamento)
-5. Sinais de alarme: sangramento maior que menstruação, dor forte, febre, desmaio, dor no ombro
-6. Retorno em [48–72 h / 7 dias]`},
+[Ameaça ou completo, estável: conduta expectante, analgesia (paracetamol / escopolamina), orientar sinais de alarme]
+[Inevitável, incompleto, retido, infectado, ectópica, mola ou instável: encaminhado(a) à maternidade de referência __ (contato feito)]
+Exames: beta-hCG quantitativo [repetir em 48 h], USG transvaginal, hemograma, tipagem e Coombs indireto, teste rápido de sífilis e HIV
+Rh negativo com Coombs indireto negativo: imunoglobulina anti-D em até 72 h [aplicada / encaminhada]
+Acolhimento e escuta; oferecer contracepção se desejar (pode iniciar logo após o abortamento)
+Sinais de alarme: sangramento maior que menstruação, dor forte, febre, desmaio, dor no ombro
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [48–72 h / 7 dias]`},
 sang2:{t:'Sangramento na segunda metade da gestação',code:'CIAP-2 W03 · CID-10 O44/O45/O46',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -1255,11 +1291,13 @@ A:
 Sangramento de segunda metade da gestação, [__] semanas, suspeita de [descolamento prematuro de placenta / placenta prévia / rotura uterina / vasa prévia / trabalho de parto / causa não obstétrica (ectrópio, cervicite, pólipo)], [estável / instável].
 
 P:
-1. Encaminhada à maternidade de referência [__] [com SAMU 192], em decúbito lateral esquerdo
-2. [Instável: 2 acessos venosos calibrosos, cristaloide aquecido, O2, monitorização]
-3. Não realizar toque vaginal até excluir placenta prévia (USG)
-4. Rh negativo: imunoglobulina anti-D em até 72 h (na maternidade)
-5. Contato com a maternidade e carta de referência com IG, tipo sanguíneo, USG e exames do pré-natal`},
+Encaminhada à maternidade de referência [__] [com SAMU 192], em decúbito lateral esquerdo
+[Instável: 2 acessos venosos calibrosos, cristaloide aquecido, O2, monitorização]
+Não realizar toque vaginal até excluir placenta prévia (USG)
+Rh negativo: imunoglobulina anti-D em até 72 h (na maternidade)
+Contato com a maternidade e carta de referência com IG, tipo sanguíneo, USG e exames do pré-natal
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] dias / alta`},
 esquizofrenia:{t:'Esquizofrenia e psicoses',code:'CIAP-2 P72 · CID-10 F20',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -1285,13 +1323,14 @@ A:
 Esquizofrenia [estável / em descompensação], em uso de [__], [adesão boa / irregular], [sem / com] efeitos adversos [__]. Risco metabólico [ ]. Sem risco imediato para si ou para terceiros.
 
 P:
-1. Manter [antipsicótico e dose] [/ ajustar para __] [/ considerar antipsicótico de depósito se baixa adesão]
-2. Monitorização metabólica: peso e PA a cada consulta; glicemia e lipídios com 3 meses e depois anual; ECG se dose alta ou outros fármacos que alargam o QT
-3. Efeitos extrapiramidais: [biperideno se necessário / reduzir dose]
-4. Psicoeducação com paciente e família; sinais de recaída (insônia, isolamento, desconfiança, vozes) e plano de crise
-5. Seguimento compartilhado com o CAPS [__]; projeto terapêutico singular; reabilitação psicossocial
-6. Orientar sobre álcool, maconha e outras drogas (pioram a doença); cessação do tabagismo
-7. Retorno em [ ] semanas; receita de controle especial (C1) em 2 vias`},
+Manter [antipsicótico e dose] [/ ajustar para __] [/ considerar antipsicótico de depósito se baixa adesão]
+Monitorização metabólica: peso e PA a cada consulta; glicemia e lipídios com 3 meses e depois anual; ECG se dose alta ou outros fármacos que alargam o QT
+Efeitos extrapiramidais: [biperideno se necessário / reduzir dose]
+Psicoeducação com paciente e família; sinais de recaída (insônia, isolamento, desconfiança, vozes) e plano de crise
+Seguimento compartilhado com o CAPS [__]; projeto terapêutico singular; reabilitação psicossocial
+Orientar sobre álcool, maconha e outras drogas (pioram a doença); cessação do tabagismo
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] semanas; receita de controle especial (C1) em 2 vias`},
 itu:{t:'Infecção urinária',code:'CIAP-2 U71 · CID-10 N39.0',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -1315,10 +1354,11 @@ A:
 [Cistite aguda não complicada / ITU complicada / pielonefrite aguda].
 
 P:
-1. [Nitrofurantoína 100 mg 6/6 h por 5 dias / fosfomicina 3 g dose única / __]
-2. Hidratação, não segurar a urina, analgesia [ ]
-3. Sinais de alarme: febre, dor lombar, vômitos — retornar
-4. Retorno se sem melhora em 48–72 h`},
+[Nitrofurantoína 100 mg 6/6 h por 5 dias / fosfomicina 3 g dose única / __]
+Hidratação, não segurar a urina, analgesia [ ]
+Sinais de alarme: febre, dor lombar, vômitos — retornar
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno se sem melhora em 48–72 h`},
 ist:{t:'IST e corrimento',code:'CIAP-2 X71/X72/X84 · CID-10 A64/N76',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -1343,12 +1383,13 @@ A:
 [Vaginose bacteriana / candidíase / tricomoníase / cervicite / uretrite / úlcera genital / verrugas anogenitais], conforme abordagem sindrômica.
 
 P:
-1. Tratamento: [ ] (ver Prescrições, IST)
-2. Tratar parceria(s) quando indicado
-3. Testes rápidos e notificação [sífilis/HIV]; avaliar PEP (≤ 72 h) ou PrEP
-4. Preservativo e orientações
-5. Vacinas: HPV [ ] | hepatite B [ ]
-6. Retorno em [ ] dias`},
+Tratamento: [ ] (ver Prescrições, IST)
+Tratar parceria(s) quando indicado
+Testes rápidos e notificação [sífilis/HIV]; avaliar PEP (≤ 72 h) ou PrEP
+Preservativo e orientações
+Vacinas: HPV [ ] | hepatite B [ ]
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] dias / alta`},
 dengue:{t:'Dengue e arboviroses',code:'CIAP-2 A77 · CID-10 A90',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -1374,11 +1415,12 @@ A:
 Caso suspeito de dengue, grupo [A/B/C/D], [__]º dia de doença.
 
 P:
-1. Hidratação oral: [__ L/dia] (adulto 60 mL/kg/dia, 1/3 com SRO)
-2. Dipirona ou paracetamol; não usar AAS nem anti-inflamatórios
-3. Notificação realizada; cartão de acompanhamento entregue
-4. Sinais de alarme orientados (dor abdominal, vômitos, sangramento, tontura, sonolência)
-5. Retorno: [no dia da melhora da febre / reavaliação diária / encaminhamento]`},
+Hidratação oral: [__ L/dia] (adulto 60 mL/kg/dia, 1/3 com SRO)
+Dipirona ou paracetamol; não usar AAS nem anti-inflamatórios
+Notificação realizada; cartão de acompanhamento entregue
+Sinais de alarme orientados (dor abdominal, vômitos, sangramento, tontura, sonolência)
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno: [no dia da melhora da febre / reavaliação diária / encaminhamento]`},
 cefaleia:{t:'Cefaleia',code:'CIAP-2 N01/N89/N02 · CID-10 G43/G44.2/R51',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -1403,12 +1445,13 @@ A:
 [Migrânea sem aura / com aura / cefaleia tensional / cefaleia por uso excessivo de analgésico], sem sinais de alarme.
 
 P:
-1. Crise: [dipirona 1 g / ibuprofeno 400–600 mg / naproxeno 500 mg] + [metoclopramida 10 mg]; [sumatriptano 50 mg se sem resposta]
-2. Profilaxia: [não indicada / amitriptilina __ / propranolol __]
-3. Diário de cefaleia; limitar analgésico a menos de 10 dias por mês
-4. Sono regular, hidratação, atividade física, manejo do estresse
-5. Sinais de alarme orientados
-6. Retorno em [ ] semanas`},
+Crise: [dipirona 1 g / ibuprofeno 400–600 mg / naproxeno 500 mg] + [metoclopramida 10 mg]; [sumatriptano 50 mg se sem resposta]
+Profilaxia: [não indicada / amitriptilina __ / propranolol __]
+Diário de cefaleia; limitar analgésico a menos de 10 dias por mês
+Sono regular, hidratação, atividade física, manejo do estresse
+Sinais de alarme orientados
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] semanas / alta`},
 lombalgia:{t:'Lombalgia',code:'CIAP-2 L03/L86 · CID-10 M54.5/M54.4',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -1434,13 +1477,14 @@ A:
 [Lombalgia aguda inespecífica / lombociatalgia sem déficit / lombalgia crônica], sem bandeiras vermelhas.
 
 P:
-1. Manter-se ativo(a), evitar repouso no leito; calor local
-2. [Ibuprofeno 400 mg 8/8 h por até 7 dias] [+ ciclobenzaprina 5–10 mg à noite por até 1–2 semanas]
-3. Exames de imagem não indicados no momento
-4. Exercícios/fisioterapia [ ]; orientações posturais e de retorno ao trabalho
-5. Atestado: [ ] dias
-6. Sinais de alarme orientados (fraqueza nas pernas, alteração urinária/fecal, febre)
-7. Retorno em [ ] semanas se sem melhora`}
+Manter-se ativo(a), evitar repouso no leito; calor local
+[Ibuprofeno 400 mg 8/8 h por até 7 dias] [+ ciclobenzaprina 5–10 mg à noite por até 1–2 semanas]
+Exames de imagem não indicados no momento
+Exercícios/fisioterapia [ ]; orientações posturais e de retorno ao trabalho
+Atestado: [ ] dias
+Sinais de alarme orientados (fraqueza nas pernas, alteração urinária/fecal, febre)
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] semanas se sem melhora`}
 };
 
 /* ---------- Calculadoras ---------- */
@@ -1689,7 +1733,12 @@ rx_anal:{s:'Analgésicos',t:'Analgésicos e anti-inflamatórios',rec:RS+' (opioi
    Tomar 2 comprimidos de 6 em 6 horas, se dor.`,n:'Cólica renal: acrescentar AINE se não houver contraindicação. Febre, anúria ou dor refratária: encaminhar.'},
  {t:'Dor moderada (opioide fraco)',rx:`Uso oral
 1. Paracetamol 500 mg + codeína 30 mg ...... 20 comprimidos
-   Tomar 1 comprimido de 6 em 6 horas, se dor, por até 5 dias.`,n:'Receita de Controle Especial em 2 vias. Alternativa: tramadol 50 mg 1 cápsula 8/8 h (máx. 400 mg/dia; risco de convulsão e síndrome serotoninérgica com ISRS). Prescrever laxativo se uso > 3 dias.'}]},
+   Tomar 1 comprimido de 6 em 6 horas, se dor, por até 5 dias.`,n:'Receita de Controle Especial em 2 vias. Alternativa: tramadol 50 mg 1 cápsula 8/8 h (máx. 400 mg/dia; risco de convulsão e síndrome serotoninérgica com ISRS). Prescrever laxativo se uso > 3 dias.'},
+ {t:'Cefaleia e enxaqueca na gestante: crise',rx:`Uso oral
+1. Paracetamol 750 mg ...... 20 comprimidos
+   Tomar 1 a 2 comprimidos (até 1 g) no início da dor, se necessário de 6 em 6 horas. Máximo de 4 g por dia.
+2. Metoclopramida 10 mg ...... 10 comprimidos
+   Tomar 1 comprimido junto com o paracetamol, se náusea ou crise de enxaqueca, até de 8 em 8 horas.`,n:'Crise que não cede: sumatriptano 50 mg VO (dados tranquilizadores na gestação), ou na urgência metoclopramida 10 mg IV/IM, clorpromazina 0,1 mg/kg IM/IV ou prometazina 25 mg IM, com hidratação. Dipirona só pontual e evitar no 3º trimestre. Contraindicados: ergotamina e derivados (uterotônicos), AINE após 20 semanas, AAS em dose analgésica, valproato, topiramato. Profilaxia se crises frequentes: propranolol 20–40 mg 12/12 h ou amitriptilina 10–25 mg à noite. Cefaleia nova ou diferente após 20 semanas: medir PA e pensar em pré-eclâmpsia; sinais de alarme (pior dor da vida, déficit, febre, convulsão, puerpério): urgência.'}]},
 rx_tab:{s:'Tabagismo',t:'Tratamento do tabagismo',rec:RS+' (bupropiona: '+RC+')',items:[
  {t:'Adesivo de nicotina',rx:`Uso transdérmico
 1. Nicotina adesivo 21 mg ...... 28 adesivos
@@ -1918,7 +1967,18 @@ rx_sono:{s:'Insônia',t:'Insônia: hipnóticos e desmame',rec:'Trazodona, mirtaz
 1. Diazepam 5 mg ...... comprimidos suficientes para 30 dias
    Semanas 1 e 2: tomar [__] comprimido(s) à noite.
    Semanas 3 e 4: tomar [__] comprimido(s) à noite.
-   Reduzir [10 a 25]% da dose a cada 2 semanas até parar, conforme combinado.`,n:'Notificação B. Equivalência aproximada de 5 mg de diazepam: clonazepam 0,25–0,5 mg, alprazolam 0,5 mg, lorazepam 0,5–1 mg, bromazepam 3 mg, zolpidem 10 mg. Se der abstinência, voltar à dose anterior e reduzir mais devagar. Associar TCC-I.'}]},
+   Reduzir [10 a 25]% da dose a cada 2 semanas até parar, conforme combinado.`,n:'Notificação B. Equivalência aproximada de 5 mg de diazepam: clonazepam 0,25–0,5 mg, alprazolam 0,5 mg, lorazepam 0,5–1 mg, bromazepam 3 mg, zolpidem 10 mg. Se der abstinência, voltar à dose anterior e reduzir mais devagar. Associar TCC-I.'},
+ {t:'Amitriptilina (com dor crônica ou enxaqueca)',rx:`Uso oral
+1. Amitriptilina 25 mg ...... 30 comprimidos
+   Tomar 1/2 a 1 comprimido à noite, 1 a 2 horas antes de deitar.`,n:'Dose baixa (10–25 mg) para sono. Boca seca, constipação, ganho de peso. Evitar em idosos, cardiopatas (ECG se > 50 anos), glaucoma de ângulo fechado e retenção urinária. Receita C1 em 2 vias. Na RENAME (UBS).'},
+ {t:'Gabapentina (com dor neuropática ou pernas inquietas)',rx:`Uso oral
+1. Gabapentina 300 mg ...... 30 cápsulas
+   Tomar 1 cápsula à noite, 1 hora antes de deitar.`,n:'Começar com 100–300 mg; útil se dor neuropática, fibromialgia, síndrome das pernas inquietas (dosar ferritina) ou abstinência alcoólica. Tontura e sonolência; ajustar na DRC. Receita C1 em 2 vias.'},
+ {t:'Insônia com ansiedade ou depressão',rx:`Uso oral
+1. Sertralina 50 mg ...... 30 comprimidos
+   Tomar meio comprimido pela manhã por 7 dias e depois 1 comprimido pela manhã.
+2. Trazodona 50 mg ...... 15 comprimidos
+   Tomar 1/2 comprimido à noite nas primeiras semanas, se necessário.`,n:'Tratar o transtorno de base; o ISRS pode piorar o sono no início. Trazodona ou mirtazapina à noite ajudam nas primeiras semanas. Evitar quetiapina e prometazina só para dormir (efeitos metabólicos e anticolinérgicos, sem benefício comprovado). Receita C1 em 2 vias.'}]},
 rx_anemia:{s:'Anemia',t:'Anemia ferropriva e deficiência de B12',rec:RS,items:[
  {t:'Ferropriva: adulto',rx:`Uso oral
 1. Sulfato ferroso 40 mg de ferro elementar ...... 60 comprimidos
@@ -4484,8 +4544,9 @@ function consCompose(){
   const before=(re,block)=>{const m=t.match(re);if(m)t=t.slice(0,m.index)+block+'\n\n'+t.slice(m.index);else t+=(t?'\n\n':'')+block};
   if(ef)after(/^O:[^\n]*$/m,ef);
   if(ca)before(/^A:[^\n]*$/m,'Escalas e cálculos:\n'+ca);
-  if(rx)t+=(t?'\n\n':'')+'Prescrição:\n'+rx;
-  if(or)t+=(t?'\n\n':'')+'Orientações:\n'+or;
+  const tail=blk=>{const m=t.match(/^Paciente ciente[^\n]*$/m);if(m)t=t.slice(0,m.index)+blk+'\n\n'+t.slice(m.index);else t+=(t?'\n\n':'')+blk};
+  if(rx)tail('Prescrição:\n'+rx);
+  if(or)tail('Orientações:\n'+or);
   return t.trim();
 }
 function renderCONS(m){
@@ -4879,7 +4940,7 @@ const SOAPLINK={has:[['fx_has','Fluxograma HAS'],['rcv','Risco CV'],['ecg_sobrec
 /* Prescrição padrão no fim de cada SOAP: referências a P [classe, item] ou receita própria */
 const SRX={has:[['rx_cv',0],['rx_cv',2],['rx_cv',3],['rx_cv',4]],dm:[['rx_dm',0],['rx_dm',1],['rx_dm',2],['rx_dm',3],['rx_lip',0]],drc:[['rx_cv',0],['rx_dm',2]],
  hpb:[['rx_uro',0],['rx_uro',1],['rx_uro',2]],hipotireo:[['rx_end',0]],obesidade:[['rx_glp1',1],['rx_glp1',2],['rx_glp1',3]],asma:[['rx_resp',0],['rx_resp',1]],dpoc:[['rx_resp',2]],
- prenatal:[['rx_gest',0],['rx_gest',1]],puerperio:[['rx_gest',2],['rx_aco',1]],contracepcao:[['rx_aco',0],['rx_aco',1],['rx_aco',2],['rx_aco',3],['rx_aco',4]],climaterio:[['rx_trh',0],['rx_trh',2],['rx_trh',5]],
+ prenatal:[['rx_gest',0],['rx_gest',1],['rx_anal',6]],puerperio:[['rx_gest',2],['rx_aco',1]],contracepcao:[['rx_aco',0],['rx_aco',1],['rx_aco',2],['rx_aco',3],['rx_aco',4]],climaterio:[['rx_trh',0],['rx_trh',2],['rx_trh',5]],
  puericultura:[['rx_ped',0],['rx_ped',1]],mental:[['rx_ad',0],['rx_ad',1],['rx_ad',2]],ansiedade:[['rx_ad',1],['rx_ad',2],['rx_ans',2]],tabagismo:[['rx_tab',0],['rx_tab',1],['rx_tab',2]],
  ivas:[['rx_sint',0],['rx_sint',1]],gea:[['rx_sint',3],['rx_sint',2]],itu:[['rx_atb',3],['rx_atb',4]],ist:[['rx_ist',0],['rx_ist',1],['rx_ist',2],['rx_ist',3]],
  dengue:[{t:'Dengue: hidratação e sintomáticos',rec:RS,rx:`Uso oral
@@ -4888,7 +4949,7 @@ const SRX={has:[['rx_cv',0],['rx_cv',2],['rx_cv',3],['rx_cv',4]],dm:[['rx_dm',0]
 2. Paracetamol 750 mg ...... 20 comprimidos
    Tomar 1 comprimido de 6 em 6 horas, se febre ou dor.
    ou Dipirona 500 mg: tomar 1 a 2 comprimidos de 6 em 6 horas, se febre ou dor.`,n:'Grupo A. Não usar AAS nem anti-inflamatórios (ibuprofeno, diclofenaco, nimesulida). Retorno no 1º dia sem febre e se sinais de alarme. Folha do paciente: dengue.'}],
- cefaleia:[['rx_anal',3],['rx_ad',3]],
+ cefaleia:[['rx_anal',3],['rx_ad',3],['rx_anal',6]],
  lombalgia:[{t:'Lombalgia aguda: AINE e relaxante',rec:RS,rx:`Uso oral
 1. Ibuprofeno 400 mg ...... 21 comprimidos
    Tomar 1 comprimido de 8 em 8 horas, após as refeições, por até 7 dias.
@@ -4943,7 +5004,7 @@ GD.efp_vert.sec.splice(2,1,
  {h:'2. Skew (teste de cobertura alternada)',svg:EFSVG.hskew,li:['A pessoa olha fixo para o seu nariz','Cubra um olho por 2 segundos e passe rápido para o outro, várias vezes','Normal: nenhum olho se mexe. Alterado: o olho que é descoberto faz um movimento vertical para fixar (desalinhamento vertical) = central']},
  {h:'3. Impulso cefálico (head impulse)',svg:EFSVG.hhit,li:['Segure a cabeça com as duas mãos, pescoço relaxado; a pessoa olha fixo para o seu nariz','Gire a cabeça 10–20° para um lado, de forma rápida, curta e imprevisível; volte e repita para o outro lado','Alterado (sacada corretiva para voltar ao seu nariz): lesão periférica do lado para onde girou, como na neurite vestibular','Normal em quem está com vertigem contínua e nistagmo: <b>preocupante</b>, sugere central (AVC)']},
  {h:'Resumo: HINTS perigoso (INFARCT)',rows:[['<b>IN</b>: Impulso Normal','Impulso cefálico normal na vertigem contínua.'],['<b>FA</b>: Fast-phase Alternating','Nistagmo que muda de direção com o olhar.'],['<b>RCT</b>: Refixação no Cover Test','Skew presente.'],['HINTS plus: perda auditiva súbita nova','Pode ser AVC (artéria cerebelar anteroinferior), mesmo com impulso alterado.'],['Qualquer achado central, ataxia que impede ficar de pé, cefaleia ou cervicalgia intensa, déficit neurológico','Emergência: SAMU 192 e centro com neuroimagem (RM). Não esperar.'],['Os três periféricos (impulso alterado, nistagmo unidirecional, sem skew)','Provável neurite vestibular: sintomático por até 3 dias, corticoide pode ser considerado nas primeiras 72 h, reabilitação vestibular.']]});
-Object.assign(SRX,{esquizofrenia:[['rx_ap',2],['rx_esq',4],['rx_esq',0],['rx_ap',0],['rx_esq',2],['rx_esq',3]],sang1:[['rx_abort',0],['rx_abort',1],['rx_abort',2]],sang2:[['rx_abort',2]],oma:[['rx_oto',0]],otext:[['rx_oto',1]],conj:[['rx_oto',2],['rx_oto',3],['rx_oto',4]],oa:[['rx_oa',0],['rx_oa',1],['rx_oa',2],['rx_oa',3]],insonia:[['rx_sono',0],['rx_sono',1],['rx_sono',2],['rx_sono',3],['rx_sono',4]],anemia:[['rx_anemia',0],['rx_anemia',1],['rx_anemia',2]],b12:[['rx_anemia',4],['rx_anemia',3],['rx_anemia',5]]});
+Object.assign(SRX,{esquizofrenia:[['rx_ap',2],['rx_esq',4],['rx_esq',0],['rx_ap',0],['rx_esq',2],['rx_esq',3]],sang1:[['rx_abort',0],['rx_abort',1],['rx_abort',2]],sang2:[['rx_abort',2]],oma:[['rx_oto',0]],otext:[['rx_oto',1]],conj:[['rx_oto',2],['rx_oto',3],['rx_oto',4]],oa:[['rx_oa',0],['rx_oa',1],['rx_oa',2],['rx_oa',3]],insonia:[['rx_sono',0],['rx_sono',1],['rx_sono',2],['rx_sono',5],['rx_sono',6],['rx_sono',7],['rx_sono',3],['rx_sono',4]],anemia:[['rx_anemia',0],['rx_anemia',1],['rx_anemia',2]],b12:[['rx_anemia',4],['rx_anemia',3],['rx_anemia',5]]});
 Object.assign(SOAPLINK,{esquizofrenia:[['rx_esq','Antipsicóticos'],['rx_ap','Risperidona e haloperidol'],['imc','IMC'],['rcv','Risco CV'],['qtc','QTc'],['farmacia','Farmácia do SUS']],sang1:[['fx_sang1','Fluxograma'],['abort_gd','Classificação'],['u_sang','Urgência'],['or_sang','Folha do paciente']],sang2:[['fx_sang2','Fluxograma'],['abort_gd','Classificação'],['u_sang','Urgência'],['or_sang','Folha do paciente']],oma:[['fx_ouvido','Fluxograma'],['atb_guia','Antibióticos (dose por peso)'],['ef_cp','Otoscopia'],['pedi','Doses pediátricas'],['mev_oto','Orientações']],otext:[['fx_ouvido','Fluxograma'],['ef_cp','Otoscopia'],['mev_oto','Orientações']],conj:[['fx_conj','Fluxograma'],['mev_oto','Orientações']],
  oa:[['fx_oa','Fluxograma'],['efp_joelho','Exame do joelho'],['imc','IMC'],['mev_oa','Exercícios']],insonia:[['fx_ins','Fluxograma'],['isi','ISI'],['phq9','PHQ-9'],['gad7','GAD-7'],['mev_sono','Higiene do sono'],['or_sono','Folha do paciente']],
  anemia:[['fx_anemia','Fluxograma'],['ex_hemo','Hemograma'],['pedi','Doses pediátricas'],['mev_anemia','Alimentação']],b12:[['fx_b12','Fluxograma'],['ex_hemo','Hemograma'],['mev_anemia','Alimentação']]});
