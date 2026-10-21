@@ -238,15 +238,20 @@ function copy(text,ta){
 /* ---------- Templates SOAP ---------- */
 const T={
 has:{t:'Hipertensão arterial',code:'CIAP-2 K86/K87 · CID-10 I10',body:
-`S:
-Retorno HAS. Diagnóstico desde [ano].
-Medicações em uso: [ ]
-Adesão: [boa/irregular] — [motivo]
-Efeitos adversos: [nega]
-Sintomas: cefaleia, dor torácica, dispneia, palpitações, edema, alterações visuais: [nega]
-PA domiciliar/MRPA/MAPA: [ ]
-Tabagismo: [ ] | Álcool: [ ] | Atividade física: [ ] min/sem | Sal/ultraprocessados: [ ]
-Comorbidades: DM [ ] DRC [ ] DCV prévia [ ]
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+
+S:
+Paciente com hipertensão arterial há [ ] anos, em retorno para acompanhamento. Refere adesão [boa/irregular] ao tratamento[, por __], sem efeitos adversos [tosse seca, edema de MMII, tontura]. [Traz medidas de PA domiciliar de __ a __ mmHg.] / [Não realiza medidas fora do consultório.]
+Nega cefaleia, tontura, dor torácica, dispneia, palpitações, edema de MMII, alterações visuais e déficits neurológicos. Nega uso de anti-inflamatórios, descongestionantes, corticoide ou outras medicações que elevam a PA.
+Alimentação: [consumo de sal, embutidos e ultraprocessados __]. Atividade física: [ ] min/semana. Nega ronco, apneias observadas e sonolência diurna.
+História familiar de doença cardiovascular precoce: [nega].
 
 O:
 PA: [ ]x[ ] mmHg (braço [D/E], sentado, após 5 min) | 2ª medida: [ ]x[ ]
@@ -254,7 +259,7 @@ FC: [ ] bpm | Peso: [ ] kg | Altura: [ ] m | IMC: [ ] kg/m² | CA: [ ] cm
 ACV: RCR 2T, BNF, sem sopros | AR: MV+ sem RA
 Pulsos periféricos: [presentes e simétricos] | Edema MMII: [ausente]
 Exames ([data]): Cr [ ] TFG [ ] K [ ] Glicemia [ ] HbA1c [ ]
-CT [ ] HDL [ ] LDL [ ] TG [ ] | EAS [ ] | RAC [ ] | ECG: [ ]
+CT [ ] HDL [ ] LDL [ ] TG [ ] | Ácido úrico [ ] | EAS [ ] | RAC [ ] | ECG: [ ]
 
 A:
 HAS [controlada/não controlada] (meta PA < [130x80 / 140x90]).
@@ -263,10 +268,10 @@ Lesão de órgão-alvo: [não identificada]
 
 P:
 1. [Manter/ajustar] [medicação, dose, posologia]
-2. MEV: sal < 5 g/dia, atividade física ≥150 min/sem, peso, cessar tabagismo, reduzir álcool
+2. MEV: sal < 5 g/dia, atividade física ≥ 150 min/sem, controle do peso, cessar tabagismo, reduzir álcool
 3. Exames: [ ]
-4. Orientada(o) sobre sinais de alarme
-5. Retorno em [ ] meses / [consulta de enfermagem para aferição em ] semanas`},
+4. Orientada(o) sobre sinais de alarme (dor torácica, falta de ar, déficit neurológico, cefaleia intensa)
+5. Retorno em [ ] meses / [consulta de enfermagem para aferição em __ semanas]`},
 dm:{t:'Diabetes mellitus',code:'CIAP-2 T90/T89 · CID-10 E11/E10',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -346,15 +351,19 @@ P:
 6. Encaminhar à nefrologia se: TFG < 30, perda > 5 mL/min/ano, RAC > 300 mg/g persistente, hematúria com proteinúria, K > 5,5 persistente, HAS resistente ou suspeita de causa secundária
 7. Retorno em [ ] meses`},
 prenatal:{t:'Pré-natal',code:'CIAP-2 W78 · CID-10 Z34',body:
-`S:
-[ ]ª consulta de pré-natal. G[ ]P[ ]A[ ] (partos: [normal/cesárea]).
-DUM: [ ] | IG: [ ] sem [ ] d (por [DUM/USG de __ sem]) | DPP: [ ]
-Queixas: [ ]
-Nega sangramento, perda de líquido, contrações, disúria, corrimento, cefaleia, escotomas, epigastralgia.
-Movimentação fetal: [presente/NA]
-Em uso de: ácido fólico [ ] | sulfato ferroso [ ] | [ ]
-Tabagismo/álcool/outras drogas: [nega]
-Violência: [rastreada, nega]
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+
+S:
+Gestante de [ ] anos, G[ ]P[ ]A[ ] ([ ] partos normais, [ ] cesáreas), com IG de [ ] semanas e [ ] dias (por [DUM __ / USG de __ semanas]) e DPP em [ ], em [ ]ª consulta de pré-natal. Gestação [planejada/não planejada], [bem aceita].
+Refere [queixas / estar sem queixas]. Movimentação fetal [presente / ainda não percebida]. Nega sangramento vaginal, perda de líquido, contrações, disúria, corrimento, cefaleia, escotomas, epigastralgia e edema súbito.
+Em uso de [ácido fólico, sulfato ferroso]. Antecedentes obstétricos: [nega pré-eclâmpsia, diabetes gestacional, prematuridade e perdas gestacionais]. Rastreio de violência: [nega].
 
 O:
 PA: [ ]x[ ] mmHg | Peso: [ ] kg (pré-gestacional [ ] kg, IMC pré [ ])
@@ -379,16 +388,19 @@ P:
 5. Consulta odontológica: [agendada]
 6. Retorno em [ ] semanas`},
 puericultura:{t:'Puericultura',code:'CIAP-2 A98 · CID-10 Z00.1',body:
-`S:
-Consulta de puericultura. Idade: [ ]. Acompanhante: [ ].
-Alimentação: [AME / complementar desde __ m / fórmula]
-Sono: [ ] | Diurese/evacuações: [ ]
-Intercorrências desde última consulta: [nega]
-Desenvolvimento (Caderneta da Criança): [marcos presentes para a idade]
-Triagens neonatais: pezinho [ ] orelhinha [ ] olhinho [ ] coraçãozinho [ ] linguinha [ ]
-Vacinas: [em dia conforme Caderneta]
-Suplementação: ferro [ ] | vitamina A [ ] | vitamina D [ ]
-Ambiente: [ ] | Sono seguro (barriga para cima, berço sem objetos): [ ]
+`INFORMAÇÕES IMPORTANTES
+Gestação e parto: [IG ao nascer __ sem, parto __, intercorrências: nega]
+Peso/comprimento ao nascer: [ ] g / [ ] cm | Apgar: [ ]
+Comorbidades e internações: [nega]
+Alergias: [nega]
+Medicações em uso: [ ]
+Quem mora na casa / cuidadores: [ ] | Creche/escola: [ ]
+Exposição a tabagismo passivo: [nega]
+
+S:
+Criança de [idade], acompanhada por [mãe/pai/__], em consulta de puericultura. Em [aleitamento materno exclusivo / aleitamento misto / fórmula / alimentação complementar desde __ meses], com [boa pega e sucção / __]. Sono [ ], em posição supina e berço sem objetos. Diurese e evacuações [habituais].
+Nega intercorrências desde a última consulta, como febre, internações ou uso de antibiótico. Cuidador(a) [sem preocupações] quanto ao desenvolvimento, com marcos da Caderneta da Criança [presentes para a idade].
+Triagens neonatais: pezinho [ ], orelhinha [ ], olhinho [ ], coraçãozinho [ ], linguinha [ ]. Vacinas [em dia conforme Caderneta]. Suplementação: ferro [ ], vitamina A [ ], vitamina D [ ].
 
 O:
 Peso: [ ] g (z [ ]) | Comprimento/estatura: [ ] cm (z [ ]) | PC: [ ] cm (z [ ])
@@ -584,7 +596,419 @@ P:
 2. [Doxazosina __ mg à noite (titular; orientar hipotensão postural)] / [Finasterida 5 mg/dia se próstata > 30–40 g ou PSA > 1,5]
 3. PSA: [decisão compartilhada sobre riscos e benefícios]
 4. Encaminhar à urologia se: retenção urinária, hematúria, ITU de repetição, litíase vesical, lesão renal por obstrução, toque retal suspeito ou PSA alterado, falha do tratamento clínico
-5. Reaplicar IPSS e retorno em [4–12] semanas`}
+5. Reaplicar IPSS e retorno em [4–12] semanas`},
+idoso:{t:'Pessoa idosa (avaliação multidimensional)',code:'CIAP-2 A98 · CID-10 Z00.0',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+Mora com: [ ] | Cuidador(a): [ ] | Escolaridade: [ ] anos
+
+S:
+Paciente de [ ] anos, [acompanhado(a) por __], em consulta de avaliação da pessoa idosa. Refere [queixas]. Considera a própria saúde [boa/regular/ruim].
+Realiza as atividades básicas de vida diária (banho, vestir-se, higiene, transferência, continência e alimentação) de forma [independente] e as instrumentais (compras, controle do dinheiro, medicações, transporte e tarefas domésticas) de forma [independente / com auxílio para __].
+Nega queixas de memória [/ familiar relata esquecimentos há __]. Nega humor deprimido e anedonia. Nega quedas no último ano [/ refere __ quedas, __]. Nega incontinência urinária ou fecal. Nega perda de peso não intencional, redução do apetite e dificuldade para mastigar ou engolir. Refere visão e audição [boas] [com uso de óculos / aparelho auditivo]. Sono [ ]. Atividade física [ ].
+Em uso de [ ] medicamentos, [sem] medicamentos potencialmente inapropriados para idosos. Suporte familiar e social [ ]. Nega sinais de violência ou negligência.
+
+O:
+PA sentado [ ]x[ ] e em pé (1 e 3 min) [ ]x[ ] mmHg | FC [ ] bpm
+Peso [ ] kg | Altura [ ] m | IMC [ ] | Circunferência da panturrilha [ ] cm (< 31 cm: risco de sarcopenia)
+Acuidade visual (Snellen): [ ] | Teste do sussurro: [ ]
+Timed Up and Go: [ ] s (≥ 12 s: risco de quedas) | Velocidade de marcha: [ ] m/s
+Cognição: Mini-Cog [ ]/5 | MEEM [ ]/30 (escolaridade [ ])
+Humor: GDS-15 [ ]/15 (≥ 6 sugere depressão)
+IVCF-20: [ ]/40
+Pés e pele: [ ] | Cavidade oral/prótese: [ ]
+Exames ([data]): [ ]
+
+A:
+Pessoa idosa [robusta / em risco de fragilização / frágil] (IVCF-20 [ ]: 0–6 baixo risco, 7–14 moderado, ≥ 15 alto).
+Problemas identificados: [polifarmácia / risco de quedas / declínio cognitivo / sintomas depressivos / incontinência / déficit sensorial / risco nutricional / sobrecarga do cuidador].
+
+P:
+1. Revisão de medicações: [desprescrever/ajustar __] (critérios de Beers, aba Ajustes de dose)
+2. Prevenção de quedas: ambiente seguro (iluminação, tapetes, barras), calçado adequado, revisar hipotensão ortostática e sedativos
+3. Atividade física com exercícios de força e equilíbrio; avaliação nutricional
+4. Vacinas: influenza anual, covid-19, pneumocócica, dT a cada 10 anos, hepatite B [ ]
+5. Rastreios conforme idade: [ ] (aba Rastreios)
+6. Encaminhamentos: [eMulti/fisioterapia/fonoaudiologia/oftalmologia/geriatria]
+7. Orientações ao cuidador e plano de cuidados compartilhado
+8. Retorno em [ ] meses`},
+asma:{t:'Asma',code:'CIAP-2 R96 · CID-10 J45',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+
+S:
+Paciente com asma desde [ ], em retorno para acompanhamento. Nas últimas 4 semanas refere sintomas diurnos [ ] vezes por semana, [nega] despertares noturnos, uso de medicação de alívio [ ] vezes por semana e [nega] limitação das atividades.
+No último ano teve [ ] exacerbações, [ ] idas à emergência, [nega] internações e usou corticoide oral [ ] vezes.
+Em uso de [ ], com adesão [boa] e técnica inalatória [adequada / revisada na consulta]. Identifica como gatilhos [poeira, mofo, animais, fumaça, frio, infecções, exercício]. Rinite [ ]. Nega pirose e regurgitação. Nega exposição ocupacional.
+
+O:
+FR [ ] irpm | SpO2 [ ]% AA | FC [ ] bpm | Peso [ ] kg
+AR: [MV+ sem RA / sibilos __] | Esforço respiratório: [ausente]
+Rinoscopia: [ ]
+PFE: [ ] L/min (melhor pessoal [ ])
+Espirometria ([data]): VEF1 [ ]% | VEF1/CVF [ ] | resposta ao BD [ ]
+
+A:
+Asma [controlada / parcialmente controlada / não controlada] (GINA [ ]/4 itens), em etapa [ ] de tratamento.
+Risco futuro: [exacerbações no último ano, técnica, adesão, tabagismo].
+
+P:
+1. [Manter/subir/reduzir etapa]: [budesonida + formoterol __ / beclometasona __ + salbutamol se necessário]
+2. Revisada técnica inalatória com espaçador; plano de ação escrito entregue
+3. Controle ambiental e de gatilhos; cessar tabagismo [se aplicável]; tratar rinite
+4. Vacina influenza anual [ ] e covid-19 [ ]
+5. Sinais de alarme: falta de ar que não melhora com o alívio, dificuldade para falar, lábios roxos
+6. Retorno em [ ] meses`},
+dpoc:{t:'DPOC',code:'CIAP-2 R95 · CID-10 J44',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+
+S:
+Paciente com DPOC diagnosticada em [ ], com carga tabágica de [ ] anos-maço [/ exposição a fogão a lenha por __ anos], em retorno para acompanhamento. Refere dispneia mMRC [ ] (0 a 4), com tosse [ ] e expectoração [ ].
+No último ano teve [ ] exacerbações, [ ] com uso de corticoide ou antibiótico e [nega] internações.
+Em uso de [ ], com adesão [boa] e técnica inalatória [adequada / revisada]. [Mantém tabagismo / ex-tabagista há __ anos.] Nega edema de MMII, ortopneia e perda de peso.
+CAT: [ ]/40.
+
+O:
+FR [ ] irpm | SpO2 [ ]% AA | FC [ ] bpm | PA [ ]x[ ] | Peso [ ] kg | IMC [ ]
+AR: [MV diminuído globalmente / sibilos / estertores __] | Uso de musculatura acessória: [não]
+Edema MMII: [ ] | Cianose: [ ]
+Espirometria ([data]): VEF1/CVF pós-BD [ ] | VEF1 [ ]% do previsto
+Hemograma (eosinófilos): [ ] | Rx tórax: [ ]
+
+A:
+DPOC GOLD [1–4] (VEF1 [ ]%), grupo [A/B/E], [estável / com exacerbações frequentes].
+
+P:
+1. [Manter/ajustar] broncodilatador: [ ]
+2. Cessação do tabagismo: [abordagem, TRN/bupropiona]
+3. Revisada técnica inalatória; plano para exacerbação
+4. Vacinas: influenza, pneumocócica, covid-19, dTpa [ ]
+5. Atividade física / reabilitação pulmonar [ ]
+6. SpO2 ≤ 88% em repouso: [avaliar oxigenoterapia — gasometria/encaminhamento]
+7. Retorno em [ ] meses`},
+hipotireo:{t:'Hipotireoidismo',code:'CIAP-2 T86 · CID-10 E03',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+
+S:
+Paciente com hipotireoidismo [primário / pós-tireoidectomia / pós-radioiodo] desde [ ], em uso de levotiroxina [ ] mcg/dia, tomada em jejum, [30–60] minutos antes do café, com adesão [boa]. [Nega] uso de cálcio, ferro ou omeprazol próximo ao horário da medicação.
+Nega fadiga, ganho de peso, constipação, intolerância ao frio, pele seca, queda de cabelo e edema. Nega palpitações, tremor, perda de peso, insônia e intolerância ao calor.
+[Não gestante e sem planejamento de gestação no momento.]
+
+O:
+PA [ ]x[ ] | FC [ ] bpm | Peso [ ] kg | IMC [ ]
+Tireoide: [não palpável / aumentada, __, sem nódulos palpáveis]
+Pele e fâneros: [ ] | Reflexos: [ ]
+Exames ([data]): TSH [ ] | T4 livre [ ] | Anti-TPO [ ] | Perfil lipídico [ ]
+USG de tireoide: [ ]
+
+A:
+Hipotireoidismo [primário], [controlado / não controlado] (TSH [ ]).
+
+P:
+1. Levotiroxina [manter / ajustar para __ mcg/dia]
+2. Orientações: tomar em jejum, mesmo horário, longe de cálcio, ferro e antiácidos
+3. TSH em [6–8 semanas após ajuste / 12 meses se estável]
+4. Se gestação: avisar logo, aumentar a dose em cerca de 25–30% e controlar TSH a cada 4 semanas
+5. Retorno em [ ] meses`},
+obesidade:{t:'Obesidade',code:'CIAP-2 T82 · CID-10 E66',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+
+S:
+Paciente refere ganho de peso [há __ anos / desde __], com peso máximo de [ ] kg. Tentativas prévias de perda de peso: [ ], com [resultado].
+Alimentação: [ ] refeições por dia, [beliscos, ultraprocessados, bebidas açucaradas, comer à noite]. Nega episódios de compulsão alimentar. Atividade física: [ ] min/semana. Tempo de tela: [ ].
+Sono [ ]. Nega ronco, apneias observadas e sonolência diurna. Nega uso de medicações que favorecem o ganho de peso (corticoide, antipsicóticos, tricíclicos, anticonvulsivantes, insulina). Nega sintomas de hipotireoidismo.
+Motivação para mudança: [ ]. Impacto: [dor articular, autoestima, limitação funcional].
+
+O:
+Peso [ ] kg | Altura [ ] m | IMC [ ] kg/m² | CA [ ] cm
+PA [ ]x[ ] mmHg | Acantose nigricans: [ ]
+Exames ([data]): Glicemia [ ] | HbA1c [ ] | Perfil lipídico [ ] | TGO/TGP [ ] | TSH [ ] | Cr [ ]
+
+A:
+Obesidade grau [I (30–34,9) / II (35–39,9) / III (≥ 40)], com [ ] comorbidades associadas.
+
+P:
+1. Meta inicial: perder 5–10% do peso em 6 meses
+2. Plano alimentar baseado no Guia Alimentar (comida de verdade, menos ultraprocessados e bebidas açucaradas)
+3. Atividade física: ≥ 150 min/semana, com início gradual
+4. Abordagem comportamental; grupo de reeducação alimentar [ ]
+5. Encaminhamento: [nutrição/eMulti]; avaliar cirurgia bariátrica se IMC ≥ 40, ou ≥ 35 com comorbidade, após falha do tratamento clínico
+6. Exames: [ ]
+7. Retorno em [ ] semanas`},
+tabagismo:{t:'Tabagismo (cessação)',code:'CIAP-2 P17 · CID-10 F17',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+
+S:
+Paciente tabagista há [ ] anos, fumando [ ] cigarros por dia ([ ] anos-maço), com o primeiro cigarro [ ] minutos após acordar (Fagerström [ ]/10). Usa também [cigarro eletrônico / narguilé / nega outros produtos].
+Tentativas prévias de parar: [ ], com [método] e recaída por [ ]. Encontra-se em fase de [pré-contemplação / contemplação / preparação / ação]. Gatilhos: [café, álcool, estresse, após refeições]. Convive com fumantes: [ ].
+Nega convulsões, transtorno alimentar e uso de IMAO. Nega IAM recente, arritmia grave e gestação.
+
+O:
+PA [ ]x[ ] | FC [ ] bpm | Peso [ ] kg | SpO2 [ ]%
+AR: [ ]
+
+A:
+Tabagismo com dependência [baixa/média/elevada] (Fagerström [ ]), [motivado(a)] para a cessação.
+
+P:
+1. Abordagem breve e combinação da data para parar: [ ]
+2. Grupo de cessação do tabagismo (PNCT) [ ]
+3. Farmacoterapia: [adesivo de nicotina __ mg + goma/pastilha 2 mg se fissura] / [bupropiona 150 mg 1x/dia por 3 dias, depois 12/12 h]
+4. Orientações: lidar com a fissura, evitar gatilhos, ganho de peso, sintomas de abstinência
+5. Retorno em [1–2] semanas`},
+puerperio:{t:'Puerpério',code:'CIAP-2 W18 · CID-10 Z39.2',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+
+S:
+Puérpera de [ ] anos, com [ ] dias de pós-parto [normal / cesárea] realizado em [data], em [maternidade], com RN de [ ] g. Intercorrências no parto e no puerpério: [nega].
+Em aleitamento materno [exclusivo], sem dor, fissuras ou ingurgitamento mamário. Lóquios em quantidade e aspecto habituais, sem odor fétido. Nega febre, dor abdominal, aumento do sangramento, dor ou secreção na ferida operatória ou episiorrafia, dor em panturrilha, cefaleia, escotomas e dispneia. Diurese e evacuações [habituais].
+Humor [ ]. Nega tristeza persistente, choro fácil por mais de 2 semanas, ansiedade intensa e pensamentos de machucar a si ou ao bebê. Sono e rede de apoio: [ ]. Deseja [método] para planejamento reprodutivo.
+
+O:
+PA [ ]x[ ] | FC [ ] bpm | T [ ] °C | Peso [ ] kg
+Mamas: [ ] | Mamilos: [íntegros]
+Útero: [involuído, abaixo da cicatriz umbilical / não palpável] | Lóquios: [ ]
+Ferida operatória/períneo: [ ] | MMII: [sem edema assimétrico, panturrilhas livres]
+EPDS (Edimburgo): [ ]/30
+
+A:
+Puerpério [imediato/tardio/remoto] de parto [normal/cesárea], [sem intercorrências].
+
+P:
+1. Aleitamento: orientações de pega e posição; [ ]
+2. Sulfato ferroso 40 mg Fe elementar/dia até 3 meses pós-parto
+3. Contracepção: [ ] (compatível com amamentação)
+4. Vacinas: [ ] | Exames: [TOTG 75 g se diabetes gestacional; TR sífilis/HIV se indicado]
+5. Consulta do RN e teste do pezinho: [ ]
+6. Sinais de alarme: febre, sangramento aumentado, dor em panturrilha, cefaleia intensa, tristeza profunda
+7. Retorno em [ ]`},
+contracepcao:{t:'Planejamento reprodutivo',code:'CIAP-2 W14 · CID-10 Z30',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+
+S:
+Paciente de [ ] anos procura orientação sobre método contraceptivo. DUM [ ], ciclos [regulares], com fluxo [ ] e [sem] dismenorreia. Em uso atual de [nenhum / __]. G[ ]P[ ]A[ ]. Deseja gestar [não no momento / em __ anos].
+Vida sexual [ativa], com [ ] parceria(s) e uso de preservativo [ ]. Amamentando: [não].
+Nega enxaqueca com aura, HAS, história de trombose ou embolia, AVC, cardiopatia, câncer de mama, doença hepática e trombofilia. [Nega tabagismo / tabagista com __ anos]. Último preventivo: [ ].
+Preferência da paciente: [ ].
+
+O:
+PA [ ]x[ ] mmHg | Peso [ ] kg | IMC [ ]
+Exame ginecológico (se indicado): [ ]
+β-hCG / teste de gravidez: [ ]
+
+A:
+Planejamento reprodutivo. Critérios de elegibilidade (OMS) para [método]: categoria [1/2].
+
+P:
+1. Método escolhido: [DIU de cobre / implante / injetável trimestral / mensal / pílula combinada / minipílula]
+2. Orientações de uso, efeitos esperados e sinais de alarme
+3. Preservativo para prevenção de IST; testes rápidos [HIV, sífilis, hepatites] oferecidos
+4. Contracepção de emergência: orientada
+5. Ácido fólico se planeja gestar
+6. Retorno em [ ]`},
+itu:{t:'Infecção urinária',code:'CIAP-2 U71 · CID-10 N39.0',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+
+S:
+Paciente refere disúria, polaciúria e urgência miccional há [ ] dias, [com/sem] dor suprapúbica [e hematúria]. Nega febre, calafrios, dor lombar, náuseas e vômitos. Nega corrimento vaginal, prurido e dispareunia.
+[Não gestante, DUM __.] Episódios prévios de ITU: [ ] no último ano. Nega uso recente de antibiótico, sonda vesical, alterações urinárias conhecidas e imunossupressão.
+
+O:
+T [ ] °C | PA [ ]x[ ] | FC [ ] bpm
+Abdome: [dor à palpação suprapúbica] | Giordano: [negativo bilateral]
+Fita/EAS: [nitrito __, leucócitos __] | Urocultura: [não indicada / solicitada]
+
+A:
+[Cistite aguda não complicada / ITU complicada / pielonefrite aguda].
+
+P:
+1. [Nitrofurantoína 100 mg 6/6 h por 5 dias / fosfomicina 3 g dose única / __]
+2. Hidratação, não segurar a urina, analgesia [ ]
+3. Sinais de alarme: febre, dor lombar, vômitos — retornar
+4. Retorno se sem melhora em 48–72 h`},
+ist:{t:'IST e corrimento',code:'CIAP-2 X71/X72/X84 · CID-10 A64/N76',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+
+S:
+Paciente refere [corrimento vaginal/uretral / úlcera genital / verrugas] há [ ] dias, [aspecto __, odor __], associado a [prurido, disúria, dispareunia, dor pélvica]. Nega febre, dor abdominal e sangramento fora do período menstrual.
+Parcerias sexuais nos últimos 3 meses: [ ], com uso de preservativo [ ]. Última relação desprotegida em [ ]. DUM [ ]. IST prévias: [ ]. Vacinação HPV e hepatite B: [ ]. Em uso de PrEP: [não].
+
+O:
+Genitália externa: [ ] | Linfonodos inguinais: [ ]
+Especular: colo [ ], conteúdo vaginal [ ] | pH vaginal [ ] | Teste das aminas [ ]
+Toque: [dor à mobilização do colo — ausente]
+Testes rápidos: HIV [ ] | Sífilis [ ] | Hepatite B [ ] | Hepatite C [ ]
+
+A:
+[Vaginose bacteriana / candidíase / tricomoníase / cervicite / uretrite / úlcera genital / verrugas anogenitais], conforme abordagem sindrômica.
+
+P:
+1. Tratamento: [ ] (ver Prescrições, IST)
+2. Tratar parceria(s) quando indicado
+3. Testes rápidos e notificação [sífilis/HIV]; avaliar PEP (≤ 72 h) ou PrEP
+4. Preservativo e orientações
+5. Vacinas: HPV [ ] | hepatite B [ ]
+6. Retorno em [ ] dias`},
+dengue:{t:'Dengue e arboviroses',code:'CIAP-2 A77 · CID-10 A90',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+
+S:
+Paciente refere febre [aferida, máx. __ °C] há [ ] dias (início em [data]), associada a [cefaleia, dor retro-orbitária, mialgia, artralgia, exantema, prurido, náuseas]. Nega dor abdominal intensa e contínua, vômitos persistentes, sangramento de mucosas, tontura ao levantar, sonolência ou irritabilidade e redução da diurese. Nega sangramento espontâneo de pele.
+[Não gestante.] Casos na família ou vizinhança: [ ]. Ingesta hídrica [ ]. Em uso de [dipirona/paracetamol]; nega uso de AAS e anti-inflamatórios.
+
+O:
+PA sentado [ ]x[ ] e em pé [ ]x[ ] | FC [ ] bpm | T [ ] °C | Peso [ ] kg
+Hidratação: [ ] | TEC: [ ] s | Pele: [exantema / petéquias]
+Prova do laço: [negativa / positiva com __ petéquias]
+Abdome: [sem dor, sem hepatomegalia] | AR: [sem sinais de derrame]
+Hemograma ([data]): Ht [ ] | Hb [ ] | plaquetas [ ] | leucócitos [ ]
+
+A:
+Caso suspeito de dengue, grupo [A/B/C/D], [__]º dia de doença.
+
+P:
+1. Hidratação oral: [__ L/dia] (adulto 60 mL/kg/dia, 1/3 com SRO)
+2. Dipirona ou paracetamol; não usar AAS nem anti-inflamatórios
+3. Notificação realizada; cartão de acompanhamento entregue
+4. Sinais de alarme orientados (dor abdominal, vômitos, sangramento, tontura, sonolência)
+5. Retorno: [no dia da melhora da febre / reavaliação diária / encaminhamento]`},
+cefaleia:{t:'Cefaleia',code:'CIAP-2 N01/N89/N02 · CID-10 G43/G44.2/R51',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+
+S:
+Paciente refere cefaleia há [ ], com [ ] episódios por mês e duração de [ ] horas, localizada em [região, unilateral/bilateral], de caráter [pulsátil/em aperto], intensidade [ ]/10, [que piora/sem piora] com atividade física e associada a [náuseas, vômitos, fotofobia, fonofobia]. [Nega aura / refere aura visual __.] Desencadeantes: [ ].
+Usa [analgésico] em [ ] dias por mês, com [boa/pouca] resposta.
+Nega início súbito, dor de forte intensidade nunca antes apresentada, piora progressiva, despertar pela dor, piora com tosse ou esforço, febre, rigidez de nuca, déficits neurológicos, alterações visuais persistentes, convulsões e trauma. [Não gestante.] Sono [ ], estresse [ ] e cafeína [ ].
+
+O:
+PA [ ]x[ ] | FC [ ] bpm | T [ ] °C
+Exame neurológico: [sem déficits focais, pupilas isocóricas e fotorreagentes, sem sinais meníngeos]
+Fundoscopia: [ ] | Palpação pericraniana e cervical: [ ]
+
+A:
+[Migrânea sem aura / com aura / cefaleia tensional / cefaleia por uso excessivo de analgésico], sem sinais de alarme.
+
+P:
+1. Crise: [dipirona 1 g / ibuprofeno 400–600 mg / naproxeno 500 mg] + [metoclopramida 10 mg]; [sumatriptano 50 mg se sem resposta]
+2. Profilaxia: [não indicada / amitriptilina __ / propranolol __]
+3. Diário de cefaleia; limitar analgésico a menos de 10 dias por mês
+4. Sono regular, hidratação, atividade física, manejo do estresse
+5. Sinais de alarme orientados
+6. Retorno em [ ] semanas`},
+lombalgia:{t:'Lombalgia',code:'CIAP-2 L03/L86 · CID-10 M54.5/M54.4',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+
+S:
+Paciente refere dor lombar há [ ] dias, de início [súbito/insidioso] [após esforço / sem desencadeante], em [peso/pontada], intensidade [ ]/10, [sem irradiação / irradiada para MI D/E até __], que piora com [ ] e melhora com [ ].
+Nega trauma importante, febre, perda de peso, história de câncer, imunossupressão e uso de drogas injetáveis. Nega dor noturna que não alivia com repouso. Nega fraqueza em MMII, alteração de sensibilidade em sela e retenção ou incontinência urinária ou fecal.
+Usou [medicação] com [resposta]. Trabalho: [atividade, afastamento]. Impacto: [ ].
+
+O:
+Marcha: [normal] | Inspeção: [ ] | Palpação: [contratura paravertebral __]
+Mobilidade lombar: [ ] | Lasègue: [negativo bilateral]
+Força MMII: [preservada] | Reflexos patelar e aquileu: [presentes e simétricos]
+Sensibilidade L4–S1: [preservada]
+
+A:
+[Lombalgia aguda inespecífica / lombociatalgia sem déficit / lombalgia crônica], sem bandeiras vermelhas.
+
+P:
+1. Manter-se ativo(a), evitar repouso no leito; calor local
+2. [Ibuprofeno 400 mg 8/8 h por até 7 dias] [+ ciclobenzaprina 5–10 mg à noite por até 1–2 semanas]
+3. Exames de imagem não indicados no momento
+4. Exercícios/fisioterapia [ ]; orientações posturais e de retorno ao trabalho
+5. Atestado: [ ] dias
+6. Sinais de alarme orientados (fraqueza nas pernas, alteração urinária/fecal, febre)
+7. Retorno em [ ] semanas se sem melhora`}
 };
 
 /* ---------- Calculadoras ---------- */
@@ -1640,7 +2064,7 @@ const E={esquema:'Esquema',meu:'Minhas edições'};
 const SECS={soap:Object.keys(T),calc:Object.keys(C),presc:Object.keys(P),mev:Object.keys(M),esq:Object.keys(E),fx:Object.keys(F)};
 let cur={sec:'soap',id:'has'};
 
-function chipLabel(id){return T[id]?({has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:F[id]?F[id].s:E[id])}
+function chipLabel(id){return T[id]?({hipotireo:'Hipotireoidismo',obesidade:'Obesidade',asma:'Asma',dpoc:'DPOC',idoso:'Idoso',puerperio:'Puerpério',contracepcao:'Contracepção',tabagismo:'Tabagismo',itu:'ITU',ist:'IST',dengue:'Dengue',cefaleia:'Cefaleia',lombalgia:'Lombalgia',has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:F[id]?F[id].s:E[id])}
 
 /* Navegação: menu de seções (agrupadas) + abas internas; favoritos */
 const SICON={
@@ -1656,6 +2080,7 @@ const SICON={
  crianca:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M9 10h.01 M15 10h.01 M9 14.5c1.5 1.7 4.5 1.7 6 0 M10 3.5c0 2 1 3 2 3',
  mental:'M12 5a3 3 0 0 0-5.5-1.5A3 3 0 0 0 4 8a3 3 0 0 0 0 5 3 3 0 0 0 2.5 4.5A3 3 0 0 0 12 19z M12 5a3 3 0 0 1 5.5-1.5A3 3 0 0 1 20 8a3 3 0 0 1 0 5 3 3 0 0 1-2.5 4.5A3 3 0 0 1 12 19',
  agudos:'M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0z M12 10v6.5',
+ idoso:'M10 3.5a1.8 1.8 0 1 0 0 3.6 1.8 1.8 0 0 0 0-3.6z M10 8.5v6 M10 14.5l-2.5 6.5 M10 14.5l2.5 6.5 M10 9.5l-3 4 M10 9.5l4.5 2.5 M16.5 12v9 M16.5 12c0-1.5-1.8-1.8-2.2-.5',
  edit:'M4 20h4L19 9l-4-4L4 16z M13.5 6.5l4 4',
  fx:'M5 3h6v5H5z M13 16h6v5h-6z M8 8v4h8v4 M16 3l3 3-3 3',
  box:'M4 7l8-4 8 4v10l-8 4-8-4z M4 7l8 4 8-4 M12 11v10'
@@ -1663,7 +2088,7 @@ const SICON={
 const icon=(k,sz=20)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${SICON[k]}"/></svg>`;
 const SECTAG={soap:'SOAP',calc:'Cálc.',presc:'Rx',mev:'MEV',fx:'Fluxo',esq:''};
 const SECTIONS=[
- {g:'Atendimento',k:'soap',t:'Templates SOAP',ic:'soap',ids:Object.keys(T)},
+ {g:'Atendimento',k:'soap',t:'Templates SOAP',ic:'soap',ids:['has','dm','drc','hipotireo','obesidade','asma','dpoc','hpb','idoso','prenatal','puerperio','contracepcao','puericultura','mental','ansiedade','tabagismo','ivas','gea','itu','ist','dengue','cefaleia','lombalgia']},
  {g:'Atendimento',k:'presc',t:'Prescrições',ic:'presc',ids:Object.keys(P)},
  {g:'Atendimento',k:'fx',t:'Fluxogramas',ic:'fx',ids:['fx_has','fluxodm',...Object.keys(F).filter(k=>k!=='fx_has')]},
  {g:'Atendimento',k:'mev',t:'Estilo de vida (MEV)',ic:'mev',ids:Object.keys(M)},
@@ -1671,12 +2096,13 @@ const SECTIONS=[
  {g:'Ferramentas',k:'calc',t:'Calculadoras',ic:'calc',ids:['ig','tfg','imc','rcv','insulina']},
  {g:'Ferramentas',k:'esc',t:'Escalas e questionários',ic:'esc',ids:['phq9','gad7','audit','fager','ipss','melanoma']},
  {g:'Ferramentas',k:'prot',t:'Protocolos e prevenção',ic:'prot',ids:['rastreio','vacinas','ajustes']},
- {g:'Linhas de cuidado',k:'cronicos',t:'Crônicos',ic:'cronicos',ln:1,ids:['has','dm','drc','hpb','fx_has','fluxodm','fx_lip','fx_tireo','fx_asma','fx_dpoc','tfg','imc','rcv','insulina','ipss','rastreio','vacinas','ajustes','melanoma','rx_cv','rx_anal','mev_has','mev_dm','mev_obes','mev_lip','mev_drc','mev_icc','mev_hpb','esquema']},
- {g:'Linhas de cuidado',k:'mulher',t:'Saúde da mulher',ic:'mulher',ln:1,ids:['prenatal','ig','imc','rastreio','vacinas','ajustes','fx_sif','fx_itu','rx_aco','rx_ist','rx_hiv','rx_atb','mev_gest','esquema']},
+ {g:'Linhas de cuidado',k:'cronicos',t:'Crônicos',ic:'cronicos',ln:1,ids:['has','dm','drc','hpb','hipotireo','obesidade','asma','dpoc','tabagismo','fx_has','fluxodm','fx_lip','fx_tireo','fx_asma','fx_dpoc','tfg','imc','rcv','insulina','ipss','rastreio','vacinas','ajustes','melanoma','rx_cv','rx_anal','mev_has','mev_dm','mev_obes','mev_lip','mev_drc','mev_icc','mev_hpb','esquema']},
+ {g:'Linhas de cuidado',k:'mulher',t:'Saúde da mulher',ic:'mulher',ln:1,ids:['prenatal','puerperio','contracepcao','ist','itu','ig','imc','rastreio','vacinas','ajustes','fx_sif','fx_itu','rx_aco','rx_ist','rx_hiv','rx_atb','mev_gest','esquema']},
  {g:'Linhas de cuidado',k:'crianca',t:'Saúde da criança',ic:'crianca',ln:1,ids:['puericultura','imc','vacinas','fx_diar','fx_dengue','fx_farin','rx_par','rx_sint','mev_cri','esquema']},
- {g:'Linhas de cuidado',k:'mental',t:'Saúde mental',ic:'mental',ln:1,ids:['mental','ansiedade','fx_dep','fx_ans','phq9','gad7','audit','fager','rx_ad','rx_ans','rx_ap','rx_tab','mev_dep','mev_ans','mev_sono','mev_alc','mev_tab','esquema']},
- {g:'Meu kit',k:'meu',t:'Minhas edições',ic:'edit',ids:['meu']},
- {g:'Linhas de cuidado',k:'agudos',t:'Agudos',ic:'agudos',ln:1,ids:['ivas','gea','fx_dengue','fx_farin','fx_sinus','fx_pac','fx_itu','fx_diar','fx_tor','fx_cef','fx_lomb','fx_tb','rx_atb','rx_sint','rx_anal','rx_par','rx_ist','rx_hiv','mev_ivas','mev_diar','esquema']}
+ {g:'Linhas de cuidado',k:'mental',t:'Saúde mental',ic:'mental',ln:1,ids:['mental','ansiedade','tabagismo','fx_dep','fx_ans','phq9','gad7','audit','fager','rx_ad','rx_ans','rx_ap','rx_tab','mev_dep','mev_ans','mev_sono','mev_alc','mev_tab','esquema']},
+ {g:'Linhas de cuidado',k:'idoso',t:'Saúde do idoso',ic:'idoso',ln:1,ids:['idoso','has','dm','hpb','drc','ajustes','vacinas','rastreio','tfg','rcv','phq9','fx_has','fluxodm','fx_dep','fx_lomb','rx_anal','mev_has','mev_dm','mev_sono','esquema']},
+ {g:'Linhas de cuidado',k:'agudos',t:'Agudos',ic:'agudos',ln:1,ids:['ivas','gea','itu','ist','dengue','cefaleia','lombalgia','fx_dengue','fx_farin','fx_sinus','fx_pac','fx_itu','fx_diar','fx_tor','fx_cef','fx_lomb','fx_tb','rx_atb','rx_sint','rx_anal','rx_par','rx_ist','rx_hiv','mev_ivas','mev_diar','esquema']},
+ {g:'Meu kit',k:'meu',t:'Minhas edições',ic:'edit',ids:['meu']}
 ];
 const SECM=Object.fromEntries(SECTIONS.map(s=>[s.k,s]));
 const secOf=id=>T[id]?'soap':C[id]?'calc':P[id]?'presc':M[id]?'mev':F[id]?'fx':'esq';
