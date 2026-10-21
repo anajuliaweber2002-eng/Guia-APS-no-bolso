@@ -122,7 +122,7 @@ h2{margin:0;font-size:1.05rem;text-wrap:balance}
 .note{color:var(--muted);font-size:.82rem;margin:0}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:grid;gap:12px}
 
-textarea.soap{width:100%;min-height:60vh;resize:vertical;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--fg);font:13.5px/1.55 var(--f-mono);padding:12px}.soap.efn{min-height:80px;resize:none;overflow:hidden}
+textarea.soap{width:100%;min-height:60vh;resize:vertical;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--fg);font:13.5px/1.55 var(--f-mono);padding:12px}.rxadj{grid-column:2;display:grid;gap:4px;font-size:.84rem;line-height:1.4}.rxint .chip.tag,.rxadj .chip.tag{white-space:nowrap}.soap.efn{min-height:80px;resize:none;overflow:hidden}
 .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .btn{border:1px solid var(--line);background:var(--surface);color:var(--fg);font:600 .88rem var(--f-ui);padding:9px 14px;border-radius:8px;cursor:pointer}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
@@ -5450,7 +5450,7 @@ function renderCONS(m){
   ta.oninput=()=>{CONS.text=ta.value;saveCons();out()};
   m.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{CONS.it.splice(+b.dataset.rm,1);saveCons();renderCONS(m);addHead()});
   m.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>openSection(b.dataset.go));$('#cs-lab').onclick=()=>go('labs');
-  $('#cs-cp').onclick=()=>{const t=consCompose();if(t)copy(t);else toast('Nada para copiar ainda')};
+  $('#cs-cp').onclick=()=>{const t=soapAll(consCompose());if(t)copy(t);else toast('Nada para copiar ainda')};
   const nb=$('#cs-new');nb.onclick=()=>confirm2(nb,()=>{CONS={soap:'',text:'',it:[],tx:{}};saveCons();renderCONS(m);addHead();toast('Nova consulta')});
   out();
 }
@@ -5693,7 +5693,7 @@ Object.keys(OR).forEach(k=>E[k]=OR[k].s);
 const SECS={soap:Object.keys(T),calc:Object.keys(C),presc:Object.keys(P),mev:Object.keys(M),esq:Object.keys(E),fx:Object.keys(F)};
 let cur={sec:'soap',id:'has'};
 
-function chipLabel(id){return id==='receita'?'Receita montada':id==='labs'?'Preencher exames':DZ[id]?chipLabel(DZ[id].s):T[id]?({sua:'SUA',corrimento:'Corrimento vaginal',sop:'SOMP',febre:'Febre sem foco',dermatite:'Dermatites',micose:'Micoses',escabiose:'Escabiose',acne:'Acne',gota:'Gota',fa:'Fibrilação atrial',panico:'Pânico',toc:'TOC',luto:'Luto',esquizofrenia:'Esquizofrenia',sang1:'Sangramento 1ª metade',sang2:'Sangramento 2ª metade',oma:'Otite média',otext:'Otite externa',conj:'Conjuntivite',oa:'Osteoartrite',insonia:'Insônia',anemia:'Anemia ferropriva',b12:'Deficiência de B12',vertigem:'Vertigem',hipotireo:'Hipotireoidismo',obesidade:'Obesidade',asma:'Asma',dpoc:'DPOC',idoso:'Idoso',puerperio:'Puerpério',contracepcao:'Contracepção',climaterio:'Climatério',tabagismo:'Tabagismo',itu:'ITU',ist:'IST',dengue:'Dengue',cefaleia:'Cefaleia',lombalgia:'Lombalgia',has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:F[id]?F[id].s:GD[id]?GD[id].s:AT[id]?AT[id].s:E[id])}
+function chipLabel(id){return id==='receita'?'Receita montada':id==='labs'?'Preencher exames':id==='enc'?'Encaminhamento':DZ[id]?chipLabel(DZ[id].s):T[id]?({sua:'SUA',corrimento:'Corrimento vaginal',sop:'SOMP',febre:'Febre sem foco',dermatite:'Dermatites',micose:'Micoses',escabiose:'Escabiose',acne:'Acne',gota:'Gota',fa:'Fibrilação atrial',panico:'Pânico',toc:'TOC',luto:'Luto',esquizofrenia:'Esquizofrenia',sang1:'Sangramento 1ª metade',sang2:'Sangramento 2ª metade',oma:'Otite média',otext:'Otite externa',conj:'Conjuntivite',oa:'Osteoartrite',insonia:'Insônia',anemia:'Anemia ferropriva',b12:'Deficiência de B12',vertigem:'Vertigem',hipotireo:'Hipotireoidismo',obesidade:'Obesidade',asma:'Asma',dpoc:'DPOC',idoso:'Idoso',puerperio:'Puerpério',contracepcao:'Contracepção',climaterio:'Climatério',tabagismo:'Tabagismo',itu:'ITU',ist:'IST',dengue:'Dengue',cefaleia:'Cefaleia',lombalgia:'Lombalgia',has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:F[id]?F[id].s:GD[id]?GD[id].s:AT[id]?AT[id].s:E[id])}
 
 /* Navegação: menu de seções (agrupadas) + abas internas; favoritos */
 const SICON={
@@ -5732,7 +5732,7 @@ function dzParts(id){const d=DZ[id],L=[['soap:'+d.s,'SOAP']];
   d.rx.filter(x=>P[x]).forEach(x=>L.push(['rx:'+x,'Receitas: '+chipLabel(x).split(' (')[0]]));
   d.mev.filter(x=>M[x]).forEach(x=>L.push(['mev:'+x,d.mev.length>1?'MEV: '+chipLabel(x):'Estilo de vida']));
   d.or.filter(x=>OR[x]).forEach(x=>L.push(['or:'+x,'Folha: '+OR[x].s]));
-  const inc=new Set(L.map(x=>x[0].split(':')[1])),mais=(SOAPLINK[d.s]||[]).filter(([x])=>!inc.has(x)&&(T[x]||C[x]||P[x]||M[x]||F[x]||GD[x]||AT[x]||E[x]||SC[x]||NC[x]||OR[x]||x==='fluxodm'||x==='labs'));
+  const inc=new Set(L.map(x=>x[0].split(':')[1])),mais=(SOAPLINK[d.s]||[]).filter(([x])=>!inc.has(x)&&(T[x]||C[x]||P[x]||M[x]||F[x]||GD[x]||AT[x]||E[x]||SC[x]||NC[x]||OR[x]||x==='fluxodm'||x==='labs'||x==='enc'));
   if(mais.length)L.push(['mais:','Mais ferramentas']);return [L,mais]}
 function renderDZ(m,id){
   const d=DZ[id],[L,mais]=dzParts(id),g=gOf(d.s);let sel=DZSUB[id]&&L.some(x=>x[0]===DZSUB[id])?DZSUB[id]:L[0][0];
@@ -5753,6 +5753,7 @@ const SECTIONS=[
  {g:'Atendimento',k:'cons',t:'Modo consulta',ic:'cons',ids:['consulta']},
  {g:'Atendimento',k:'rxb',t:'Receita montada',ic:'presc',ids:['receita']},
  {g:'Atendimento',k:'lbf',t:'Preencher exames',ic:'exames',ids:['labs']},
+ {g:'Atendimento',k:'enc',t:'Encaminhamento',ic:'doc',ids:['enc']},
  {g:'Atendimento',k:'doenca',t:'Por doença',ic:'box',ids:Object.keys(DZ)},
  {g:'Atendimento',k:'soap',t:'Templates SOAP',ic:'soap',ids:['has','dm','drc','hipotireo','obesidade','asma','dpoc','hpb','idoso','prenatal','sang1','sang2','puerperio','contracepcao','climaterio','puericultura','mental','esquizofrenia','ansiedade','tabagismo','insonia','ivas','oma','otext','conj','gea','itu','ist','dengue','cefaleia','vertigem','lombalgia','oa','anemia','b12','sua','corrimento','sop','febre','dermatite','micose','escabiose','acne','gota','fa','panico','toc','luto']},
  {g:'Atendimento',k:'ef',t:'Exame físico',ic:'steth',ids:['ef_geral','ef_cv','ef_resp','ef_abd','ef_neuro','ef_cp','ef_pele','ef_mama','ef_gin','ef_ped','ef_reflex','efp_osteo','efp_cerv','efp_lomb','efp_ombro','efp_joelho','efp_vert','efp_tunel','efp_pe','efp_ulc','efp_ven','efp_art']},
@@ -5847,6 +5848,7 @@ function addStar(){
   ph.appendChild(b);
 }
 function go(id,sk){
+  window.__prevId=typeof cur!=='undefined'&&cur?cur.id:null;
   cur={sec:secOf(id),id};
   if(sk&&SECM[sk]&&SECM[sk].ids.includes(id))CURS=sk;
   else if(!SECM[CURS].ids.includes(id)){const s=SECTIONS.find(s=>!s.ln&&s.ids.includes(id))||SECTIONS.find(s=>s.ids.includes(id));if(s)CURS=s.k}
@@ -5868,6 +5870,7 @@ function render(){
   const m=$('#main');
   if(cur.id==='receita')return renderRXB(m);
   if(cur.id==='labs')return renderLABS(m);
+  if(cur.id==='enc')return renderENC(m);
   if(cur.sec==='dz')return renderDZ(m,cur.id);
   if(cur.sec==='soap')return renderSoap(m,cur.id);
   if(cur.sec==='presc')return renderPresc(m,cur.id);
@@ -6180,9 +6183,9 @@ function renderBld(box,onDone){
       <div class="field"><label for="bd-q">Quantidade total</label><input id="bd-q" value="${esc(bldQty(b))}"></div>
       <div class="field"><label for="bd-ob">Como / onde (opcional)</label><input id="bd-ob" value="${esc(b.obs)}" placeholder="ex.: após o café; nas lesões"></div>
     </div>
-    ${b.keep?'<p class="note">Mantendo o “como usar” original. Mude dose, frequência ou duração para refazer a frase.</p>':''}<pre class="rx" id="bd-pv"></pre>
+    ${b.keep?'<p class="note">Mantendo o “como usar” original. Mude dose, frequência ou duração para refazer a frase.</p>':''}<pre class="rx" id="bd-pv"></pre><div id="bd-sf"></div>
     <div class="bar"><button class="btn primary small" id="bd-ok" type="button">${b.i>=0?'Salvar alteração':'Adicionar à receita'}</button><button class="btn small" id="bd-x" type="button">${b.i>=0?'Cancelar':'Limpar'}</button></div></article>`;
-  const pv=()=>{$('#bd-pv').textContent=bldText(b);const q=$('#bd-q');if(!b.qtyEd)q.value=bldQty(b)};pv();
+  const pv=()=>{$('#bd-pv').textContent=bldText(b);const ot=RXB.filter((x,k)=>k!==b.i).map(x=>x.txt),L=b.name.trim()?rxInter([bldText(b),...ot]).filter(o=>o.i===0||o.j===0):[];$('#bd-sf').innerHTML=rxAdjHTML(bldText(b))+(L.length?rxInterHTML(L):'');const q=$('#bd-q');if(!b.qtyEd)q.value=bldQty(b)};pv();
   const on=(id,k,re)=>{const el=$(id);if(el)el[el.tagName==='SELECT'?'onchange':'oninput']=()=>{b[k]=el.value;if(k!=='other'&&b.keep){b.keep=null;re=1}if(re)renderBld(box,onDone);else pv()}};
   on('#bd-o','other');on('#bd-d','dose');on('#bd-u','un');on('#bd-f','fr');on('#bd-du','dur',1);on('#bd-nd','nd');on('#bd-v','via');on('#bd-ob','obs');
   $('#bd-q').oninput=e=>{b.qty=e.target.value;b.qtyEd=!!e.target.value.trim();pv()};
@@ -6192,19 +6195,248 @@ function renderBld(box,onDone){
   $('#bd-ok').onclick=()=>{if(!b.name.trim()){toast('Escolha o remédio');return}const it={via:b.via,txt:bldText(b)};if(b.i>=0)RXB[b.i]=it;else RXB.push(it);saveRxb();toast(b.i>=0?'Remédio ajustado':`Na receita: ${RXB.length} remédio(s)`);BLD=null;onDone()};
   $('#bd-x').onclick=()=>{BLD=b.i>=0?null:bldNew();onDone()};
 }
+/* Gerador de encaminhamento: especialidade + motivo → texto de referência, critérios e o que mandar junto.
+   Base: protocolos de encaminhamento do TelessaúdeRS-UFRGS / Ministério da Saúde. s: SOAPs ligados; pri: E eletivo, P prioritário, U urgente */
+const ENCPRI={E:'Eletivo',P:'Prioritário',U:'Urgente'};
+const ENC=[
+ {k:'cardio',n:'Cardiologia',r:[
+  {k:'icc',m:'Insuficiência cardíaca',s:['has'],cid:'I50',pri:'P',hip:'Insuficiência cardíaca [FE reduzida / preservada], NYHA [ ]',crit:['IC com FE ≤ 40% ou sintomas (NYHA II–IV) apesar de tratamento otimizado (IECA/BRA, betabloqueador, espironolactona, iSGLT2)','IC de causa não esclarecida após ecocardiograma','Internação recente por IC descompensada'],env:['Ecocardiograma com data e FE','ECG','Creatinina/TFG, potássio, sódio, hemograma, TSH','Medicações em uso com doses e tempo de uso','PA e FC das últimas consultas']},
+  {k:'dac',m:'Dor torácica / suspeita de doença coronariana',s:['has'],cid:'I20.9',pri:'P',hip:'Angina estável [típica / atípica]',crit:['Angina típica ou provável com teste não invasivo alterado','Angina limitante apesar de tratamento clínico (AAS, estatina, betabloqueador, nitrato)','Dor em repouso, prolongada ou em piora: EMERGÊNCIA, não encaminhar por regulação'],env:['ECG de repouso','Teste ergométrico ou cintilografia, se feitos','Perfil lipídico, glicemia/HbA1c, creatinina','Fatores de risco e escore de risco CV']},
+  {k:'fa',m:'Fibrilação atrial',s:['fa'],cid:'I48',pri:'E',hip:'Fibrilação atrial [paroxística / persistente / permanente], CHA2DS2-VASc [ ], HAS-BLED [ ]',crit:['FA sintomática apesar de controle de frequência','Dúvida sobre controle de ritmo ou anticoagulação','FA com valvopatia moderada/grave ou prótese valvar'],env:['ECG mostrando a FA','Ecocardiograma, se feito','TSH, creatinina/TFG, hemograma','INR recentes (se varfarina)','Escores CHA2DS2-VASc e HAS-BLED']},
+  {k:'sopro',m:'Sopro / valvopatia',s:[],cid:'I35.9',pri:'E',hip:'Valvopatia [ ] a esclarecer',crit:['Valvopatia moderada ou grave no ecocardiograma','Sopro com sintomas (dispneia, síncope, angina) sem ecocardiograma disponível'],env:['Ecocardiograma','ECG','Descrição do sopro e sintomas']},
+  {k:'hasr',m:'HAS resistente',s:['has'],cid:'I10',pri:'E',hip:'Hipertensão resistente',crit:['PA fora da meta com 3 classes em dose otimizada (incluindo diurético), adesão confirmada e MRPA/MAPA','Suspeita de HAS secundária (hipocalemia, início < 30 anos, piora súbita)'],env:['MRPA ou MAPA','Medicações e doses','Creatinina, potássio, EAS, glicemia, perfil lipídico, ECG']}]},
+ {k:'endo',n:'Endocrinologia',r:[
+  {k:'dm',m:'Diabetes de difícil controle',s:['dm'],cid:'E11.9',pri:'E',hip:'DM2 descompensado [com / sem] complicações',crit:['HbA1c fora da meta apesar de insulina em doses otimizadas (NPH + regular) e adesão','DM1, ou suspeita de LADA/MODY','DM com DRC estágio 4 ou mais (preferir nefrologia)'],env:['2 HbA1c com datas','Glicemias capilares (folha de glicemia)','Creatinina/TFG, RAC','Esquema de insulina e medicações atuais']},
+  {k:'hipot',m:'Hipotireoidismo de difícil controle',s:['hipotireo'],cid:'E03.9',pri:'E',hip:'Hipotireoidismo [ ]',crit:['TSH alterado com dose ≥ 2 mcg/kg/dia de levotiroxina e adesão confirmada','Hipotireoidismo central (TSH baixo/normal com T4L baixo)','Gestante com hipotireoidismo de difícil controle'],env:['TSH e T4L com datas','Dose de levotiroxina e forma de uso','Anti-TPO, se feito']},
+  {k:'hipert',m:'Hipertireoidismo',s:['hipotireo'],cid:'E05.9',pri:'P',hip:'Hipertireoidismo [Graves / nódulo tóxico / tireoidite]',crit:['Hipertireoidismo confirmado (TSH suprimido com T4L ou T3 alto) para definir tratamento'],env:['TSH, T4L (T3 se houver)','Anti-TPO/TRAb, se feitos','USG ou cintilografia de tireoide, se feitas','FC e uso de betabloqueador']},
+  {k:'nod',m:'Nódulo de tireoide',s:['hipotireo'],cid:'E04.1',pri:'E',hip:'Nódulo de tireoide TI-RADS [ ]',crit:['Nódulo com indicação de PAAF pelo TI-RADS ou PAAF Bethesda III a VI (Bethesda V–VI: cirurgia de cabeça e pescoço, prioritário)','Bócio volumoso ou com compressão'],env:['USG de tireoide com laudo TI-RADS','TSH','Laudo da PAAF, se feito']},
+  {k:'obes',m:'Obesidade para avaliação de cirurgia bariátrica',s:['obesidade'],cid:'E66.9',pri:'E',hip:'Obesidade grau [ ], IMC [ ]',crit:['IMC ≥ 40, ou ≥ 35 com comorbidade, após 2 anos de tratamento clínico sem sucesso e acompanhamento com equipe multiprofissional'],env:['Peso, altura e IMC com datas','Tratamentos já feitos (dieta, atividade, medicação)','Comorbidades e exames recentes (glicemia, HbA1c, perfil lipídico, TSH)']}]},
+ {k:'nefro',n:'Nefrologia',r:[
+  {k:'drc',m:'Doença renal crônica',s:['drc','has','dm'],cid:'N18.[ ]',pri:'E',hip:'DRC estágio G[ ] A[ ]',crit:['TFG < 30 mL/min/1,73 m² (estágio 4–5)','Perda de TFG > 5 mL/min/ano ou queda > 25% com mudança de estágio','RAC > 300 mg/g persistente','Hematúria com proteinúria, ou cilindros hemáticos','HAS resistente associada à DRC; hiperpotassemia persistente'],env:['2 creatininas/TFG com intervalo ≥ 3 meses','RAC e EAS','Hemograma, potássio, cálcio, fósforo, PTH','USG de rins e vias urinárias','Medicações em uso']}]},
+ {k:'gastro',n:'Gastroenterologia / hepatologia',r:[
+  {k:'hep',m:'Esteatose com risco de fibrose',s:['obesidade','dm'],cid:'K76.0',pri:'E',hip:'MASLD (esteatose) com FIB-4 [ ]',crit:['FIB-4 ≥ 2,67, ou indeterminado (1,3–2,67) sem elastografia disponível','Sinais de cirrose (plaquetopenia, ascite, varizes)'],env:['FIB-4 e Fatty Liver Index','TGO, TGP, GGT, FA, bilirrubinas, albumina, INR, plaquetas','USG de abdome','Sorologias hepatites B e C','Consumo de álcool']},
+  {k:'hbv',m:'Hepatite B ou C',s:['ist'],cid:'B18.[ ]',pri:'P',hip:'Hepatite viral crônica [B / C]',crit:['HBsAg reagente por mais de 6 meses','Anti-HCV reagente com HCV-RNA detectável (ou sem acesso ao RNA)'],env:['Sorologias e carga viral, se houver','Hepatograma, plaquetas, INR, albumina','USG de abdome']},
+  {k:'eda',m:'Dispepsia / DRGE para endoscopia',s:[],cid:'K21.9',pri:'E',hip:'Dispepsia [ ] / DRGE',crit:['Sinais de alarme: disfagia, perda de peso, anemia, sangramento, vômitos persistentes (prioritário)','Idade ≥ 40 anos com dispepsia nova ou refratária a 8 semanas de IBP','Sintomas refratários após erradicação do H. pylori'],env:['Tempo de sintomas e tratamento com IBP','Hemograma','Pesquisa de H. pylori, se feita']},
+  {k:'colo',m:'Colonoscopia',s:[],cid:'K92.1',pri:'P',hip:'[Sangue oculto positivo / hematoquezia / alteração do hábito intestinal]',crit:['Sangue oculto nas fezes positivo no rastreamento','Sangramento retal com idade ≥ 45 anos ou anemia ferropriva sem causa','Mudança persistente do hábito intestinal com sinais de alarme'],env:['Resultado do sangue oculto','Hemograma, ferritina','Antecedente familiar de câncer colorretal']}]},
+ {k:'neuro',n:'Neurologia',r:[
+  {k:'cef',m:'Cefaleia',s:['cefaleia'],cid:'G43.9',pri:'E',hip:'Cefaleia [migrânea / tensional / em salvas] refratária',crit:['Cefaleia primária refratária a 2 profiláticos em dose e tempo adequados','Cefaleia com sinal de alarme sem urgência (padrão novo após 50 anos, piora progressiva): prioritário; déficit focal, pior da vida ou febre com rigidez: EMERGÊNCIA'],env:['Diário de cefaleia','Profiláticos usados, doses e tempo','Exame neurológico e fundo de olho, se feito','Imagem, se feita']},
+  {k:'epi',m:'Epilepsia',s:[],cid:'G40.9',pri:'P',hip:'Epilepsia [ ]',crit:['Primeira crise não provocada sem investigação','Crises não controladas com anticonvulsivante em dose adequada','Gestante ou desejo de gestar em uso de anticonvulsivante'],env:['Descrição das crises e frequência','Anticonvulsivantes e doses','EEG e imagem, se feitos']},
+  {k:'dem',m:'Declínio cognitivo / demência',s:['idoso'],cid:'F03',pri:'E',hip:'Síndrome demencial [ ]',crit:['Declínio cognitivo com início antes de 65 anos, evolução rápida ou sinais neurológicos focais','Dúvida diagnóstica após investigação inicial na APS'],env:['Mini-Cog/MEEM e escores funcionais (Katz, Lawton)','B12, TSH, VDRL, HIV, glicemia, creatinina, hemograma, cálcio','TC ou RM de crânio, se feitas','Medicações em uso']},
+  {k:'park',m:'Parkinsonismo / tremor',s:['idoso'],cid:'G20',pri:'E',hip:'Parkinsonismo [ ]',crit:['Suspeita de doença de Parkinson para confirmação e início de tratamento','Tremor com dúvida diagnóstica ou incapacitante'],env:['Descrição do tremor, rigidez, bradicinesia','Medicações em uso (antipsicóticos, metoclopramida)']}]},
+ {k:'psiq',n:'Psiquiatria / CAPS',r:[
+  {k:'grave',m:'Transtorno mental grave',s:['esquizofrenia','mental'],cid:'F20.9',pri:'P',hip:'[Esquizofrenia / transtorno bipolar / psicose] ',crit:['Primeiro episódio psicótico','Transtorno bipolar ou esquizofrenia sem controle com tratamento na APS','Risco de suicídio alto ou agitação grave: URGÊNCIA (CAPS, SAMU ou emergência)'],env:['Medicações em uso, doses e resposta','Escalas aplicadas (PHQ-9, risco de suicídio)','Glicemia, perfil lipídico, ECG se antipsicótico']},
+  {k:'dep',m:'Depressão ou ansiedade refratária',s:['mental','ansiedade','panico','toc'],cid:'F32.[ ]',pri:'E',hip:'[Depressão / ansiedade / TOC / pânico] refratário',crit:['Sem resposta a 2 antidepressivos em dose e tempo adequados, com psicoterapia','Dúvida diagnóstica (bipolaridade, psicose)'],env:['PHQ-9/GAD-7 seriados','Antidepressivos usados, doses e tempo','Acompanhamento com psicologia/eMulti']}]},
+ {k:'orto',n:'Ortopedia',r:[
+  {k:'lomb',m:'Lombalgia / lombociatalgia',s:['lombalgia'],cid:'M54.5',pri:'E',hip:'Lombociatalgia [ ] refratária',crit:['Radiculopatia refratária a 6 semanas de tratamento clínico, com exame de imagem compatível','Estenose de canal com claudicação neurogênica limitante','Síndrome da cauda equina ou déficit motor progressivo: EMERGÊNCIA'],env:['Tempo de sintomas e tratamentos feitos (analgesia, fisioterapia)','Exame neurológico (força, reflexos, Lasègue)','Imagem, se feita']},
+  {k:'oa',m:'Artrose de joelho ou quadril',s:['oa'],cid:'M17.[ ]',pri:'E',hip:'Osteoartrite de [joelho / quadril], [ ]',crit:['Dor e limitação funcional importantes apesar de 6 meses de tratamento clínico (exercício, perda de peso, analgesia), com candidatura a artroplastia'],env:['Radiografia com carga','Tratamentos feitos','Comorbidades e IMC']},
+  {k:'ombro',m:'Ombro doloroso',s:[],cid:'M75.[ ]',pri:'E',hip:'Síndrome do impacto / lesão do manguito [ ]',crit:['Dor refratária a 3 meses de tratamento clínico e fisioterapia','Suspeita de ruptura do manguito (fraqueza, Jobe ou Patte positivos) em paciente ativo'],env:['Manobras positivas (Neer, Hawkins, Jobe, Patte, Gerber)','Tratamentos feitos','USG ou radiografia, se feitas']},
+  {k:'carpo',m:'Síndrome do túnel do carpo',s:[],cid:'G56.0',pri:'E',hip:'Síndrome do túnel do carpo [ ]',crit:['Sintomas persistentes após 3 meses de órtese noturna','Atrofia tenar ou perda de força'],env:['Phalen e Tinel','Eletroneuromiografia, se feita','TSH e glicemia']}]},
+ {k:'gin',n:'Ginecologia / mastologia',r:[
+  {k:'sua',m:'Sangramento uterino anormal',s:['sua'],cid:'N92.0',pri:'E',hip:'SUA [PALM-COEIN: ]',crit:['SUA refratário ao tratamento clínico (ACO, progestágeno, AINE, ácido tranexâmico)','Mioma ou pólipo com sintomas','Espessamento endometrial na pós-menopausa ou sangramento pós-menopausa: prioritário'],env:['USG transvaginal','Hemograma, ferritina','Tratamentos feitos e tempo','Citopatológico em dia']},
+  {k:'colpo',m:'Citopatológico alterado (colposcopia)',s:[],cid:'R87.6',pri:'P',hip:'Citopatológico com [ASC-H / LSIL persistente / HSIL / AGC]',crit:['ASC-H, AGC, HSIL ou mais grave: colposcopia','LSIL ou ASC-US persistentes conforme diretriz (2 exames com 6 meses, ou idade ≥ 25 anos com repetição alterada)'],env:['Laudo do citopatológico com data','Citopatológicos anteriores']},
+  {k:'mama',m:'Mamografia BI-RADS 4 ou 5 / nódulo',s:[],cid:'N63',pri:'P',hip:'Lesão mamária BI-RADS [ ]',crit:['BI-RADS 4 ou 5 (prioritário)','BI-RADS 3 com crescimento ou nódulo palpável suspeito','Descarga papilar sanguinolenta espontânea'],env:['Mamografia e USG com laudos','Descrição do exame clínico das mamas']},
+  {k:'somp',m:'SOMP ou infertilidade',s:['sop'],cid:'E28.2',pri:'E',hip:'SOMP (antiga SOP) / infertilidade',crit:['Desejo de gestar sem sucesso após 12 meses (6 meses se ≥ 35 anos)','SOMP sem resposta ao tratamento na APS'],env:['USG transvaginal','TSH, prolactina, glicemia, perfil lipídico','Espermograma da parceria, se houver','Ciclos e tratamentos feitos']}]},
+ {k:'uro',n:'Urologia',r:[
+  {k:'hpb',m:'Hiperplasia prostática',s:['hpb'],cid:'N40',pri:'E',hip:'HPB com LUTS [moderado / grave], IPSS [ ]',crit:['Sintomas refratários a alfabloqueador + inibidor da 5-alfa-redutase','Retenção urinária, infecção de repetição, litíase vesical, hidronefrose ou piora da função renal'],env:['IPSS','PSA total, EAS, creatinina','USG de vias urinárias com resíduo pós-miccional','Toque retal']},
+  {k:'psa',m:'PSA alterado / suspeita de câncer de próstata',s:['hpb'],cid:'R97.2',pri:'P',hip:'PSA [ ] ng/mL / toque retal [ ]',crit:['PSA acima do valor para a idade, confirmado em 2ª dosagem','Toque retal com nódulo ou endurecimento'],env:['2 PSA com datas','Descrição do toque retal','EAS (afastar infecção)']},
+  {k:'lit',m:'Litíase urinária',s:['itu'],cid:'N20.0',pri:'E',hip:'Litíase urinária [ ]',crit:['Cálculo ≥ 10 mm ou que não eliminou em 4–6 semanas','Cólicas recorrentes ou hidronefrose','Febre com obstrução: EMERGÊNCIA'],env:['USG ou TC com tamanho e local do cálculo','EAS, creatinina']}]},
+ {k:'pneumo',n:'Pneumologia',r:[
+  {k:'dpoc',m:'DPOC',s:['dpoc'],cid:'J44.9',pri:'E',hip:'DPOC GOLD [ ] grupo [ ]',crit:['2 ou mais exacerbações por ano, ou 1 com internação, apesar de tratamento otimizado','Indicação de oxigenoterapia domiciliar (SatO2 ≤ 88%)','Suspeita de DPOC em < 40 anos (deficiência de alfa-1)'],env:['Espirometria com prova broncodilatadora','Medicações inalatórias e técnica','Exacerbações no último ano','SatO2 em repouso, hemograma, Rx de tórax']},
+  {k:'asma',m:'Asma grave ou não controlada',s:['asma'],cid:'J45.9',pri:'E',hip:'Asma [não controlada / grave]',crit:['Asma não controlada com corticoide inalatório em dose média/alta + LABA, com adesão e técnica confirmadas','2 ou mais cursos de corticoide oral no ano'],env:['Espirometria','Medicações inalatórias e técnica','Crises e internações no último ano']},
+  {k:'nod',m:'Nódulo pulmonar',s:[],cid:'R91',pri:'P',hip:'Nódulo pulmonar [ ] mm',crit:['Nódulo sólido ≥ 8 mm ou com crescimento','Nódulo com características suspeitas em tabagista'],env:['TC de tórax com laudo','Carga tabágica']}]},
+ {k:'derma',n:'Dermatologia',r:[
+  {k:'ca',m:'Lesão suspeita de câncer de pele',s:['dermatite'],cid:'D48.5',pri:'P',hip:'Lesão suspeita de [melanoma / CBC / CEC]',crit:['Lesão pigmentada com ABCDE ou lista de Glasgow positiva (melanoma: prioritário)','Lesão que não cicatriza em 4–6 semanas, sangra ou cresce'],env:['Descrição da lesão (local, tamanho, cor, bordas, evolução)','Foto com régua, se possível']},
+  {k:'pso',m:'Psoríase / dermatite refratária',s:['dermatite'],cid:'L40.9',pri:'E',hip:'[Psoríase / dermatite] [extensa / refratária]',crit:['Acometimento > 10% da superfície, de face, mãos, pés ou genitais','Refratária a corticoide tópico adequado'],env:['Extensão e locais','Tratamentos feitos e tempo']},
+  {k:'acne',m:'Acne grave (isotretinoína)',s:['acne'],cid:'L70.0',pri:'E',hip:'Acne [nódulo-cística / moderada refratária]',crit:['Acne nodular ou cística, com cicatrizes, ou refratária a 3 meses de antibiótico oral + tópico'],env:['Tratamentos feitos e tempo','Beta-hCG e método contraceptivo (mulher)','Perfil lipídico e TGO/TGP']}]},
+ {k:'reuma',n:'Reumatologia',r:[
+  {k:'ar',m:'Artrite inflamatória',s:['oa'],cid:'M06.9',pri:'P',hip:'Artrite [reumatoide / inflamatória] a esclarecer',crit:['Artrite em ≥ 3 articulações ou em mãos/pés por > 6 semanas, rigidez matinal > 30 min','Suspeita de lúpus, vasculite ou espondiloartrite'],env:['Articulações acometidas e tempo','VHS, PCR, fator reumatoide, anti-CCP, FAN, hemograma','Radiografia de mãos e pés']},
+  {k:'gota',m:'Gota refratária',s:['gota'],cid:'M10.9',pri:'E',hip:'Gota [tofácea / refratária]',crit:['Crises frequentes ou ácido úrico fora da meta com alopurinol em dose máxima tolerada','Tofos ou dúvida diagnóstica'],env:['Ácido úrico seriado','Creatinina/TFG','Dose de alopurinol e crises no ano']}]},
+ {k:'oftalmo',n:'Oftalmologia',r:[
+  {k:'ret',m:'Retinografia / fundo de olho no diabetes',s:['dm'],cid:'E11.3',pri:'E',hip:'DM2 para rastreamento de retinopatia',crit:['Rastreamento anual de retinopatia diabética (antes, se gestação ou baixa visual)'],env:['Tempo de DM e HbA1c','Último exame de fundo de olho']},
+  {k:'av',m:'Baixa acuidade visual / glaucoma',s:[],cid:'H54.[ ]',pri:'E',hip:'Baixa acuidade visual [ ]',crit:['Acuidade visual reduzida que não melhora com o furo estenopeico','Suspeita de glaucoma ou catarata com limitação','Perda súbita de visão ou olho vermelho com dor e baixa visual: EMERGÊNCIA'],env:['Acuidade visual de cada olho','Comorbidades (DM, HAS)']}]},
+ {k:'orl',n:'Otorrinolaringologia',r:[
+  {k:'aud',m:'Perda auditiva',s:['oma'],cid:'H91.9',pri:'E',hip:'Hipoacusia [ ]',crit:['Perda auditiva confirmada em audiometria ou com prejuízo funcional','Perda súbita: urgência (até 72 h)'],env:['Audiometria, se feita','Otoscopia']},
+  {k:'oma',m:'Otite média recorrente ou crônica',s:['oma'],cid:'H66.9',pri:'E',hip:'Otite média [recorrente / crônica / com efusão persistente]',crit:['3 episódios em 6 meses ou 4 em 1 ano','Efusão por mais de 3 meses com perda auditiva','Perfuração timpânica persistente ou otorreia crônica'],env:['Número de episódios e antibióticos usados','Otoscopia']}]},
+ {k:'hemato',n:'Hematologia',r:[
+  {k:'anem',m:'Anemia sem causa definida',s:['anemia','b12'],cid:'D64.9',pri:'E',hip:'Anemia [ ] a esclarecer',crit:['Anemia sem causa após investigação inicial (ferro, B12, folato, função renal e tireoidiana)','Anemia ferropriva refratária a 3 meses de ferro com adesão','Bicitopenia ou pancitopenia: prioritário'],env:['Hemogramas seriados','Ferritina, saturação, B12, folato, reticulócitos, TSH, creatinina','Tratamentos feitos']}]},
+ {k:'vasc',n:'Cirurgia vascular',r:[
+  {k:'dap',m:'Doença arterial periférica',s:['dm','has'],cid:'I73.9',pri:'P',hip:'Doença arterial periférica, ITB [ ]',crit:['Claudicação limitante apesar de exercício e tratamento clínico','ITB < 0,9 com úlcera ou dor em repouso: prioritário; isquemia aguda: EMERGÊNCIA'],env:['ITB','Pulsos e exame dos pés','Fatores de risco e medicações']},
+  {k:'varz',m:'Insuficiência venosa / varizes',s:[],cid:'I83.9',pri:'E',hip:'Insuficiência venosa crônica CEAP [ ]',crit:['CEAP C4 a C6 (alterações de pele, úlcera)','Varizes sintomáticas refratárias a meia elástica'],env:['Classificação CEAP','Doppler venoso, se feito','Curativos e tratamentos']}]},
+ {k:'cir',n:'Cirurgia geral',r:[
+  {k:'hern',m:'Hérnia abdominal',s:[],cid:'K40.9',pri:'E',hip:'Hérnia [inguinal / umbilical / incisional]',crit:['Hérnia sintomática','Hérnia encarcerada ou estrangulada: EMERGÊNCIA'],env:['Descrição do exame físico','USG, se feita']},
+  {k:'cole',m:'Colelitíase sintomática',s:[],cid:'K80.2',pri:'E',hip:'Colelitíase sintomática',crit:['Cólica biliar ou colecistite prévia com colelitíase na USG','Colelitíase assintomática com cálculo > 3 cm, vesícula em porcelana ou pólipo ≥ 10 mm'],env:['USG de abdome','Hepatograma','Episódios de dor']}]},
+ {k:'pnar',n:'Pré-natal de alto risco',r:[
+  {k:'par',m:'Gestação de alto risco',s:['prenatal'],cid:'O09.9',pri:'P',hip:'Gestação de [ ] semanas com [ ]',crit:['HAS crônica, DM prévio ou gestacional sem controle com dieta, cardiopatia, nefropatia, epilepsia, HIV, trombofilia, doença autoimune','Gestação gemelar, restrição de crescimento, placenta prévia, óbito fetal ou prematuridade prévia','Pré-eclâmpsia grave, sangramento, perda de líquido: EMERGÊNCIA obstétrica'],env:['Cartão da gestante','Exames do pré-natal (ABO/Rh, hemograma, glicemia/TOTG, sorologias, EAS/urocultura)','USG obstétricas','Medicações em uso']}]},
+ {k:'neuroped',n:'Neuropediatria / desenvolvimento',r:[
+  {k:'dnpm',m:'Atraso do desenvolvimento',s:['puericultura'],cid:'R62.0',pri:'P',hip:'Atraso do desenvolvimento neuropsicomotor [ ]',crit:['Marco do desenvolvimento ausente para a idade na Caderneta','Reflexos primitivos persistentes ou assimétricos, hipotonia ou hipertonia','Regressão de habilidades: prioritário','Suspeita de TEA (M-CHAT positivo)'],env:['Caderneta com marcos e curvas (peso, comprimento, perímetro cefálico)','Triagens neonatais (teste do pezinho, orelhinha, olhinho)','Encaminhamento também à estimulação precoce/eMulti']}]}
+];
+let ENCST={sp:'cardio',r:'icc',age:'',sex:'F',hist:'',ef:'',trat:'',com:'',hip:'',pri:'',lab:true,rx:true,auto:''};
+try{const v=JSON.parse(sessionStorage.getItem('kitaps:enc')||'null');if(v&&v.sp)ENCST=Object.assign(ENCST,v)}catch(e){}
+function saveEnc(){try{sessionStorage.setItem('kitaps:enc',JSON.stringify(ENCST))}catch(e){}}
+const encSp=()=>ENC.find(s=>s.k===ENCST.sp)||ENC[0];
+const encR=()=>{const s=encSp();return s.r.find(r=>r.k===ENCST.r)||s.r[0]};
+function encText(){
+  const s=encSp(),r=encR(),f=rxFoot(),st=ENCST;
+  const labs=st.lab&&typeof lbAll==='function'?lbAll():'',rx=st.rx&&typeof RXB!=='undefined'&&RXB.length?RXB.map(x=>'- '+x.txt.split('\n')[0].replace(/\s*\.{3,}.*$/,'')+(x.txt.split('\n')[1]?': '+x.txt.split('\n')[1]:'')).join('\n'):'';
+  const sx=st.sex==='M'?'masculino':'feminino';
+  return [`ENCAMINHAMENTO À ${s.n.toUpperCase()}`,'',
+   `Paciente: [nome], ${st.age||'[ ]'} anos, sexo ${sx}. CNS: [ ].`,
+   `Motivo do encaminhamento: ${r.m}.`,
+   `História clínica: ${st.hist.trim()||'[tempo de evolução, sintomas, impacto na vida]'}`,
+   `Comorbidades: ${st.com.trim()||'[ ]'}`,
+   `Medicações em uso:${rx?'\n'+rx:' [ ]'}`,
+   `Exame físico: ${st.ef.trim()||'[achados relevantes]'}`,
+   `Exames realizados:${labs?'\n'+labs:' [com datas]'}`,
+   `Tratamentos já realizados na APS: ${st.trat.trim()||'[medicações, doses, tempo de uso e resposta]'}`,
+   `Hipótese diagnóstica: ${st.hip.trim()||r.hip} (CID-10 ${r.cid}).`,
+   `Prioridade: ${ENCPRI[st.pri||r.pri]}.`,
+   `Envio em anexo: ${r.env.join('; ')}.`,'',
+   'Solicito avaliação e conduta, com contrarreferência para seguimento na unidade.',
+   '',`${f.cid}, ${f.dt}.`,`${f.med} · ${f.crm}${f.uni?' · '+f.uni:''}`].join('\n')}
+function renderENC(m){
+  const from=window.__prevId,soap=from&&DZ[from]?DZ[from].s:from;
+  if(soap&&T[soap]&&ENCST.auto!==soap){const hit=ENC.flatMap(s=>s.r.map(r=>[s,r])).find(([s,r])=>r.s.includes(soap));if(hit){ENCST.sp=hit[0].k;ENCST.r=hit[1].k;ENCST.pri='';ENCST.hip=''}ENCST.auto=soap;saveEnc()}
+  const s=encSp(),r=encR(),nl=typeof lbAll==='function'&&lbAll(),nr=typeof RXB!=='undefined'?RXB.length:0;
+  m.innerHTML=`<section class="panel"><div class="ph"><h2>Encaminhamento</h2><span class="code">texto de referência pronto</span></div>
+    <p class="note">Escolha a especialidade e o motivo. Sai o texto de referência com o que mandar junto e os critérios de encaminhamento (protocolos do TelessaúdeRS-UFRGS e do Ministério da Saúde). Confira o protocolo de regulação do seu município ou do SISREG. Fica só nesta aba do navegador.</p>
+    <div class="card"><div class="field"><label for="en-sp">Especialidade</label><select id="en-sp">${ENC.map(x=>`<option value="${x.k}"${x.k===s.k?' selected':''}>${esc(x.n)}</option>`).join('')}</select></div>
+      <div class="lbl" style="margin-top:8px">Motivo</div><div class="chips dzt" id="en-r">${s.r.map(x=>`<button class="chip" type="button" data-r="${x.k}" aria-selected="${x.k===r.k}">${esc(x.m)}</button>`).join('')}</div></div>
+    <article class="card rxcard"><h3>Quando encaminhar</h3><ul class="gl">${r.crit.map(c=>`<li>${esc(c)}</li>`).join('')}</ul>
+      <div class="lbl">Mandar junto</div><ul class="gl">${r.env.map(c=>`<li>${esc(c)}</li>`).join('')}</ul></article>
+    <div class="card"><div class="grid2">
+      <div class="field"><label for="en-age">Idade</label><input id="en-age" inputmode="numeric" value="${esc(ENCST.age)}"></div>
+      <div class="field"><label for="en-sex">Sexo</label><select id="en-sex"><option value="F"${ENCST.sex==='F'?' selected':''}>Feminino</option><option value="M"${ENCST.sex==='M'?' selected':''}>Masculino</option></select></div>
+      <div class="field"><label for="en-pri">Prioridade</label><select id="en-pri">${Object.entries(ENCPRI).map(([k,v])=>`<option value="${k}"${(ENCST.pri||r.pri)===k?' selected':''}>${v}</option>`).join('')}</select></div></div>
+      <div class="field"><label for="en-hip">Hipótese diagnóstica</label><input id="en-hip" value="${esc(ENCST.hip||r.hip)}"></div>
+      <div class="field"><label for="en-hist">História clínica</label><textarea id="en-hist" rows="3" placeholder="Tempo de evolução, sintomas, impacto">${esc(ENCST.hist)}</textarea></div>
+      <div class="field"><label for="en-com">Comorbidades</label><input id="en-com" value="${esc(ENCST.com)}" placeholder="HAS, DM2..."></div>
+      <div class="field"><label for="en-ef">Exame físico</label><textarea id="en-ef" rows="2" placeholder="Achados relevantes">${esc(ENCST.ef)}</textarea></div>
+      <div class="field"><label for="en-trat">Tratamentos já feitos</label><textarea id="en-trat" rows="2" placeholder="Remédios, doses, tempo e resposta">${esc(ENCST.trat)}</textarea></div>
+      <label class="opt"><input type="checkbox" id="en-lab"${ENCST.lab?' checked':''}><span>Incluir exames do Preencher exames${nl?'':' (vazio)'}</span></label>
+      <label class="opt"><input type="checkbox" id="en-rx"${ENCST.rx?' checked':''}><span>Incluir remédios da Receita montada${nr?` (${nr})`:' (vazia)'}</span></label>
+      <div class="bar"><button class="btn small" type="button" data-go="labs">Preencher exames</button><button class="btn small" type="button" data-go="receita">Receita montada</button></div></div>
+    <div class="card"><div class="lbl">Texto do encaminhamento</div><pre class="rx" id="en-out"></pre></div>
+    <div class="bar sticky-bar"><button class="btn primary" id="en-cp" type="button">Copiar</button><button class="btn" id="en-pr" type="button">Imprimir</button><button class="btn" id="en-cs" type="button">+ Consulta</button><button class="btn" id="en-clr" type="button">Limpar</button></div>
+    <div id="sheet" class="card atsheet rxsheet"></div></section>`;
+  const out=()=>{$('#en-out').textContent=encText();saveEnc()};out();
+  $('#en-sp').onchange=e=>{ENCST.sp=e.target.value;ENCST.r=encSp().r[0].k;ENCST.pri='';ENCST.hip='';renderENC(m)};
+  m.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{ENCST.r=b.dataset.r;ENCST.pri='';ENCST.hip='';renderENC(m)});
+  [['en-age','age'],['en-hip','hip'],['en-hist','hist'],['en-com','com'],['en-ef','ef'],['en-trat','trat']].forEach(([i,k])=>{$('#'+i).oninput=e=>{ENCST[k]=e.target.value;out()}});
+  $('#en-sex').onchange=e=>{ENCST.sex=e.target.value;out()};$('#en-pri').onchange=e=>{ENCST.pri=e.target.value;out()};
+  $('#en-lab').onchange=e=>{ENCST.lab=e.target.checked;out()};$('#en-rx').onchange=e=>{ENCST.rx=e.target.checked;out()};
+  m.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+  $('#en-cp').onclick=()=>copy(encText());
+  $('#en-cs').onclick=()=>addCons('or','Encaminhamento: '+encSp().n,encText());
+  $('#en-pr').onclick=()=>{const f=rxFoot();$('#sheet').innerHTML=`<div class="rxpg">${f.uni?`<div class="ath">${esc(f.uni)}</div>`:''}<div class="att">REFERÊNCIA / ENCAMINHAMENTO</div><div class="rxp">${esc(encText().split('\n').slice(2).join('\n'))}</div></div>`;printSheet()};
+  const cl=$('#en-clr');cl.onclick=()=>confirm2(cl,()=>{Object.assign(ENCST,{age:'',hist:'',ef:'',trat:'',com:'',hip:'',pri:''});renderENC(m)});
+}
+/* Segurança da Receita montada: interações entre os remédios e ajuste para rim (TFG) e fígado (Child-Pugh) */
+const RXG={
+ ieca:'enalapril|captopril|ramipril|lisinopril|perindopril',bra:'losartana|valsartana|candesartana|olmesartana|irbesartana|telmisartana',
+ kpou:'espironolactona|amilorida|cloreto de potassio|eplerenona',aine:'diclofenaco|ibuprofeno|naproxeno|nimesulida|cetoprofeno|meloxicam|piroxicam|celecoxibe|indometacina',
+ aas:'\\baas\\b|acido acetilsalicilico',warf:'varfarina',doac:'apixabana|rivaroxabana|dabigatrana|edoxabana',
+ atbw:'sulfametoxazol|metronidazol|fluconazol|ciprofloxacino|levofloxacino|amiodarona|claritromicina|eritromicina|azitromicina',
+ isrs:'fluoxetina|sertralina|escitalopram|citalopram|paroxetina|venlafaxina|duloxetina|desvenlafaxina|amitriptilina|nortriptilina|clomipramina|imipramina|trazodona',
+ sero:'tramadol|sumatriptano|rizatriptana|naratriptana|linezolida|metadona|fentanil',
+ sinva:'sinvastatina|lovastatina',cyp3a:'claritromicina|eritromicina|itraconazol|cetoconazol comprimido|genfibrozila',bcc:'anlodipino|diltiazem|verapamil|amiodarona',
+ bzd:'diazepam|clonazepam|alprazolam|bromazepam|lorazepam|midazolam|clobazam|zolpidem',opi:'codeina|tramadol|morfina|metadona|oxicodona|fentanil',
+ qt:'azitromicina|claritromicina|eritromicina|ciprofloxacino|levofloxacino|haloperidol|quetiapina|clorpromazina|risperidona|citalopram|escitalopram|ondansetrona|amiodarona|domperidona|hidroxicloroquina|fluconazol|metadona|amitriptilina|nortriptilina|clomipramina|sotalol',
+ litio:'carbonato de litio|\\blitio\\b',tiaz:'hidroclorotiazida|clortalidona|indapamida',mtx:'metotrexato',smx:'sulfametoxazol',
+ clopi:'clopidogrel',ibpc:'omeprazol|esomeprazol',levo:'levotiroxina',quel:'carbonato de calcio|sulfato ferroso|ferro|hidroxido de aluminio|omeprazol|sucralfato',
+ aco:'etinilestradiol|levonorgestrel|desogestrel|noretisterona|medroxiprogesterona|ciproterona|drospirenona',indu:'carbamazepina|fenitoina|fenobarbital|rifampicina|topiramato|oxcarbazepina',
+ beta:'propranolol|atenolol|metoprolol|carvedilol|bisoprolol',vd:'diltiazem|verapamil',digo:'digoxina',digoi:'amiodarona|claritromicina|verapamil|diltiazem|espironolactona',
+ quin:'ciprofloxacino|levofloxacino',sild:'sildenafila|sildenafil|tadalafila',nitr:'isossorbida|nitroglicerina',bupro:'bupropiona',conv:'tramadol|bupropiona|clozapina',
+ tamox:'tamoxifeno',isrsf:'fluoxetina|paroxetina|bupropiona',alop:'alopurinol',aza:'azatioprina'};
+/* [grupo A, grupo B, gravidade, o que fazer] */
+const RXI=[
+ ['ieca','bra','grave','Duplo bloqueio do sistema renina-angiotensina: não associar (hipercalemia, lesão renal).'],
+ [['ieca','bra'],'kpou','moderada','Risco de hipercalemia: potássio e creatinina em 1–2 semanas; evitar se TFG < 30 ou K > 5,0.'],
+ [['ieca','bra'],'smx','moderada','Sulfametoxazol-trimetoprima também retém potássio: dosar K se uso prolongado, idoso ou DRC.'],
+ [['ieca','bra'],'aine','moderada','AINE reduz o efeito anti-hipertensivo e pode causar lesão renal aguda (pior com diurético: "triple whammy"). Usar pelo menor tempo ou trocar por paracetamol/dipirona.'],
+ ['warf',['aine','aas'],'grave','Sangramento: evitar AINE e AAS com varfarina; para dor, paracetamol ou dipirona.'],
+ ['warf','atbw','grave','Aumenta muito o INR: preferir outro antibiótico ou repetir o INR em 3–5 dias e ajustar a dose.'],
+ ['doac',['aine','aas'],'grave','Sangramento: evitar AINE e AAS com anticoagulante oral direto.'],
+ ['isrs','sero','grave','Síndrome serotoninérgica (agitação, tremor, febre, diarreia, clônus). Evitar ou usar a menor dose e orientar sinais. Tramadol também reduz o limiar convulsivo.'],
+ ['isrs',['aine','aas','warf','doac'],'moderada','Mais sangramento digestivo: considerar omeprazol e orientar sinais (fezes pretas).'],
+ ['sinva','cyp3a','grave','Rabdomiólise: suspender a sinvastatina durante o antibiótico/antifúngico, ou trocar por azitromicina.'],
+ ['sinva','bcc','moderada','Limitar sinvastatina a 20 mg/dia (10 mg com diltiazem ou verapamil); alternativa: atorvastatina.'],
+ ['bzd','opi','grave','Sedação e depressão respiratória: evitar a associação; se inevitável, menores doses e orientar.'],
+ ['bzd','bzd','moderada','Dois benzodiazepínicos/hipnóticos juntos: sedação, quedas, dependência. Manter só um.'],
+ ['opi','opi','moderada','Dois opioides juntos: somam sedação e depressão respiratória. Manter só um.'],
+ ['qt','qt','moderada','Os dois prolongam o QT: evitar a associação; se necessária, ECG (QTc), potássio e magnésio.'],
+ ['litio',['ieca','bra','tiaz','aine'],'grave','Aumenta o nível de lítio (toxicidade: tremor, confusão, vômitos): evitar ou dosar litemia em 5–7 dias.'],
+ ['mtx','smx','grave','Toxicidade do metotrexato (pancitopenia): não associar.'],
+ ['clopi','ibpc','moderada','Omeprazol e esomeprazol reduzem o efeito do clopidogrel: preferir pantoprazol.'],
+ ['levo','quel','leve','Reduz a absorção da levotiroxina: tomar em jejum e separar 4 horas de cálcio, ferro e antiácidos.'],
+ ['quin','quel','leve','Reduz a absorção do ciprofloxacino/levofloxacino: tomar 2 h antes ou 6 h depois de cálcio, ferro ou antiácidos.'],
+ ['aco','indu','grave','Indutor enzimático reduz o efeito do anticoncepcional: usar DIU, injetável trimestral ou preservativo.'],
+ ['beta','vd','moderada','Bradicardia e bloqueio AV: evitar betabloqueador com diltiazem ou verapamil.'],
+ ['digo','digoi','moderada','Aumenta o nível de digoxina: reduzir a dose (cerca de metade com amiodarona) e observar náuseas, bradicardia.'],
+ ['sild','nitr','grave','Hipotensão grave: contraindicado associar.'],
+ ['bupro','conv','moderada','Reduz o limiar convulsivo: evitar a associação, principalmente com história de convulsão.'],
+ ['tamox','isrsf','moderada','Fluoxetina, paroxetina e bupropiona reduzem o efeito do tamoxifeno: preferir sertralina em dose baixa, escitalopram ou venlafaxina.'],
+ ['alop','aza','grave','Alopurinol aumenta muito a azatioprina (aplasia medular): evitar ou reduzir a azatioprina a 25%.']];
+const rxgRe={};const rxgM=(g,t)=>(rxgRe[g]=rxgRe[g]||new RegExp(RXG[g])).exec(t);
+function rxInter(texts){const N=texts.map(t=>norm(t.split('\n')[0]+' '+t)),out=[];
+  RXI.forEach(([A,B,gv,tx])=>{const As=[].concat(A),Bs=[].concat(B);
+    for(let i=0;i<N.length;i++)for(let j=0;j<N.length;j++){if(i===j||(A===B&&j<i))continue;
+      const a=As.map(g=>rxgM(g,N[i])).find(Boolean),b=Bs.map(g=>rxgM(g,N[j])).find(Boolean);
+      if(a&&b&&a[0]!==b[0]&&!out.some(o=>o.tx===tx&&[o.a,o.b].sort().join()===[a[0],b[0]].sort().join()))out.push({a:a[0],b:b[0],g:gv,tx,i,j})}});
+  return out.sort((x,y)=>'gml'.indexOf(x.g[0])-'gml'.indexOf(y.g[0]))}
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+function rxInterHTML(L){if(!L.length)return '';return `<article class="card rxint"><div class="lbl">Interações nesta receita (${L.length})</div><ul class="gl">${L.map(o=>`<li><span class="chip tag ${o.g==='grave'?'bad':o.g==='moderada'?'warn':''}">${o.g}</span> <b>${esc(cap(o.a))} + ${esc(o.b)}</b>: ${esc(o.tx)}</li>`).join('')}</ul><p class="note">Aviso para conferência, não bloqueia a receita. Confira na bula ou numa base de interações.</p></article>`}
+/* Fígado (Child-Pugh): [regex, A, B/C] */
+const HEPA=[
+ ['paracetamol','Até 3 g/dia.','Cirrose: máx. 2 g/dia; evitar com álcool ativo.'],
+ [RXG.aine,'Evitar.','Evitar (sangramento, lesão renal, descompensação da ascite).'],
+ [RXG.bzd,'Cautela, menor dose.','Evitar (precipita encefalopatia); se necessário, lorazepam em dose baixa.'],
+ [RXG.opi,'Reduzir a dose ou aumentar o intervalo.','Evitar; se necessário, dose baixa e intervalo maior (risco de encefalopatia).'],
+ ['metformina','Pode usar.','Evitar na cirrose descompensada (acidose lática).'],
+ ['sinvastatina|atorvastatina|rosuvastatina|pravastatina','Pode usar com monitoramento.','Contraindicada na hepatopatia descompensada.'],
+ ['metronidazol','Sem ajuste.','Child C: reduzir a dose em 50%.'],
+ ['carbamazepina|acido valproico|valproato|fenitoina','Cautela, monitorar enzimas.','Evitar.'],
+ ['amiodarona','Monitorar enzimas.','Evitar.'],
+ ['isoniazida|rifampicina|pirazinamida|rhze','Monitorar TGO/TGP.','Discutir esquema com a referência (hepatotoxicidade).'],
+ ['fluconazol|cetoconazol|itraconazol|terbinafina','Cautela.','Evitar (hepatotóxicos); terbinafina contraindicada.'],
+ ['glibenclamida|gliclazida|glimepirida','Cautela (hipoglicemia).','Evitar: preferir insulina.'],
+ ['propranolol|carvedilol','Pode usar (profilaxia de varizes).','Dose menor; suspender se PA sistólica < 90 ou ascite refratária.'],
+ ['omeprazol|pantoprazol|esomeprazol','Sem ajuste.','Máx. 20 mg/dia.'],
+ ['metoclopramida','Sem ajuste.','Reduzir a dose em 50%.'],
+ ['amoxicilina \\+ clavulanato|amoxicilina ?\\+ ?clavulan','Cautela (colestase).','Evitar se houver alternativa.'],
+ ['sertralina|fluoxetina|paroxetina|citalopram|escitalopram','Dose menor ou intervalo maior.','Metade da dose; escitalopram até 10 mg.'],
+ ['amitriptilina|nortriptilina|clomipramina','Cautela.','Evitar (sedação, encefalopatia).'],
+ ['quetiapina|haloperidol|risperidona|olanzapina','Iniciar com dose baixa.','Dose baixa e titulação lenta.'],
+ ['espironolactona','Pode usar.','Útil na ascite: monitorar sódio, potássio e creatinina.'],
+ ['levotiroxina|alopurinol|losartana|enalapril|anlodipino','Sem ajuste habitual.','Sem ajuste habitual; cautela com hipotensão na cirrose (IECA/BRA evitar na ascite).']];
+let RXP={tfg:'',ch:''};try{const v=JSON.parse(sessionStorage.getItem('kitaps:rxp')||'null');if(v)RXP=Object.assign(RXP,v)}catch(e){}
+function saveRxp(){try{sessionStorage.setItem('kitaps:rxp',JSON.stringify(RXP))}catch(e){}}
+function rxTfg(){const n=num(RXP.tfg);if(n>0)return [n,'digitada'];
+  try{const v=LBS.v,a=lbNum(LBS.age),c=lbNum(v.cr);if(a>=18&&c>0)return [Math.round(ckdepi(c,a,LBS.sex!=='M')),'do Preencher exames']}catch(e){}
+  const s=num(store.get('kitaps:tfg')||'');return s>0?[s,'da calculadora de TFG']:[null,'']}
+function rxAdjHTML(txt){const n=norm(txt),out=[],[tfg]=rxTfg();
+  if(tfg){drugsIn(txt).forEach(d=>{if(d[2]>0&&tfg<d[2])out.push(`<span class="chip tag warn">Rim (TFG ${nf(tfg,0)})</span> ${esc(d[0])}: ${esc(d[3])}`)})}
+  if(RXP.ch){HEPA.forEach(h=>{if(new RegExp(h[0]).test(n))out.push(`<span class="chip tag ${RXP.ch==='A'?'':'bad'}">Fígado (Child ${RXP.ch})</span> ${esc(RXP.ch==='A'?h[1]:h[2])}`)})}
+  return out.length?`<div class="rxadj">${out.map(x=>`<div>${x}</div>`).join('')}</div>`:''}
+function rxPtHTML(){const [t,src]=rxTfg();
+  return `<details class="card" id="rxb-pt"${t||RXP.ch?' open':''}><summary class="lbl" style="cursor:pointer">Rim e fígado: ajuste de dose${t?` · TFG ${nf(t,0)}`:''}${RXP.ch?` · Child ${RXP.ch}`:''}</summary>
+    <div class="grid2" style="margin-top:8px"><div class="field"><label for="rxp-tfg">TFG (mL/min/1,73 m²)</label><input id="rxp-tfg" inputmode="decimal" value="${esc(RXP.tfg)}" placeholder="${t&&!RXP.tfg?nf(t,0)+' '+src:'vazio = do Preencher exames'}"></div>
+    <div class="field"><label for="rxp-ch">Hepatopatia (Child-Pugh)</label><select id="rxp-ch"><option value="">Sem hepatopatia</option>${['A','B','C'].map(k=>`<option value="${k}"${RXP.ch===k?' selected':''}>Child-Pugh ${k}</option>`).join('')}</select></div></div>
+    <p class="note">${t?`TFG ${nf(t,0)} ${esc(src)}. `:'Sem TFG: digite aqui ou preencha a creatinina e a idade em Preencher exames. '}Os ajustes aparecem embaixo de cada remédio. Detalhes em Ajustes de dose.</p></details>`}
 function renderRXB(m){
   m.innerHTML=`<section class="panel"><div class="ph"><h2>Receita montada</h2><span class="code">${RXB.length} remédio(s)</span></div>
     <p class="note">Toque em “+ Receita” nas Prescrições, na prescrição padrão do SOAP, em Por doença ou na Farmácia do SUS. Ou monte aqui: escolha o remédio, a apresentação do SUS e ajuste dose, frequência, duração e quantidade para a pessoa. Os remédios entram numerados e agrupados por via, como na receita normal, e separados por tipo de receituário. Fica só nesta aba do navegador.</p>
+    <div id="rxb-ptw"></div>
     <div id="rxb-bld"></div>
+    <div id="rxb-int"></div>
     <div id="rxb-list"></div>
     <details class="card"><summary class="lbl" style="cursor:pointer">+ Digitar em texto livre</summary><div class="field" style="margin-top:8px"><label for="rxb-free">Nome, dose e quantidade na 1ª linha; como tomar embaixo</label><textarea id="rxb-free" rows="3" placeholder="Losartana 50 mg ...... 30 comprimidos&#10;Tomar 1 comprimido por dia."></textarea></div>
       <div class="bar"><select id="rxb-via" aria-label="Via">${VIAS.map(v=>`<option>${v}</option>`).join('')}</select><button class="btn small" id="rxb-add" type="button">Adicionar</button></div></details>
     <div class="bar sticky-bar"><button class="btn primary" id="rxb-cp" type="button">Copiar</button><button class="btn" id="rxb-pr" type="button">Imprimir</button><button class="btn" id="rxb-cs" type="button">+ Consulta</button><button class="btn" id="rxb-es" type="button">Levar ao esquema</button><button class="btn" id="rxb-clr" type="button">Limpar</button></div>
     <div id="sheet" class="card atsheet rxsheet"></div></section>`;
-  const draw=()=>{const G=rxbGroups(),box=$('#rxb-list');m.querySelector('.ph .code').textContent=RXB.length+' remédio(s)';
+  const draw=()=>{const G=rxbGroups(),box=$('#rxb-list');$('#rxb-int').innerHTML=rxInterHTML(rxInter(RXB.map(x=>x.txt)));m.querySelector('.ph .code').textContent=RXB.length+' remédio(s)';
     if(!RXB.length){box.innerHTML='<div class="card"><p class="note">Nenhum remédio ainda.</p></div>';return}
     box.innerHTML=G.map(([k,idx])=>{let n=0;const vs=[...new Set(idx.map(i=>RXB[i].via))];
-      return `<article class="card rxcard"><h3>${esc(RXK[k][0])}</h3>${RXK[k][1]?`<p class="note">${esc(RXK[k][1])}</p>`:''}`+vs.map(v=>`<div class="lbl">${esc(v.toUpperCase())}</div>`+idx.filter(i=>RXB[i].via===v).map(i=>{n++;return `<div class="rxbi"><b>${n}.</b><textarea class="soap rxta" data-rt="${i}" spellcheck="false" aria-label="Remédio ${n}">${esc(RXB[i].txt)}</textarea><div class="rxbb"><button class="btn small" data-aj="${i}" type="button">Ajustar dose</button><button class="btn small" data-up="${i}" type="button" aria-label="Subir">↑</button><button class="btn small" data-dn="${i}" type="button" aria-label="Descer">↓</button><button class="btn small" data-rm="${i}" type="button" aria-label="Tirar">✕</button></div></div>`}).join('')).join('')
+      return `<article class="card rxcard"><h3>${esc(RXK[k][0])}</h3>${RXK[k][1]?`<p class="note">${esc(RXK[k][1])}</p>`:''}`+vs.map(v=>`<div class="lbl">${esc(v.toUpperCase())}</div>`+idx.filter(i=>RXB[i].via===v).map(i=>{n++;return `<div class="rxbi"><b>${n}.</b><textarea class="soap rxta" data-rt="${i}" spellcheck="false" aria-label="Remédio ${n}">${esc(RXB[i].txt)}</textarea>${rxAdjHTML(RXB[i].txt)}<div class="rxbb"><button class="btn small" data-aj="${i}" type="button">Ajustar dose</button><button class="btn small" data-up="${i}" type="button" aria-label="Subir">↑</button><button class="btn small" data-dn="${i}" type="button" aria-label="Descer">↓</button><button class="btn small" data-rm="${i}" type="button" aria-label="Tirar">✕</button></div></div>`}).join('')).join('')
         +`<pre class="rx">${esc(rxbText(idx))}</pre>${farmBadges(idx.map(i=>RXB[i].txt).join('\n'))}</article>`}).join('');
     box.querySelectorAll('[data-rt]').forEach(t=>{const fit=()=>{t.style.height='auto';t.style.height=(t.scrollHeight+4)+'px'};fit();t.oninput=()=>{fit();RXB[+t.dataset.rt].txt=t.value;saveRxb()};t.onchange=draw});
     const mv=(i,d)=>{const j=i+d;if(j<0||j>=RXB.length)return;[RXB[i],RXB[j]]=[RXB[j],RXB[i]];saveRxb();draw()};
@@ -6212,7 +6444,8 @@ function renderRXB(m){
     box.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{RXB.splice(+b.dataset.rm,1);if(BLD&&BLD.i>=0)BLD=null;saveRxb();draw()});
     box.querySelectorAll('[data-aj]').forEach(b=>b.onclick=()=>{bldFromItem(+b.dataset.aj);bld();$('#rxb-bld').scrollIntoView({behavior:'smooth',block:'start'})})};
   const bld=()=>{if(!BLD)BLD=bldNew();renderBld($('#rxb-bld'),()=>{bld();draw()})};
-  draw();bld();
+  const pt=()=>{$('#rxb-ptw').innerHTML=rxPtHTML();$('#rxp-tfg').oninput=e=>{RXP.tfg=e.target.value;saveRxp();draw()};$('#rxp-tfg').onchange=pt;$('#rxp-ch').onchange=e=>{RXP.ch=e.target.value;saveRxp();pt();draw();bld()}};
+  pt();draw();bld();
   $('#rxb-add').onclick=()=>{const t=$('#rxb-free').value.trim();if(!t){toast('Digite o remédio');return}RXB.push({via:$('#rxb-via').value,txt:t});$('#rxb-free').value='';saveRxb();draw()};
   $('#rxb-cp').onclick=()=>{if(!RXB.length){toast('Receita vazia');return}copy(rxbAll())};
   $('#rxb-cs').onclick=()=>{if(!RXB.length){toast('Receita vazia');return}addCons('rx','Receita montada',rxbAll())};
@@ -6271,6 +6504,60 @@ Object.assign(SOAPLINK,{esquizofrenia:[['rx_esq','Antipsicóticos'],['rx_ap','Ri
 [['prenatal','abort_gd','Sangramento e abortamento'],['prenatal','farmacia','Remédios na gestação'],['puerperio','farmacia','Remédios na lactação'],['has','or_mrpa','Folha: MRPA'],['has','mrpa','Média da MRPA'],['dm','or_glic_ins','Folha: glicemia com insulina'],['dm','or_glic','Folha: glicemia sem insulina'],['dm','glicres','Resumo da glicemia'],['vertigem','efp_vert','HINTS']].forEach(([k,id,l])=>(SOAPLINK[k]=SOAPLINK[k]||[]).push([id,l]));
 'drc climaterio prenatal idoso puericultura hipotireo anemia b12 obesidade sua sop gota fa esquizofrenia hpb'.split(' ').forEach(k=>(SOAPLINK[k]=SOAPLINK[k]||[]).unshift(['labs','Preencher exames']));
 ['dm','obesidade','sop'].forEach(k=>(SOAPLINK[k]=SOAPLINK[k]||[]).push(['fli','Fatty Liver Index'],['fib4','FIB-4']));
+[...new Set(ENC.flatMap(s=>s.r.flatMap(r=>r.s)))].forEach(k=>(SOAPLINK[k]=SOAPLINK[k]||[]).push(['enc','Encaminhamento']));
+/* Calendário de retorno: intervalo sugerido por doença e situação → preenche a linha "Retorno em" do SOAP */
+const RETG=[['Se não melhorar',3],['1 semana',7],['2 semanas',14],['1 mês',30],['3 meses',90],['6 meses',180],['1 ano',365],['Alta',0]];
+const RET={
+ has:[['Iniciou ou ajustou remédio',30],['PA fora da meta',30],['Controlada, baixo risco',180],['Controlada, alto risco ou lesão de órgão',90]],
+ dm:[['Insulinização ou ajuste de insulina',14],['HbA1c fora da meta',90],['HbA1c na meta',180],['Hipoglicemias',7]],
+ drc:[['G3a estável',180],['G3b',90],['G4 ou piora rápida',30]],
+ hipotireo:[['Iniciou ou ajustou levotiroxina (TSH em 6–8 sem)',49],['Estável',365]],
+ obesidade:[['Em acompanhamento ativo',30],['Uso de GLP-1 (titulação)',30],['Manutenção',90]],
+ asma:[['Após crise',7],['Mudou o tratamento',30],['Controlada',180]],
+ dpoc:[['Após exacerbação',7],['Mudou o tratamento',30],['Estável',180]],
+ prenatal:[['Até 28 semanas (mensal)',28],['28 a 36 semanas (quinzenal)',14],['36 semanas até o parto (semanal)',7],['Exames alterados ou risco',7]],
+ puericultura:[['1ª semana → 1 mês',23],['1 mês → 2 meses',30],['2 → 4 meses',60],['4 → 6 meses',60],['6 → 9 meses',90],['9 → 12 meses',90],['12 → 18 meses',180],['18 → 24 meses',180],['2 anos ou mais: anual',365]],
+ mental:[['Iniciou antidepressivo',14],['Ajustou a dose',28],['Estável',90],['Risco de suicídio',2]],
+ ansiedade:[['Iniciou antidepressivo',14],['Ajustou a dose',28],['Estável',90]],
+ panico:[['Iniciou tratamento',14],['Ajustou a dose',28],['Estável',90]],
+ toc:[['Iniciou ISRS',28],['Ajustou a dose',56],['Estável',90]],
+ luto:[['Acompanhamento',14],['Mais estável',30]],
+ esquizofrenia:[['Iniciou ou trocou antipsicótico',14],['Estável',30],['Estável, com CAPS',90]],
+ insonia:[['Iniciou tratamento',30],['Estável',90]],
+ tabagismo:[['Primeiro mês (semanal)',7],['Meses 2 e 3 (quinzenal)',14],['Manutenção (mensal)',30]],
+ idoso:[['Frágil ou mudou remédio',30],['Estável',180]],
+ contracepcao:[['Iniciou método',90],['Injetável trimestral',84],['Injetável mensal',30],['Estável',365]],
+ climaterio:[['Iniciou TRH',90],['Estável',365]],
+ puerperio:[['Revisão da 1ª semana',7],['Consulta puerperal (até 42 dias)',35]],
+ cefaleia:[['Iniciou profilaxia',30],['Estável',90]],lombalgia:[['Aguda',14],['Crônica',30]],oa:[['Mudou o tratamento',30],['Estável',90]],
+ anemia:[['Iniciou ferro (Hb em 4 semanas)',30],['Repor estoque (ferritina em 3 meses)',90]],b12:[['Início da reposição',30],['Manutenção',90]],
+ sua:[['Iniciou tratamento',90],['Sangramento intenso',7]],sop:[['Iniciou tratamento',90],['Estável',180]],
+ gota:[['Iniciou ou ajustou alopurinol',30],['Crise',7],['Ácido úrico na meta',180]],
+ fa:[['Varfarina: ajustar INR',7],['Varfarina estável (INR)',30],['Estável com DOAC',90]],
+ hpb:[['Iniciou tratamento',30],['Estável',180]],ist:[['Sífilis: VDRL trimestral',90],['Controle de cura',30]],
+ itu:[['Sem melhora em 48–72 h',3],['Alta se melhora',0]],ivas:[['Sem melhora',3],['Alta',0]],oma:[['Sem melhora em 48–72 h',3],['Rever otoscopia',14]],otext:[['Sem melhora',7]],conj:[['Sem melhora',3]],
+ gea:[['Reavaliar hidratação',1],['Sem melhora',3]],dengue:[['Grupo A: retorno no 1º dia sem febre',1],['Grupo B: reavaliar',1],['Alta após 48 h sem febre',0]],
+ febre:[['Reavaliar',1],['Febre por mais de 3 dias',2]],vertigem:[['Sem melhora',14]],
+ dermatite:[['Rever resposta',14],['Estável',90]],micose:[['Rever resposta',28]],escabiose:[['Reaplicar em 7 dias',7],['Coceira por mais de 4 semanas',28]],acne:[['Rever resposta (8 semanas)',56],['Isotretinoína (mensal)',30]],
+ sang1:[['Reavaliar beta-hCG em 48 h',2],['Após o esvaziamento',14]],sang2:[['Reavaliar',7]],
+ demencia:[['Iniciou ou ajustou remédio',30],['Estável',90]],parkinson:[['Ajustou levodopa',30],['Estável',90]],epilepsia:[['Iniciou ou ajustou anticonvulsivante',30],['Sem crises',180]]};
+const retDate=d=>{const x=today();x.setDate(x.getDate()+d);return String(x.getDate()).padStart(2,'0')+'/'+String(x.getMonth()+1).padStart(2,'0')+'/'+x.getFullYear()};
+const retLabel=d=>d===0?'Alta, com orientações para retornar se necessário.':d%30===0&&d>=60?`Retorno em ${d/30} meses (${retDate(d)}).`:d%7===0&&d>=14&&d<60?`Retorno em ${d/7} semanas (${retDate(d)}).`:`Retorno em ${d} dia${d>1?'s':''} (${retDate(d)}).`;
+function retApply(ta,d){const L=retLabel(d),re=/^(Retorno em|Retorno:|Alta,? com orientações)[^\n]*$/m;
+  ta.value=re.test(ta.value)?ta.value.replace(re,L):ta.value.replace(/\s*$/,'')+'\n'+L;ta.dispatchEvent(new Event('input'))}
+function retHTML(id){const L=RET[id]||[];
+  return `<div class="card retc"><div class="lbl">Retorno sugerido</div>
+    ${L.length?`<div class="chips dzt">${L.map(([l,d],k)=>`<button class="chip" type="button" data-rd="${d}">${esc(l)}: ${d===0?'alta':d<14?d+' d':d<60?Math.round(d/7)+' sem':Math.round(d/30)+' meses'}</button>`).join('')}</div>`:''}
+    <div class="bar" style="flex-wrap:wrap"><span class="note">Outro:</span>${RETG.map(([l,d])=>`<button class="btn small" type="button" data-rd="${d}">${esc(l)}</button>`).join('')}<input id="ret-n" inputmode="numeric" placeholder="dias" style="width:72px"><button class="btn small" type="button" id="ret-ok">Usar</button></div>
+    <p class="note">Toca e a linha "Retorno em" do SOAP é preenchida com o intervalo e a data. Dá para editar depois.</p></div>`}
+function retBind(box,ta){box.querySelectorAll('[data-rd]').forEach(b=>b.onclick=()=>{retApply(ta,+b.dataset.rd);toast('Retorno preenchido')});
+  const ok=box.querySelector('#ret-ok');if(ok)ok.onclick=()=>{const n=parseInt(box.querySelector('#ret-n').value,10);if(n>=0){retApply(ta,n);toast('Retorno preenchido')}else toast('Digite os dias')}}
+/* Copiar tudo: SOAP + linha do Preencher exames (no O) + Receita montada (no P) */
+function soapAll(t){t=String(t||'').replace(/\s+$/,'');
+  const lb=typeof lbAll==='function'?lbAll():'',rx=typeof RXB!=='undefined'&&RXB.length?rxbAll():'';
+  if(lb&&!t.includes(lb.split('\n')[0])){const m=t.match(/^A:[^\n]*$/m);t=m?t.slice(0,m.index)+lb+'\n\n'+t.slice(m.index):t+'\n\n'+lb}
+  if(rx&&!t.includes(rx.split('\n').find(l=>/^\d+\./.test(l.trim()))||'\u0000')){const blk='Prescrição:\n'+rx,m=t.match(/^Paciente ciente[^\n]*$/m);t=m?t.slice(0,m.index)+blk+'\n\n'+t.slice(m.index):t+'\n\n'+blk}
+  return t.trim()}
 function renderSoap(m,id){
   const t=T[id],key='kitaps:soap:'+id,saved=store.get(key);
   m.innerHTML=`<section class="panel">
@@ -6279,9 +6566,11 @@ function renderSoap(m,id){
     <textarea class="soap" id="ta-${id}" spellcheck="false" aria-label="Modelo SOAP ${esc(t.t)}"></textarea>
     <div class="bar sticky-bar">
       <button class="btn primary" id="cp">Copiar SOAP</button>
+      <button class="btn" id="cpall" type="button" title="SOAP + exames preenchidos + receita montada">Copiar tudo</button>
       <button class="btn" id="rs">Restaurar modelo</button>
       <button class="btn" id="uc" type="button">Usar no modo consulta</button>
     </div>
+    <div id="ret-box">${retHTML(id)}</div>
     ${(SOAPLINK[id]||[]).filter(x=>known(x[0])).length?`<div class="lbl">Ferramentas relacionadas</div><div class="bar">${SOAPLINK[id].filter(x=>known(x[0])).map(x=>`<button class="chip" data-go="${x[0]}" type="button">${esc(x[1])}</button>`).join('')}</div>`:''}
     <div id="srx-box"></div>
     <div id="sheet" class="card atsheet rxsheet"></div>
@@ -6291,6 +6580,8 @@ function renderSoap(m,id){
   ta.oninput=()=>store.set(key,ta.value);
   srxDraw(id);
   $('#cp').onclick=()=>copy(ta.value,ta);
+  retBind($('#ret-box'),ta);
+  $('#cpall').onclick=()=>{const t=soapAll(ta.value);copy(t);if(t===ta.value.trim())toast('Copiado (sem exames nem receita montada ainda)')};
   $('#uc').onclick=()=>{if(CONS.soap)CONS.tx[CONS.soap]=CONS.text;CONS.soap=id;CONS.text=ta.value;CONS.tx[id]=ta.value;saveCons();go('consulta')};
   const rs=$('#rs');
   rs.onclick=()=>{if(rs.dataset.c){ta.value=t.body;store.del(key);rs.textContent='Restaurar modelo';delete rs.dataset.c;toast('Modelo restaurado')}else{rs.dataset.c=1;rs.textContent='Toque de novo para confirmar';setTimeout(()=>{if(rs.isConnected){rs.textContent='Restaurar modelo';delete rs.dataset.c}},3000)}};
@@ -7203,11 +7494,11 @@ function renderIPSS(m){
 }
 
 const h=(location.hash||'').slice(1);
-const known=id=>!!(id==='labs'||T[id]||C[id]||P[id]||M[id]||F[id]||GD[id]||AT[id]||E[id]);
+const known=id=>!!(id==='labs'||id==='enc'||T[id]||C[id]||P[id]||M[id]||F[id]||GD[id]||AT[id]||E[id]);
 const start=known(h)?h:(store.get('kitaps:last')||'has');
 go(known(start)?start:'has');
 /* ---------- Busca única ---------- */
-const CKEY={ef_reflex:'reflexos primitivos neonatais moro busca succao preensao babinski marcha rtca recem-nascido',fli:'fatty liver index fli esteatose figado gorduroso masld dhgm triglicerideos ggt circunferencia abdominal',labs:'exames laboratoriais resultado preencher hemograma glicemia colesterol creatinina tfg tsh sorologias rotina prenatal menopausa crianca homem',farmacia:'farmacia do sus rename remume gestacao lactacao amamentacao seguro gravidez',isi:'insonia sono gravidade isi dormir',mrpa:'mrpa pressao em casa media residencial monitorizacao hipertensao avental branco mascarada',glicres:'glicemia capilar em casa automonitorizacao media hipoglicemia perfil glicemico insulina',ciwa:'abstinencia alcoolica alcool delirium tremens benzodiazepinico diazepam tiamina',asrs:'tdah deficit atencao hiperatividade adulto rastreio desatencao',snap:'tdah deficit atencao hiperatividade crianca escola professor rastreio',marcos:'desenvolvimento marcos caderneta puericultura atraso neuropsicomotor crianca suplementacao ferro vitamina',dhi:'tontura vertigem labirintite dizziness impacto',curb65:'pneumonia curb crb gravidade internacao',wells_tvp:'trombose tvp perna edema d-dimero doppler',wells_tep:'embolia tep pulmonar dispneia d-dimero',chads:'fibrilacao atrial fa anticoagulacao avc chads vasc',hasbled:'sangramento anticoagulacao has-bled varfarina',centor:'garganta faringite amigdalite mcisaac estreptococo',katz:'idoso avd atividades basicas dependencia funcionalidade',lawton:'idoso aivd atividades instrumentais funcionalidade',minicog:'idoso memoria demencia cognicao relogio rastreio',ivcf20:'idoso fragilidade vulnerabilidade ivcf',quedas:'idoso queda steadi tug equilibrio',pps:'paliativo cuidados paliativos funcionalidade karnofsky',drcest:'drc estagio kdigo albuminuria rac renal',cg:'clearance creatinina cockcroft gault ajuste dose renal',cacorr:'calcio albumina hipocalcemia hipercalcemia',pedi:'pediatria pediatrica crianca dose peso mg/kg gotas xarope suspensao paracetamol dipirona ibuprofeno amoxicilina azitromicina cefalexina prednisolona salbutamol albendazol sulfato ferroso vitamina',ig:'idade gestacional dpp dum usg gestacao gravidez parto',tfg:'creatinina rim renal ckd-epi filtracao drc',imc:'peso altura obesidade indice de massa corporal',phq9:'depressao humor rastreio',gad7:'ansiedade rastreio',audit:'alcool bebida etilismo',insulina:'nph regular diabetes titulacao dose glicemia hipoglicemia',fluxodm:'diabetes metformina fluxograma tratamento dm2 gliclazida dapagliflozina',melanoma:'pele nevo pinta lesao abcde glasgow cancer',rcv:'framingham colesterol risco cardiovascular estatina ldl',rastreio:'rastreamento preventivo citopatologico papanicolau preventivo mamografia colonoscopia sangue oculto psof densitometria osteoporose psa sorologias hiv sifilis hepatite',ajustes:'ajuste dose renal drc tfg gestacao gravidez lactacao amamentacao idoso beers interacao seguranca',vacinas:'vacina calendario vacinal pni imunizacao bcg penta hpv dtpa influenza gestante crianca idoso',fager:'cigarro tabagismo fumo fagerstrom anos-maco nicotina',ipss:'prostata hpb urinario luts',itb:'indice tornozelo braquial doenca arterial periferica claudicacao pulsos doppler',braden:'lesao por pressao escara acamado risco ulcera',push:'ulcera ferida cicatrizacao curativo lesao por pressao venosa',mrs:'menopausa climaterio fogacho ondas de calor trh kupperman',fcecg:'ecg frequencia cardiaca quadradinhos rr',eixo:'ecg eixo eletrico desvio di avf',qtc:'ecg qt corrigido bazett fridericia framingham',sve:'ecg sobrecarga ventricular esquerda hipertrofia sokolow cornell peguero',fatorr:'hepatograma transaminases fosfatase colestase hepatocelular',fib4:'fibrose hepatica esteatose figado gorduroso',gasocalc:'gasometria acidose alcalose anion gap winter',espcalc:'espirometria vef1 cvf tiffeneau obstrucao dpoc asma',tbdose:'tuberculose rhze dose peso comprimidos esquema basico'};
+const CKEY={enc:'encaminhamento referencia especialista regulacao sisreg telessaude contrarreferencia cardiologia endocrino nefro ortopedia neuro psiquiatria gineco uro dermato',ef_reflex:'reflexos primitivos neonatais moro busca succao preensao babinski marcha rtca recem-nascido',fli:'fatty liver index fli esteatose figado gorduroso masld dhgm triglicerideos ggt circunferencia abdominal',labs:'exames laboratoriais resultado preencher hemograma glicemia colesterol creatinina tfg tsh sorologias rotina prenatal menopausa crianca homem',farmacia:'farmacia do sus rename remume gestacao lactacao amamentacao seguro gravidez',isi:'insonia sono gravidade isi dormir',mrpa:'mrpa pressao em casa media residencial monitorizacao hipertensao avental branco mascarada',glicres:'glicemia capilar em casa automonitorizacao media hipoglicemia perfil glicemico insulina',ciwa:'abstinencia alcoolica alcool delirium tremens benzodiazepinico diazepam tiamina',asrs:'tdah deficit atencao hiperatividade adulto rastreio desatencao',snap:'tdah deficit atencao hiperatividade crianca escola professor rastreio',marcos:'desenvolvimento marcos caderneta puericultura atraso neuropsicomotor crianca suplementacao ferro vitamina',dhi:'tontura vertigem labirintite dizziness impacto',curb65:'pneumonia curb crb gravidade internacao',wells_tvp:'trombose tvp perna edema d-dimero doppler',wells_tep:'embolia tep pulmonar dispneia d-dimero',chads:'fibrilacao atrial fa anticoagulacao avc chads vasc',hasbled:'sangramento anticoagulacao has-bled varfarina',centor:'garganta faringite amigdalite mcisaac estreptococo',katz:'idoso avd atividades basicas dependencia funcionalidade',lawton:'idoso aivd atividades instrumentais funcionalidade',minicog:'idoso memoria demencia cognicao relogio rastreio',ivcf20:'idoso fragilidade vulnerabilidade ivcf',quedas:'idoso queda steadi tug equilibrio',pps:'paliativo cuidados paliativos funcionalidade karnofsky',drcest:'drc estagio kdigo albuminuria rac renal',cg:'clearance creatinina cockcroft gault ajuste dose renal',cacorr:'calcio albumina hipocalcemia hipercalcemia',pedi:'pediatria pediatrica crianca dose peso mg/kg gotas xarope suspensao paracetamol dipirona ibuprofeno amoxicilina azitromicina cefalexina prednisolona salbutamol albendazol sulfato ferroso vitamina',ig:'idade gestacional dpp dum usg gestacao gravidez parto',tfg:'creatinina rim renal ckd-epi filtracao drc',imc:'peso altura obesidade indice de massa corporal',phq9:'depressao humor rastreio',gad7:'ansiedade rastreio',audit:'alcool bebida etilismo',insulina:'nph regular diabetes titulacao dose glicemia hipoglicemia',fluxodm:'diabetes metformina fluxograma tratamento dm2 gliclazida dapagliflozina',melanoma:'pele nevo pinta lesao abcde glasgow cancer',rcv:'framingham colesterol risco cardiovascular estatina ldl',rastreio:'rastreamento preventivo citopatologico papanicolau preventivo mamografia colonoscopia sangue oculto psof densitometria osteoporose psa sorologias hiv sifilis hepatite',ajustes:'ajuste dose renal drc tfg gestacao gravidez lactacao amamentacao idoso beers interacao seguranca',vacinas:'vacina calendario vacinal pni imunizacao bcg penta hpv dtpa influenza gestante crianca idoso',fager:'cigarro tabagismo fumo fagerstrom anos-maco nicotina',ipss:'prostata hpb urinario luts',itb:'indice tornozelo braquial doenca arterial periferica claudicacao pulsos doppler',braden:'lesao por pressao escara acamado risco ulcera',push:'ulcera ferida cicatrizacao curativo lesao por pressao venosa',mrs:'menopausa climaterio fogacho ondas de calor trh kupperman',fcecg:'ecg frequencia cardiaca quadradinhos rr',eixo:'ecg eixo eletrico desvio di avf',qtc:'ecg qt corrigido bazett fridericia framingham',sve:'ecg sobrecarga ventricular esquerda hipertrofia sokolow cornell peguero',fatorr:'hepatograma transaminases fosfatase colestase hepatocelular',fib4:'fibrose hepatica esteatose figado gorduroso',gasocalc:'gasometria acidose alcalose anion gap winter',espcalc:'espirometria vef1 cvf tiffeneau obstrucao dpoc asma',tbdose:'tuberculose rhze dose peso comprimidos esquema basico'};
 let IDX=null;
 function buildIdx(){
   const L=[];
