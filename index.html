@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Kit APS de bolso</title>
 <meta name="description" content="SOAP, calculadoras e prescrições para a APS">
-<meta name="theme-color" content="#0d6b60">
+<meta name="theme-color" content="#6a3fd1">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -18,22 +18,22 @@
 </head>
 <body>
 <style>
-/* Layout: uma coluna estreita tipo ficha de prontuário; cabeçalho fixo com abas SOAP/Calculadoras e trilho de chips */
+/* Layout: menu lateral de seções (gaveta no celular, fixo no PC) + abas internas em chips; paleta roxa com destaque coral */
 :root{
-  --bg:#f3f6f5; --surface:#ffffff; --sunk:#e8eeec; --line:#cfdad7;
-  --fg:#15211f; --muted:#52625f; --accent:#0d6b60; --accent-fg:#ffffff; --accent-soft:#d5ebe7;
+  --bg:#f6f4fb; --surface:#ffffff; --sunk:#ede9f7; --line:#dcd5ec;
+  --fg:#1f1933; --muted:#625a78; --accent:#6a3fd1; --accent-fg:#ffffff; --accent-soft:#ebe4fc; --accent2:#e2694f; --accent2-soft:#fde8e1;
   --ok:#1f7a3a; --ok-soft:#dff1e4; --warn:#93600a; --warn-soft:#f8ecd3; --bad:#a3262a; --bad-soft:#f7dede;
   --f-ui: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --f-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Roboto Mono", monospace;
-  --r:10px;
+  --r:12px;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0f1514; --surface:#172120; --sunk:#1e2a28; --line:#2e3d3a;
-  --fg:#e4ecea; --muted:#9aaba7; --accent:#4fc1b1; --accent-fg:#06211d; --accent-soft:#18403a;
+  --bg:#14111c; --surface:#1c1827; --sunk:#262037; --line:#382f4d;
+  --fg:#ede9f6; --muted:#a79fbe; --accent:#b39cff; --accent-fg:#1a1030; --accent-soft:#33285a; --accent2:#ff9b82; --accent2-soft:#43261f;
   --ok:#6fcf8a; --ok-soft:#163423; --warn:#e6b45a; --warn-soft:#3a2c12; --bad:#f08a8a; --bad-soft:#3d1a1b; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0f1514; --surface:#172120; --sunk:#1e2a28; --line:#2e3d3a;
-  --fg:#e4ecea; --muted:#9aaba7; --accent:#4fc1b1; --accent-fg:#06211d; --accent-soft:#18403a;
+  --bg:#14111c; --surface:#1c1827; --sunk:#262037; --line:#382f4d;
+  --fg:#ede9f6; --muted:#a79fbe; --accent:#b39cff; --accent-fg:#1a1030; --accent-soft:#33285a; --accent2:#ff9b82; --accent2-soft:#43261f;
   --ok:#6fcf8a; --ok-soft:#163423; --warn:#e6b45a; --warn-soft:#3a2c12; --bad:#f08a8a; --bad-soft:#3d1a1b; color-scheme:dark}
 
 *{box-sizing:border-box}
@@ -49,11 +49,6 @@ header .wrap{padding-block:10px 0;display:grid;gap:8px}
 .rec{font-size:.82rem;background:var(--accent-soft);color:var(--fg);border-radius:8px;padding:8px 12px}
 h1{margin:0;font-size:1.15rem;letter-spacing:-.01em}
 h1 small{font-weight:500;color:var(--muted);font-size:.8rem;margin-left:6px}
-.seg{display:flex;background:var(--sunk);border-radius:999px;padding:3px}
-.seg{flex:1 1 auto;max-width:480px;overflow-x:auto;scrollbar-width:none}
-.seg::-webkit-scrollbar{display:none}
-.seg button{flex:1;border:0;background:none;color:var(--muted);font:600 .8rem var(--f-ui);padding:6px 7px;white-space:nowrap;border-radius:999px;cursor:pointer}
-.seg button[aria-selected="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 2px rgb(0 0 0/.12)}
 .search{position:relative}
 .search input{padding:8px 12px;border-radius:999px;font-size:.92rem;background:var(--bg)}
 #qres{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 8px 24px rgb(0 0 0/.18);max-height:60vh;overflow-y:auto;z-index:8;display:grid}
@@ -63,15 +58,44 @@ h1 small{font-weight:500;color:var(--muted);font-size:.8rem;margin-left:6px}
 .qs{font:700 .66rem var(--f-ui);text-transform:uppercase;letter-spacing:.06em;color:var(--accent);white-space:nowrap}
 .ql{font-weight:600;font-size:.92rem}
 .qd{grid-column:2;font-size:.78rem;color:var(--muted)}
-.ttl{display:flex;align-items:baseline;gap:10px}
-.mode{border:0;background:none;color:var(--accent);font:600 .78rem var(--f-ui);padding:2px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .favs{padding-bottom:0;align-items:center}
-.favlbl{color:var(--warn);font-size:1rem;flex:none}
-.chip.fav{border-color:var(--warn)}
+.favlbl{color:var(--accent2);font-size:1rem;flex:none}
+.chip.fav{border-color:var(--accent2)}
+.chip.fav[aria-selected="true"]{background:var(--accent2);border-color:var(--accent2);color:#fff}
 .ctag{font:700 .62rem var(--f-ui);text-transform:uppercase;letter-spacing:.05em;opacity:.7;margin-right:5px}
-.star{margin-left:auto;border:1px solid var(--line);background:var(--surface);color:var(--warn);font:600 .78rem var(--f-ui);padding:4px 10px;border-radius:999px;cursor:pointer}
-.star[aria-pressed="true"]{background:var(--warn-soft);border-color:var(--warn)}
+.star{margin-left:auto;border:1px solid var(--line);background:var(--surface);color:var(--accent2);font:600 .78rem var(--f-ui);padding:4px 10px;border-radius:999px;cursor:pointer}
+.star[aria-pressed="true"]{background:var(--accent2-soft);border-color:var(--accent2)}
 .star span{color:var(--fg)}
+.menu-btn{flex:none;width:40px;height:40px;border:1px solid var(--line);border-radius:10px;background:var(--surface);display:grid;place-content:center;gap:4px;cursor:pointer}
+.menu-btn span{display:block;width:18px;height:2px;background:var(--fg);border-radius:2px}
+.ttl{display:flex;align-items:baseline;gap:10px;min-width:0;flex:1}
+.sec-name{font-weight:600;font-size:.92rem;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top{justify-content:flex-start}
+.menu{position:fixed;top:0;bottom:0;left:0;width:min(300px,86vw);background:var(--surface);border-right:1px solid var(--line);z-index:30;overflow-y:auto;padding:calc(12px + env(safe-area-inset-top,0px)) 10px calc(16px + env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px));transform:translateX(-105%);transition:transform .22s ease;box-shadow:4px 0 24px rgb(0 0 0/.18)}
+.menu-h{font-weight:700;font-size:1.05rem;padding:6px 10px 4px}
+.menu-bg{position:fixed;inset:0;background:rgb(0 0 0/.35);z-index:29;opacity:0;pointer-events:none;transition:opacity .2s}
+body.menu-open .menu{transform:none}
+body.menu-open .menu-bg{opacity:1;pointer-events:auto}
+.mg{font:700 .68rem var(--f-ui);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:14px 10px 4px}
+.mi{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;color:var(--fg);font:500 .93rem var(--f-ui);padding:9px 10px;border-radius:8px;cursor:pointer;text-align:left}
+.mi:hover{background:var(--sunk)}
+.mi[aria-current="true"]{background:var(--sunk);color:var(--fg);font-weight:700}
+.mic{width:32px;height:32px;display:grid;place-items:center;flex:none;border-radius:9px;background:var(--accent-soft);color:var(--accent)}
+.mi[aria-current="true"] .mic{background:var(--accent);color:var(--accent-fg)}
+.logo{display:inline-grid;align-self:center}
+.sec-name{display:inline-flex;align-items:center;gap:6px;min-width:0}
+.sec-name span{overflow:hidden;text-overflow:ellipsis}
+.ttl h1{white-space:nowrap}
+.sec-name svg{flex:none}
+.hic{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);margin-right:8px;vertical-align:-7px}
+.mn{margin-left:auto;font-size:.75rem;color:var(--muted);font-variant-numeric:tabular-nums}
+@media (min-width:1000px){
+  .menu{transform:none;box-shadow:none;width:260px;top:0}
+  .menu-bg,.menu-btn{display:none}
+  header,main{margin-left:260px}
+  .menu-h{display:none}
+}
+@media print{.menu,.menu-bg{display:none!important}header,main{margin-left:0!important}}
 .chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none;margin-inline:-4px;padding-inline:4px}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:500 .85rem var(--f-ui);padding:6px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
@@ -153,8 +177,23 @@ footer{color:var(--muted);font-size:.78rem}
 .arrow:has(span){height:34px}
 .arrow span{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:min(280px,calc(50vw - 36px));font:600 .72rem/1.2 var(--f-ui);color:var(--muted)}
 .branch{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
-.branch .node{font-size:.85rem}
+.branch .node{font-size:.85rem;align-content:start}
 .tag{font:700 .68rem var(--f-ui);text-transform:uppercase;letter-spacing:.06em}
+.tag.ok{color:var(--ok)} .tag.warn{color:var(--warn)} .tag.bad{color:var(--bad)}
+.node.bad{background:var(--bad-soft);border-color:var(--bad);color:var(--fg)} .node.bad h3{color:var(--bad)}
+.branch .node.br-bad{border-left:4px solid var(--bad)} .branch .node.br-warn{border-left:4px solid var(--warn)} .branch .node.br-ok{border-left:4px solid var(--ok)}
+.node .sub{color:var(--muted);font-size:.82rem}
+.edtag{display:inline-block;margin-left:8px;padding:1px 7px;border-radius:999px;background:var(--accent2-soft);color:var(--accent2);font:700 .66rem var(--f-ui);text-transform:uppercase;letter-spacing:.05em;vertical-align:2px}
+.edf{display:grid;gap:10px}
+.edf textarea,textarea.nota{width:100%;resize:vertical;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);font:13.5px/1.5 var(--f-mono);padding:10px}
+textarea.nota{font-family:var(--f-ui);font-size:.9rem}
+.btn svg{vertical-align:-2px}
+.btn.danger{color:var(--bad);border-color:var(--bad)}
+.lbl-row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.lbl-row .btn{text-transform:none;letter-spacing:0}
+.edlist{display:grid;gap:6px}
+.edrow{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;color:var(--fg);font:500 .88rem var(--f-ui);cursor:pointer}
+.edrow .edtag{margin:0}
 .out{font-weight:600}
 .sec-h{margin:6px 0 0;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 @media print{@page{margin:8mm}body{background:#fff}body::before,header,.toast{display:none!important}main .wrap>section>*:not(#sheet){display:none!important}#sheet{border:0!important;padding:0!important}main .wrap{padding:0!important;max-width:none}}
@@ -164,14 +203,16 @@ footer{color:var(--muted);font-size:.78rem}
 <header>
   <div class="wrap">
     <div class="top">
-      <div class="ttl"><h1>Kit APS</h1><button class="mode" id="mode" type="button">Ver por linha de cuidado</button></div>
-      <div class="seg" id="seg" role="tablist" aria-label="Seção"></div>
+      <button class="menu-btn" id="menu-btn" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+      <div class="ttl"><span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><rect x="1" y="1" width="22" height="22" rx="7" fill="var(--accent)"/><path d="M12 6.5v11M6.5 12h11" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="18.5" cy="5.5" r="3" fill="var(--accent2)"/></svg></span><h1>Kit APS</h1><span class="sec-name" id="sec-name"></span></div>
     </div>
     <div class="search"><input id="q" type="search" placeholder="Buscar template, cálculo, remédio ou orientação" aria-label="Buscar no kit" autocomplete="off"><div id="qres" hidden role="listbox"></div></div>
     <div class="chips favs" id="favs" hidden aria-label="Favoritos"></div>
-    <div class="chips" id="chips" role="tablist" aria-label="Item"></div>
+    <div class="chips" id="chips" role="tablist" aria-label="Abas da seção"></div>
   </div>
 </header>
+<div class="menu-bg" id="menu-bg"></div>
+<nav class="menu" id="menu" aria-label="Menu"><div class="menu-h">Kit APS</div><div id="menu-list"></div></nav>
 
 <main>
   <div class="wrap" id="main"></div>
@@ -1193,7 +1234,7 @@ function mevSVG(c,items,nome){
   o+=`<text x="30" y="92" font-family="${F}" font-size="22" fill="#333">Orientações para cuidar da sua saúde${nome?' · '+X(nome):''}</text>`;
   y=116;
   items.forEach(t=>{const L=wrapT(t,52),hh=L.length*30+26;
-    o+=`<rect x="20" y="${y}" width="760" height="${hh}" rx="10" fill="#fff" stroke="#adb5bd" stroke-width="2"/><circle cx="46" cy="${y+28}" r="9" fill="#0d6b60"/>`;
+    o+=`<rect x="20" y="${y}" width="760" height="${hh}" rx="10" fill="#fff" stroke="#adb5bd" stroke-width="2"/><circle cx="46" cy="${y+28}" r="9" fill="#6a3fd1"/>`;
     L.forEach((l,j)=>o+=`<text x="70" y="${y+36+j*30}" font-family="${F}" font-size="23" fill="#111">${X(l)}</text>`);
     y+=hh+10});
   const u=ESQ.unidade||store.get('kitaps:unidade')||'';
@@ -1205,8 +1246,9 @@ function mevText(c){return c.t+'\n'+c.items.map(i=>'• '+i).join('\n')}
 function renderMEV(m,id){
   const c=M[id];
   m.innerHTML=`<section class="panel">
-    <div class="ph"><h2>${esc(c.t)}</h2><span class="code">mudança de estilo de vida</span></div>
-    <div class="card"><div class="lbl">Orientações para o paciente</div>
+    <div class="ph"><h2>${esc(c.t)}${edTag(c.ed)}</h2><span class="code">mudança de estilo de vida</span></div>
+    <div class="card"><div class="lbl lbl-row"><span>Orientações para o paciente</span><button class="btn small" id="mv-ed" type="button">${icon('edit',14)} Editar</button></div>
+      <div id="mv-edit" hidden></div>
       <div class="opts soft" style="grid-template-columns:1fr">${c.items.map((t,i)=>`<label class="opt"><input type="checkbox" id="mv-${i}" checked><span>${esc(t)}</span></label>`).join('')}</div>
       <p class="note">Desmarque o que não se aplica antes de copiar ou levar para a folha.</p></div>
     <div class="bar sticky-bar"><button class="btn primary small" id="mv-print">Imprimir</button><button class="btn small" id="mv-img">Baixar imagem</button><button class="btn small" id="mv-cp">Copiar orientações</button><button class="btn small" id="mv-pr">Copiar p/ prontuário</button><button class="btn small" id="mv-esq">Levar à folha</button></div>
@@ -1226,55 +1268,446 @@ function renderMEV(m,id){
   $('#mv-img').onclick=()=>{if(!sel().length){toast('Marque ao menos uma orientação');return}svgToPng(svg(),$('#mv-png'),$('#mv-out'),'orientacoes-'+id.replace('mev_','')+'.png')};
   $('#mv-cp').onclick=()=>copy(c.t+'\n'+sel().map(i=>'• '+i).join('\n'));
   $('#mv-pr').onclick=()=>copy(c.pr);
+  $('#mv-ed').onclick=()=>mevEditor(id);
   $('#mv-esq').onclick=()=>{const s=sel();if(!s.length){toast('Marque ao menos uma orientação');return}
     if(ESQ.ex){ESQ.rows=[];ESQ.ex=false;ESQ.nome='';ESQ.cuid=new Set(['agua','todo','trazer'])}
     const cur=ESQ.extra.split('\n').map(x=>x.trim()).filter(Boolean);s.forEach(x=>{if(!cur.includes(x))cur.push(x)});ESQ.extra=cur.join('\n');
     toast(s.length+' orientação(ões) na folha do paciente')};
 }
-const E={esquema:'Esquema'};
-const SECS={soap:Object.keys(T),calc:Object.keys(C),presc:Object.keys(P),mev:Object.keys(M),esq:Object.keys(E)};
+/* Fluxogramas das principais condições da APS. Nós: goal (meta), step (etapa numerada), dec (decisão com ramos), bad (alarme), info.
+   pre/post ficam soltos; flow é ligado por setas (a = rótulo da seta antes do nó). ramo: [classe, etiqueta, descrição, conduta] */
+const F={
+fx_has:{s:'HAS',t:'Hipertensão arterial',src:'Diretrizes Brasileiras de HA 2020 · Caderno AB 37',k:'hipertensao pressao alta has anti-hipertensivo losartana enalapril anlodipino hidroclorotiazida clortalidona espironolactona resistente crise hipertensiva',
+ pre:[{k:'bad',h:'PA ≥ 180/120 com sinais de lesão aguda de órgão-alvo',li:['Dor torácica, dispneia, déficit neurológico, confusão, alteração visual, oligúria','<b>Emergência hipertensiva:</b> acionar SAMU 192 e encaminhar','Sem sinais de lesão aguda: não é emergência. Iniciar ou ajustar via oral, reduzir aos poucos e reavaliar em poucos dias (não usar nifedipino ou captopril sublingual)']}],
+ flow:[
+  {k:'step',h:'Confirmar o diagnóstico',li:['PA de consultório ≥ 140/90 em 2 ou mais consultas, com técnica correta (repouso 5 min, manguito adequado, 2–3 medidas)','Se disponível: MRPA ≥ 130/80 ou MAPA 24 h ≥ 130/80 (vigília ≥ 135/85)','PA ≥ 180/110 ou ≥ 140/90 com lesão de órgão-alvo ou alto risco: diagnóstico na mesma consulta']},
+  {k:'step',h:'Avaliação inicial',li:['Exames: creatinina com TFG, potássio, glicemia e/ou HbA1c, perfil lipídico, ácido úrico, EAS, albuminúria (RAC), ECG','Estratificar risco cardiovascular (aba Risco CV)','Pesquisar lesão de órgão-alvo e pistas de HA secundária']},
+  {k:'dec',h:'Como começar?',br:[
+   ['ok','Estágio 1, risco baixo','PA 140–159/90–99, sem LOA, DCV, DM ou DRC','→ MEV por 3 meses; se fora da meta, iniciar monoterapia'],
+   ['warn','Estágio 1 risco moderado/alto, estágio 2 ou 3','PA ≥ 160/100, ou alto risco CV','→ MEV + medicação já, de preferência combinação de 2 classes']]},
+  {k:'step',h:'Escolher as classes',li:['Primeira linha: IECA (enalapril) ou BRA (losartana), BCC di-hidropiridínico (anlodipino), diurético tiazídico (hidroclorotiazida, clortalidona)','Combinação preferida: IECA/BRA + BCC ou IECA/BRA + tiazídico','Não associar IECA com BRA. Betabloqueador se ICC, pós-IAM, angina ou controle de FC','Idoso frágil e estágio 1 de baixo risco: começar com monoterapia em dose baixa']},
+  {k:'step',a:'Reavaliar a cada 4 semanas até a meta',h:'Ajustar',li:['Conferir adesão, técnica de medida, sal, álcool, AINE, descongestionantes','Otimizar doses e depois associar a 3ª classe: IECA/BRA + BCC + tiazídico']},
+  {k:'step',a:'Fora da meta com 3 classes em dose plena',h:'HA resistente',li:['Confirmar com MRPA/MAPA e excluir pseudorresistência (adesão, técnica, jaleco branco)','Adicionar espironolactona 25 mg/dia (checar potássio e TFG antes e após)','Investigar HA secundária e compartilhar com cardiologia/nefrologia']}],
+ post:[{k:'goal',h:'Metas',li:['Risco baixo ou moderado: &lt; 140/90','Alto risco (DM, DRC, DCV): 120–129/70–79 se tolerado','Idoso hígido: PAS 130–139; idoso frágil: PAS 140–149, individualizar']},
+  {k:'info',h:'Pistas de HA secundária',li:['Início antes dos 30 anos ou após os 55 de forma abrupta, HA resistente','Hipocalemia espontânea (hiperaldosteronismo), ronco e sonolência (apneia do sono)','Crises de cefaleia, sudorese e palpitação (feocromocitoma), creatinina alterada ou sopro abdominal (renovascular)']}]},
+
+fx_lip:{s:'Dislipidemia',t:'Dislipidemia e estatina',src:'SBC 2017 · Caderno AB 37',k:'colesterol ldl estatina sinvastatina atorvastatina rosuvastatina triglicerides fibrato dislipidemia',
+ flow:[
+  {k:'step',h:'Estratificar o risco',li:['Usar a aba Risco CV (Framingham + condições de alto risco)','Alto risco direto: doença aterosclerótica, DRC (TFG &lt; 60), LDL ≥ 190, DM com lesão de órgão-alvo ou estratificadores']},
+  {k:'dec',h:'Meta de LDL pelo risco',br:[
+   ['ok','Baixo','Framingham &lt; 5%','→ LDL &lt; 130. MEV; estatina se persistir acima'],
+   ['ok','Intermediário','5–20% (H) / 5–10% (M)','→ LDL &lt; 100. MEV + estatina de moderada intensidade'],
+   ['warn','Alto','&gt; 20% (H) / &gt; 10% (M) ou condição de alto risco','→ LDL &lt; 70. Estatina de alta intensidade'],
+   ['bad','Muito alto','Doença aterosclerótica estabelecida','→ LDL &lt; 50. Estatina de alta intensidade, avaliar associação']]},
+  {k:'step',h:'Prescrever',li:['Moderada intensidade: sinvastatina 20–40 mg à noite, atorvastatina 10–20 mg','Alta intensidade: atorvastatina 40–80 mg ou rosuvastatina 20–40 mg (conforme disponibilidade no município)','Antes: TGO/TGP; CK só se sintomas musculares ou risco']},
+  {k:'step',a:'Perfil lipídico em 4–12 semanas',h:'Reavaliar',li:['Fora da meta: conferir adesão e subir intensidade','Na meta: perfil lipídico a cada 6–12 meses','Mialgia: dosar CK; suspender se CK &gt; 10x ou sintomas intensos e tentar outra estatina ou dose menor']}],
+ post:[{k:'info',h:'Triglicerídeos',li:['TG 150–499: MEV, reduzir álcool e açúcares, controlar glicemia; tratar o LDL primeiro','TG ≥ 500: risco de pancreatite. MEV rigorosa + fibrato (ciprofibrato 100 mg ou fenofibrato); não associar genfibrozila com estatina']}]},
+
+fx_tireo:{s:'Hipotireoidismo',t:'Hipotireoidismo (TSH alterado)',src:'SBEM · Caderno AB / protocolos de encaminhamento',k:'tireoide tsh t4 livre levotiroxina hipotireoidismo subclinico',
+ flow:[
+  {k:'step',h:'TSH elevado',li:['Repetir TSH com T4 livre em 4–12 semanas (pode ser transitório, pós-doença aguda, uso de amiodarona ou lítio)']},
+  {k:'dec',h:'Resultado da repetição',br:[
+   ['bad','T4L baixo','TSH alto e T4 livre baixo','→ Hipotireoidismo clínico: tratar'],
+   ['warn','TSH ≥ 10, T4L normal','Subclínico','→ Tratar na maioria (sobretudo &lt; 70 anos)'],
+   ['ok','TSH 4,5–10, T4L normal','Subclínico leve','→ Em geral não tratar; repetir em 6–12 meses. Considerar tratar se gestante/planejando gestar, sintomas importantes, anti-TPO positivo']]},
+  {k:'step',h:'Levotiroxina',li:['Adulto jovem sem cardiopatia: 1,6 mcg/kg/dia','Idoso ou cardiopata: 12,5–25 mcg/dia, aumentar 12,5–25 mcg a cada 4–6 semanas','Tomar em jejum, 30–60 min antes do café, longe de cálcio, ferro e omeprazol']},
+  {k:'step',a:'TSH 6–8 semanas após cada ajuste',h:'Controle',li:['Meta: TSH dentro da referência (idosos podem ficar um pouco acima)','Estável: TSH anual']}],
+ post:[{k:'info',h:'Atenção',li:['Gestante já tratada: aumentar a dose em cerca de 25–30% ao confirmar a gestação e controlar TSH a cada 4 semanas na 1ª metade','TSH baixo ou normal com T4L baixo: pensar em causa central, encaminhar à endocrinologia','Nódulo palpável: USG de tireoide']}]},
+
+fx_asma:{s:'Asma',t:'Asma: controle e etapas',src:'PCDT Asma 2023 · GINA',k:'asma broncoespasmo chiado sibilancia budesonida formoterol beclometasona salbutamol bombinha crise',
+ pre:[{k:'bad',h:'Crise grave',li:['Fala só palavras, FR &gt; 30, SpO2 &lt; 92%, uso de musculatura acessória, tórax silencioso, confusão','Salbutamol 4–10 jatos com espaçador a cada 20 min na 1ª hora, O2 para SpO2 93–95%, prednisona 40–50 mg','Acionar SAMU se não melhora ou sinais de gravidade']}],
+ flow:[
+  {k:'step',h:'Confirmar o diagnóstico',li:['Sintomas variáveis: sibilância, dispneia, aperto no peito, tosse, piora à noite ou com gatilhos','Espirometria com broncodilatador: aumento do VEF1 ≥ 12% e ≥ 200 mL']},
+  {k:'dec',h:'Controle nas últimas 4 semanas',sub:'Sintomas diurnos &gt; 2x/semana · despertar noturno · resgate &gt; 2x/semana · limitação de atividade',br:[
+   ['ok','Controlada','Nenhum item','→ Manter; após 3 meses estável, tentar reduzir a etapa'],
+   ['warn','Parcial','1–2 itens','→ Revisar técnica e adesão, subir uma etapa'],
+   ['bad','Não controlada','3–4 itens','→ Subir etapa e reavaliar em 2–4 semanas']]},
+  {k:'step',h:'Etapas 1–2',li:['Budesonida + formoterol em dose baixa conforme necessidade (alívio)','Alternativa: corticoide inalatório baixa dose diário (beclometasona 200–500 mcg/dia) + salbutamol se necessário','Não tratar só com salbutamol']},
+  {k:'step',h:'Etapa 3',li:['Budesonida + formoterol baixa dose de manutenção e de alívio (MART)','Alternativa: CI baixa dose + LABA']},
+  {k:'step',h:'Etapa 4',li:['MART com dose média','Alternativa: CI dose média + LABA']},
+  {k:'step',h:'Etapa 5',li:['Encaminhar à pneumologia: associar LAMA, avaliar fenótipo e imunobiológico']}],
+ post:[{k:'info',h:'Antes de subir etapa',li:['Técnica inalatória (pedir para demonstrar) e espaçador','Adesão, exposição (fumaça, mofo, animais, ocupação), rinite, DRGE, obesidade, tabagismo','Plano de ação escrito e vacina influenza']}]},
+
+fx_dpoc:{s:'DPOC',t:'DPOC',src:'PCDT DPOC 2021 · GOLD',k:'dpoc enfisema bronquite cronica tabagismo tiotropio formoterol espirometria exacerbacao oxigenio',
+ flow:[
+  {k:'step',h:'Suspeita e diagnóstico',li:['&gt; 40 anos com tabagismo ou exposição a biomassa, dispneia, tosse ou expectoração crônica','Espirometria: VEF1/CVF &lt; 0,70 após broncodilatador']},
+  {k:'dec',h:'Classificar (GOLD)',br:[
+   ['ok','A','0–1 exacerbação moderada/ano, mMRC 0–1 ou CAT &lt; 10','→ Broncodilatador (curta ou longa ação)'],
+   ['warn','B','0–1 exacerbação, mMRC ≥ 2 ou CAT ≥ 10','→ LAMA + LABA (ou um deles conforme disponibilidade)'],
+   ['bad','E','≥ 2 exacerbações moderadas ou ≥ 1 internação no ano','→ LAMA + LABA; considerar CI se eosinófilos ≥ 300']]},
+  {k:'step',h:'Para todos',li:['Cessação do tabagismo (aba Tabagismo e Prescrições)','Vacinas: influenza, pneumocócica, covid-19, dTpa','Reabilitação pulmonar e atividade física, técnica inalatória']},
+  {k:'step',a:'Reavaliar sintomas e exacerbações',h:'Seguimento',li:['Persistência de dispneia: checar técnica, associar LAMA + LABA','Exacerbações com eosinófilos ≥ 100: considerar CI + LAMA + LABA (pneumologia)','SpO2 ≤ 88% em repouso: avaliar oxigenoterapia domiciliar (gasometria, encaminhar)']}],
+ post:[{k:'bad',h:'Exacerbação',li:['Piora de dispneia, aumento ou purulência do escarro','Salbutamol ± ipratrópio, prednisona 40 mg por 5 dias','Escarro purulento: amoxicilina + clavulanato, doxiciclina ou azitromicina','Sinais de gravidade (confusão, cianose, SpO2 &lt; 88% apesar de O2, uso de musculatura acessória): emergência']}]},
+
+fx_dep:{s:'Depressão',t:'Depressão',src:'Guia de Saúde Mental na APS · mhGAP · NICE',k:'depressao humor tristeza antidepressivo sertralina fluoxetina suicidio phq',
+ pre:[{k:'bad',h:'Avaliar risco de suicídio sempre',li:['Pergunte diretamente: ideação, plano, intenção, meios, tentativa prévia','Plano ou intenção, tentativa recente, psicose: não deixar a pessoa sozinha, acionar CAPS, SAMU ou urgência','Afastar meios (medicamentos guardados por familiar), plano de segurança e retorno breve']}],
+ flow:[
+  {k:'step',h:'Rastrear e diagnosticar',li:['PHQ-2 e depois PHQ-9 (aba PHQ-9)','≥ 2 semanas de humor deprimido ou anedonia com prejuízo funcional','Excluir hipotireoidismo, anemia, álcool/drogas, medicamentos, luto recente']},
+  {k:'dec',h:'Pensar em bipolaridade ou psicose?',br:[
+   ['bad','Sim','Episódio prévio de mania/hipomania, sintomas psicóticos','→ Não iniciar antidepressivo isolado; compartilhar com CAPS/psiquiatria'],
+   ['ok','Não','Depressão unipolar','→ Seguir pela gravidade']]},
+  {k:'dec',h:'Gravidade (PHQ-9)',br:[
+   ['ok','Leve','PHQ-9 5–9','→ Psicoeducação, atividade física, sono, grupos, psicoterapia; reavaliar em 2–4 semanas'],
+   ['warn','Moderada a grave','PHQ-9 ≥ 10','→ Psicoterapia + antidepressivo']]},
+  {k:'step',h:'Antidepressivo',li:['ISRS: sertralina 50 mg ou fluoxetina 20 mg pela manhã','Idoso ou ansiedade importante: começar com metade da dose por 1 semana','Avisar sobre efeitos iniciais (náusea, ansiedade) e efeito em 2–4 semanas']},
+  {k:'step',a:'4–6 semanas',h:'Avaliar resposta',li:['Melhora parcial: aumentar a dose (sertralina até 200 mg, fluoxetina até 60–80 mg)','Sem resposta na dose adequada após mais 4 semanas: trocar de antidepressivo','2 tentativas sem resposta ou piora: compartilhar com CAPS/psiquiatria']},
+  {k:'step',a:'Remissão',h:'Manutenção',li:['Manter 6–12 meses após a remissão do 1º episódio','Recorrente (≥ 2–3 episódios): 2 anos ou mais','Retirar devagar, em 4 semanas ou mais']}]},
+
+fx_ans:{s:'Ansiedade',t:'Ansiedade generalizada e pânico',src:'Guia de Saúde Mental na APS · NICE',k:'ansiedade tag panico crise nervoso sertralina escitalopram benzodiazepinico gad',
+ flow:[
+  {k:'step',h:'Avaliar',li:['GAD-7 (aba GAD-7): 5 leve, 10 moderada, 15 grave','Excluir causas orgânicas: tireoide, cafeína, estimulantes, abstinência de álcool ou benzodiazepínico, arritmia','Investigar depressão, uso de álcool e risco de suicídio']},
+  {k:'dec',h:'Gravidade',br:[
+   ['ok','Leve','GAD-7 5–9, pouco prejuízo','→ Psicoeducação, técnicas de respiração e relaxamento, atividade física, sono, grupos'],
+   ['warn','Moderada a grave','GAD-7 ≥ 10 ou prejuízo funcional','→ Psicoterapia (TCC) e/ou ISRS']]},
+  {k:'step',h:'ISRS',li:['Sertralina 25 mg por 1 semana e depois 50 mg, ou escitalopram 5 mg e depois 10 mg','Subir aos poucos a cada 2–4 semanas; efeito em 4–6 semanas','Avisar que a ansiedade pode piorar nos primeiros dias']},
+  {k:'step',a:'Resposta',h:'Manter',li:['Manter 12 meses após a resposta e depois retirar devagar','Sem resposta em 8–12 semanas com dose adequada: trocar ISRS ou compartilhar com CAPS']}],
+ post:[{k:'info',h:'Benzodiazepínico',li:['Só por curto prazo (até 2–4 semanas) em sofrimento intenso, enquanto o ISRS começa a agir','Evitar em idosos, uso de álcool e uso crônico; combinar desmame quando já em uso']}]},
+
+fx_dengue:{s:'Dengue',t:'Dengue: classificação de risco',src:'MS · Dengue: diagnóstico e manejo clínico, 6ª ed. 2024',k:'dengue arbovirose febre aedes chikungunya zika plaquetas hematocrito hidratacao sinais de alarme',
+ flow:[
+  {k:'step',h:'Caso suspeito',li:['Febre de 2–7 dias + 2 ou mais: náusea/vômitos, exantema, mialgia/artralgia, cefaleia ou dor retro-orbitária, petéquias ou prova do laço positiva, leucopenia','Notificar. Perguntar e examinar sinais de alarme e de choque; fazer prova do laço se não houver sangramento']},
+  {k:'dec',h:'Classificar',br:[
+   ['ok','Grupo A','Sem sinais de alarme, sem sangramento, sem condição especial ou risco social','→ Ambulatorial. Hidratação oral, sintomáticos, retorno no dia da melhora da febre'],
+   ['ok','Grupo B','Sangramento de pele espontâneo ou prova do laço positiva, ou condição especial: gestante, &lt; 2 anos, &gt; 65 anos, comorbidades, risco social','→ Hemograma obrigatório; hidratação oral enquanto aguarda'],
+   ['warn','Grupo C','Algum sinal de alarme','→ Hidratação venosa já e internação'],
+   ['bad','Grupo D','Choque, desconforto respiratório, sangramento grave ou disfunção de órgão','→ Expansão imediata e UTI; SAMU']]},
+  {k:'step',h:'A e B: hidratação oral',li:['Adulto: 60 mL/kg/dia, 1/3 com SRO e 2/3 com outros líquidos, mais no início','Criança: regra de Holliday-Segar + reposição; SRO após cada perda','Paracetamol ou dipirona. Não usar AAS nem anti-inflamatórios']},
+  {k:'step',h:'B: resultado do hemograma',li:['Hematócrito normal: tratar como A, reavaliação diária','Hemoconcentração (Ht &gt; 10% do basal, ou &gt; 44% mulher, &gt; 50% homem, &gt; 42% criança) ou sinal de alarme: grupo C']},
+  {k:'step',h:'C: venoso',li:['SF 0,9% 10 mL/kg na 1ª hora, em qualquer serviço, enquanto organiza a transferência','Reavaliar a cada hora; repetir até 3 vezes; melhora: manutenção; piora: conduzir como D']},
+  {k:'step',h:'D: choque',li:['SF 0,9% 20 mL/kg em até 20 min, repetir até 3 vezes conforme resposta','Transferência para leito de UTI']}],
+ post:[{k:'bad',h:'Sinais de alarme',li:['Dor abdominal intensa e contínua, vômitos persistentes','Acúmulo de líquidos (ascite, derrame pleural ou pericárdico), hepatomegalia &gt; 2 cm','Hipotensão postural ou lipotimia, letargia ou irritabilidade','Sangramento de mucosa, aumento progressivo do hematócrito']},
+  {k:'info',h:'Orientar o retorno',li:['Os sinais de alarme costumam surgir na queda da febre (3º a 7º dia)','Retornar imediatamente se qualquer sinal de alarme; cartão de acompanhamento da dengue']}]},
+
+fx_diar:{s:'Diarreia',t:'Diarreia aguda e desidratação',src:'MS · Manejo do paciente com diarreia 2023',k:'diarreia gastroenterite vomito desidratacao sro soro de reidratacao zinco plano a b c disenteria',
+ flow:[
+  {k:'dec',h:'Avaliar a hidratação',br:[
+   ['ok','Sem desidratação','Alerta, olhos normais, bebe normalmente, prega some rápido, pulso cheio, enchimento capilar até 3 s','→ Plano A'],
+   ['warn','Alguma desidratação','Irritado, olhos fundos, sede (bebe rápido), prega some lentamente, pulso rápido e fraco, enchimento 3–5 s','→ Plano B'],
+   ['bad','Desidratação grave','Comatoso ou hipotônico, bebe mal ou não bebe, prega muito lenta, pulso muito fraco ou ausente, enchimento &gt; 5 s','→ Plano C']]},
+  {k:'step',h:'Plano A (domicílio)',li:['Mais líquidos que o habitual e SRO após cada evacuação: &lt; 1 ano 50–100 mL; 1–10 anos 100–200 mL; &gt; 10 anos à vontade','Manter a alimentação habitual e o aleitamento','Zinco em &lt; 5 anos por 10–14 dias: 10 mg/dia até 6 meses, 20 mg/dia acima','Ensinar os sinais de perigo para retornar']},
+  {k:'step',h:'Plano B (na unidade)',li:['SRO 50–100 mL/kg em 4–6 horas, em pequenos volumes frequentes','Reavaliar: hidratado vai para o A; sem melhora ou piora vai para o C']},
+  {k:'step',h:'Plano C (venoso)',li:['&lt; 5 anos: SF 0,9% 20 mL/kg em 30 min, repetir até hidratar','≥ 5 anos: SF 0,9% 30 mL/kg em 30 min + Ringer lactato 70 mL/kg em 2h30','Encaminhar para observação/hospital; iniciar SRO assim que conseguir beber']}],
+ post:[{k:'info',h:'Antibiótico e cuidados',li:['Antibiótico só em disenteria (sangue nas fezes) com comprometimento do estado geral, cólera grave ou imunossupressão: ciprofloxacino no adulto, azitromicina na criança','Não usar antidiarreico em crianças nem em disenteria','Retornar se: sangue nas fezes, febre alta, muitos vômitos, sede intensa, não bebe, piora']}]},
+
+fx_farin:{s:'Dor de garganta',t:'Faringoamigdalite',src:'Escore de Centor/McIsaac · protocolos de IVAS',k:'garganta faringite amigdalite placa pus centor mcisaac estreptococo penicilina benzetacil amoxicilina',
+ pre:[{k:'bad',h:'Urgência',li:['Trismo, voz abafada, desvio da úvula (abscesso periamigdaliano)','Estridor, salivação, dificuldade para respirar ou engolir saliva']}],
+ flow:[
+  {k:'step',h:'Pontuar (Centor modificado)',li:['Febre &gt; 38 °C: +1','Ausência de tosse: +1','Adenomegalia cervical anterior dolorosa: +1','Exsudato ou edema amigdaliano: +1','Idade 3–14: +1 · 15–44: 0 · ≥ 45: −1']},
+  {k:'dec',h:'Conduta pelo escore',br:[
+   ['ok','0–1','Provável viral','→ Sem antibiótico. Analgésico, hidratação, sinais para retorno'],
+   ['warn','2–3','Intermediário','→ Teste rápido para estreptococo se disponível; sem teste, decisão clínica (tratar com 3)'],
+   ['bad','≥ 4','Alta probabilidade','→ Tratar como estreptocócica']]},
+  {k:'step',h:'Tratamento',li:['Amoxicilina 500 mg 8/8 h por 10 dias (criança 50 mg/kg/dia)','ou penicilina G benzatina IM dose única: 1.200.000 UI (&lt; 27 kg: 600.000 UI)','Alergia à penicilina: azitromicina 500 mg no 1º dia e 250 mg do 2º ao 5º (criança 12 mg/kg/dia por 5 dias)']}],
+ post:[{k:'info',h:'Pensar em mononucleose',li:['Adolescente com fadiga, adenomegalia posterior, esplenomegalia','Evitar amoxicilina (exantema) e esportes de contato']}]},
+
+fx_sinus:{s:'Sinusite',t:'Rinossinusite aguda',src:'EPOS · Diretrizes brasileiras de rinossinusite',k:'sinusite rinossinusite nariz secrecao purulenta resfriado amoxicilina lavagem nasal',
+ pre:[{k:'bad',h:'Complicações: encaminhar',li:['Edema ou eritema periorbitário, alteração visual, diplopia','Cefaleia intensa, rigidez de nuca, alteração de consciência']}],
+ flow:[
+  {k:'dec',h:'Viral ou bacteriana?',br:[
+   ['ok','Viral (a maioria)','Menos de 10 dias, melhorando','→ Lavagem nasal com SF, analgésico, hidratação'],
+   ['warn','Pós-viral','Mais de 10 dias, sem piora','→ Corticoide nasal (budesonida ou mometasona) + lavagem'],
+   ['bad','Bacteriana provável','Mais de 10 dias sem melhora, piora após melhora inicial, ou início grave (febre ≥ 39 °C + secreção purulenta por 3–4 dias)','→ Antibiótico']]},
+  {k:'step',h:'Antibiótico',li:['Amoxicilina 500 mg 8/8 h ou 875 mg 12/12 h por 5–7 dias (criança 50 mg/kg/dia)','Uso de antibiótico no último mês ou falha em 72 h: amoxicilina + clavulanato','Alergia: doxiciclina 100 mg 12/12 h (adulto) ou azitromicina']},
+  {k:'step',a:'Sem melhora em 72 h',h:'Reavaliar',li:['Trocar ou ampliar antibiótico, rever diagnóstico','Mais de 3–4 episódios por ano ou sintomas &gt; 12 semanas: otorrinolaringologia']}]},
+
+fx_pac:{s:'Pneumonia',t:'Pneumonia adquirida na comunidade (adulto)',src:'SBPT 2018 · CRB-65',k:'pneumonia pac crb65 crb-65 tosse febre infeccao respiratoria amoxicilina azitromicina levofloxacino',
+ flow:[
+  {k:'step',h:'Suspeita',li:['Tosse, febre, dispneia, dor pleurítica, estertores ou sopro tubário','Raio-X de tórax quando disponível; SpO2 sempre']},
+  {k:'step',h:'CRB-65 (1 ponto cada)',li:['<b>C</b>onfusão mental','<b>R</b>espiração: FR ≥ 30','<b>B</b>lood pressure: PAS &lt; 90 ou PAD ≤ 60','Idade ≥ <b>65</b> anos']},
+  {k:'dec',h:'Onde tratar',br:[
+   ['ok','0','Baixo risco','→ Ambulatorial'],
+   ['warn','1–2','Risco intermediário','→ Avaliar internação (comorbidades, condição social, aceitação de via oral)'],
+   ['bad','3–4 ou SpO2 &lt; 92%','Alto risco','→ Internação: SAMU/hospital']]},
+  {k:'step',h:'Ambulatorial',li:['Sem comorbidades: amoxicilina 500 mg–1 g 8/8 h por 5–7 dias, ou azitromicina 500 mg/dia por 3–5 dias','Comorbidades (DPOC, ICC, DM, DRC, etilismo) ou antibiótico nos últimos 3 meses: amoxicilina + clavulanato 875/125 mg 12/12 h + azitromicina, ou levofloxacino 750 mg/dia']},
+  {k:'step',a:'48–72 h',h:'Reavaliar',li:['Sem melhora ou piora: rever diagnóstico, complicações (derrame) e encaminhar','Raio-X de controle em 6–8 semanas se &gt; 50 anos ou tabagista']}]},
+
+fx_itu:{s:'ITU',t:'Infecção urinária',src:'SBU · Febrasgo · protocolos de APS',k:'itu cistite infeccao urinaria disuria pielonefrite urocultura nitrofurantoina fosfomicina cefalexina ciprofloxacino',
+ flow:[
+  {k:'dec',h:'Que tipo?',br:[
+   ['ok','Cistite não complicada','Mulher não gestante, disúria, polaciúria, urgência, sem febre nem dor lombar','→ Tratar sem urocultura'],
+   ['warn','Complicada ou especial','Gestante, homem, sonda, alteração urinária, imunossupressão, recorrente','→ Urocultura antes e tratamento mais longo'],
+   ['bad','Pielonefrite','Febre, dor lombar, Giordano positivo, náuseas ou vômitos','→ Urocultura e antibiótico sistêmico; hospital se sepse ou vômitos']]},
+  {k:'step',h:'Cistite não complicada',li:['Nitrofurantoína 100 mg 6/6 h por 5 dias','ou fosfomicina 3 g dose única','Alternativa: cefalexina 500 mg 6/6 h por 5–7 dias. Corrimento: pensar em IST/vaginite']},
+  {k:'step',h:'Gestante',li:['Sempre urocultura, inclusive bacteriúria assintomática','Cefalexina 500 mg 6/6 h por 7 dias, ou nitrofurantoína (evitar perto do termo), ou amoxicilina conforme antibiograma','Urocultura de controle 1–2 semanas após']},
+  {k:'step',h:'Pielonefrite ambulatorial',li:['Ciprofloxacino 500 mg 12/12 h por 7 dias (não gestante)','Reavaliar em 48–72 h; sem melhora: hospital e USG']}],
+ post:[{k:'info',h:'Recorrência',li:['≥ 2 episódios em 6 meses ou ≥ 3 em 1 ano: urocultura em cada episódio, orientar hidratação e micção pós-coito','Considerar profilaxia e investigação; homem com ITU: tratar 7–14 dias e pensar em prostatite']}]},
+
+fx_sif:{s:'Sífilis',t:'Sífilis',src:'PCDT IST 2022 · MS',k:'sifilis vdrl teste rapido treponemico penicilina benzatina benzetacil gestante parceria cancro',
+ flow:[
+  {k:'step',h:'Teste rápido reagente',li:['Coletar VDRL (teste não treponêmico) para titulação','Gestante, risco de perda de seguimento ou sintomas: tratar já, sem esperar o VDRL']},
+  {k:'dec',h:'Classificar',br:[
+   ['warn','Recente','Primária, secundária ou latente com menos de 1 ano','→ Penicilina benzatina 2,4 milhões UI IM dose única (1,2 em cada glúteo)'],
+   ['bad','Tardia','Latente com mais de 1 ano, duração ignorada, terciária','→ 2,4 milhões UI IM 1x/semana por 3 semanas (total 7,2)'],
+   ['bad','Neurossífilis','Sintomas neurológicos, oculares ou auditivos','→ Encaminhar: penicilina cristalina hospitalar']]},
+  {k:'step',h:'Gestante',li:['Só penicilina benzatina. Intervalo entre doses maior que 7 dias: reiniciar o esquema','Alergia: encaminhar para dessensibilização','VDRL mensal até o parto']},
+  {k:'step',h:'Parcerias',li:['Testar e tratar todas as parcerias dos últimos 90 dias com 2,4 milhões UI dose única, mesmo com teste não reagente','Se teste reagente, tratar conforme classificação']},
+  {k:'step',h:'Seguimento',li:['VDRL a cada 3 meses no 1º ano (gestante mensal)','Resposta: queda de 2 diluições em 6 meses (recente) ou 12 meses (tardia)','Aumento de 2 diluições: reinfecção ou falha, retratar']}],
+ post:[{k:'info',h:'Lembrar',li:['Notificar (adquirida, gestante e congênita)','Oferecer testes de HIV e hepatites B e C','Fora da gestação, se alergia: doxiciclina 100 mg 12/12 h por 15 dias (recente) ou 30 dias (tardia)']}]},
+
+fx_tb:{s:'Tuberculose',t:'Tuberculose pulmonar',src:'Manual de Recomendações para o Controle da TB · MS 2019',k:'tuberculose tb tosse escarro baciloscopia trm-tb rhze rifampicina sintomatico respiratorio contato iltb',
+ flow:[
+  {k:'step',h:'Sintomático respiratório',li:['Tosse por 3 semanas ou mais na população geral','Tosse por qualquer tempo: pessoas vivendo com HIV, privadas de liberdade, em situação de rua, indígenas','Tosse por 2 semanas ou mais: contatos de TB, profissionais de saúde, imigrantes']},
+  {k:'step',h:'Investigar',li:['Escarro: TRM-TB (teste rápido molecular) + cultura; sem TRM, baciloscopia em 2 amostras','Raio-X de tórax e teste rápido de HIV']},
+  {k:'dec',h:'Resultado',br:[
+   ['bad','TRM detectável, sensível à rifampicina','TB confirmada','→ Iniciar esquema básico e notificar'],
+   ['bad','Resistente à rifampicina','TB resistente','→ Encaminhar à referência'],
+   ['warn','Não detectável','Suspeita mantida','→ Cultura, Raio-X, reavaliar; não tratar sem investigação']]},
+  {k:'step',h:'Esquema básico (adulto)',li:['2 meses RHZE (150/75/400/275 mg): 20–35 kg 2 cp; 36–50 kg 3 cp; 51–70 kg 4 cp; &gt; 70 kg 5 cp','4 meses RH, dose conforme peso','Em jejum, todos os dias; tratamento diretamente observado']},
+  {k:'step',h:'Acompanhamento',li:['Baciloscopia mensal de controle','Avaliar todos os contatos (ILTB: prova tuberculínica ou IGRA)','Orientar efeitos: urina alaranjada, náusea, hepatotoxicidade (icterícia), exantema']}]},
+
+fx_lomb:{s:'Lombalgia',t:'Lombalgia',src:'NICE · ACP · protocolos de APS',k:'lombalgia dor lombar costas ciatica ciatalgia hernia bandeiras vermelhas ciclobenzaprina ibuprofeno',
+ pre:[{k:'bad',h:'Bandeiras vermelhas',li:['Cauda equina: retenção ou incontinência urinária/fecal, anestesia em sela, fraqueza bilateral → urgência','Déficit neurológico progressivo','História de câncer, perda de peso, febre, imunossupressão, uso de drogas IV','Trauma importante (ou leve em idoso/osteoporose), dor noturna que não alivia em repouso']}],
+ flow:[
+  {k:'dec',h:'Alguma bandeira vermelha?',br:[
+   ['bad','Sim','Suspeita de causa específica','→ Investigar (imagem, exames) ou encaminhar conforme a suspeita'],
+   ['ok','Não','Lombalgia inespecífica ou ciática sem déficit progressivo','→ Sem imagem nas primeiras 6 semanas']]},
+  {k:'step',h:'Tratamento inicial',li:['Manter-se ativo, evitar repouso no leito; calor local','Ibuprofeno 400 mg 8/8 h ou naproxeno 500 mg 12/12 h por até 7 dias (se sem contraindicação)','Ciclobenzaprina 5–10 mg à noite por até 1–2 semanas, se espasmo','Evitar opioides; explicar o bom prognóstico']},
+  {k:'step',a:'Sem melhora em 6 semanas',h:'Reavaliar',li:['Fisioterapia ou exercícios supervisionados','Ciática persistente ou déficit: RM e ortopedia/neurocirurgia']},
+  {k:'step',a:'Mais de 12 semanas',h:'Lombalgia crônica',li:['Exercício regular, fisioterapia, práticas corporais, TCC','Fatores psicossociais (bandeiras amarelas): medo de movimento, depressão, conflitos no trabalho','Considerar duloxetina ou amitriptilina se dor neuropática ou comorbidade']}]},
+
+fx_cef:{s:'Cefaleia',t:'Cefaleia',src:'SBCe · SNOOP · Caderno AB 28',k:'cefaleia dor de cabeca enxaqueca migranea tensional sumatriptano amitriptilina propranolol topiramato',
+ pre:[{k:'bad',h:'Sinais de alarme (SNOOP)',li:['<b>S</b>istêmicos: febre, perda de peso, câncer, imunossupressão, gestação/puerpério','<b>N</b>eurológicos: déficit focal, confusão, convulsão, papiledema, rigidez de nuca','<b>O</b>nset: início súbito, "a pior da vida" (trovoada)','<b>O</b>lder: início após os 50 anos','<b>P</b>adrão: progressiva, mudança de padrão, posicional, piora com Valsalva ou esforço','Com algum sinal: urgência ou imagem conforme o quadro']}],
+ flow:[
+  {k:'dec',h:'Sem alarme: qual tipo?',br:[
+   ['warn','Migrânea','Unilateral, pulsátil, moderada a forte, piora com atividade, náusea ou foto/fonofobia, 4–72 h','→ Tratar a crise e avaliar profilaxia'],
+   ['ok','Tensional','Bilateral, em aperto, leve a moderada, sem náusea','→ Analgésico simples, sono, atividade física, manejo do estresse']]},
+  {k:'step',h:'Crise de migrânea',li:['Dipirona 1 g, ibuprofeno 400–600 mg ou naproxeno 500–550 mg, no início da dor','+ metoclopramida 10 mg se náusea','Sem resposta: sumatriptano 50 mg (evitar em DCV, HAS não controlada, gestação)']},
+  {k:'step',h:'Profilaxia',sub:'Indicada se 4 ou mais dias de crise por mês, crises incapacitantes ou falha do tratamento agudo',li:['Amitriptilina 10–25 mg à noite (até 50–75 mg)','Propranolol 40–160 mg/dia (evitar em asma)','Topiramato 25 mg, aumentar até 50 mg 12/12 h','Reavaliar em 2–3 meses; diário de cefaleia']}],
+ post:[{k:'info',h:'Uso excessivo de analgésico',li:['Analgésico em 15 dias ou mais por mês (triptano ou combinações em 10 ou mais) mantém a cefaleia crônica','Retirar o excesso e iniciar profilaxia']}]},
+
+fx_tor:{s:'Dor torácica',t:'Dor torácica na UBS',src:'SBC · Protocolos de urgência na APS',k:'dor toracica peito infarto iam sca angina ecg aas samu',
+ flow:[
+  {k:'step',h:'Avaliação imediata',li:['Sinais vitais, SpO2, glicemia; ECG em até 10 minutos','Dor em aperto ou peso, retroesternal, irradiada para braço, pescoço ou mandíbula, &gt; 20 min, com sudorese, náusea ou dispneia','Idoso, mulher e diabético: sintomas atípicos (dispneia, mal-estar, dor epigástrica)']},
+  {k:'dec',h:'Suspeita de síndrome coronariana aguda ou instabilidade?',br:[
+   ['bad','Sim','Dor típica, alteração no ECG, hipotensão, SpO2 &lt; 90%, arritmia','→ SAMU 192. AAS 300 mg mastigado (se sem alergia ou sangramento), O2 se SpO2 &lt; 90%, acesso venoso, monitorar'],
+   ['warn','Dúvida','Dor sugestiva com ECG normal','→ ECG normal não exclui SCA: encaminhar para avaliação com troponina'],
+   ['ok','Baixa probabilidade','Dor reproduzível à palpação, ventilatório-dependente, relacionada à alimentação','→ Investigar causa (musculoesquelética, DRGE, ansiedade) e reavaliar']]},
+  {k:'step',h:'Lembrar outras causas graves',li:['Dissecção de aorta: dor súbita lancinante irradiada para o dorso, diferença de PA entre os braços (não dar AAS)','TEP: dispneia súbita, taquicardia, fatores de risco','Pneumotórax: dor súbita e dispneia, murmúrio reduzido']}]}
+};
+function fxNode(n){
+  const cls=n.k==='info'?'':n.k;
+  return `<div class="node ${cls}">${n.h?`<h3>${n.h}</h3>`:''}${n.sub?`<div class="sub">${n.sub}</div>`:''}${n.li?`<ul>${n.li.map(x=>`<li>${x}</li>`).join('')}</ul>`:''}${n.br?`<div class="branch">${n.br.map(b=>`<div class="node br-${b[0]}"><span class="tag ${b[0]}">${b[1]}</span><div>${b[2]}</div><div class="out">${b[3]}</div></div>`).join('')}</div>`:''}</div>`;
+}
+const fxText=s=>s.replace(/<[^>]+>/g,'').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
+function fxPlain(f){
+  const L=[f.t.toUpperCase()];
+  [...(f.pre||[]),...f.flow,...(f.post||[])].forEach(n=>{L.push('');if(n.a)L.push('('+fxText(n.a)+')');if(n.h)L.push(fxText(n.h)+':');if(n.sub)L.push(fxText(n.sub));
+    (n.li||[]).forEach(x=>L.push('- '+fxText(x)));(n.br||[]).forEach(b=>L.push('- '+fxText(b[1])+': '+fxText(b[2])+' '+fxText(b[3])))});
+  L.push('','Fonte: '+f.src);return L.join('\n');
+}
+function renderFX(m,id){
+  const f=F[id];
+  m.innerHTML=`<section class="panel">
+    <div class="ph"><h2>${esc(f.t)}</h2><span class="code">${esc(f.src)}</span></div>
+    ${(f.pre||[]).map(fxNode).join('')}
+    <div class="flow">${f.flow.map((n,i)=>(i?`<div class="arrow">${n.a?`<span>${n.a}</span>`:''}</div>`:'')+fxNode(n)).join('')}</div>
+    ${(f.post||[]).map(fxNode).join('')}
+    <div class="field"><label for="fx-nota">Minhas anotações (protocolo do município, contatos, observações)</label><textarea id="fx-nota" class="nota" rows="3"></textarea></div>
+    <div class="bar"><button class="btn primary small" id="fx-copy" type="button">Copiar resumo</button></div>
+    <p class="note">Resumo para consulta rápida. Confira o protocolo vigente do Ministério da Saúde e do seu município, a disponibilidade na REMUME e ajuste para a pessoa (idade, gestação, função renal, alergias).</p>
+  </section>`;
+  const nk='kitaps:nota:'+id,na=$('#fx-nota');na.value=store.get(nk)||'';
+  na.oninput=()=>{if(na.value.trim())store.set(nk,na.value);else store.del(nk)};
+  $('#fx-copy').onclick=()=>copy(fxPlain(f)+(na.value.trim()?'\n\nAnotações: '+na.value.trim():''));
+}
+
+/* Edições próprias: prescrições e MEV editáveis, salvas neste aparelho (kitaps:ed), com backup em arquivo */
+const ORIG={P:{},M:{}};
+Object.entries(P).forEach(([id,c])=>ORIG.P[id]=c.items.map(it=>({rx:it.rx,n:it.n||''})));
+Object.entries(M).forEach(([id,c])=>ORIG.M[id]={items:c.items.slice(),pr:c.pr});
+let ED={};
+function loadEd(){try{ED=JSON.parse(store.get('kitaps:ed')||'{}')||{}}catch(e){ED={}}}
+function applyEdits(){
+  Object.entries(P).forEach(([id,c])=>{
+    c.items=c.items.slice(0,ORIG.P[id].length);
+    c.items.forEach((it,i)=>{const o=ORIG.P[id][i],e=ED['rx:'+id+':'+i];it.rx=e?e.rx:o.rx;it.n=e?e.n:o.n;it.ed=!!e});
+    (ED['rxnew:'+id]||[]).forEach(x=>c.items.push({t:x.t,rx:x.rx,n:x.n||'',ed:true,own:true}))});
+  Object.entries(M).forEach(([id,c])=>{const o=ORIG.M[id],e=ED['mev:'+id];c.items=(e?e.items:o.items).slice();c.pr=e?e.pr:o.pr;c.ed=!!e});
+}
+loadEd();applyEdits();
+function saveEd(){
+  if(Object.keys(ED).length)store.set('kitaps:ed',JSON.stringify(ED));else store.del('kitaps:ed');
+  applyEdits();IDX=null;
+}
+function confirm2(btn,fn){
+  if(btn.dataset.c){delete btn.dataset.c;fn();return}
+  const old=btn.textContent;btn.dataset.c=1;btn.textContent='Toque de novo para confirmar';
+  setTimeout(()=>{if(btn.isConnected&&btn.dataset.c){btn.textContent=old;delete btn.dataset.c}},3000);
+}
+function rerender(){render();addHead();addStar()}
+function focusCard(sel){const el=$(sel);if(!el)return;const top=el.getBoundingClientRect().top+window.scrollY-(document.querySelector('header').offsetHeight+12);window.scrollTo(0,Math.max(0,top))}
+const edTag=(on,own)=>on?`<span class="edtag">${own?'minha':'editada'}</span>`:'';
+function rxEditor(card,id,i){
+  const n0=ORIG.P[id].length,isNew=i==null,it=isNew?{t:'',rx:'',n:''}:P[id].items[i],own=isNew||it.own;
+  card.innerHTML=`<div class="edf">
+    ${own?`<div class="field"><label for="ed-t">Título</label><input id="ed-t" value="${esc(it.t)}" placeholder="Ex.: Cistite (meu protocolo)"></div>`:`<h3>${esc(it.t)}</h3>`}
+    <div class="field"><label for="ed-rx">Prescrição</label><textarea id="ed-rx" rows="9" spellcheck="false">${esc(it.rx)}</textarea></div>
+    <div class="field"><label for="ed-n">Observação (opcional)</label><textarea id="ed-n" rows="3">${esc(it.n||'')}</textarea></div>
+    <div class="bar"><button class="btn primary small" id="ed-save" type="button">Salvar</button><button class="btn small" id="ed-cancel" type="button">Cancelar</button>${!isNew&&it.ed?`<button class="btn small danger" id="ed-reset" type="button">${own?'Excluir':'Restaurar original'}</button>`:''}</div>
+    ${!own?`<p class="note">Fica salvo só neste aparelho. "Restaurar original" volta ao texto do kit.</p>`:''}</div>`;
+  $('#ed-rx').focus();
+  $('#ed-cancel').onclick=rerender;
+  $('#ed-save').onclick=()=>{
+    const rx=$('#ed-rx').value.replace(/\s+$/,''),n=$('#ed-n').value.trim();
+    if(!rx.trim()){toast('A prescrição está vazia');return}
+    let at=i;
+    if(own){const t=($('#ed-t').value.trim()||'Minha prescrição'),L=ED['rxnew:'+id]||(ED['rxnew:'+id]=[]);
+      if(isNew){L.push({t,rx,n});at=n0+L.length-1}else L[i-n0]={t,rx,n}}
+    else{const o=ORIG.P[id][i];if(rx===o.rx&&n===o.n)delete ED['rx:'+id+':'+i];else ED['rx:'+id+':'+i]={rx,n}}
+    saveEd();rerender();focusCard('#rx-'+at);toast('Salvo neste aparelho');
+  };
+  const r=$('#ed-reset');if(r)r.onclick=()=>confirm2(r,()=>{
+    if(own){const L=ED['rxnew:'+id];L.splice(i-n0,1);if(!L.length)delete ED['rxnew:'+id]}else delete ED['rx:'+id+':'+i];
+    saveEd();rerender();toast(own?'Prescrição excluída':'Texto original restaurado')});
+}
+function mevEditor(id){
+  const c=M[id],box=$('#mv-edit');
+  box.hidden=false;
+  box.innerHTML=`<div class="edf">
+    <div class="field"><label for="ed-mi">Orientações (uma por linha)</label><textarea id="ed-mi" rows="12">${esc(c.items.join('\n'))}</textarea></div>
+    <div class="field"><label for="ed-mp">Registro no prontuário</label><textarea id="ed-mp" rows="5" spellcheck="false">${esc(c.pr)}</textarea></div>
+    <div class="bar"><button class="btn primary small" id="ed-save" type="button">Salvar</button><button class="btn small" id="ed-cancel" type="button">Cancelar</button>${c.ed?'<button class="btn small danger" id="ed-reset" type="button">Restaurar original</button>':''}</div>
+    <p class="note">Fica salvo só neste aparelho e vale para copiar, imprimir, baixar imagem e levar à folha.</p></div>`;
+  focusCard('#mv-edit');$('#ed-mi').focus();
+  $('#ed-cancel').onclick=rerender;
+  $('#ed-save').onclick=()=>{
+    const items=$('#ed-mi').value.split('\n').map(x=>x.replace(/^\s*[•\-*]\s*/,'').trim()).filter(Boolean),pr=$('#ed-mp').value.replace(/\s+$/,'');
+    if(!items.length){toast('Deixe ao menos uma orientação');return}
+    const o=ORIG.M[id];if(items.join('\n')===o.items.join('\n')&&pr===o.pr)delete ED['mev:'+id];else ED['mev:'+id]={items,pr};
+    saveEd();rerender();toast('Salvo neste aparelho');
+  };
+  const r=$('#ed-reset');if(r)r.onclick=()=>confirm2(r,()=>{delete ED['mev:'+id];saveEd();rerender();toast('Texto original restaurado')});
+}
+/* Backup: tudo que a pessoa personalizou (SOAP, prescrições, MEV, anotações, favoritos, unidade) */
+const BK=['kitaps:soap:','kitaps:ed','kitaps:favs','kitaps:unidade','kitaps:nota:'];
+function lsKeys(){try{return Object.keys(localStorage)}catch(e){return []}}
+function myKeys(){return lsKeys().filter(k=>BK.some(p=>k===p||k.startsWith(p))).sort()}
+async function saveFile(blob,fname,okMsg){
+  let d=null;try{d=window.claude&&window.claude.use?await window.claude.use('downloads'):null}catch(e){}
+  if(d){try{await d.save({filename:fname,data:blob});toast(okMsg)}catch(e){if(e&&e.code!=='declined')toast('Não deu para salvar o arquivo aqui')}return}
+  try{const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=fname;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);toast(okMsg)}catch(e){toast('Não deu para salvar o arquivo aqui')}
+}
+function renderMeu(m){
+  const ks=myKeys(),soap=ks.filter(k=>k.startsWith('kitaps:soap:')).map(k=>k.slice(12)).filter(id=>T[id]),
+    nota=ks.filter(k=>k.startsWith('kitaps:nota:')).map(k=>k.slice(12)).filter(id=>F[id]||C[id]);
+  const rows=[];
+  soap.forEach(id=>rows.push([id,'SOAP',T[id].t,'editado']));
+  Object.keys(ED).forEach(k=>{const [tp,id,i]=k.split(':');
+    if(tp==='rx'&&P[id]&&P[id].items[+i])rows.push([id,'Prescrição',P[id].items[+i].t,'editada']);
+    if(tp==='rxnew'&&P[id])ED[k].forEach(x=>rows.push([id,'Prescrição',x.t,'minha']));
+    if(tp==='mev'&&M[id])rows.push([id,'MEV',M[id].t,'editada'])});
+  nota.forEach(id=>rows.push([id,'Anotação',F[id]?F[id].t:chipLabel(id),'anotação']));
+  const d=new Date(),stamp=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  m.innerHTML=`<section class="panel">
+    <div class="ph"><h2>Minhas edições e backup</h2><span class="code">salvo neste aparelho</span></div>
+    <p class="note">Você pode editar os templates SOAP, as prescrições (botão Editar em cada uma, ou criar a sua) e as orientações de MEV, e anotar nos fluxogramas. Tudo fica guardado só neste aparelho; salve um backup para levar ao celular ou ao computador.</p>
+    <div class="card"><div class="lbl">O que você mudou (${rows.length})</div>
+      ${rows.length?`<div class="edlist">${rows.map((r,k)=>`<button class="edrow" data-k="${k}" type="button"><span class="qs">${esc(r[1])}</span><span class="ql">${esc(r[2])}</span><span class="edtag">${esc(r[3])}</span></button>`).join('')}</div>`:'<p class="note">Nada editado ainda.</p>'}
+    </div>
+    <div class="card"><div class="lbl">Backup</div>
+      <div class="bar"><button class="btn primary small" id="bk-save" type="button">Salvar backup (.json)</button><button class="btn small" id="bk-load" type="button">Restaurar backup</button><input type="file" id="bk-file" accept=".json,application/json" hidden></div>
+      <p class="note">O backup inclui SOAP, prescrições e MEV editadas, suas prescrições, anotações, favoritos e o nome da unidade. Restaurar junta o arquivo com o que já está aqui (o arquivo vence nos itens repetidos).</p>
+    </div>
+    <div class="card"><div class="lbl">Começar do zero</div>
+      <div class="bar"><button class="btn small danger" id="bk-clear" type="button">Apagar todas as edições</button></div>
+      <p class="note">Volta todo o kit ao texto original. Salve um backup antes se quiser guardar.</p>
+    </div>
+  </section>`;
+  m.querySelectorAll('.edrow').forEach(b=>b.onclick=()=>go(rows[+b.dataset.k][0]));
+  $('#bk-save').onclick=()=>{
+    const data={};myKeys().forEach(k=>{const v=store.get(k);if(v!=null)data[k]=v});
+    if(!Object.keys(data).length){toast('Nada para salvar ainda');return}
+    saveFile(new Blob([JSON.stringify({app:'kit-aps',v:1,saved:new Date().toISOString(),data},null,1)],{type:'application/json'}),'kit-aps-backup-'+stamp+'.json','Backup salvo');
+  };
+  $('#bk-load').onclick=()=>$('#bk-file').click();
+  $('#bk-file').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();
+    rd.onload=()=>{let o;try{o=JSON.parse(rd.result)}catch(x){toast('Arquivo inválido');return}
+      if(!o||o.app!=='kit-aps'||typeof o.data!=='object'){toast('Este arquivo não é um backup do Kit APS');return}
+      let n=0;Object.entries(o.data).forEach(([k,v])=>{if(typeof v!=='string'||!BK.some(p=>k===p||k.startsWith(p)))return;
+        if(k==='kitaps:ed'){try{const cur=JSON.parse(store.get(k)||'{}');v=JSON.stringify(Object.assign(cur,JSON.parse(v)))}catch(x){return}}
+        if(k==='kitaps:favs'){try{const cur=JSON.parse(store.get(k)||'[]');v=JSON.stringify([...new Set([...cur,...JSON.parse(v)])])}catch(x){return}}
+        store.set(k,v);n++});
+      loadEd();applyEdits();IDX=null;
+      try{FAV=JSON.parse(store.get('kitaps:favs')||'[]').filter(known)}catch(x){}
+      ESQ.unidade=store.get('kitaps:unidade')||ESQ.unidade;
+      go('meu');toast(n?'Backup restaurado':'Nada para restaurar neste arquivo')};
+    rd.readAsText(f)};
+  const cl=$('#bk-clear');cl.onclick=()=>confirm2(cl,()=>{
+    myKeys().filter(k=>k!=='kitaps:favs'&&k!=='kitaps:unidade').forEach(k=>store.del(k));
+    loadEd();applyEdits();IDX=null;rerender();toast('Edições apagadas')});
+}
+const E={esquema:'Esquema',meu:'Minhas edições'};
+const SECS={soap:Object.keys(T),calc:Object.keys(C),presc:Object.keys(P),mev:Object.keys(M),esq:Object.keys(E),fx:Object.keys(F)};
 let cur={sec:'soap',id:'has'};
 
-function chipLabel(id){return T[id]?({has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:E[id])}
+function chipLabel(id){return T[id]?({has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:F[id]?F[id].s:E[id])}
 
-/* Navegação: por tipo ou por linha de cuidado; favoritos */
-const SECN={soap:'SOAP',calc:'Cálculos',presc:'Prescrições',mev:'MEV',esq:'Paciente'};
-const SECTAG={soap:'SOAP',calc:'Cálc.',presc:'Rx',mev:'MEV',esq:''};
-const LINHAS={
- cronicos:{t:'Crônicos',ids:['has','dm','drc','hpb','tfg','imc','rcv','insulina','fluxodm','ipss','rastreio','vacinas','ajustes','melanoma','rx_cv','rx_anal','mev_has','mev_dm','mev_obes','mev_lip','mev_drc','mev_icc','mev_hpb','esquema']},
- mulher:{t:'Mulher',ids:['prenatal','ig','imc','rastreio','vacinas','ajustes','rx_aco','rx_ist','rx_hiv','rx_atb','mev_gest','esquema']},
- crianca:{t:'Criança',ids:['puericultura','imc','vacinas','rx_par','rx_sint','mev_cri','esquema']},
- mental:{t:'Mental',ids:['mental','ansiedade','phq9','gad7','audit','fager','rx_ad','rx_ans','rx_ap','rx_tab','mev_dep','mev_ans','mev_sono','mev_alc','mev_tab','esquema']},
- agudos:{t:'Agudos',ids:['ivas','gea','rx_atb','rx_sint','rx_anal','rx_par','rx_ist','rx_hiv','mev_ivas','mev_diar','esquema']}
+/* Navegação: menu de seções (agrupadas) + abas internas; favoritos */
+const SICON={
+ soap:'M6 3h9l4 4v14H6z M15 3v4h4 M9 12h7 M9 16h5',
+ presc:'M10.5 3.5a5 5 0 0 1 7 7l-7 7a5 5 0 0 1-7-7z M7 10l7 7',
+ mev:'M12 7c-3-3-8-1-8 4 0 5 4 9 8 9s8-4 8-9c0-5-5-7-8-4z M12 7c0-2 1-3.5 3-4',
+ esq:'M4 6h16v14H4z M4 10h16 M8 3v4 M16 3v4 M9 15l2 2 4-4',
+ calc:'M6 3h12v18H6z M9 7h6 M9 12h.01 M12 12h.01 M15 12h.01 M9 16h.01 M12 16h.01 M15 16h.01',
+ esc:'M9 3h6v3H9z M7 4.5H5V21h14V4.5h-2 M8.5 12l2 2 4-4 M9 17.5h6',
+ prot:'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z M9 12l2 2 4-4',
+ cronicos:'M20.5 8.5a4.8 4.8 0 0 0-8.5-3 4.8 4.8 0 0 0-8.5 3c0 5.2 8.5 11 8.5 11s8.5-5.8 8.5-11z M3.5 11.5h4l1.8-2.5 2.7 5 1.8-2.5h6.7',
+ mulher:'M12 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10z M12 13v8 M9 18h6',
+ crianca:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M9 10h.01 M15 10h.01 M9 14.5c1.5 1.7 4.5 1.7 6 0 M10 3.5c0 2 1 3 2 3',
+ mental:'M12 5a3 3 0 0 0-5.5-1.5A3 3 0 0 0 4 8a3 3 0 0 0 0 5 3 3 0 0 0 2.5 4.5A3 3 0 0 0 12 19z M12 5a3 3 0 0 1 5.5-1.5A3 3 0 0 1 20 8a3 3 0 0 1 0 5 3 3 0 0 1-2.5 4.5A3 3 0 0 1 12 19',
+ agudos:'M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0z M12 10v6.5',
+ edit:'M4 20h4L19 9l-4-4L4 16z M13.5 6.5l4 4',
+ fx:'M5 3h6v5H5z M13 16h6v5h-6z M8 8v4h8v4 M16 3l3 3-3 3',
+ box:'M4 7l8-4 8 4v10l-8 4-8-4z M4 7l8 4 8-4 M12 11v10'
 };
-let VIEW=store.get('kitaps:view')==='linha'?'linha':'tipo',CURL=store.get('kitaps:linha')||'cronicos';
-if(!LINHAS[CURL])CURL='cronicos';
-const secOf=id=>T[id]?'soap':C[id]?'calc':P[id]?'presc':M[id]?'mev':'esq';
-let FAV=[];try{FAV=JSON.parse(store.get('kitaps:favs')||'[]').filter(id=>T[id]||C[id]||P[id]||M[id]||E[id])}catch(e){FAV=[]}
+const icon=(k,sz=20)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${SICON[k]}"/></svg>`;
+const SECTAG={soap:'SOAP',calc:'Cálc.',presc:'Rx',mev:'MEV',fx:'Fluxo',esq:''};
+const SECTIONS=[
+ {g:'Atendimento',k:'soap',t:'Templates SOAP',ic:'soap',ids:Object.keys(T)},
+ {g:'Atendimento',k:'presc',t:'Prescrições',ic:'presc',ids:Object.keys(P)},
+ {g:'Atendimento',k:'fx',t:'Fluxogramas',ic:'fx',ids:['fx_has','fluxodm',...Object.keys(F).filter(k=>k!=='fx_has')]},
+ {g:'Atendimento',k:'mev',t:'Estilo de vida (MEV)',ic:'mev',ids:Object.keys(M)},
+ {g:'Atendimento',k:'esq',t:'Folha do paciente',ic:'esq',ids:['esquema']},
+ {g:'Ferramentas',k:'calc',t:'Calculadoras',ic:'calc',ids:['ig','tfg','imc','rcv','insulina']},
+ {g:'Ferramentas',k:'esc',t:'Escalas e questionários',ic:'esc',ids:['phq9','gad7','audit','fager','ipss','melanoma']},
+ {g:'Ferramentas',k:'prot',t:'Protocolos e prevenção',ic:'prot',ids:['rastreio','vacinas','ajustes']},
+ {g:'Linhas de cuidado',k:'cronicos',t:'Crônicos',ic:'cronicos',ln:1,ids:['has','dm','drc','hpb','fx_has','fluxodm','fx_lip','fx_tireo','fx_asma','fx_dpoc','tfg','imc','rcv','insulina','ipss','rastreio','vacinas','ajustes','melanoma','rx_cv','rx_anal','mev_has','mev_dm','mev_obes','mev_lip','mev_drc','mev_icc','mev_hpb','esquema']},
+ {g:'Linhas de cuidado',k:'mulher',t:'Saúde da mulher',ic:'mulher',ln:1,ids:['prenatal','ig','imc','rastreio','vacinas','ajustes','fx_sif','fx_itu','rx_aco','rx_ist','rx_hiv','rx_atb','mev_gest','esquema']},
+ {g:'Linhas de cuidado',k:'crianca',t:'Saúde da criança',ic:'crianca',ln:1,ids:['puericultura','imc','vacinas','fx_diar','fx_dengue','fx_farin','rx_par','rx_sint','mev_cri','esquema']},
+ {g:'Linhas de cuidado',k:'mental',t:'Saúde mental',ic:'mental',ln:1,ids:['mental','ansiedade','fx_dep','fx_ans','phq9','gad7','audit','fager','rx_ad','rx_ans','rx_ap','rx_tab','mev_dep','mev_ans','mev_sono','mev_alc','mev_tab','esquema']},
+ {g:'Meu kit',k:'meu',t:'Minhas edições',ic:'edit',ids:['meu']},
+ {g:'Linhas de cuidado',k:'agudos',t:'Agudos',ic:'agudos',ln:1,ids:['ivas','gea','fx_dengue','fx_farin','fx_sinus','fx_pac','fx_itu','fx_diar','fx_tor','fx_cef','fx_lomb','fx_tb','rx_atb','rx_sint','rx_anal','rx_par','rx_ist','rx_hiv','mev_ivas','mev_diar','esquema']}
+];
+const SECM=Object.fromEntries(SECTIONS.map(s=>[s.k,s]));
+const secOf=id=>T[id]?'soap':C[id]?'calc':P[id]?'presc':M[id]?'mev':F[id]?'fx':'esq';
+let CURS=SECM[store.get('kitaps:sec')]?store.get('kitaps:sec'):'soap';
+let FAV=[];try{FAV=JSON.parse(store.get('kitaps:favs')||'[]').filter(id=>T[id]||C[id]||P[id]||M[id]||F[id]||E[id])}catch(e){FAV=[]}
 const saveFav=()=>store.set('kitaps:favs',JSON.stringify(FAV));
-function renderSeg(){
-  const seg=$('#seg');
-  const items=VIEW==='linha'?Object.entries(LINHAS).map(([k,l])=>[k,l.t,k===CURL]):Object.entries(SECN).map(([k,l])=>[k,l,k===cur.sec]);
-  seg.innerHTML=items.map(([k,l,on])=>`<button role="tab" data-k="${k}" aria-selected="${on}">${l}</button>`).join('');
-  seg.querySelectorAll('button').forEach(b=>b.onclick=()=>{const k=b.dataset.k;
-    if(VIEW==='linha'){CURL=k;store.set('kitaps:linha',k);const last=store.get('kitaps:lastl-'+k);go(last&&LINHAS[k].ids.includes(last)?last:LINHAS[k].ids[0])}
-    else go(store.get('kitaps:last-'+k)||SECS[k][0])});
-  $('#mode').textContent=VIEW==='linha'?'Ver por tipo':'Ver por linha de cuidado';
+function renderMenu(){
+  const nav=$('#menu-list');let g='',h='';
+  SECTIONS.forEach(s=>{if(s.g!==g){g=s.g;h+=`<div class="mg">${esc(g)}</div>`}
+    h+=`<button class="mi" data-s="${s.k}" aria-current="${s.k===CURS}"><span class="mic">${icon(s.ic)}</span><span>${esc(s.t)}</span><span class="mn">${s.ids.length>1?s.ids.length:''}</span></button>`});
+  nav.innerHTML=h;
+  nav.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{openSection(b.dataset.s);closeMenu()});
+  $('#sec-name').innerHTML=icon(SECM[CURS].ic,18)+'<span>'+esc(SECM[CURS].t)+'</span>';
 }
+function openSection(k){const s=SECM[k];CURS=k;store.set('kitaps:sec',k);const last=store.get('kitaps:lasts-'+k);go(last&&s.ids.includes(last)?last:s.ids[0],k)}
+function openMenu(){document.body.classList.add('menu-open');$('#menu-btn').setAttribute('aria-expanded','true');const a=$('#menu-list [aria-current="true"]');if(a)a.focus()}
+function closeMenu(){document.body.classList.remove('menu-open');$('#menu-btn').setAttribute('aria-expanded','false')}
 function renderFavs(){
   const f=$('#favs');f.hidden=!FAV.length;
   f.innerHTML=FAV.length?'<span class="favlbl" aria-hidden="true">★</span>'+FAV.map(id=>`<button class="chip fav" data-id="${id}" aria-selected="${id===cur.id}">${esc(chipLabel(id))}</button>`).join(''):'';
   f.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>go(b.dataset.id));
 }
 function renderChips(){
-  const c=$('#chips');c.innerHTML='';
-  const list=VIEW==='linha'?LINHAS[CURL].ids:SECS[cur.sec];
+  const c=$('#chips');c.innerHTML='';const s=SECM[CURS],list=s.ids;
   c.hidden=list.length<2;
   list.forEach(id=>{const b=document.createElement('button');b.className='chip';b.id='chip-'+id;b.role='tab';
-    const tg=VIEW==='linha'?SECTAG[secOf(id)]:'';b.innerHTML=(tg?`<small class="ctag">${tg}</small>`:'')+esc(id==='esquema'&&VIEW==='linha'?'Folha do paciente':chipLabel(id));
-    b.setAttribute('aria-selected',id===cur.id);b.onclick=()=>go(id);c.appendChild(b)});
-  renderSeg();renderFavs();
+    const tg=s.ln?(id==='fluxodm'?'Fluxo':SECTAG[secOf(id)]):'';b.innerHTML=(tg?`<small class="ctag">${tg}</small>`:'')+esc(id==='esquema'&&s.ln?'Folha do paciente':id==='fluxodm'&&(s.ln||CURS==='fx')?'Diabetes (DM2)':chipLabel(id));
+    b.setAttribute('aria-selected',id===cur.id);b.onclick=()=>go(id,CURS);c.appendChild(b)});
+  renderMenu();renderFavs();
 }
+function addHead(){const h=$('#main .ph h2');if(h&&!h.querySelector('.hic'))h.insertAdjacentHTML('afterbegin',`<span class="hic">${icon(SECM[CURS].ic,18)}</span>`)}
 function addStar(){
   const ph=$('#main .ph');if(!ph)return;const id=cur.id,on=FAV.includes(id);
   const b=document.createElement('button');b.className='star';b.type='button';b.setAttribute('aria-pressed',on);b.title=on?'Tirar dos favoritos':'Fixar nos favoritos';
@@ -1282,25 +1715,28 @@ function addStar(){
   b.onclick=()=>{const i=FAV.indexOf(id);if(i>=0)FAV.splice(i,1);else FAV.push(id);saveFav();toast(i>=0?'Removido dos favoritos':'Fixado nos favoritos');renderFavs();b.remove();addStar()};
   ph.appendChild(b);
 }
-function go(id){
+function go(id,sk){
   cur={sec:secOf(id),id};
-  if(VIEW==='linha'&&!LINHAS[CURL].ids.includes(id)){const k=Object.keys(LINHAS).find(k=>LINHAS[k].ids.includes(id));if(k){CURL=k;store.set('kitaps:linha',k)}}
-  if(VIEW==='linha')store.set('kitaps:lastl-'+CURL,id);
-  store.set('kitaps:last',id);
+  if(sk&&SECM[sk]&&SECM[sk].ids.includes(id))CURS=sk;
+  else if(!SECM[CURS].ids.includes(id)){const s=SECTIONS.find(s=>!s.ln&&s.ids.includes(id))||SECTIONS.find(s=>s.ids.includes(id));if(s)CURS=s.k}
+  store.set('kitaps:sec',CURS);store.set('kitaps:lasts-'+CURS,id);store.set('kitaps:last',id);
   try{history.replaceState(null,'','#'+id)}catch(e){}
-  renderChips();render();addStar();
+  renderChips();render();addHead();addStar();
   const ch=document.getElementById('chip-'+id);if(ch&&ch.scrollIntoView)ch.scrollIntoView({block:'nearest',inline:'nearest'});
   window.scrollTo(0,0);
 }
-$('#mode').onclick=()=>{VIEW=VIEW==='linha'?'tipo':'linha';store.set('kitaps:view',VIEW);go(cur.id)};
+$('#menu-btn').onclick=()=>document.body.classList.contains('menu-open')?closeMenu():openMenu();
+$('#menu-bg').onclick=closeMenu;
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
 
 function render(){
   store.set('kitaps:last-'+cur.sec,cur.id);
   const m=$('#main');
   if(cur.sec==='soap')return renderSoap(m,cur.id);
   if(cur.sec==='presc')return renderPresc(m,cur.id);
-  if(cur.sec==='esq')return renderESQ(m);
+  if(cur.sec==='esq')return cur.id==='meu'?renderMeu(m):renderESQ(m);
   if(cur.sec==='mev')return renderMEV(m,cur.id);
+  if(cur.sec==='fx')return renderFX(m,cur.id);
   ({ig:renderIG,tfg:renderTFG,imc:renderIMC,phq9:renderPHQ,audit:renderAUDIT,gad7:renderGAD,insulina:renderINS,fluxodm:renderFLUXO,melanoma:renderMEL,rcv:renderRCV,rastreio:renderRAST,vacinas:renderVAC,ajustes:renderAJ,fager:renderFAGER,ipss:renderIPSS})[cur.id](m);
 }
 
@@ -1309,9 +1745,12 @@ function renderPresc(m,id){
   m.innerHTML=`<section class="panel">
     <div class="ph"><h2>${esc(c.t)}</h2><span class="code">adultos</span></div>
     <div class="rec"><b>Receituário:</b> ${esc(c.rec)}.</div>
-    ${c.items.map((it,i)=>`<article class="card rxcard"><h3>${esc(it.t)}</h3><pre class="rx" id="rx-${i}">${esc(it.rx)}</pre><div class="bar"><button class="btn primary small" data-i="${i}">Copiar prescrição</button><button class="btn small" data-e="${i}">Levar ao esquema do paciente</button></div>${it.n?`<p class="note">${esc(it.n)}</p>`:''}${(()=>{const ds=drugsIn(it.rx);return ds.length?`<details><summary>Ajustes: DRC, gestação, lactação, idoso</summary><div style="display:grid;gap:8px;margin-top:8px">${ds.map(d=>drugCard(d,{tfg:num(store.get('kitaps:tfg'))})).join('')}</div></details>`:''})()}</article>`).join('')}
-    <p class="note">Doses para adultos com função renal e hepática normais. Confira alergias, gestação, interações e a disponibilidade na REMUME do seu município.</p>
+    ${c.items.map((it,i)=>`<article class="card rxcard"><h3>${esc(it.t)}${edTag(it.ed,it.own)}</h3><pre class="rx" id="rx-${i}">${esc(it.rx)}</pre><div class="bar"><button class="btn primary small" data-i="${i}">Copiar prescrição</button><button class="btn small" data-e="${i}">Levar ao esquema do paciente</button><button class="btn small" data-ed="${i}" aria-label="Editar ${esc(it.t)}">${icon('edit',14)} Editar</button></div>${it.n?`<p class="note">${esc(it.n)}</p>`:''}${(()=>{const ds=drugsIn(it.rx);return ds.length?`<details><summary>Ajustes: DRC, gestação, lactação, idoso</summary><div style="display:grid;gap:8px;margin-top:8px">${ds.map(d=>drugCard(d,{tfg:num(store.get('kitaps:tfg'))})).join('')}</div></details>`:''})()}</article>`).join('')}
+    <article class="card rxcard" id="rx-newcard"><div class="bar"><button class="btn small" id="rx-new" type="button">+ Nova prescrição nesta classe</button></div></article>
+    <p class="note">Doses para adultos com função renal e hepática normais. Confira alergias, gestação, interações e a disponibilidade na REMUME do seu município. Use Editar para ajustar ao seu protocolo: fica salvo neste aparelho.</p>
   </section>`;
+  m.querySelectorAll('button[data-ed]').forEach(b=>b.onclick=()=>rxEditor(b.closest('article'),id,+b.dataset.ed));
+  $('#rx-new').onclick=()=>rxEditor($('#rx-newcard'),id,null);
   m.querySelectorAll('button[data-i]').forEach(b=>b.onclick=()=>copy(c.items[+b.dataset.i].rx));
   m.querySelectorAll('button[data-e]').forEach(b=>b.onclick=()=>{const n=addToEsq(c.items[+b.dataset.e].rx);toast(n?n+' remédio(s) no esquema do paciente':'Não consegui ler esta receita')});
 }
@@ -2240,8 +2679,9 @@ function renderIPSS(m){
 }
 
 const h=(location.hash||'').slice(1);
-const start=(T[h]||C[h]||P[h]||M[h]||E[h])?h:(store.get('kitaps:last')||'has');
-go(T[start]||C[start]||P[start]||M[start]||E[start]?start:'has');
+const known=id=>!!(T[id]||C[id]||P[id]||M[id]||F[id]||E[id]);
+const start=known(h)?h:(store.get('kitaps:last')||'has');
+go(known(start)?start:'has');
 /* ---------- Busca única ---------- */
 const CKEY={ig:'idade gestacional dpp dum usg gestacao gravidez parto',tfg:'creatinina rim renal ckd-epi filtracao drc',imc:'peso altura obesidade indice de massa corporal',phq9:'depressao humor rastreio',gad7:'ansiedade rastreio',audit:'alcool bebida etilismo',insulina:'nph regular diabetes titulacao dose glicemia hipoglicemia',fluxodm:'diabetes metformina fluxograma tratamento dm2 gliclazida dapagliflozina',melanoma:'pele nevo pinta lesao abcde glasgow cancer',rcv:'framingham colesterol risco cardiovascular estatina ldl',rastreio:'rastreamento preventivo citopatologico papanicolau preventivo mamografia colonoscopia sangue oculto psof densitometria osteoporose psa sorologias hiv sifilis hepatite',ajustes:'ajuste dose renal drc tfg gestacao gravidez lactacao amamentacao idoso beers interacao seguranca',vacinas:'vacina calendario vacinal pni imunizacao bcg penta hpv dtpa influenza gestante crianca idoso',fager:'cigarro tabagismo fumo fagerstrom anos-maco nicotina',ipss:'prostata hpb urinario luts'};
 let IDX=null;
@@ -2253,6 +2693,8 @@ function buildIdx(){
     c.items.forEach((it,i)=>{const drugs=(it.rx.match(/^\d+\.\s*([^\n.]+?)\s*\.{3,}/gm)||[]).map(x=>x.replace(/^\d+\.\s*/,'').replace(/\s*\.{3,}$/,''));
       L.push({id,i,sec:'Prescrições',lab:it.t,sub:c.s+(drugs.length?' · '+drugs.join(', '):''),key:norm(it.t+' '+c.t+' '+drugs.join(' ')+' '+it.n)})})});
   Object.entries(M).forEach(([id,c])=>L.push({id,sec:'MEV',lab:'MEV: '+c.t,key:norm('mev estilo de vida orientacoes '+c.t+' '+c.s)}));
+  Object.entries(F).forEach(([id,f])=>L.push({id,sec:'Fluxograma',lab:f.t,key:norm('fluxograma conduta '+f.t+' '+f.s+' '+f.k)}));
+  L.push({id:'meu',sec:'Meu kit',lab:'Minhas edições e backup',key:norm('editar edicoes minhas backup exportar importar restaurar salvar arquivo personalizar')});
   L.push({id:'esquema',sec:'Paciente',lab:'Esquema de remédios do paciente',key:norm('esquema paciente folha imprimir horarios manha tarde noite figuras analfabeto')});
   return L;
 }
@@ -2275,7 +2717,7 @@ function openResult(e){
   q.addEventListener('keydown',e=>{if(e.key==='Enter'&&res[0]){e.preventDefault();openResult(res[0])}if(e.key==='Escape'){q.value='';box.hidden=true}});
   document.addEventListener('click',e=>{if(!e.target.closest('.search'))box.hidden=true});
 })();
-window.__test={ckdepi,usgLimit,framingham,parseList,searchKit};
+window.__test={ckdepi,usgLimit,framingham,parseList,searchKit,go,F,fxPlain,get CURS(){return CURS}};
 })();
 </script>
 
