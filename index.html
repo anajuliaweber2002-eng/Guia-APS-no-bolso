@@ -198,6 +198,10 @@ textarea.nota{font-family:var(--f-ui);font-size:.9rem}
 .gl{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.9rem}
 .gsvg svg{width:100%;max-width:420px;height:auto;display:block;margin:0 auto;color:var(--fg)}
 .gsvg svg.ecg{max-width:640px;border-radius:6px}
+.toc .tocl{display:flex;flex-wrap:wrap;gap:6px}
+.toc .chip{white-space:normal;text-align:left;line-height:1.3;font-size:.82rem;padding:5px 11px}
+.totop{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(80px + env(safe-area-inset-bottom,0px));z-index:6;width:44px;height:44px;border-radius:50%;border:0;background:var(--accent);color:var(--accent-fg);display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.totop:focus-visible{outline:3px solid var(--accent-soft);outline-offset:2px}
 .atsheet{background:#fff;color:#111;padding:28px 24px;font:15px/1.6 Georgia,'Times New Roman',serif;gap:22px}
 .ath{text-align:center;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.85rem}
 .att{text-align:center;font-weight:700;letter-spacing:.06em}
@@ -234,6 +238,7 @@ textarea.nota{font-family:var(--f-ui);font-size:.9rem}
 <main>
   <div class="wrap" id="main"></div>
 </main>
+<button id="totop" class="totop" type="button" aria-label="Voltar ao topo" title="Voltar ao topo" hidden><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5 M5 12l7-7 7 7"/></svg></button>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -2141,6 +2146,9 @@ function confirm2(btn,fn){
   setTimeout(()=>{if(btn.isConnected&&btn.dataset.c){btn.textContent=old;delete btn.dataset.c}},3000);
 }
 function rerender(){render();addHead();addStar()}
+/* Índice das páginas longas: chips que rolam até cada card */
+const tocHTML=L=>L.length<4?'':`<nav class="card toc" aria-label="Nesta página"><div class="lbl">Nesta página</div><div class="tocl">${L.map(([id,t])=>`<button class="chip" type="button" data-toc="${id}">${t}</button>`).join('')}</div></nav>`;
+function bindToc(m){m.querySelectorAll('[data-toc]').forEach(b=>b.onclick=()=>{focusCard('#'+b.dataset.toc);const c=$('#'+b.dataset.toc);if(c){c.style.outline='2px solid var(--accent)';setTimeout(()=>c.style.outline='',1200)}})}
 function focusCard(sel){const el=$(sel);if(!el)return;const top=el.getBoundingClientRect().top+window.scrollY-(document.querySelector('header').offsetHeight+12);window.scrollTo(0,Math.max(0,top))}
 const edTag=(on,own)=>on?`<span class="edtag">${own?'minha':'editada'}</span>`:'';
 function rxEditor(card,id,i){
@@ -2804,7 +2812,8 @@ function renderGD(m,id){
       <div class="field"><label for="lp-hdl">HDL</label><input id="lp-hdl" inputmode="decimal" value="45"></div>
       <div class="field"><label for="lp-tg">Triglicerídeos</label><input id="lp-tg" inputmode="decimal" value="180"></div></div>
       <p class="ex">Exemplo: substitua pelos dados da pessoa</p><div class="result" id="lp-r"></div>${copyBtn()}</div>`:''}
-    ${g.sec.map((x,i)=>`<div class="card gd">
+    ${tocHTML(g.sec.map((x,i)=>['gd-'+i,x.h]))}
+    ${g.sec.map((x,i)=>`<div class="card gd" id="gd-${i}">
       <div class="lbl lbl-row"><span>${x.h}</span><button class="btn small" data-c="${i}" type="button">Copiar</button></div>
       ${x.intro?`<p class="note" style="color:var(--fg)">${x.intro}</p>`:''}
       ${x.svg?`<div class="gsvg">${x.svg}</div>`:''}
@@ -2815,7 +2824,7 @@ function renderGD(m,id){
     ${(g.rel||[]).filter(x=>known(x[0])).length?`<div class="lbl">Ferramentas relacionadas</div><div class="bar">${g.rel.filter(x=>known(x[0])).map(x=>`<button class="chip" data-go="${x[0]}" type="button">${esc(x[1])}</button>`).join('')}</div>`:''}
     <p class="note">Resumo para consulta rápida. Confira o protocolo vigente do MS e do seu município.</p>
   </section>`;
-  m.querySelectorAll('[data-cs]').forEach(b=>b.onclick=()=>addCons('ef',g.t,g.sec[+b.dataset.cs].normal));
+  m.querySelectorAll('[data-cs]').forEach(b=>b.onclick=()=>addCons('ef',g.t,g.sec[+b.dataset.cs].normal));bindToc(m);
   m.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
   m.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{const x=g.sec[+b.dataset.c];
     copy(x.normal?x.normal:fxText(x.h)+'\n'+(x.li||[]).map(l=>'- '+fxText(l)).join('\n')+(x.rows||[]).map(r=>'- '+fxText(r[0])+': '+fxText(r[1])).join('\n'))});
@@ -3421,6 +3430,8 @@ function go(id,sk){
   window.scrollTo(0,0);
 }
 $('#cons-btn').onclick=()=>go('consulta');updConsBadge();
+{const tt=$('#totop');let raf=0;const chk=()=>{raf=0;tt.hidden=window.scrollY<500};addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(chk)},{passive:true});
+ tt.onclick=()=>{const r=matchMedia('(prefers-reduced-motion: reduce)').matches;window.scrollTo({top:0,behavior:r?'auto':'smooth'});setTimeout(()=>{const h=document.querySelector('main h2');if(h){h.tabIndex=-1;h.focus({preventScroll:true})}},400)};chk()}
 $('#menu-btn').onclick=()=>document.body.classList.contains('menu-open')?closeMenu():openMenu();
 $('#menu-bg').onclick=closeMenu;
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
@@ -3446,13 +3457,14 @@ function renderPresc(m,id){
   m.innerHTML=`<section class="panel">
     <div class="ph"><h2>${esc(c.t)}</h2><span class="code">adultos</span></div>
     <div class="rec"><b>Receituário:</b> ${esc(c.rec)}.</div>
-    ${c.items.map((it,i)=>`<article class="card rxcard"><h3>${esc(it.t)}${edTag(it.ed,it.own)}</h3><pre class="rx" id="rx-${i}">${esc(it.rx)}</pre><div class="bar"><button class="btn primary small" data-i="${i}">Copiar prescrição</button><button class="btn small" data-e="${i}">Levar ao esquema do paciente</button><button class="btn small" data-cs="${i}" type="button">+ Consulta</button><button class="btn small" data-ed="${i}" aria-label="Editar ${esc(it.t)}">${icon('edit',14)} Editar</button></div>${it.n?`<p class="note">${esc(it.n)}</p>`:''}${(()=>{const ds=drugsIn(it.rx);return ds.length?`<details><summary>Ajustes: DRC, gestação, lactação, idoso</summary><div style="display:grid;gap:8px;margin-top:8px">${ds.map(d=>drugCard(d,{tfg:num(store.get('kitaps:tfg'))})).join('')}</div></details>`:''})()}</article>`).join('')}
+    ${tocHTML(c.items.map((it,i)=>['rxa-'+i,esc(it.t)]))}
+    ${c.items.map((it,i)=>`<article class="card rxcard" id="rxa-${i}"><h3>${esc(it.t)}${edTag(it.ed,it.own)}</h3><pre class="rx" id="rx-${i}">${esc(it.rx)}</pre><div class="bar"><button class="btn primary small" data-i="${i}">Copiar prescrição</button><button class="btn small" data-e="${i}">Levar ao esquema do paciente</button><button class="btn small" data-cs="${i}" type="button">+ Consulta</button><button class="btn small" data-ed="${i}" aria-label="Editar ${esc(it.t)}">${icon('edit',14)} Editar</button></div>${it.n?`<p class="note">${esc(it.n)}</p>`:''}${(()=>{const ds=drugsIn(it.rx);return ds.length?`<details><summary>Ajustes: DRC, gestação, lactação, idoso</summary><div style="display:grid;gap:8px;margin-top:8px">${ds.map(d=>drugCard(d,{tfg:num(store.get('kitaps:tfg'))})).join('')}</div></details>`:''})()}</article>`).join('')}
     <article class="card rxcard" id="rx-newcard"><div class="bar"><button class="btn small" id="rx-new" type="button">+ Nova prescrição nesta classe</button></div></article>
     <p class="note">Doses para adultos com função renal e hepática normais. Confira alergias, gestação, interações e a disponibilidade na REMUME do seu município. Use Editar para ajustar ao seu protocolo: fica salvo neste aparelho.</p>
   </section>`;
   m.querySelectorAll('button[data-ed]').forEach(b=>b.onclick=()=>rxEditor(b.closest('article'),id,+b.dataset.ed));
   m.querySelectorAll('button[data-cs]').forEach(b=>b.onclick=()=>{const it=c.items[+b.dataset.cs];addCons('rx',it.t,it.rx)});
-  $('#rx-new').onclick=()=>rxEditor($('#rx-newcard'),id,null);
+  $('#rx-new').onclick=()=>rxEditor($('#rx-newcard'),id,null);bindToc(m);
   m.querySelectorAll('button[data-i]').forEach(b=>b.onclick=()=>copy(c.items[+b.dataset.i].rx));
   m.querySelectorAll('button[data-e]').forEach(b=>b.onclick=()=>{const n=addToEsq(c.items[+b.dataset.e].rx);toast(n?n+' remédio(s) no esquema do paciente':'Não consegui ler esta receita')});
 }
