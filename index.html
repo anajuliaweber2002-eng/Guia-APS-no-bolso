@@ -88,6 +88,18 @@ body.menu-open .menu-bg{opacity:1;pointer-events:auto}
 .ttl h1{white-space:nowrap}
 .sec-name svg{flex:none}
 .hic{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);margin-right:8px;vertical-align:-7px}
+.mrow{display:flex;align-items:center;gap:2px}
+.mrow .mi{flex:1;min-width:0}
+.mx{flex:none;width:36px;height:36px;border:0;background:none;color:var(--muted);border-radius:8px;cursor:pointer;display:grid;place-items:center}
+.mx:hover{background:var(--sunk)}
+.mx svg{transition:transform .15s}
+.mx[aria-expanded="true"] svg{transform:rotate(180deg)}
+.msub{display:grid;gap:1px;padding:2px 0 8px 52px}
+.msi{border:0;background:none;color:var(--fg);font:400 .86rem var(--f-ui);text-align:left;padding:6px 8px;border-radius:7px;cursor:pointer;line-height:1.3}
+.msi:hover{background:var(--sunk)}
+.msi[aria-current="true"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.msi .ctag{display:inline-block;min-width:34px}
+select.chip.pick{appearance:none;-webkit-appearance:none;background:var(--accent-soft);color:var(--accent);border-color:transparent;font-weight:600;padding-right:12px;max-width:9.5em}
 .mn{margin-left:auto;font-size:.75rem;color:var(--muted);font-variant-numeric:tabular-nums}
 @media (min-width:1000px){
   .menu{transform:none;box-shadow:none;width:260px;top:0}
@@ -207,6 +219,11 @@ textarea.nota{font-family:var(--f-ui);font-size:.9rem}
 .att{text-align:center;font-weight:700;letter-spacing:.06em}
 .atb{white-space:normal;text-align:justify}
 .atf{text-align:center}
+.rxsheet{display:none}
+.rxp{white-space:pre-wrap;font:14px/1.65 var(--f-mono);min-height:40vh}
+textarea.soap.rxta{min-height:0;overflow:hidden}
+.srxv{margin:0;padding-bottom:4px}
+.rxpac{display:flex;gap:8px;align-items:flex-end}.rxpac span{flex:1;border-bottom:1px solid #111;height:1.2em}
 .mi[data-s="urg"] .mic{background:var(--bad-soft);color:var(--bad)}
 .mi[data-s="urg"][aria-current="true"] .mic{background:var(--bad);color:#fff}
 .cons-btn{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--accent);font:600 .82rem var(--f-ui);padding:7px 11px;border-radius:999px;cursor:pointer}
@@ -216,7 +233,7 @@ textarea.nota{font-family:var(--f-ui);font-size:.9rem}
 .lnk{background:none;border:0;padding:0;color:var(--accent);font:600 .84rem var(--f-ui);text-align:left;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 .out{font-weight:600}
 .sec-h{margin:6px 0 0;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-@media print{@page{margin:8mm}body{background:#fff}body::before,header,.toast{display:none!important}main .wrap>section>*:not(#sheet){display:none!important}#sheet{border:0!important;padding:0!important}main .wrap{padding:0!important;max-width:none}}
+@media print{@page{margin:8mm}body{background:#fff}body::before,header,.toast{display:none!important}main .wrap>section>*:not(#sheet){display:none!important}#sheet{border:0!important;padding:0!important}#sheet.rxsheet{display:grid!important}main .wrap{padding:0!important;max-width:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -1436,6 +1453,84 @@ rx_cv:{s:'HAS e ICC',t:'Hipertensão e insuficiência cardíaca',rec:'Receita si
  {t:'ICC: diurético de alça (congestão)',rx:`Uso oral
 1. Furosemida 40 mg ...... 30 comprimidos
    Tomar 1 comprimido pela manhã.`,n:'Dose pelo estado volêmico (20–80 mg, até 2x/dia). Orientar pesagem diária: ganho > 2 kg em 3 dias pede reavaliação. Reduzir quando euvolêmico. Monitorar potássio, sódio e função renal. Restrição hídrica só em hiponatremia ou congestão refratária.'}]},
+rx_dm:{s:'Diabetes',t:'Diabetes: antidiabéticos e insulina',rec:'Receita simples (uso contínuo; validade conforme protocolo local)',items:[
+ {t:'Metformina (início)',rx:`Uso oral contínuo
+1. Metformina 850 mg ...... 60 comprimidos
+   Tomar 1 comprimido após o almoço por 2 semanas. Depois, 1 comprimido após o café da manhã e 1 após o jantar.`,n:'Começar com 500–850 mg/dia e subir a cada 1–2 semanas até 2 g/dia (máx. 2.550 mg). Sempre com refeição. TFG 30–44: máx. 1 g/dia; TFG < 30: suspender. Uso prolongado: dosar B12 anualmente. Intolerância gastrintestinal: metformina XR.'},
+ {t:'Metformina + gliclazida',rx:`Uso oral contínuo
+1. Metformina 850 mg ...... 90 comprimidos
+   Tomar 1 comprimido após o café da manhã, o almoço e o jantar.
+2. Gliclazida 30 mg (liberação prolongada) ...... 30 comprimidos
+   Tomar 1 comprimido no café da manhã.`,n:'Gliclazida MR pode subir até 120 mg/dia (4 comprimidos juntos no café). Orientar sobre hipoglicemia e não pular refeição. Evitar glibenclamida em idosos e na DRC.'},
+ {t:'iSGLT2: dapagliflozina',rx:`Uso oral contínuo
+1. Dapagliflozina 10 mg ...... 30 comprimidos
+   Tomar 1 comprimido por dia.`,n:'Benefício em doença cardiovascular, IC e DRC (iniciar com TFG ≥ 25). Higiene genital (candidíase), hidratação. Suspender em doença aguda com vômito ou desidratação e 3 dias antes de cirurgia (cetoacidose euglicêmica). No SUS: conferir critérios do PCDT e da REMUME.'},
+ {t:'Insulina NPH ao deitar',rx:`Uso subcutâneo contínuo
+1. Insulina humana NPH 100 UI/mL ...... frascos ou canetas suficientes para 30 dias
+   Aplicar 10 UI por via subcutânea às 22 horas.
+2. Seringas de insulina com agulha curta ...... 30 unidades
+3. Tiras reagentes, lancetas e glicosímetro ...... conforme protocolo do município
+   Medir a glicemia em jejum todos os dias e anotar.`,n:'Início: 10 UI ou 0,1–0,2 UI/kg ao deitar, mantendo a metformina. Subir 2 UI a cada 3 dias até glicemia de jejum de 80–130 mg/dL; reduzir 4 UI (ou 10%) se hipoglicemia. Ver a calculadora Insulina e a folha de hipoglicemia.'}]},
+rx_lip:{s:'Colesterol',t:'Dislipidemia: estatinas',rec:'Receita simples (uso contínuo)',items:[
+ {t:'Sinvastatina (moderada intensidade)',rx:`Uso oral contínuo
+1. Sinvastatina 40 mg ...... 30 comprimidos
+   Tomar 1 comprimido à noite.`,n:'Reduz o LDL em cerca de 30–40%. Evitar com claritromicina, itraconazol e muito suco de toranja. Mialgia: dosar CK. Lipidograma em 6–12 semanas.'},
+ {t:'Atorvastatina (alta intensidade)',rx:`Uso oral contínuo
+1. Atorvastatina 40 mg ...... 30 comprimidos
+   Tomar 1 comprimido por dia, no mesmo horário.`,n:'Alta intensidade (40–80 mg): doença cardiovascular estabelecida ou risco alto. Reduz o LDL em cerca de 50%. Contraindicada na gestação e na amamentação.'}]},
+rx_resp:{s:'Asma e DPOC',t:'Asma e DPOC: inalatórios',rec:'Receita simples (uso contínuo)',items:[
+ {t:'Asma: budesonida + formoterol (manutenção e alívio)',rx:`Uso inalatório contínuo
+1. Budesonida + formoterol 200/6 mcg cápsula para inalação ...... 60 cápsulas
+   Inalar 1 cápsula de 12 em 12 horas e 1 cápsula a mais se falta de ar (máximo de 8 por dia). Enxaguar a boca depois.`,n:'Estratégia preferida pela GINA (MART). Asma leve: pode ser só se necessário. Revisar técnica e adesão a cada consulta.'},
+ {t:'Asma: beclometasona + salbutamol',rx:`Uso inalatório contínuo
+1. Dipropionato de beclometasona 250 mcg/dose aerossol ...... 1 frasco
+   Inalar 1 jato com espaçador de 12 em 12 horas. Enxaguar a boca depois.
+
+Uso inalatório se necessário
+2. Salbutamol 100 mcg/dose aerossol ...... 1 frasco
+   Inalar 2 a 4 jatos com espaçador se falta de ar ou chiado, até de 4 em 4 horas.`,n:'Salbutamol sozinho, sem corticoide inalatório, não é recomendado na asma. Usa salbutamol mais de 2 vezes por semana: subir a etapa.'},
+ {t:'DPOC: broncodilatador de longa ação',rx:`Uso inalatório contínuo
+1. Umeclidínio + vilanterol 62,5/25 mcg pó para inalação ...... 1 dispositivo (30 doses)
+   Inalar 1 dose por dia, no mesmo horário.
+
+Uso inalatório se necessário
+2. Salbutamol 100 mcg/dose aerossol ...... 1 frasco
+   Inalar 2 a 4 jatos com espaçador se falta de ar.`,n:'Alternativa: tiotrópio (com ou sem olodaterol) ou formoterol. Corticoide inalatório só se exacerbações frequentes e eosinófilos ≥ 300/µL. Vacinas, reabilitação e cessação do tabagismo.'}]},
+rx_end:{s:'Tireoide',t:'Hipotireoidismo',rec:'Receita simples (uso contínuo)',items:[
+ {t:'Levotiroxina',rx:`Uso oral contínuo
+1. Levotiroxina sódica 50 mcg ...... 30 comprimidos
+   Tomar 1 comprimido em jejum, 30 a 60 minutos antes do café da manhã, todos os dias.`,n:'Dose plena: cerca de 1,6 mcg/kg/dia em adulto jovem. Idoso ou cardiopata: começar com 12,5–25 mcg e subir a cada 4–6 semanas. TSH em 6–8 semanas após cada ajuste. Separar 4 h de cálcio, ferro e antiácidos. Gestação: aumentar cerca de 30%.'}]},
+rx_uro:{s:'Próstata',t:'Hiperplasia prostática benigna',rec:'Receita simples (uso contínuo)',items:[
+ {t:'Doxazosina (alfabloqueador)',rx:`Uso oral contínuo
+1. Doxazosina 2 mg ...... 30 comprimidos
+   Tomar 1 comprimido à noite, ao deitar.`,n:'Começar com 1 mg e subir até 4–8 mg. Hipotensão postural: levantar devagar. Melhora em dias.'},
+ {t:'Tansulosina',rx:`Uso oral contínuo
+1. Tansulosina 0,4 mg ...... 30 cápsulas
+   Tomar 1 cápsula por dia, 30 minutos após a mesma refeição.`,n:'Menos hipotensão que a doxazosina. Avisar o oftalmologista antes de cirurgia de catarata.'},
+ {t:'Finasterida (próstata aumentada)',rx:`Uso oral contínuo
+1. Finasterida 5 mg ...... 30 comprimidos
+   Tomar 1 comprimido por dia.`,n:'Próstata > 30–40 mL. Efeito em 3 a 6 meses; associar ao alfabloqueador nos sintomas moderados a graves. Reduz o PSA pela metade (multiplicar por 2 para interpretar).'}]},
+rx_gest:{s:'Gestação',t:'Gestação e puerpério',rec:RS,items:[
+ {t:'Pré-natal: ácido fólico e sulfato ferroso',rx:`Uso oral
+1. Ácido fólico 0,4 mg ...... 30 comprimidos
+   Tomar 1 comprimido por dia, até a 12ª semana.
+2. Sulfato ferroso 40 mg de ferro elementar ...... 30 comprimidos
+   Tomar 1 comprimido por dia, 30 minutos antes do almoço, com suco de fruta cítrica.`,n:'Ácido fólico desde 30 dias antes de engravidar. 5 mg/dia se DTN prévio, epilepsia em uso de anticonvulsivante, obesidade ou DM (na falta de 0,4 mg, a rede costuma ter 5 mg). Ferro durante toda a gestação e até 3 meses pós-parto.'},
+ {t:'Risco de pré-eclâmpsia: AAS e cálcio',rx:`Uso oral
+1. Ácido acetilsalicílico 100 mg ...... 30 comprimidos
+   Tomar 1 comprimido por dia, à noite, da 12ª à 36ª semana.
+2. Carbonato de cálcio 1.250 mg (500 mg de cálcio) ...... 60 comprimidos
+   Tomar 1 comprimido no almoço e 1 no jantar, longe do sulfato ferroso.`,n:'AAS se 1 fator de alto risco (pré-eclâmpsia prévia, HAS crônica, DM, DRC, lúpus/SAF, gemelar) ou 2 ou mais moderados (primigesta, IMC > 30, idade ≥ 35, história familiar). Cálcio se a dieta for pobre em cálcio.'},
+ {t:'Puerpério: sulfato ferroso',rx:`Uso oral
+1. Sulfato ferroso 40 mg de ferro elementar ...... 90 comprimidos
+   Tomar 1 comprimido por dia, 30 minutos antes do almoço, por 3 meses.`,n:'Contracepção na amamentação: minipílula (Prescrições, Contracepção), DIU ou implante.'}]},
+rx_ped:{s:'Puericultura',t:'Puericultura: vitaminas e ferro',rec:RS,items:[
+ {t:'Vitamina D',rx:`Uso oral
+1. Colecalciferol (vitamina D3) solução oral ...... 1 frasco
+   Dar 400 UI por dia, em uma tomada, do nascimento até 1 ano de idade.`,n:'SBP: 400 UI/dia até 12 meses e 600 UI/dia de 12 a 24 meses. A concentração muda entre marcas (por exemplo 200 UI ou 500 UI por gota): escreva o número de gotas da marca dispensada.'},
+ {t:'Ferro profilático (6 a 24 meses)',rx:`Uso oral
+1. Sulfato ferroso solução oral 25 mg/mL de ferro elementar ...... 1 frasco
+   Dar [__] gotas (1 mg/kg de ferro) 1 vez ao dia, longe do leite, dos 6 aos 24 meses.`,n:'Com 20 gotas/mL, 1 gota tem 1,25 mg: gotas = peso (kg) × 0,8. Prematuro ou baixo peso: 2 mg/kg/dia a partir de 30 dias. Calcule em Doses pediátricas.'}]},
 rx_hiv:{s:'HIV, PEP, PrEP',t:'HIV, PEP e PrEP',rec:'Antirretrovirais são dispensados nas UDM com receita + Formulário de Solicitação de Medicamentos (SICLOM), conforme PCDT do MS',items:[
  {t:'TARV inicial (adultos, incluindo gestantes)',rx:`Uso oral, contínuo
 1. Lamivudina 300 mg + tenofovir 300 mg (TDF/3TC) ...... 30 comprimidos
@@ -3773,9 +3868,9 @@ const SECTIONS=[
  {g:'Ferramentas',k:'exames',t:'Interpretação de exames',ic:'exames',ids:['ex_hemo','ex_tsh','ex_eas','ex_lip','ex_hep','ex_gaso','ex_espiro','ex_mamo','ex_cito','pn_img','fatorr','fib4','gasocalc','espcalc']},
  {g:'Ferramentas',k:'ecg',t:'Interpretação de ECG',ic:'ecg',ids:['ecg_passo','ecg_taqui','ecg_bradi','ecg_eixo','ecg_sobrec','ecg_bloq','ecg_isq','ecg_qt','ecg_padroes','fcecg','eixo','qtc','sve']},
  {g:'Ferramentas',k:'prot',t:'Protocolos e prevenção',ic:'prot',ids:['pn_exames','pn_img','trh','tb','tbdose','hans','rastreio','vacinas','ajustes']},
- {g:'Linhas de cuidado',k:'cronicos',t:'Crônicos',ic:'cronicos',ln:1,ids:['has','dm','drc','hpb','hipotireo','obesidade','asma','dpoc','tabagismo','glp1','rx_glp1','or_hipo','or_pe','or_bomb','or_glp1','fx_has','fluxodm','efp_pe','efp_art','efp_ven','efp_ulc','itb','ecg_sobrec','sve','ex_espiro','ex_hep','fib4','hans','tb','fx_lip','fx_tireo','fx_asma','fx_dpoc','tfg','drcest','cg','imc','rcv','insulina','chads','hasbled','ipss','rastreio','vacinas','ajustes','melanoma','rx_cv','rx_anal','mev_has','mev_dm','mev_obes','mev_lip','mev_drc','mev_icc','mev_hpb','esquema']},
- {g:'Linhas de cuidado',k:'mulher',t:'Saúde da mulher',ic:'mulher',ln:1,ids:['prenatal','pn_exames','pn_img','ef_mama','ef_gin','ex_mamo','ex_cito','puerperio','contracepcao','climaterio','trh','mrs','rx_trh','ist','itu','ig','imc','rastreio','vacinas','ajustes','fx_sif','fx_itu','rx_aco','rx_ist','rx_hiv','rx_atb','mev_gest','esquema']},
- {g:'Linhas de cuidado',k:'crianca',t:'Saúde da criança',ic:'crianca',ln:1,ids:['puericultura','marcos','pedi','ef_ped','imc','vacinas','fx_diar','fx_dengue','fx_farin','rx_par','rx_sint','rx_tdah','snap','or_soro','mev_cri','esquema']},
+ {g:'Linhas de cuidado',k:'cronicos',t:'Crônicos',ic:'cronicos',ln:1,ids:['has','dm','drc','hpb','hipotireo','obesidade','asma','dpoc','tabagismo','rx_dm','rx_lip','rx_resp','rx_end','rx_uro','glp1','rx_glp1','or_hipo','or_pe','or_bomb','or_glp1','fx_has','fluxodm','efp_pe','efp_art','efp_ven','efp_ulc','itb','ecg_sobrec','sve','ex_espiro','ex_hep','fib4','hans','tb','fx_lip','fx_tireo','fx_asma','fx_dpoc','tfg','drcest','cg','imc','rcv','insulina','chads','hasbled','ipss','rastreio','vacinas','ajustes','melanoma','rx_cv','rx_anal','mev_has','mev_dm','mev_obes','mev_lip','mev_drc','mev_icc','mev_hpb','esquema']},
+ {g:'Linhas de cuidado',k:'mulher',t:'Saúde da mulher',ic:'mulher',ln:1,ids:['prenatal','pn_exames','pn_img','ef_mama','ef_gin','ex_mamo','ex_cito','puerperio','contracepcao','climaterio','trh','mrs','rx_trh','ist','itu','ig','imc','rastreio','vacinas','ajustes','fx_sif','fx_itu','rx_gest','rx_aco','rx_ist','rx_hiv','rx_atb','mev_gest','esquema']},
+ {g:'Linhas de cuidado',k:'crianca',t:'Saúde da criança',ic:'crianca',ln:1,ids:['puericultura','marcos','pedi','ef_ped','imc','vacinas','fx_diar','fx_dengue','fx_farin','rx_ped','rx_par','rx_sint','rx_tdah','snap','or_soro','mev_cri','esquema']},
  {g:'Linhas de cuidado',k:'mental',t:'Saúde mental',ic:'mental',ln:1,ids:['mental','ansiedade','tabagismo','fx_dep','fx_ans','phq9','gad7','audit','fager','rx_ad','rx_ans','rx_ap','rx_bip','rx_esq','rx_alc','rx_bul','rx_tdah','rx_tab','ciwa','asrs','snap','mev_dep','mev_ans','mev_sono','mev_alc','mev_tab','esquema']},
  {g:'Linhas de cuidado',k:'idoso',t:'Saúde do idoso',ic:'idoso',ln:1,ids:['idoso','vertigem','dhi','fx_vert','efp_pe','efp_ulc','braden','push','efp_ven','efp_art','itb','ecg_bradi','qtc','ivcf20','katz','lawton','minicog','quedas','pps','cg','has','dm','hpb','drc','ajustes','vacinas','rastreio','tfg','rcv','phq9','fx_has','fluxodm','fx_dep','fx_lomb','rx_anal','mev_has','mev_dm','mev_sono','esquema']},
  {g:'Linhas de cuidado',k:'agudos',t:'Agudos',ic:'agudos',ln:1,ids:['ivas','gea','itu','ist','dengue','cefaleia','lombalgia','vertigem','dhi','fx_vert','efp_vert','efp_lomb','efp_ombro','efp_joelho','curb65','centor','wells_tvp','wells_tep','ecg_isq','ecg_taqui','ecg_bradi','ex_gaso','gasocalc','atb_guia','tb','tbdose','fx_dengue','fx_farin','fx_sinus','fx_pac','fx_itu','fx_diar','fx_tor','fx_cef','fx_lomb','fx_tb','rx_atb','rx_sint','rx_anal','rx_par','rx_ist','rx_hiv','mev_ivas','mev_diar','or_dengue','or_soro','esquema']},
@@ -3786,12 +3881,20 @@ const secOf=id=>T[id]?'soap':C[id]?'calc':P[id]?'presc':M[id]?'mev':F[id]?'fx':G
 let CURS=SECM[store.get('kitaps:sec')]?store.get('kitaps:sec'):'soap';
 let FAV=[];try{FAV=JSON.parse(store.get('kitaps:favs')||'[]').filter(id=>T[id]||C[id]||P[id]||M[id]||F[id]||GD[id]||AT[id]||E[id])}catch(e){FAV=[]}
 const saveFav=()=>store.set('kitaps:favs',JSON.stringify(FAV));
+let MOPEN=new Set();try{MOPEN=new Set(JSON.parse(store.get('kitaps:mopen')||'[]'))}catch(e){}
 function renderMenu(){
   const nav=$('#menu-list');let g='',h='';
   SECTIONS.forEach(s=>{if(s.g!==g){g=s.g;h+=`<div class="mg">${esc(g)}</div>`}
-    h+=`<button class="mi" data-s="${s.k}" aria-current="${s.k===CURS}"><span class="mic">${icon(s.ic)}</span><span>${esc(s.t)}</span><span class="mn">${s.ids.length>1?s.ids.length:''}</span></button>`});
+    const mi=`<button class="mi" data-s="${s.k}" aria-current="${s.k===CURS}"><span class="mic">${icon(s.ic)}</span><span>${esc(s.t)}</span><span class="mn">${s.ids.length>1?s.ids.length:''}</span></button>`;
+    if(s.ids.length<2){h+=mi;return}
+    const op=MOPEN.has(s.k);
+    h+=`<div class="mrow">${mi}<button class="mx" type="button" data-x="${s.k}" aria-expanded="${op}" aria-controls="ms-${s.k}" aria-label="Mostrar a lista de ${esc(s.t)}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></div>
+     <div class="msub" id="ms-${s.k}"${op?'':' hidden'}>${s.ids.map(id=>{const tg=chipTag(id,s);return `<button class="msi" type="button" data-s="${s.k}" data-id="${id}" aria-current="${s.k===CURS&&id===cur.id}">${tg?`<small class="ctag">${tg}</small>`:''}${esc(chipText(id,s))}</button>`}).join('')}</div>`});
   nav.innerHTML=h;
-  nav.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{openSection(b.dataset.s);closeMenu()});
+  nav.querySelectorAll('.mi[data-s]').forEach(b=>b.onclick=()=>{openSection(b.dataset.s);closeMenu()});
+  nav.querySelectorAll('.msi').forEach(b=>b.onclick=()=>{go(b.dataset.id,b.dataset.s);closeMenu()});
+  nav.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{const k=b.dataset.x,op=!MOPEN.has(k);op?MOPEN.add(k):MOPEN.delete(k);store.set('kitaps:mopen',JSON.stringify([...MOPEN]));
+    b.setAttribute('aria-expanded',op);$('#ms-'+k).hidden=!op});
   $('#sec-name').innerHTML=icon(SECM[CURS].ic,18)+'<span>'+esc(SECM[CURS].t)+'</span>';
 }
 function openSection(k){const s=SECM[k];CURS=k;store.set('kitaps:sec',k);const last=store.get('kitaps:lasts-'+k);go(last&&s.ids.includes(last)?last:s.ids[0],k)}
@@ -3802,12 +3905,18 @@ function renderFavs(){
   f.innerHTML=FAV.length?'<span class="favlbl" aria-hidden="true">★</span>'+FAV.map(id=>`<button class="chip fav" data-id="${id}" aria-selected="${id===cur.id}">${esc(chipLabel(id))}</button>`).join(''):'';
   f.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>go(b.dataset.id));
 }
+function chipText(id,s){return id==='esquema'&&s.ln?'Folha do paciente':id==='fluxodm'&&(s.ln||s.k==='fx')?'Diabetes (DM2)':chipLabel(id)}
+function chipTag(id,s){return s.ln?(id==='fluxodm'?'Fluxo':SECTAG[secOf(id)]):''}
 function renderChips(){
   const c=$('#chips');c.innerHTML='';const s=SECM[CURS],list=s.ids;
   c.hidden=list.length<2;
   list.forEach(id=>{const b=document.createElement('button');b.className='chip';b.id='chip-'+id;b.role='tab';
-    const tg=s.ln?(id==='fluxodm'?'Fluxo':SECTAG[secOf(id)]):'';b.innerHTML=(tg?`<small class="ctag">${tg}</small>`:'')+esc(id==='esquema'&&s.ln?'Folha do paciente':id==='fluxodm'&&(s.ln||CURS==='fx')?'Diabetes (DM2)':chipLabel(id));
+    const tg=chipTag(id,s);b.innerHTML=(tg?`<small class="ctag">${tg}</small>`:'')+esc(chipText(id,s));
     b.setAttribute('aria-selected',id===cur.id);b.onclick=()=>go(id,CURS);c.appendChild(b)});
+  if(list.length>=6){const sel=document.createElement('select');sel.className='chip pick';sel.setAttribute('aria-label','Escolher na lista de '+s.t);
+    const tags=s.ln?[...new Set(list.map(id=>chipTag(id,s)))]:[''];
+    sel.innerHTML=`<option value="">☰ Lista (${list.length})</option>`+tags.map(tg=>{const o=list.filter(id=>chipTag(id,s)===tg).map(id=>`<option value="${id}"${id===cur.id?' selected':''}>${esc(chipText(id,s))}</option>`).join('');return s.ln?`<optgroup label="${esc(({SOAP:'SOAP',Rx:'Prescrições','Cálc.':'Cálculos e escalas',MEV:'Estilo de vida',Fluxo:'Fluxogramas',Guia:'Guias e exames',Doc:'Documentos','':'Folhas do paciente'})[tg]||tg)}">${o}</optgroup>`:o}).join('');
+    sel.value='';sel.onchange=()=>{if(sel.value)go(sel.value,CURS)};c.prepend(sel)}
   renderMenu();renderFavs();
 }
 function addHead(){const h=$('#main .ph h2');if(h&&!h.querySelector('.hic'))h.insertAdjacentHTML('afterbegin',`<span class="hic">${icon(SECM[CURS].ic,18)}</span>`)}
@@ -3875,6 +3984,64 @@ const SOAPLINK={has:[['fx_has','Fluxograma HAS'],['rcv','Risco CV'],['ecg_sobrec
  vertigem:[['dhi','DHI'],['fx_vert','Fluxograma'],['efp_vert','Exame: Dix-Hallpike e Epley']],tabagismo:[['fager','Fagerström']],itu:[['fx_itu','Fluxograma'],['atb_guia','Antibióticos']],dengue:[['fx_dengue','Fluxograma']],cefaleia:[['fx_cef','Fluxograma']],lombalgia:[['fx_lomb','Fluxograma'],['efp_lomb','Exame: Lasègue e raízes']],
  hipotireo:[['fx_tireo','Fluxograma']],ivas:[['atb_guia','Antibióticos'],['centor','Centor'],['fx_farin','Faringite'],['fx_sinus','Sinusite']],gea:[['fx_diar','Fluxograma']],ist:[['fx_sif','Sífilis'],['atb_guia','Antibióticos']],climaterio:[['trh','Guia de TRH'],['mrs','Escala MRS'],['rx_trh','Receitas de TRH'],['ex_mamo','Mamografia'],['ex_cito','Preventivo']]};
 [['dm','glp1','GLP-1'],['dm','rx_glp1','Receita GLP-1'],['dm','or_hipo','Folha: hipoglicemia'],['dm','or_pe','Folha: pé diabético'],['obesidade','glp1','GLP-1'],['obesidade','rx_glp1','Receita GLP-1'],['mental','rx_bip','Bipolar'],['mental','rx_esq','Antipsicóticos'],['mental','asrs','ASRS-18'],['ansiedade','rx_bip','Bipolar'],['tabagismo','rx_alc','Álcool e drogas'],['tabagismo','ciwa','CIWA-Ar'],['mental','rx_alc','Álcool e drogas'],['dengue','or_dengue','Folha do paciente'],['gea','or_soro','Folha: soro caseiro'],['asma','or_bomb','Folha: bombinha'],['dpoc','or_bomb','Folha: bombinha']].forEach(([k,id,l])=>(SOAPLINK[k]=SOAPLINK[k]||[]).push([id,l]));
+/* Prescrição padrão no fim de cada SOAP: referências a P [classe, item] ou receita própria */
+const SRX={has:[['rx_cv',0],['rx_cv',2],['rx_cv',3],['rx_cv',4]],dm:[['rx_dm',0],['rx_dm',1],['rx_dm',2],['rx_dm',3],['rx_lip',0]],drc:[['rx_cv',0],['rx_dm',2]],
+ hpb:[['rx_uro',0],['rx_uro',1],['rx_uro',2]],hipotireo:[['rx_end',0]],obesidade:[['rx_glp1',1],['rx_glp1',2],['rx_glp1',3]],asma:[['rx_resp',0],['rx_resp',1]],dpoc:[['rx_resp',2]],
+ prenatal:[['rx_gest',0],['rx_gest',1]],puerperio:[['rx_gest',2],['rx_aco',1]],contracepcao:[['rx_aco',0],['rx_aco',1],['rx_aco',2],['rx_aco',3],['rx_aco',4]],climaterio:[['rx_trh',0],['rx_trh',2],['rx_trh',5]],
+ puericultura:[['rx_ped',0],['rx_ped',1]],mental:[['rx_ad',0],['rx_ad',1],['rx_ad',2]],ansiedade:[['rx_ad',1],['rx_ad',2],['rx_ans',2]],tabagismo:[['rx_tab',0],['rx_tab',1],['rx_tab',2]],
+ ivas:[['rx_sint',0],['rx_sint',1]],gea:[['rx_sint',3],['rx_sint',2]],itu:[['rx_atb',3],['rx_atb',4]],ist:[['rx_ist',0],['rx_ist',1],['rx_ist',2],['rx_ist',3]],
+ dengue:[{t:'Dengue: hidratação e sintomáticos',rec:RS,rx:`Uso oral
+1. Sais para reidratação oral ...... 10 envelopes
+   Dissolver 1 envelope em 1 litro de água filtrada ou fervida. Beber 60 mL/kg/dia no total, sendo 1/3 de soro e o restante em água, suco e sopa.
+2. Paracetamol 750 mg ...... 20 comprimidos
+   Tomar 1 comprimido de 6 em 6 horas, se febre ou dor.
+   ou Dipirona 500 mg: tomar 1 a 2 comprimidos de 6 em 6 horas, se febre ou dor.`,n:'Grupo A. Não usar AAS nem anti-inflamatórios (ibuprofeno, diclofenaco, nimesulida). Retorno no 1º dia sem febre e se sinais de alarme. Folha do paciente: dengue.'}],
+ cefaleia:[['rx_anal',3],['rx_ad',3]],
+ lombalgia:[{t:'Lombalgia aguda: AINE e relaxante',rec:RS,rx:`Uso oral
+1. Ibuprofeno 400 mg ...... 21 comprimidos
+   Tomar 1 comprimido de 8 em 8 horas, após as refeições, por até 7 dias.
+2. Ciclobenzaprina 5 mg ...... 10 comprimidos
+   Tomar 1 a 2 comprimidos à noite, se contratura, por até 10 dias.
+
+Uso tópico
+3. Calor local (bolsa morna) por 20 minutos, 3 vezes ao dia.`,n:'Evitar AINE em DRC, úlcera, anticoagulação, IC e gestação: usar dipirona ou paracetamol. Ciclobenzaprina dá sono e boca seca; evitar em idosos.'},['rx_anal',0]],
+ vertigem:[{t:'Crise de vertigem: sintomático curto',rec:RS,rx:`Uso oral
+1. Dimenidrinato 50 mg ...... 9 comprimidos
+   Tomar 1 comprimido de 8 em 8 horas, se tontura ou enjoo, por até 3 dias.`,n:'Só na crise (no máximo 3 dias): o uso prolongado atrapalha a compensação vestibular. VPPB: manobra de Epley, não remédio. Alternativa: meclizina 25 mg 1x/dia ou prometazina 25 mg à noite.'}]
+};
+const SRXSEL={};
+function srxList(id){return (SRX[id]||[]).map((r,n)=>{if(Array.isArray(r)){const c=P[r[0]],it=c&&c.items[r[1]];return it?{k:r[0]+'.'+r[1],t:it.t,rx:it.rx,n:it.n,rec:c.rec,pid:r[0]}:null}return {k:'x'+n,...r}}).filter(Boolean)}
+function rxFoot(){const d=today(),mes=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  return {cid:store.get('kitaps:cidade')||'[cidade]',dt:`${d.getDate()} de ${mes[d.getMonth()]} de ${d.getFullYear()}`,med:store.get('kitaps:medico')||'[nome do médico]',crm:store.get('kitaps:crm')||'CRM [ ]',uni:store.get('kitaps:unidade')||''}}
+function rxSheet(txt,rec){const f=rxFoot(),ce=/Controle Especial/i.test(rec||'');
+  $('#sheet').innerHTML=`${f.uni?`<div class="ath">${esc(f.uni)}</div>`:''}<div class="att">${ce?'RECEITUÁRIO DE CONTROLE ESPECIAL':'RECEITUÁRIO'}</div><div class="rxpac">Paciente:<span></span></div><div class="rxp">${esc(txt)}</div><div class="atf">${esc(f.cid)}, ${esc(f.dt)}.<br><br><br>______________________________<br>${esc(f.med)}<br>${esc(f.crm)}</div>`}
+function srxDraw(id){
+  const box=$('#srx-box'),L=srxList(id);if(!box||!L.length)return;
+  const sel=Math.min(SRXSEL[id]||0,L.length-1),o=L[sel],key='kitaps:srx:'+id+':'+o.k,saved=store.get(key);
+  box.innerHTML=`<div class="lbl">Prescrição padrão</div><article class="card rxcard srx">
+    ${L.length>1?`<div class="chips srxv" role="tablist" aria-label="Opções de receita">${L.map((x,i)=>`<button class="chip" type="button" role="tab" data-sv="${i}" aria-selected="${i===sel}">${esc(x.t)}</button>`).join('')}</div>`:`<h3>${esc(o.t)}</h3>`}
+    <div class="rec"><b>Receituário:</b> ${esc(o.rec||RS)}.${/Notifica/.test(o.rec||'')?' A notificação vai no talão oficial; esta impressão é a receita que acompanha.':''}</div>
+    <textarea class="soap rxta" id="srx-ta" spellcheck="false" aria-label="Receita: ${esc(o.t)}"></textarea>
+    ${o.n?`<p class="note">${esc(o.n)}</p>`:''}
+    <div class="bar"><button class="btn primary small" id="srx-cp" type="button">Copiar receita</button><button class="btn small" id="srx-pr" type="button">Imprimir receita</button><button class="btn small" id="srx-cs" type="button">+ Consulta</button><button class="btn small" id="srx-es" type="button">Levar ao esquema</button><button class="btn small" id="srx-rs" type="button"${saved==null?' hidden':''}>Restaurar</button>${o.pid?`<button class="btn small" type="button" data-go="${o.pid}">Todas as receitas</button>`:''}</div>
+    <details><summary class="note">Seus dados no rodapé da receita impressa (salvos neste aparelho)</summary><div class="grid2" style="margin-top:10px">
+      <div class="field"><label for="srx-med">Nome do(a) médico(a)</label><input id="srx-med" data-k="kitaps:medico" value="${esc(store.get('kitaps:medico')||'')}"></div>
+      <div class="field"><label for="srx-crm">CRM</label><input id="srx-crm" data-k="kitaps:crm" value="${esc(store.get('kitaps:crm')||'')}" placeholder="CRM-UF 00000"></div>
+      <div class="field"><label for="srx-uni">Unidade de saúde</label><input id="srx-uni" data-k="kitaps:unidade" value="${esc(store.get('kitaps:unidade')||'')}"></div>
+      <div class="field"><label for="srx-cid">Cidade</label><input id="srx-cid" data-k="kitaps:cidade" value="${esc(store.get('kitaps:cidade')||'')}"></div></div></details>
+  </article>`;
+  box.querySelectorAll('input[data-k]').forEach(e=>e.oninput=()=>{if(e.value.trim())store.set(e.dataset.k,e.value.trim());else store.del(e.dataset.k)});
+  const ta=$('#srx-ta'),fit=()=>{ta.style.height='auto';ta.style.height=(ta.scrollHeight+4)+'px'};
+  ta.value=saved!=null?saved:o.rx;fit();
+  ta.oninput=()=>{fit();if(ta.value===o.rx)store.del(key);else store.set(key,ta.value);$('#srx-rs').hidden=ta.value===o.rx};
+  box.querySelectorAll('[data-sv]').forEach(b=>b.onclick=()=>{SRXSEL[id]=+b.dataset.sv;srxDraw(id)});
+  box.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+  $('#srx-cp').onclick=()=>copy(ta.value,ta);
+  $('#srx-pr').onclick=()=>{rxSheet(ta.value,o.rec);printSheet()};
+  $('#srx-cs').onclick=()=>addCons('rx',o.t,ta.value);
+  $('#srx-es').onclick=()=>{const n=addToEsq(ta.value);toast(n?n+' remédio(s) no esquema do paciente':'Não consegui ler esta receita')};
+  $('#srx-rs').onclick=()=>{store.del(key);srxDraw(id);toast('Receita original restaurada')};
+}
 function renderSoap(m,id){
   const t=T[id],key='kitaps:soap:'+id,saved=store.get(key);
   m.innerHTML=`<section class="panel">
@@ -3887,10 +4054,13 @@ function renderSoap(m,id){
       <button class="btn" id="uc" type="button">Usar no modo consulta</button>
     </div>
     ${(SOAPLINK[id]||[]).filter(x=>known(x[0])).length?`<div class="lbl">Ferramentas relacionadas</div><div class="bar">${SOAPLINK[id].filter(x=>known(x[0])).map(x=>`<button class="chip" data-go="${x[0]}" type="button">${esc(x[1])}</button>`).join('')}</div>`:''}
+    <div id="srx-box"></div>
+    <div id="sheet" class="card atsheet rxsheet"></div>
   </section>`;
   m.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
   const ta=$('#ta-'+id);ta.value=saved!=null?saved:t.body;
   ta.oninput=()=>store.set(key,ta.value);
+  srxDraw(id);
   $('#cp').onclick=()=>copy(ta.value,ta);
   $('#uc').onclick=()=>{if(CONS.soap)CONS.tx[CONS.soap]=CONS.text;CONS.soap=id;CONS.text=ta.value;CONS.tx[id]=ta.value;saveCons();go('consulta')};
   const rs=$('#rs');
