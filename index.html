@@ -954,14 +954,24 @@ function sheetSVG(){
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${y}" width="${W}" height="${y}"><rect width="${W}" height="${y}" fill="#fff"/>${o}</svg>`;
 }
 
-function svgToPng(svg,img,out){
+function svgToPng(svg,img,out,fname){
   const vb=svg.match(/viewBox="0 0 (\d+) (\d+)"/),w=+vb[1],h=+vb[2],url='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
   const im=new Image();
-  im.onload=()=>{try{const c=document.createElement('canvas');c.width=w*2;c.height=h*2;const x=c.getContext('2d');x.scale(2,2);x.drawImage(im,0,0);img.src=c.toDataURL('image/png')}catch(e){img.src=url}out.hidden=false;out.scrollIntoView({block:'start'})};
+  im.onload=()=>{try{const c=document.createElement('canvas');c.width=w*2;c.height=h*2;const x=c.getContext('2d');x.scale(2,2);x.drawImage(im,0,0);img.src=c.toDataURL('image/png')}catch(e){img.src=url}out.hidden=false;
+    if(fname){try{const a=document.createElement('a');a.href=img.src;a.download=fname;document.body.appendChild(a);a.click();a.remove()}catch(e){}}
+    out.scrollIntoView({block:'start'})};
   im.onerror=()=>{img.src=url;out.hidden=false};
   im.src=url;
 }
-function printSheet(){try{window.print()}catch(e){toast('Impressão bloqueada aqui: use Gerar imagem')}}
+function printSheet(){try{window.print()}catch(e){toast('Impressão bloqueada aqui: use Baixar imagem')}}
+function setFromText(text){
+  const rows=parseList(text);ESQ.ex=false;if(ESQ.nome==='Maria (exemplo)')ESQ.nome='';
+  ESQ.cuid=new Set(['agua','todo','trazer']);
+  ESQ.rows=rows.map((r,i)=>{r.cor=COLORS[i%COLORS.length];
+    if(r.forma==='inj'){ESQ.cuid.add('geladeira');ESQ.cuid.add('acucar')}
+    if(/jejum/.test(r.obs))ESQ.cuid.add('jejum');if(/com comida/.test(r.obs))ESQ.cuid.add('comida');return r});
+  return rows.length;
+}
 function renderESQ(m){
   if(!ESQ.data)ESQ.data=isoD(today());
   if(!ESQ.unidade)ESQ.unidade=store.get('kitaps:unidade')||'';
@@ -971,9 +981,9 @@ function renderESQ(m){
     <div class="card">
       <div class="field"><label for="es-txt">Cole a lista de remédios</label>
       <textarea id="es-txt" class="soap" style="min-height:120px" placeholder="Um remédio por linha, como no prontuário ou na receita. Ex.:&#10;Losartana 50 mg 1 comp 12/12h&#10;Metformina 850 mg 1 comp após café, almoço e jantar&#10;Sinvastatina 20 mg 1 comp à noite"></textarea></div>
-      <div class="bar"><button class="btn primary" id="es-imp">Montar esquema</button><span class="note">Também dá para mandar direto da aba Prescrições.</span></div>
+      <p class="note">A folha é montada sozinha ao colar. Depois ajuste cada remédio abaixo, se precisar (mexer na lista colada refaz a folha). Também dá para mandar direto da aba Prescrições.</p>
     </div>
-    ${ESQ.ex?'<p class="ex">Exemplo carregado: cole a lista do paciente ou toque em Limpar</p>':''}
+    <p class="ex" id="es-exn"${ESQ.ex?'':' hidden'}>Exemplo carregado: cole a lista do paciente ou toque em Limpar</p>
     <div class="grid2">
       <div class="field"><label for="es-nome">Nome do paciente</label><input id="es-nome" value="${esc(ESQ.nome)}"></div>
       <div class="field"><label for="es-data">Data</label><input type="date" id="es-data" value="${ESQ.data}"></div>
@@ -988,9 +998,9 @@ function renderESQ(m){
     </fieldset>
     <div class="lbl">Folha para o paciente</div>
     <div id="sheet" class="card" style="padding:8px;background:#fff"></div>
-    <div class="bar sticky-bar"><button class="btn primary" id="es-print">Imprimir</button><button class="btn" id="es-img">Gerar imagem</button></div>
-    <div id="es-out" hidden class="card"><p class="note">Toque e segure a imagem para salvar ou compartilhar (WhatsApp, impressora).</p><img id="es-png" alt="Esquema de remédios do paciente" style="width:100%;border:1px solid var(--line);border-radius:8px"></div>
-    <p class="note">Se o botão Imprimir não abrir a janela de impressão, use "Gerar imagem". Os dados do paciente ficam só nesta tela e somem ao fechar a página.</p>
+    <div class="bar sticky-bar"><button class="btn primary" id="es-print">Imprimir</button><button class="btn" id="es-img">Baixar imagem</button></div>
+    <div id="es-out" hidden class="card"><p class="note">Se o download não começar, toque e segure a imagem para salvar ou compartilhar (WhatsApp, impressora).</p><img id="es-png" alt="Esquema de remédios do paciente" style="width:100%;border:1px solid var(--line);border-radius:8px"></div>
+    <p class="note">Se o botão Imprimir não abrir a janela de impressão, use "Baixar imagem". Os dados do paciente ficam só nesta tela e somem ao fechar a página.</p>
   </section>`;
   const rowsEl=$('#es-rows');
   const drawSheet=()=>{$('#sheet').innerHTML=sheetSVG().replace('<svg ','<svg style="width:100%;height:auto;display:block" ');$('#es-out').hidden=true};
@@ -1007,7 +1017,11 @@ function renderESQ(m){
     rowsEl.querySelectorAll('[data-cor]').forEach(b=>b.onclick=()=>{ESQ.rows[+b.dataset.i].cor=b.dataset.cor;drawRows()});
     drawSheet();
   };
-  $('#es-imp').onclick=()=>{const n=addToEsq($('#es-txt').value);if(!n){toast('Não encontrei remédios no texto');return}toast(n+' remédio(s) adicionado(s)');renderESQ(m)};
+  const txt=$('#es-txt');txt.value=ESQ.txt||'';let deb;
+  txt.addEventListener('input',()=>{ESQ.txt=txt.value;clearTimeout(deb);deb=setTimeout(()=>{if(!txt.value.trim())return;const n=setFromText(txt.value);$('#es-exn').hidden=true;
+    if($('#es-nome').value==='Maria (exemplo)')$('#es-nome').value='';
+    m.querySelectorAll('[id^="es-c-"]').forEach(c=>c.checked=ESQ.cuid.has(c.dataset.k));
+    drawRows();if(n)toast(n+' remédio(s) no esquema');else toast('Não encontrei remédios no texto')},450)});
   $('#es-add').onclick=()=>{if(ESQ.ex){ESQ.rows=[];ESQ.ex=false;ESQ.nome=''}ESQ.rows.push({nome:'',forma:'comp',m:'',t:'',n:'',obs:'',cor:COLORS[ESQ.rows.length%COLORS.length]});renderESQ(m)};
   const clr=$('#es-clr');clr.onclick=()=>{if(!clr.dataset.c){clr.dataset.c=1;clr.textContent='Toque de novo para limpar';setTimeout(()=>{if(clr.isConnected){clr.textContent='Limpar tudo';delete clr.dataset.c}},3000);return}
     ESQ={ex:false,nome:'',data:isoD(today()),retorno:'',unidade:ESQ.unidade,extra:'',cuid:new Set(['agua','todo','trazer']),rows:[]};renderESQ(m)};
@@ -1018,7 +1032,7 @@ function renderESQ(m){
   $('#es-extra').oninput=e=>{ESQ.extra=e.target.value;drawSheet()};
   m.querySelectorAll('[id^="es-c-"]').forEach(c=>c.onchange=()=>{c.checked?ESQ.cuid.add(c.dataset.k):ESQ.cuid.delete(c.dataset.k);drawSheet()});
   $('#es-print').onclick=printSheet;
-  $('#es-img').onclick=()=>svgToPng(sheetSVG(),$('#es-png'),$('#es-out'));
+  $('#es-img').onclick=()=>svgToPng(sheetSVG(),$('#es-png'),$('#es-out'),'esquema-remedios'+(ESQ.nome?'-'+ESQ.nome.trim().split(/\s+/)[0].toLowerCase():'')+'.png');
   drawRows();
 }
 /* ---------- MEV: orientações de estilo de vida (linguagem para o paciente) ---------- */
@@ -1176,13 +1190,13 @@ function renderMEV(m,id){
     <div class="card"><div class="lbl">Orientações para o paciente</div>
       <div class="opts soft" style="grid-template-columns:1fr">${c.items.map((t,i)=>`<label class="opt"><input type="checkbox" id="mv-${i}" checked><span>${esc(t)}</span></label>`).join('')}</div>
       <p class="note">Desmarque o que não se aplica antes de copiar ou levar para a folha.</p></div>
-    <div class="bar sticky-bar"><button class="btn primary small" id="mv-print">Imprimir</button><button class="btn small" id="mv-img">Gerar imagem</button><button class="btn small" id="mv-cp">Copiar orientações</button><button class="btn small" id="mv-pr">Copiar p/ prontuário</button><button class="btn small" id="mv-esq">Levar à folha</button></div>
+    <div class="bar sticky-bar"><button class="btn primary small" id="mv-print">Imprimir</button><button class="btn small" id="mv-img">Baixar imagem</button><button class="btn small" id="mv-cp">Copiar orientações</button><button class="btn small" id="mv-pr">Copiar p/ prontuário</button><button class="btn small" id="mv-esq">Levar à folha</button></div>
     <div class="card"><div class="lbl">Registro no prontuário</div><pre class="rx">${esc(c.pr)}</pre></div>
     <div class="field"><label for="mv-nome">Nome do paciente na folha (opcional)</label><input id="mv-nome"></div>
     <div class="lbl">Folha para imprimir</div>
     <div id="sheet" class="card" style="padding:8px;background:#fff"></div>
-    <div id="mv-out" hidden class="card"><p class="note">Toque e segure a imagem para salvar ou compartilhar (WhatsApp, impressora).</p><img id="mv-png" alt="Orientações para o paciente" style="width:100%;border:1px solid var(--line);border-radius:8px"></div>
-    <p class="note">Baseado no Guia Alimentar para a População Brasileira, no Guia de Atividade Física do MS e nos Cadernos de Atenção Básica. A folha impressa sai só com as orientações marcadas. Se Imprimir não abrir a janela de impressão, use Gerar imagem. "Levar à folha" coloca as orientações nos cuidados da aba Paciente.</p>
+    <div id="mv-out" hidden class="card"><p class="note">Se o download não começar, toque e segure a imagem para salvar ou compartilhar (WhatsApp, impressora).</p><img id="mv-png" alt="Orientações para o paciente" style="width:100%;border:1px solid var(--line);border-radius:8px"></div>
+    <p class="note">Baseado no Guia Alimentar para a População Brasileira, no Guia de Atividade Física do MS e nos Cadernos de Atenção Básica. A folha impressa sai só com as orientações marcadas. Se Imprimir não abrir a janela de impressão, use Baixar imagem. "Levar à folha" coloca as orientações nos cuidados da aba Paciente.</p>
   </section>`;
   const sel=()=>c.items.filter((_,i)=>$('#mv-'+i).checked);
   const svg=()=>mevSVG(c,sel(),$('#mv-nome').value.trim());
@@ -1190,7 +1204,7 @@ function renderMEV(m,id){
   m.querySelectorAll('[id^="mv-"]').forEach(el=>{if(el.type==='checkbox')el.onchange=draw});
   $('#mv-nome').oninput=draw;draw();
   $('#mv-print').onclick=()=>{if(!sel().length){toast('Marque ao menos uma orientação');return}printSheet()};
-  $('#mv-img').onclick=()=>{if(!sel().length){toast('Marque ao menos uma orientação');return}svgToPng(svg(),$('#mv-png'),$('#mv-out'))};
+  $('#mv-img').onclick=()=>{if(!sel().length){toast('Marque ao menos uma orientação');return}svgToPng(svg(),$('#mv-png'),$('#mv-out'),'orientacoes-'+id.replace('mev_','')+'.png')};
   $('#mv-cp').onclick=()=>copy(c.t+'\n'+sel().map(i=>'• '+i).join('\n'));
   $('#mv-pr').onclick=()=>copy(c.pr);
   $('#mv-esq').onclick=()=>{const s=sel();if(!s.length){toast('Marque ao menos uma orientação');return}
