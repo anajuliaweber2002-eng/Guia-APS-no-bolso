@@ -1260,6 +1260,38 @@ P:
 3. Não realizar toque vaginal até excluir placenta prévia (USG)
 4. Rh negativo: imunoglobulina anti-D em até 72 h (na maternidade)
 5. Contato com a maternidade e carta de referência com IG, tipo sanguíneo, USG e exames do pré-natal`},
+esquizofrenia:{t:'Esquizofrenia e psicoses',code:'CIAP-2 P72 · CID-10 F20',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / maconha / cocaína / crack]
+Acompanhamento: [CAPS __ / psiquiatra __] | Diagnóstico desde: [ ] | Internações: [ ]
+Antipsicótico atual: [ ] desde [ ] | Responsável/rede de apoio: [ ]
+
+S:
+Paciente [vem sozinho(a) / acompanhado(a) por __] para [seguimento / renovação de receita / piora]. Refere [estar bem / dormindo mal / ouvindo vozes / sentindo-se perseguido(a)] há [ ]. Familiar relata [ ]. Uso da medicação: [regular / irregular, esquece / parou há __ dias por __]. Efeitos adversos: [nega sonolência excessiva, ganho de peso, rigidez, tremor, inquietação, alteração menstrual, galactorreia, disfunção sexual]. Nega ideação suicida e heteroagressividade. [Nega uso de álcool e outras drogas.] Atividades: [trabalho, estudo, CAPS, convivência]. Sono: [ ]. Apetite: [ ].
+
+O:
+PA [ ]x[ ] mmHg | FC [ ] bpm | Peso [ ] kg | IMC [ ] kg/m² | Circunferência abdominal [ ] cm
+Exame do estado mental: [vigil, orientado(a), aparência e higiene adequadas, contactuante, humor eutímico, afeto [embotado / congruente], pensamento [organizado / desagregado], sem alucinações referidas, sem delírios no momento, crítica [parcial / preservada], juízo [preservado]]
+Sinais extrapiramidais: [ausentes / rigidez em roda denteada, tremor, acatisia, movimentos involuntários orofaciais]
+Exames: glicemia [ ] | HbA1c [ ] | colesterol total/LDL/HDL/TG [ ] | prolactina [se sintomas] | ECG (QTc) [ ]
+
+A:
+Esquizofrenia [estável / em descompensação], em uso de [__], [adesão boa / irregular], [sem / com] efeitos adversos [__]. Risco metabólico [ ]. Sem risco imediato para si ou para terceiros.
+
+P:
+1. Manter [antipsicótico e dose] [/ ajustar para __] [/ considerar antipsicótico de depósito se baixa adesão]
+2. Monitorização metabólica: peso e PA a cada consulta; glicemia e lipídios com 3 meses e depois anual; ECG se dose alta ou outros fármacos que alargam o QT
+3. Efeitos extrapiramidais: [biperideno se necessário / reduzir dose]
+4. Psicoeducação com paciente e família; sinais de recaída (insônia, isolamento, desconfiança, vozes) e plano de crise
+5. Seguimento compartilhado com o CAPS [__]; projeto terapêutico singular; reabilitação psicossocial
+6. Orientar sobre álcool, maconha e outras drogas (pioram a doença); cessação do tabagismo
+7. Retorno em [ ] semanas; receita de controle especial (C1) em 2 vias`},
 itu:{t:'Infecção urinária',code:'CIAP-2 U71 · CID-10 N39.0',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -1550,7 +1582,12 @@ rx_esq:{s:'Esquizofrenia',t:'Esquizofrenia e psicoses: antipsicóticos',rec:RC,i
 1. Biperideno 2 mg ...... 30 comprimidos
    Tomar 1 comprimido até 3 vezes ao dia se rigidez ou tremor.
 2. Propranolol 40 mg ...... 30 comprimidos
-   Tomar meio comprimido (20 mg) de 12 em 12 horas se inquietação (acatisia).`,n:'Distonia aguda (torção de pescoço, olhos para cima): biperideno 5 mg IM ou prometazina 50 mg IM. Discinesia tardia: encaminhar. Febre, rigidez intensa e confusão: síndrome neuroléptica maligna, emergência.'}]},
+   Tomar meio comprimido (20 mg) de 12 em 12 horas se inquietação (acatisia).`,n:'Distonia aguda (torção de pescoço, olhos para cima): biperideno 5 mg IM ou prometazina 50 mg IM. Discinesia tardia: encaminhar. Febre, rigidez intensa e confusão: síndrome neuroléptica maligna, emergência.'},
+ {t:'Quetiapina',rx:`Uso oral
+1. Quetiapina 25 mg ...... 30 comprimidos
+2. Quetiapina 100 mg ...... 60 comprimidos
+   Dia 1: 25 mg de 12 em 12 horas. Dia 2: 50 mg de 12 em 12 horas. Dia 3: 100 mg de 12 em 12 horas. Dia 4: 150 mg de 12 em 12 horas.
+   Depois: 150 a 300 mg de 12 em 12 horas, conforme orientação.`,n:'Esquizofrenia: dose usual 300–750 mg/dia (máx. 800). Liberação prolongada (XR): 1 vez ao dia à noite. Sedação e hipotensão postural no início; ganho de peso, glicemia e lipídios (monitorar); menos extrapiramidal e prolactina que risperidona e haloperidol. Cautela com QT longo. Idoso com demência: aumenta mortalidade, evitar. Na rede pública pelo componente especializado (LME, PCDT de esquizofrenia). Receita de Controle Especial (C1) em 2 vias.'}]},
 rx_alc:{s:'Álcool e drogas',t:'Álcool e outras drogas',rec:RC+' (diazepam: '+RB+')',items:[
  {t:'Abstinência alcoólica leve a moderada (ambulatorial)',rx:`Uso oral
 1. Diazepam 10 mg ...... 20 comprimidos
@@ -4673,7 +4710,7 @@ Object.keys(OR).forEach(k=>E[k]=OR[k].s);
 const SECS={soap:Object.keys(T),calc:Object.keys(C),presc:Object.keys(P),mev:Object.keys(M),esq:Object.keys(E),fx:Object.keys(F)};
 let cur={sec:'soap',id:'has'};
 
-function chipLabel(id){return T[id]?({sang1:'Sangramento 1ª metade',sang2:'Sangramento 2ª metade',oma:'Otite média',otext:'Otite externa',conj:'Conjuntivite',oa:'Osteoartrite',insonia:'Insônia',anemia:'Anemia ferropriva',b12:'Deficiência de B12',vertigem:'Vertigem',hipotireo:'Hipotireoidismo',obesidade:'Obesidade',asma:'Asma',dpoc:'DPOC',idoso:'Idoso',puerperio:'Puerpério',contracepcao:'Contracepção',climaterio:'Climatério',tabagismo:'Tabagismo',itu:'ITU',ist:'IST',dengue:'Dengue',cefaleia:'Cefaleia',lombalgia:'Lombalgia',has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:F[id]?F[id].s:GD[id]?GD[id].s:AT[id]?AT[id].s:E[id])}
+function chipLabel(id){return T[id]?({esquizofrenia:'Esquizofrenia',sang1:'Sangramento 1ª metade',sang2:'Sangramento 2ª metade',oma:'Otite média',otext:'Otite externa',conj:'Conjuntivite',oa:'Osteoartrite',insonia:'Insônia',anemia:'Anemia ferropriva',b12:'Deficiência de B12',vertigem:'Vertigem',hipotireo:'Hipotireoidismo',obesidade:'Obesidade',asma:'Asma',dpoc:'DPOC',idoso:'Idoso',puerperio:'Puerpério',contracepcao:'Contracepção',climaterio:'Climatério',tabagismo:'Tabagismo',itu:'ITU',ist:'IST',dengue:'Dengue',cefaleia:'Cefaleia',lombalgia:'Lombalgia',has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:F[id]?F[id].s:GD[id]?GD[id].s:AT[id]?AT[id].s:E[id])}
 
 /* Navegação: menu de seções (agrupadas) + abas internas; favoritos */
 const SICON={
@@ -4706,7 +4743,7 @@ const SECTAG={soap:'SOAP',calc:'Cálc.',presc:'Rx',mev:'MEV',fx:'Fluxo',gd:'Guia
 const SECTIONS=[
  {g:'Atendimento',k:'urg',t:'Urgência na UBS',ic:'urg',ids:['u_has','u_hipo','u_anaf','u_asma','u_tor','u_sang','fx_sang1','fx_sang2','abort_gd']},
  {g:'Atendimento',k:'cons',t:'Modo consulta',ic:'cons',ids:['consulta']},
- {g:'Atendimento',k:'soap',t:'Templates SOAP',ic:'soap',ids:['has','dm','drc','hipotireo','obesidade','asma','dpoc','hpb','idoso','prenatal','sang1','sang2','puerperio','contracepcao','climaterio','puericultura','mental','ansiedade','tabagismo','insonia','ivas','oma','otext','conj','gea','itu','ist','dengue','cefaleia','vertigem','lombalgia','oa','anemia','b12']},
+ {g:'Atendimento',k:'soap',t:'Templates SOAP',ic:'soap',ids:['has','dm','drc','hipotireo','obesidade','asma','dpoc','hpb','idoso','prenatal','sang1','sang2','puerperio','contracepcao','climaterio','puericultura','mental','esquizofrenia','ansiedade','tabagismo','insonia','ivas','oma','otext','conj','gea','itu','ist','dengue','cefaleia','vertigem','lombalgia','oa','anemia','b12']},
  {g:'Atendimento',k:'ef',t:'Exame físico',ic:'steth',ids:['ef_geral','ef_cv','ef_resp','ef_abd','ef_neuro','ef_cp','ef_pele','ef_mama','ef_gin','ef_ped','efp_lomb','efp_ombro','efp_joelho','efp_vert','efp_tunel','efp_pe','efp_ulc','efp_ven','efp_art']},
  {g:'Atendimento',k:'presc',t:'Prescrições',ic:'presc',ids:['farmacia','atb_guia',...Object.keys(P)]},
  {g:'Atendimento',k:'fx',t:'Fluxogramas',ic:'fx',ids:['fx_has','fluxodm',...Object.keys(F).filter(k=>k!=='fx_has'&&!k.startsWith('u_'))]},
@@ -4723,7 +4760,7 @@ const SECTIONS=[
  {g:'Linhas de cuidado',k:'cronicos',t:'Crônicos',ic:'cronicos',ln:1,ids:['has','dm','drc','hpb','hipotireo','obesidade','asma','dpoc','tabagismo','oa','anemia','b12','fx_oa','fx_anemia','fx_b12','rx_oa','rx_anemia','mev_oa','mev_anemia','mrpa','glicres','or_mrpa','or_glic_ins','or_glic','rx_dm','rx_lip','rx_resp','rx_end','rx_uro','glp1','rx_glp1','or_hipo','or_pe','or_bomb','or_glp1','fx_has','fluxodm','efp_pe','efp_art','efp_ven','efp_ulc','itb','ecg_sobrec','sve','ex_espiro','ex_hep','fib4','hans','tb','fx_lip','fx_tireo','fx_asma','fx_dpoc','tfg','drcest','cg','imc','rcv','insulina','chads','hasbled','ipss','rastreio','vacinas','ajustes','melanoma','rx_cv','rx_anal','mev_has','mev_dm','mev_obes','mev_lip','mev_drc','mev_icc','mev_hpb','esquema']},
  {g:'Linhas de cuidado',k:'mulher',t:'Saúde da mulher',ic:'mulher',ln:1,ids:['prenatal','sang1','sang2','abort_gd','fx_sang1','fx_sang2','u_sang','rx_abort','or_sang','farmacia','pn_exames','pn_img','anemia','rx_anemia','ef_mama','ef_gin','ex_mamo','ex_cito','puerperio','contracepcao','climaterio','trh','mrs','rx_trh','ist','itu','ig','imc','rastreio','vacinas','ajustes','fx_sif','fx_itu','rx_gest','rx_aco','rx_ist','rx_hiv','rx_atb','mev_gest','esquema']},
  {g:'Linhas de cuidado',k:'crianca',t:'Saúde da criança',ic:'crianca',ln:1,ids:['puericultura','marcos','pedi','ef_ped','oma','conj','anemia','fx_ouvido','fx_conj','fx_anemia','rx_oto','rx_anemia','imc','vacinas','fx_diar','fx_dengue','fx_farin','rx_ped','rx_par','rx_sint','rx_tdah','snap','or_soro','mev_cri','esquema']},
- {g:'Linhas de cuidado',k:'mental',t:'Saúde mental',ic:'mental',ln:1,ids:['mental','ansiedade','insonia','tabagismo','fx_dep','fx_ans','fx_ins','isi','rx_sono','or_sono','phq9','gad7','audit','fager','rx_ad','rx_ans','rx_ap','rx_bip','rx_esq','rx_alc','rx_bul','rx_tdah','rx_tab','ciwa','asrs','snap','mev_dep','mev_ans','mev_sono','mev_alc','mev_tab','esquema']},
+ {g:'Linhas de cuidado',k:'mental',t:'Saúde mental',ic:'mental',ln:1,ids:['mental','esquizofrenia','ansiedade','insonia','tabagismo','fx_dep','fx_ans','fx_ins','isi','rx_sono','or_sono','phq9','gad7','audit','fager','rx_ad','rx_ans','rx_ap','rx_bip','rx_esq','rx_alc','rx_bul','rx_tdah','rx_tab','ciwa','asrs','snap','mev_dep','mev_ans','mev_sono','mev_alc','mev_tab','esquema']},
  {g:'Linhas de cuidado',k:'idoso',t:'Saúde do idoso',ic:'idoso',ln:1,ids:['idoso','vertigem','dhi','fx_vert','efp_vert','oa','insonia','b12','fx_oa','fx_ins','fx_b12','isi','efp_pe','efp_ulc','braden','push','efp_ven','efp_art','itb','ecg_bradi','qtc','ivcf20','katz','lawton','minicog','quedas','pps','cg','has','dm','hpb','drc','ajustes','vacinas','rastreio','tfg','rcv','phq9','fx_has','fluxodm','fx_dep','fx_lomb','rx_anal','mev_has','mev_dm','mev_sono','esquema']},
  {g:'Linhas de cuidado',k:'agudos',t:'Agudos',ic:'agudos',ln:1,ids:['ivas','oma','otext','conj','fx_ouvido','fx_conj','rx_oto','mev_oto','gea','itu','ist','dengue','cefaleia','lombalgia','vertigem','dhi','fx_vert','efp_vert','efp_lomb','efp_ombro','efp_joelho','curb65','centor','wells_tvp','wells_tep','ecg_isq','ecg_taqui','ecg_bradi','ex_gaso','gasocalc','atb_guia','tb','tbdose','fx_dengue','fx_farin','fx_sinus','fx_pac','fx_itu','fx_diar','fx_tor','fx_cef','fx_lomb','fx_tb','rx_atb','rx_sint','rx_anal','rx_par','rx_ist','rx_hiv','mev_ivas','mev_diar','or_dengue','or_soro','esquema']},
  {g:'Meu kit',k:'meu',t:'Minhas edições',ic:'edit',ids:['meu']}
@@ -4906,8 +4943,8 @@ GD.efp_vert.sec.splice(2,1,
  {h:'2. Skew (teste de cobertura alternada)',svg:EFSVG.hskew,li:['A pessoa olha fixo para o seu nariz','Cubra um olho por 2 segundos e passe rápido para o outro, várias vezes','Normal: nenhum olho se mexe. Alterado: o olho que é descoberto faz um movimento vertical para fixar (desalinhamento vertical) = central']},
  {h:'3. Impulso cefálico (head impulse)',svg:EFSVG.hhit,li:['Segure a cabeça com as duas mãos, pescoço relaxado; a pessoa olha fixo para o seu nariz','Gire a cabeça 10–20° para um lado, de forma rápida, curta e imprevisível; volte e repita para o outro lado','Alterado (sacada corretiva para voltar ao seu nariz): lesão periférica do lado para onde girou, como na neurite vestibular','Normal em quem está com vertigem contínua e nistagmo: <b>preocupante</b>, sugere central (AVC)']},
  {h:'Resumo: HINTS perigoso (INFARCT)',rows:[['<b>IN</b>: Impulso Normal','Impulso cefálico normal na vertigem contínua.'],['<b>FA</b>: Fast-phase Alternating','Nistagmo que muda de direção com o olhar.'],['<b>RCT</b>: Refixação no Cover Test','Skew presente.'],['HINTS plus: perda auditiva súbita nova','Pode ser AVC (artéria cerebelar anteroinferior), mesmo com impulso alterado.'],['Qualquer achado central, ataxia que impede ficar de pé, cefaleia ou cervicalgia intensa, déficit neurológico','Emergência: SAMU 192 e centro com neuroimagem (RM). Não esperar.'],['Os três periféricos (impulso alterado, nistagmo unidirecional, sem skew)','Provável neurite vestibular: sintomático por até 3 dias, corticoide pode ser considerado nas primeiras 72 h, reabilitação vestibular.']]});
-Object.assign(SRX,{sang1:[['rx_abort',0],['rx_abort',1],['rx_abort',2]],sang2:[['rx_abort',2]],oma:[['rx_oto',0]],otext:[['rx_oto',1]],conj:[['rx_oto',2],['rx_oto',3],['rx_oto',4]],oa:[['rx_oa',0],['rx_oa',1],['rx_oa',2],['rx_oa',3]],insonia:[['rx_sono',0],['rx_sono',1],['rx_sono',2],['rx_sono',3],['rx_sono',4]],anemia:[['rx_anemia',0],['rx_anemia',1],['rx_anemia',2]],b12:[['rx_anemia',4],['rx_anemia',3],['rx_anemia',5]]});
-Object.assign(SOAPLINK,{sang1:[['fx_sang1','Fluxograma'],['abort_gd','Classificação'],['u_sang','Urgência'],['or_sang','Folha do paciente']],sang2:[['fx_sang2','Fluxograma'],['abort_gd','Classificação'],['u_sang','Urgência'],['or_sang','Folha do paciente']],oma:[['fx_ouvido','Fluxograma'],['atb_guia','Antibióticos (dose por peso)'],['ef_cp','Otoscopia'],['pedi','Doses pediátricas'],['mev_oto','Orientações']],otext:[['fx_ouvido','Fluxograma'],['ef_cp','Otoscopia'],['mev_oto','Orientações']],conj:[['fx_conj','Fluxograma'],['mev_oto','Orientações']],
+Object.assign(SRX,{esquizofrenia:[['rx_ap',2],['rx_esq',4],['rx_esq',0],['rx_ap',0],['rx_esq',2],['rx_esq',3]],sang1:[['rx_abort',0],['rx_abort',1],['rx_abort',2]],sang2:[['rx_abort',2]],oma:[['rx_oto',0]],otext:[['rx_oto',1]],conj:[['rx_oto',2],['rx_oto',3],['rx_oto',4]],oa:[['rx_oa',0],['rx_oa',1],['rx_oa',2],['rx_oa',3]],insonia:[['rx_sono',0],['rx_sono',1],['rx_sono',2],['rx_sono',3],['rx_sono',4]],anemia:[['rx_anemia',0],['rx_anemia',1],['rx_anemia',2]],b12:[['rx_anemia',4],['rx_anemia',3],['rx_anemia',5]]});
+Object.assign(SOAPLINK,{esquizofrenia:[['rx_esq','Antipsicóticos'],['rx_ap','Risperidona e haloperidol'],['imc','IMC'],['rcv','Risco CV'],['qtc','QTc'],['farmacia','Farmácia do SUS']],sang1:[['fx_sang1','Fluxograma'],['abort_gd','Classificação'],['u_sang','Urgência'],['or_sang','Folha do paciente']],sang2:[['fx_sang2','Fluxograma'],['abort_gd','Classificação'],['u_sang','Urgência'],['or_sang','Folha do paciente']],oma:[['fx_ouvido','Fluxograma'],['atb_guia','Antibióticos (dose por peso)'],['ef_cp','Otoscopia'],['pedi','Doses pediátricas'],['mev_oto','Orientações']],otext:[['fx_ouvido','Fluxograma'],['ef_cp','Otoscopia'],['mev_oto','Orientações']],conj:[['fx_conj','Fluxograma'],['mev_oto','Orientações']],
  oa:[['fx_oa','Fluxograma'],['efp_joelho','Exame do joelho'],['imc','IMC'],['mev_oa','Exercícios']],insonia:[['fx_ins','Fluxograma'],['isi','ISI'],['phq9','PHQ-9'],['gad7','GAD-7'],['mev_sono','Higiene do sono'],['or_sono','Folha do paciente']],
  anemia:[['fx_anemia','Fluxograma'],['ex_hemo','Hemograma'],['pedi','Doses pediátricas'],['mev_anemia','Alimentação']],b12:[['fx_b12','Fluxograma'],['ex_hemo','Hemograma'],['mev_anemia','Alimentação']]});
 [['prenatal','abort_gd','Sangramento e abortamento'],['prenatal','farmacia','Remédios na gestação'],['puerperio','farmacia','Remédios na lactação'],['has','or_mrpa','Folha: MRPA'],['has','mrpa','Média da MRPA'],['dm','or_glic_ins','Folha: glicemia com insulina'],['dm','or_glic','Folha: glicemia sem insulina'],['dm','glicres','Resumo da glicemia'],['vertigem','efp_vert','HINTS']].forEach(([k,id,l])=>(SOAPLINK[k]=SOAPLINK[k]||[]).push([id,l]));
