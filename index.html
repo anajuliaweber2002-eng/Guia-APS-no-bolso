@@ -220,6 +220,15 @@ textarea.nota{font-family:var(--f-ui);font-size:.9rem}
 .atb{white-space:normal;text-align:justify}
 .atf{text-align:center}
 .rxsheet{display:none}
+.chip.tag{font-size:.74rem;padding:3px 9px;cursor:default;white-space:normal}
+.chip.tag.ok{border-color:var(--ok);color:var(--ok)}.chip.tag.warn{border-color:var(--warn);color:var(--warn)}.chip.tag.bad{border-color:var(--bad);color:var(--bad)}
+.farmb{gap:4px}
+@media (hover:hover) and (pointer:fine){.chips{scrollbar-width:thin;scrollbar-color:var(--line) transparent;padding-bottom:8px}.chips::-webkit-scrollbar{display:block;height:8px}.chips::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px}.chips::-webkit-scrollbar-track{background:transparent}}
+.side{display:none}
+.sdh{font:700 .68rem var(--f-ui);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:4px 8px 8px}
+@media (min-width:1180px){body.hasside .side{display:grid;align-content:start;gap:1px;position:fixed;top:0;right:0;bottom:0;width:240px;overflow-y:auto;background:var(--surface);border-left:1px solid var(--line);padding:16px 10px;z-index:6}
+ body.hasside header,body.hasside main{margin-right:240px}}
+@media print{.side{display:none!important}}
 .rxp{white-space:pre-wrap;font:14px/1.65 var(--f-mono);min-height:40vh}
 textarea.soap.rxta{min-height:0;overflow:hidden}
 .srxv{margin:0;padding-bottom:4px}
@@ -250,6 +259,7 @@ textarea.soap.rxta{min-height:0;overflow:hidden}
   </div>
 </header>
 <div class="menu-bg" id="menu-bg"></div>
+<aside class="side" id="side" aria-label="Itens desta seção"></aside>
 <nav class="menu" id="menu" aria-label="Menu"><div class="menu-h">Kit APS</div><div id="menu-list"></div></nav>
 
 <main>
@@ -1187,6 +1197,69 @@ P:
 3. Investigar causa: [ ]
 4. Hemograma e reticulócitos em 1–2 semanas (crise reticulocitária) e em 8 semanas; B12 em 3 meses
 5. Manter reposição enquanto persistir a causa (por toda a vida na anemia perniciosa e após bariátrica)`},
+sang1:{t:'Sangramento no início da gestação (abortamento)',code:'CIAP-2 W03/W82 · CID-10 O20.0/O03/O00',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+G[ ] P[ ] A[ ] | DUM: [ ] | IG: [ ] semanas | Tipo sanguíneo: [ ] Rh [ ]
+
+S:
+Gestante de [ ] semanas pela DUM [/ USG de __] refere sangramento vaginal há [ ] [horas/dias], [em pequena quantidade, tipo borra / vermelho vivo, maior que menstruação, com coágulos], [com / sem] eliminação de material. [Cólica em baixo ventre leve / dor intensa, unilateral, irradiada para o ombro.] [Nega / refere] tontura, síncope, febre e corrimento com odor fétido.
+Gestação [planejada / não planejada]. Abortamentos prévios: [ ]. Gestação ectópica prévia, DIU, laqueadura, DIP: [nega]. [Manipulação uterina ou uso de substâncias: nega.] Situação de violência: [nega].
+
+O:
+PA [ ]x[ ] mmHg | FC [ ] bpm | T [ ] °C | [Choque: pele fria, enchimento capilar lentificado: não]
+Abdome: [flácido, indolor / doloroso em FI__, com defesa / Blumberg]
+Especular: [sangramento em pequena quantidade vindo do orifício externo; colo sem lesões; sem restos ovulares visíveis]
+Toque: [colo fechado / pérvio]; útero [compatível / menor / maior] que a IG; [anexos livres / massa e dor em anexo]
+Exames: beta-hCG [ ] | USG TV: [saco gestacional intrauterino com embrião de CCN __ mm e BCF + / sem BCF / útero vazio, endométrio __ mm / massa anexial / líquido livre]
+
+A:
+[Ameaça de abortamento / abortamento inevitável / incompleto / completo / retido / infectado / suspeita de gravidez ectópica / gestação de localização desconhecida / suspeita de mola] com [__] semanas, [estável hemodinamicamente]. Rh [ ].
+
+P:
+1. [Ameaça ou completo, estável: conduta expectante, analgesia (paracetamol / escopolamina), orientar sinais de alarme]
+   [Inevitável, incompleto, retido, infectado, ectópica, mola ou instável: encaminhado(a) à maternidade de referência __ (contato feito)]
+2. Exames: beta-hCG quantitativo [repetir em 48 h], USG transvaginal, hemograma, tipagem e Coombs indireto, teste rápido de sífilis e HIV
+3. Rh negativo com Coombs indireto negativo: imunoglobulina anti-D em até 72 h [aplicada / encaminhada]
+4. Acolhimento e escuta; oferecer contracepção se desejar (pode iniciar logo após o abortamento)
+5. Sinais de alarme: sangramento maior que menstruação, dor forte, febre, desmaio, dor no ombro
+6. Retorno em [48–72 h / 7 dias]`},
+sang2:{t:'Sangramento na segunda metade da gestação',code:'CIAP-2 W03 · CID-10 O44/O45/O46',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [ ]
+Alergias: [nega]
+Medicações de uso contínuo: [ ]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+G[ ] P[ ] A[ ] | Cesáreas prévias: [ ] | IG: [ ] semanas | Tipo sanguíneo: [ ] Rh [ ] | Placenta na USG: [ ]
+
+S:
+Gestante de [ ] semanas refere sangramento vaginal há [ ] [minutos/horas], [vermelho vivo, indolor / escuro, com dor abdominal contínua], em [pequena / grande] quantidade. [Primeiro episódio / episódios prévios em __.] Contrações: [ ]. Perda de líquido: [nega]. Movimentos fetais: [presentes / diminuídos]. Trauma, HAS, cefaleia, escotomas, uso de cocaína ou tabaco: [nega]. Relação sexual recente: [ ].
+
+O:
+PA [ ]x[ ] mmHg | FC [ ] bpm | [Sinais de choque: não]
+AU [ ] cm | Dinâmica uterina: [ausente / __ contrações em 10 min] | Tônus: [normal / hipertonia]
+BCF: [ ] bpm
+Especular (com cuidado, sem toque se placenta prévia não excluída): [sangramento vindo do orifício externo / colo com ectrópio ou pólipo sangrante]
+Toque vaginal: [NÃO REALIZADO: placenta prévia não excluída]
+
+A:
+Sangramento de segunda metade da gestação, [__] semanas, suspeita de [descolamento prematuro de placenta / placenta prévia / rotura uterina / vasa prévia / trabalho de parto / causa não obstétrica (ectrópio, cervicite, pólipo)], [estável / instável].
+
+P:
+1. Encaminhada à maternidade de referência [__] [com SAMU 192], em decúbito lateral esquerdo
+2. [Instável: 2 acessos venosos calibrosos, cristaloide aquecido, O2, monitorização]
+3. Não realizar toque vaginal até excluir placenta prévia (USG)
+4. Rh negativo: imunoglobulina anti-D em até 72 h (na maternidade)
+5. Contato com a maternidade e carta de referência com IG, tipo sanguíneo, USG e exames do pré-natal`},
 itu:{t:'Infecção urinária',code:'CIAP-2 U71 · CID-10 N39.0',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -1828,6 +1901,28 @@ rx_anemia:{s:'Anemia',t:'Anemia ferropriva e deficiência de B12',rec:RS,items:[
  {t:'Ácido fólico (deficiência)',rx:`Uso oral
 1. Ácido fólico 5 mg ...... 30 comprimidos
    Tomar 1 comprimido por dia por 4 meses.`,n:'Só depois de excluir ou começar a tratar a deficiência de B12.'}]},
+rx_abort:{s:'Abortamento',t:'Sangramento na gestação e abortamento',rec:RS+' (imunoglobulina anti-D e misoprostol: uso em serviço de saúde)',items:[
+ {t:'Ameaça de abortamento: analgesia',rx:`Uso oral
+1. Paracetamol 750 mg ...... 20 comprimidos
+   Tomar 1 comprimido de 6 em 6 horas, se dor.
+2. Butilbrometo de escopolamina 10 mg ...... 10 comprimidos
+   Tomar 1 comprimido de 8 em 8 horas, se cólica.`,n:'Repouso absoluto não muda o desfecho. Progesterona micronizada vaginal 400 mg/dia até 16 semanas pode ser considerada se houver abortamento prévio (estudo PRISM). Sem AINE na gestação.'},
+ {t:'Após abortamento: analgesia e ferro',rx:`Uso oral
+1. Ibuprofeno 600 mg ...... 9 comprimidos
+   Tomar 1 comprimido de 8 em 8 horas, após as refeições, se cólica, por até 3 dias.
+2. Sulfato ferroso 40 mg de ferro elementar ...... 60 comprimidos
+   Tomar 1 a 2 comprimidos por dia, 30 minutos antes do almoço, por 2 meses.`,n:'Ferro se Hb baixa ou sangramento importante. Retorno em 7–14 dias. Sinais de alarme: febre, dor forte, sangramento maior que menstruação, secreção com odor.'},
+ {t:'Imunoglobulina anti-D (Rh negativo)',rx:`Uso intramuscular
+1. Imunoglobulina humana anti-D 300 mcg ...... 1 ampola
+   Aplicar 1 ampola IM, dose única, em até 72 horas após o sangramento ou o abortamento.`,n:'Indicada na gestante Rh negativo com Coombs indireto negativo: abortamento, ameaça com sangramento, ectópica, mola, procedimento invasivo, trauma abdominal, sangramento na 2ª metade, com 28 semanas (onde disponível) e após o parto se o RN for Rh positivo. Disponível na maternidade ou no hemocentro conforme a rede.'},
+ {t:'Misoprostol (uso hospitalar)',rx:`Uso vaginal ou sublingual (serviço de referência)
+1. Misoprostol 200 mcg ...... comprimidos conforme o esquema
+   Abortamento retido até 13 semanas: 800 mcg via vaginal (ou 600 mcg sublingual); pode repetir após 3 horas, até 2 doses.
+   Abortamento incompleto até 13 semanas: 600 mcg via oral ou 400 mcg sublingual, dose única.`,n:'Dispensação e uso restritos a serviços hospitalares cadastrados (Portaria 344/98, lista C1). Esquemas de MS 2011 e FIGO 2023. Analgesia junto (ibuprofeno). Contraindicado na suspeita de ectópica e com DIU no útero.'},
+ {t:'Abortamento infectado (até a transferência)',rx:`Uso intravenoso (na urgência)
+1. Clindamicina 900 mg IV de 8 em 8 horas
+2. Gentamicina 5 mg/kg IV 1 vez ao dia
+   (ou ceftriaxona 2 g/dia + metronidazol 500 mg 8/8 h)`,n:'Iniciar a 1ª dose antes da transferência se houver acesso e medicamento. Esvaziamento uterino após o início do antibiótico. Sepse: protocolo de sepse.'}]},
 rx_hiv:{s:'HIV, PEP, PrEP',t:'HIV, PEP e PrEP',rec:'Antirretrovirais são dispensados nas UDM com receita + Formulário de Solicitação de Medicamentos (SICLOM), conforme PCDT do MS',items:[
  {t:'TARV inicial (adultos, incluindo gestantes)',rx:`Uso oral, contínuo
 1. Lamivudina 300 mg + tenofovir 300 mg (TDF/3TC) ...... 30 comprimidos
@@ -2501,6 +2596,44 @@ fx_b12:{s:'Deficiência de B12',t:'Deficiência de vitamina B12',src:'BSH 2014 �
    ['ok','Normal','&gt; 300 pg/mL','→ Procurar outra causa de macrocitose (álcool, TSH, fígado, medicamentos)']]},
   {k:'step',h:'Tratamento',li:['Sintomas neurológicos ou má absorção (perniciosa, bariátrica): cianocobalamina 1.000 mcg IM em dias alternados por 2 semanas (ou até parar de melhorar), depois mensal (ou a cada 2–3 meses com hidroxocobalamina)','Sem sintoma neurológico e com causa alimentar ou metformina: cianocobalamina oral 1.000–2.000 mcg/dia','Vegano: suplemento oral contínuo (250–500 mcg/dia de manutenção)','Folato baixo: ácido fólico 5 mg/dia depois de iniciar a B12, por 4 meses']},
   {k:'step',a:'8 semanas',h:'Seguimento',li:['Hemograma e reticulócitos em 10 dias e em 8 semanas; dosar potássio se anemia grave (hipocalemia no início)','Sem resposta ou suspeita de anemia perniciosa: anti-fator intrínseco; EDA (gastrite atrófica, risco de câncer gástrico)','Causa permanente: reposição por toda a vida']}]},
+
+fx_sang1:{s:'Sangramento 1º tri',t:'Sangramento na primeira metade da gestação',src:'MS: Atenção Humanizada ao Abortamento (2011) e Manual de Gestação de Alto Risco (2022) · FEBRASGO',k:'abortamento aborto ameaca inevitavel incompleto completo retido infectado habitual ectopica gravidez tubaria mola hidatiforme sangramento primeiro trimestre beta hcg usg',
+ pre:[{k:'bad',h:'Urgência: SAMU 192 e maternidade',li:['Instabilidade: PA baixa, FC &gt; 100, palidez, síncope, sudorese fria','Dor abdominal intensa, defesa ou dor no ombro (gravidez ectópica rota)','Sangramento intenso: encharca 1 absorvente por hora ou mais','Febre, dor, secreção fétida, útero amolecido (abortamento infectado: sepse)']}],
+ flow:[
+  {k:'step',h:'Avaliar',li:['Sinais vitais, abdome, exame especular (origem do sangramento, colo aberto ou fechado, restos)','Toque bimanual: colo, tamanho do útero, dor ou massa anexial','Pedir: beta-hCG quantitativo, USG transvaginal, hemograma, tipagem ABO/Rh e Coombs indireto, teste rápido de sífilis e HIV']},
+  {k:'dec',h:'Classificação',br:[
+   ['ok','Ameaça de abortamento','Sangramento leve, cólica leve, colo fechado, útero compatível, embrião com BCF','→ Expectante na APS, analgesia, retorno se piorar'],
+   ['ok','Abortamento completo','Eliminou o material, colo fechado, sangramento pequeno, endométrio &lt; 15 mm','→ Expectante; se nunca teve USG com gestação intrauterina, beta-hCG até negativar (excluir ectópica)'],
+   ['warn','Inevitável ou incompleto','Colo aberto, sangramento e cólica; restos na USG (endométrio ≥ 15 mm)','→ Maternidade: AMIU, curetagem ou misoprostol'],
+   ['warn','Retido','Colo fechado; CCN ≥ 7 mm sem BCF, ou saco ≥ 25 mm sem embrião','→ Referência: expectante, misoprostol ou AMIU, conforme a preferência da mulher'],
+   ['bad','Infectado','Febre, dor, secreção fétida, após manipulação','→ Urgência: antibiótico IV e esvaziamento uterino'],
+   ['bad','Gravidez ectópica','Dor, sangramento, útero vazio com beta-hCG acima de 1.500–3.500, massa anexial ou líquido livre','→ Urgência (rota ou instável) ou referência no mesmo dia'],
+   ['warn','Mola hidatiforme','Útero maior que a IG, hiperêmese, beta-hCG muito alto, USG com vesículas','→ Referência: esvaziamento e seguimento de beta-hCG']]},
+  {k:'dec',h:'Localização desconhecida (beta-hCG positivo, USG sem gestação)',br:[
+   ['ok','Beta-hCG sobe ≥ 35–50% em 48 h','Provável gestação inicial','→ Repetir a USG quando passar de 1.500–3.500'],
+   ['ok','Cai ≥ 50% em 48 h','Abortamento completo provável','→ Beta-hCG semanal até negativar'],
+   ['bad','Sobe pouco ou platô','Suspeita de ectópica','→ Referência no mesmo dia']]},
+  {k:'step',h:'Para todas',li:['Rh negativo com Coombs indireto negativo: imunoglobulina anti-D em até 72 h (abortamento, ectópica, mola, sangramento, procedimento)','Acolher sem julgamento; o atendimento ao abortamento é obrigatório e sigiloso','Oferecer contracepção: todos os métodos podem começar logo após o abortamento (DIU após esvaziamento sem infecção)','Abortamento de repetição (2 ou 3 seguidos): investigar (SAF, TSH, glicemia, cariótipo do casal, USG de malformação uterina) no pré-natal de alto risco']},
+  {k:'step',a:'Previsto em lei',h:'Aborto legal',li:['Gravidez por estupro (não exige boletim de ocorrência), risco de vida da gestante ou anencefalia','Acolher, informar o direito e encaminhar ao serviço de referência de aborto legal; notificar a violência (SINAN) e oferecer profilaxias se violência recente']}]},
+fx_sang2:{s:'Sangramento 2ª metade',t:'Sangramento na segunda metade da gestação',src:'MS: Manual de Gestação de Alto Risco (2022) · FEBRASGO',k:'sangramento terceiro trimestre segundo descolamento prematuro de placenta dpp placenta previa rotura uterina vasa previa hipertonia',
+ pre:[{k:'bad',h:'Toda gestante com sangramento após 20 semanas: maternidade',li:['Não fazer toque vaginal até excluir placenta prévia','Decúbito lateral esquerdo; instável: 2 acessos calibrosos, cristaloide aquecido, O2 e SAMU 192']}],
+ flow:[
+  {k:'dec',h:'Principais causas',br:[
+   ['bad','Descolamento prematuro de placenta','Dor abdominal súbita, útero hipertônico e doloroso, sangramento escuro (pode ser oculto), BCF alterado; HAS, trauma, cocaína, tabagismo','→ Emergência obstétrica: SAMU'],
+   ['bad','Placenta prévia','Sangramento vermelho vivo, indolor, súbito e recorrente, útero mole, BCF normal; cesárea prévia é fator de risco','→ Maternidade; nada de toque'],
+   ['bad','Rotura uterina','Cesárea ou cirurgia uterina prévia, dor súbita intensa, parada das contrações, partes fetais palpáveis, choque','→ Emergência: SAMU'],
+   ['bad','Vasa prévia','Sangramento ao romper a bolsa com sofrimento fetal rápido (sangue do bebê)','→ Emergência'],
+   ['warn','Outras','Trabalho de parto (tampão mucoso), ectrópio, pólipo, cervicite, trauma','→ Avaliar na maternidade; tratar a causa local']]},
+  {k:'step',h:'Antes de transferir',li:['Sinais vitais, BCF, altura uterina, tônus, dinâmica uterina','Exame especular cuidadoso se estável (sem toque)','Carta com IG, tipo sanguíneo, USG com localização da placenta e exames do pré-natal','Rh negativo: lembrar a imunoglobulina anti-D na maternidade']},
+  {k:'step',h:'Prevenção no pré-natal',li:['USG morfológica: localização da placenta; placenta baixa: repetir com 32 semanas','Controle da PA e AAS em gestantes de risco para pré-eclâmpsia (menos DPP)','Orientar cessação do tabagismo e de cocaína; cinto de segurança abaixo da barriga']}]},
+u_sang:{s:'Sangramento na gestação',t:'Sangramento na gestação: urgência na UBS',src:'MS: Manual de Gestação de Alto Risco (2022) · FEBRASGO',k:'sangramento gestacao hemorragia choque abortamento ectopica rota descolamento placenta previa urgencia',
+ pre:[{k:'bad',h:'Sinais de choque',li:['FC &gt; 100, PAS &lt; 90, palidez, sudorese fria, confusão, enchimento capilar &gt; 2 s','Índice de choque (FC ÷ PAS) ≥ 0,9: risco alto']}],
+ flow:[
+  {k:'step',h:'Imediato',li:['Chamar ajuda e SAMU 192','Deitar; após 20 semanas, em decúbito lateral esquerdo','2 acessos venosos calibrosos; cristaloide aquecido (SF 0,9% ou Ringer) 500–1.000 mL e reavaliar','O2 para SpO2 ≥ 95%; manter aquecida; monitorar PA, FC e sangramento','Coletar hemograma, tipagem e beta-hCG se puder, sem atrasar a transferência']},
+  {k:'dec',h:'Pela idade gestacional',br:[
+   ['bad','Até 20 semanas','Abortamento com hemorragia, ectópica rota (dor e choque), mola','→ Maternidade ou hospital com centro cirúrgico'],
+   ['bad','Após 20 semanas','DPP, placenta prévia, rotura uterina, vasa prévia','→ Maternidade; não fazer toque vaginal']]},
+  {k:'step',h:'Não fazer',li:['Toque vaginal após 20 semanas sem saber onde está a placenta','Ocitocina ou misoprostol na UBS sem diagnóstico','Atrasar a transferência para fazer exames']}]},
 
 fx_pac:{s:'Pneumonia',t:'Pneumonia adquirida na comunidade (adulto)',src:'SBPT 2018 · CRB-65',k:'pneumonia pac crb65 crb-65 tosse febre infeccao respiratoria amoxicilina azitromicina levofloxacino',
  flow:[
@@ -4095,6 +4228,204 @@ Object.assign(NC,{
     line:'Glicemia capilar domiciliar: '+R.map(r=>`${r.l.toLowerCase()} média ${r.me} mg/dL (${r.mn}–${r.mx}; ${r.n} medidas; ${r.pc}% na meta)`).join('; ')+(hipo?`; ${hipo} episódio(s) < 70 mg/dL`:'; sem hipoglicemias')+'.'}},
   note:'Cole os valores de cada horário separados por espaço ou vírgula. A HbA1c continua sendo a meta principal; a glicemia em casa orienta o ajuste.'}
 });
+/* Farmácia do SUS: RENAME (componente), gestação e lactação. [nome, regex normalizado, componente, apresentações, gestação, lactação, classe]
+   Componentes: B básico (UBS), E estratégico (programas: TB, HIV, hanseníase, IST, tabagismo, insulinas), Esp especializado (CEAF, farmácia do estado com LME), N não consta na RENAME, ? conferir */
+const FARM=[
+ ['Amoxicilina','amoxicilina(?! ?\\+)','B','cápsula 500 mg; pó para suspensão 50 mg/mL','Segura.','Compatível.','Antibiótico'],
+ ['Amoxicilina + clavulanato','amoxicilina ?\\+ ?clavulanato','B','comprimido 500 + 125 mg; suspensão 50 + 12,5 mg/mL','Segura.','Compatível (pode dar diarreia no bebê).','Antibiótico'],
+ ['Azitromicina','azitromicina','B','comprimido 500 mg; suspensão 40 mg/mL','Segura.','Compatível.','Antibiótico'],
+ ['Claritromicina','claritromicina','B','comprimido 500 mg','Cautela: preferir azitromicina.','Compatível.','Antibiótico'],
+ ['Eritromicina','eritromicina','B','suspensão 25 mg/mL; comprimido 500 mg (estolato contraindicado na gestação)','Segura (exceto estolato).','Compatível (cautela no recém-nascido: estenose de piloro).','Antibiótico'],
+ ['Cefalexina','cefalexina','B','cápsula 500 mg; suspensão 50 mg/mL','Segura.','Compatível.','Antibiótico'],
+ ['Ceftriaxona','ceftriaxona','B','pó para solução injetável 500 mg e 1 g','Segura.','Compatível.','Antibiótico'],
+ ['Benzilpenicilina benzatina','penicilina|benzatina','B','pó para suspensão injetável 600.000 e 1.200.000 UI','Segura (sífilis: tratamento de escolha).','Compatível.','Antibiótico'],
+ ['Ciprofloxacino','ciprofloxacino(?! 0,3)','B','comprimido 500 mg','Evitar: preferir outra classe (usar se não houver alternativa).','Compatível com cautela.','Antibiótico'],
+ ['Doxiciclina','doxiciclina','B','comprimido 100 mg','Contraindicada após 15 semanas (dentes e ossos do feto).','Uso curto compatível (até 3 semanas).','Antibiótico'],
+ ['Clindamicina','clindamicina','B','cápsula 300 mg','Segura.','Compatível com cautela (diarreia no bebê).','Antibiótico'],
+ ['Nitrofurantoína','nitrofurantoina','B','cápsula 100 mg; suspensão 5 mg/mL','Segura; evitar no termo (38 semanas ou mais).','Compatível (evitar se bebê com deficiência de G6PD ou menor de 1 mês).','Antibiótico'],
+ ['Sulfametoxazol + trimetoprima','sulfametoxazol|smx','B','comprimido 400 + 80 mg; suspensão 40 + 8 mg/mL','Evitar no 1º trimestre (antifolato) e no termo (icterícia).','Compatível com bebê a termo saudável; evitar se prematuro ou icterícia.','Antibiótico'],
+ ['Metronidazol','metronidazol','B','comprimido 250 e 400 mg; gel vaginal 100 mg/g; suspensão 40 mg/mL','Segura (inclusive no 1º trimestre).','Compatível em dose habitual; dose única de 2 g: suspender a amamentação por 12–24 h.','Antibiótico'],
+ ['Fosfomicina','fosfomicina','N','sachê 3 g','Segura.','Compatível.','Antibiótico'],
+ ['Fluconazol','fluconazol','B','cápsula 150 mg','Evitar no 1º trimestre (dose alta e prolongada); preferir tratamento tópico.','Compatível.','Antifúngico'],
+ ['Nistatina','nistatina','B','suspensão oral 100.000 UI/mL; creme vaginal','Segura.','Compatível.','Antifúngico'],
+ ['Miconazol','miconazol','B','creme vaginal 2%; creme dermatológico 2%','Segura (tópico).','Compatível.','Antifúngico'],
+ ['Aciclovir','aciclovir','B','comprimido 200 mg; creme 5%','Segura.','Compatível.','Antiviral'],
+ ['Oseltamivir','oseltamivir','E','cápsula 30, 45 e 75 mg','Segura (gestante é grupo de risco: tratar).','Compatível.','Antiviral'],
+ ['Albendazol','albendazol','B','comprimido mastigável 400 mg; suspensão 40 mg/mL','Evitar no 1º trimestre.','Compatível.','Antiparasitário'],
+ ['Mebendazol','mebendazol','B','comprimido 100 mg; suspensão 20 mg/mL','Evitar no 1º trimestre.','Compatível.','Antiparasitário'],
+ ['Ivermectina','ivermectina','B','comprimido 6 mg','Evitar (dados insuficientes).','Compatível com cautela.','Antiparasitário'],
+ ['Permetrina','permetrina','B','loção 1% e 5%','Segura (tópica).','Compatível.','Antiparasitário'],
+ ['Secnidazol','secnidazol','?','comprimido 1 g','Evitar no 1º trimestre.','Suspender a amamentação por 48–72 h.','Antiparasitário'],
+ ['Paracetamol','paracetamol','B','comprimido 500 mg; solução oral 200 mg/mL','Segura (analgésico de escolha).','Compatível.','Analgésico'],
+ ['Dipirona','dipirona','B','comprimido 500 mg; solução oral 500 mg/mL; injetável','Evitar no 3º trimestre (fechamento do canal arterial); uso pontual no 1º e 2º.','Compatível em uso pontual.','Analgésico'],
+ ['Ibuprofeno','ibuprofeno','B','comprimido 200, 300 e 600 mg; suspensão 50 mg/mL','Evitar após 20 semanas (rim fetal, oligoâmnio) e contraindicado no 3º trimestre.','Compatível (AINE de escolha na lactação).','Anti-inflamatório'],
+ ['Diclofenaco','diclofenaco','N','comprimido 50 mg (gel não consta)','Evitar após 20 semanas; contraindicado no 3º trimestre.','Compatível.','Anti-inflamatório'],
+ ['Ácido acetilsalicílico','acido acetilsalicilico|\\baas\\b','B','comprimido 100 e 500 mg','100 mg/dia é seguro (prevenção de pré-eclâmpsia); doses analgésicas: evitar no 3º trimestre.','Dose baixa compatível; evitar doses altas.','Antiagregante'],
+ ['Codeína','codeina','B','comprimido 30 mg; solução oral 3 mg/mL','Evitar uso prolongado e perto do parto.','Evitar: risco de sedação e apneia no bebê (metabolizadores rápidos).','Opioide'],
+ ['Tramadol','tramadol','N','cápsula 50 mg','Evitar uso prolongado e perto do parto.','Evitar ou usar dose única, observando sonolência no bebê.','Opioide'],
+ ['Morfina','morfina','B','comprimido 10 e 30 mg; solução oral; injetável','Evitar uso prolongado (abstinência neonatal).','Compatível em dose baixa e por pouco tempo; observar sonolência.','Opioide'],
+ ['Sumatriptano','sumatriptano','N','comprimido 50 mg','Cautela: dados tranquilizadores, usar se paracetamol não resolver.','Compatível.','Antienxaqueca'],
+ ['Butilbrometo de escopolamina','escopolamina|hioscina','B','comprimido 10 mg; solução oral; injetável','Cautela (uso pontual).','Compatível em uso pontual.','Antiespasmódico'],
+ ['Omeprazol','omeprazol','B','cápsula 10 e 20 mg','Seguro.','Compatível.','Gastrintestinal'],
+ ['Metoclopramida','metoclopramida','B','comprimido 10 mg; solução oral 4 mg/mL; injetável','Segura.','Compatível em uso curto.','Antiemético'],
+ ['Ondansetrona','ondansetrona','B','comprimido 4 e 8 mg; injetável','Cautela no 1º trimestre (pequeno risco de fenda oral); usar se outros falharem.','Compatível.','Antiemético'],
+ ['Dimenidrinato','dimenidrinato','N','comprimido 50 mg; gotas','Seguro (náusea da gestação).','Compatível em uso curto (pode reduzir o leite).','Antiemético'],
+ ['Sais para reidratação oral','reidratacao oral','B','pó para solução oral','Seguro.','Compatível.','Hidratação'],
+ ['Simeticona','simeticona','B','comprimido 40 mg; emulsão oral 75 mg/mL','Segura.','Compatível.','Gastrintestinal'],
+ ['Lactulose','lactulose','B','xarope 667 mg/mL','Segura.','Compatível.','Laxativo'],
+ ['Loratadina','loratadina','B','comprimido 10 mg; xarope 1 mg/mL','Segura (anti-histamínico de escolha).','Compatível.','Anti-histamínico'],
+ ['Dexclorfeniramina','dexclorfeniramina','B','comprimido 2 mg; solução oral 0,4 mg/mL','Segura.','Cautela: sedação e redução do leite; preferir loratadina.','Anti-histamínico'],
+ ['Prometazina','prometazina','B','comprimido 25 mg; injetável','Cautela: evitar perto do parto.','Evitar uso repetido: sedação no bebê.','Anti-histamínico'],
+ ['Prednisona','prednisona','B','comprimido 5 e 20 mg','Segura quando indicada (evitar uso prolongado no 1º trimestre).','Compatível (dose alta: amamentar 4 h após a dose).','Corticoide'],
+ ['Prednisolona','prednisolona','B','solução oral 3 mg/mL','Segura quando indicada.','Compatível.','Corticoide'],
+ ['Dexametasona','dexametasona','B','comprimido 4 mg; injetável 4 mg/mL; creme 0,1%','Segura quando indicada (maturação pulmonar fetal).','Compatível em uso curto.','Corticoide'],
+ ['Budesonida','budesonida(?! ?\\+)','B','aerossol nasal 32/50 mcg; aerossol oral 200 mcg','Segura (corticoide inalatório de escolha).','Compatível.','Respiratório'],
+ ['Beclometasona','beclometasona','B','aerossol oral 50, 200 e 250 mcg','Segura.','Compatível.','Respiratório'],
+ ['Salbutamol','salbutamol','B','aerossol oral 100 mcg/dose; solução para nebulização 5 mg/mL','Seguro.','Compatível.','Respiratório'],
+ ['Brometo de ipratrópio','ipratropio','B','solução para nebulização 0,25 mg/mL; aerossol 20 mcg','Seguro.','Compatível.','Respiratório'],
+ ['Budesonida + formoterol','budesonida ?\\+ ?formoterol|formoterol','Esp','cápsula inalante 6/200 e 12/400 mcg (asma e DPOC pelo PCDT)','Segura.','Compatível.','Respiratório'],
+ ['Umeclidínio + vilanterol, tiotrópio + olodaterol','umeclidinio|tiotropio','Esp','pó ou solução para inalação (DPOC pelo PCDT)','Dados limitados: usar se necessário.','Compatível com cautela (dados limitados).','Respiratório'],
+ ['Losartana','losartana','B','comprimido 50 mg','Contraindicada (2º e 3º trimestres: lesão renal fetal). Trocar ao planejar ou descobrir a gestação.','Compatível com cautela; preferir enalapril ou captopril.','Anti-hipertensivo'],
+ ['Enalapril','enalapril','B','comprimido 5, 10 e 20 mg','Contraindicado (2º e 3º trimestres).','Compatível (IECA de escolha na lactação).','Anti-hipertensivo'],
+ ['Captopril','captopril','B','comprimido 25 mg','Contraindicado na gestação.','Compatível.','Anti-hipertensivo'],
+ ['Anlodipino','anlodipino','B','comprimido 5 e 10 mg','Seguro (opção na HAS da gestação).','Compatível.','Anti-hipertensivo'],
+ ['Nifedipino','nifedipino','B','comprimido 10 mg; retard 20 mg','Seguro (1ª linha na HAS da gestação e na urgência hipertensiva).','Compatível.','Anti-hipertensivo'],
+ ['Metildopa','metildopa','B','comprimido 250 mg','Segura (1ª linha na HAS da gestação).','Compatível (pode causar depressão no puerpério: trocar).','Anti-hipertensivo'],
+ ['Hidralazina','hidralazina','B','comprimido 25 e 50 mg; injetável 20 mg/mL','Segura (crise hipertensiva na gestação).','Compatível.','Anti-hipertensivo'],
+ ['Hidroclorotiazida','hidroclorotiazida|clortalidona','B','comprimido 12,5 e 25 mg','Cautela: não iniciar na gestação (pode manter se já usava).','Compatível em dose baixa (pode reduzir o leite).','Diurético'],
+ ['Furosemida','furosemida','B','comprimido 40 mg; injetável 10 mg/mL','Cautela: só se edema pulmonar ou IC.','Compatível com cautela (pode reduzir o leite).','Diurético'],
+ ['Espironolactona','espironolactona','B','comprimido 25 e 100 mg','Evitar (efeito antiandrogênico no feto).','Compatível.','Diurético'],
+ ['Atenolol','atenolol','B','comprimido 25, 50 e 100 mg','Evitar: restrição de crescimento fetal; preferir metildopa, nifedipino ou labetalol.','Cautela: preferir propranolol ou metoprolol.','Betabloqueador'],
+ ['Propranolol','propranolol','B','comprimido 10 e 40 mg','Cautela: usar se indicado, monitorar crescimento fetal.','Compatível.','Betabloqueador'],
+ ['Carvedilol','carvedilol','B','comprimido 3,125, 6,25, 12,5 e 25 mg','Cautela: usar se indicado (IC).','Cautela (dados limitados): preferir metoprolol.','Betabloqueador'],
+ ['Metoprolol','metoprolol','B','comprimido 25, 50 e 100 mg','Cautela: usar se indicado.','Compatível.','Betabloqueador'],
+ ['Digoxina','digoxina','B','comprimido 0,25 mg','Segura quando indicada.','Compatível.','Cardiovascular'],
+ ['Varfarina','varfarina','B','comprimido 1 e 5 mg','Contraindicada (teratogênica, sobretudo 6–12 semanas): trocar por heparina.','Compatível.','Anticoagulante'],
+ ['Heparina e enoxaparina','heparina|enoxaparina','B','heparina injetável; enoxaparina (conforme protocolo)','Segura (anticoagulante de escolha na gestação).','Compatível.','Anticoagulante'],
+ ['Clopidogrel','clopidogrel','B','comprimido 75 mg','Cautela: usar se indicado.','Evitar se possível (dados insuficientes).','Antiagregante'],
+ ['Sinvastatina','sinvastatina','B','comprimido 10, 20 e 40 mg','Contraindicada: suspender ao planejar e na gestação.','Evitar.','Hipolipemiante'],
+ ['Atorvastatina','atorvastatina','Esp','comprimido 10, 20, 40 e 80 mg (PCDT de dislipidemia)','Contraindicada na gestação.','Evitar.','Hipolipemiante'],
+ ['Metformina','metformina','B','comprimido 500 e 850 mg','Segura (DMG e DM2; associar insulina se necessário).','Compatível.','Antidiabético'],
+ ['Glibenclamida','glibenclamida','B','comprimido 5 mg','Evitar: preferir insulina.','Compatível com cautela (observar hipoglicemia no bebê).','Antidiabético'],
+ ['Gliclazida','gliclazida','B','comprimido de liberação prolongada 30 e 60 mg','Evitar: preferir insulina.','Cautela (dados limitados).','Antidiabético'],
+ ['Dapagliflozina','dapagliflozina','Esp','comprimido 10 mg (critérios do PCDT de DM2)','Contraindicada.','Evitar.','Antidiabético'],
+ ['Insulina NPH e regular','insulina','E','frasco e caneta 100 UI/mL','Segura (tratamento de escolha do diabetes na gestação).','Compatível.','Antidiabético'],
+ ['Insulinas análogas (asparte, glargina e outras)','glargina|asparte|lispro|degludeca','Esp','conforme PCDT de DM1','Seguras.','Compatíveis.','Antidiabético'],
+ ['Semaglutida, tirzepatida, liraglutida','semaglutida|tirzepatida|liraglutida|ozempic|wegovy|mounjaro|saxenda','N','não constam na RENAME','Contraindicadas (parar semaglutida 2 meses antes de engravidar).','Evitar (sem dados).','Antidiabético'],
+ ['Levotiroxina','levotiroxina','B','comprimido 25, 50 e 100 mcg','Segura (aumentar a dose em cerca de 30%).','Compatível.','Tireoide'],
+ ['Propiltiouracil','propiltiouracil','B','comprimido 100 mg','Preferido no 1º trimestre (metimazol depois).','Compatível.','Tireoide'],
+ ['Metimazol (tiamazol)','metimazol|tiamazol','B','comprimido 5 e 10 mg','Evitar no 1º trimestre (embriopatia); preferido no 2º e 3º.','Compatível (até 20 mg/dia).','Tireoide'],
+ ['Fluoxetina','fluoxetina','B','cápsula 20 mg; solução oral 20 mg/mL','Segura: manter se estiver funcionando (pequeno risco de adaptação neonatal).','Compatível com cautela (meia-vida longa; preferir sertralina ao iniciar).','Antidepressivo'],
+ ['Sertralina','sertralina','?','comprimido 50 mg (conferir na REMUME)','Segura (ISRS de escolha na gestação).','Compatível (ISRS de escolha na lactação).','Antidepressivo'],
+ ['Escitalopram','escitalopram|citalopram','N','comprimido 10 mg','Seguro.','Compatível.','Antidepressivo'],
+ ['Amitriptilina','amitriptilina','B','comprimido 25 mg','Cautela: usar se indicado.','Compatível.','Antidepressivo'],
+ ['Nortriptilina','nortriptilina','B','cápsula 10, 25, 50 e 75 mg','Cautela: usar se indicado.','Compatível (tricíclico preferido na lactação).','Antidepressivo'],
+ ['Clomipramina','clomipramina','B','comprimido 10 e 25 mg','Cautela: usar se indicado.','Compatível.','Antidepressivo'],
+ ['Bupropiona','bupropiona','E','comprimido 150 mg (programa de tabagismo)','Cautela: preferir terapia comportamental e nicotina.','Cautela: observar irritabilidade no bebê.','Tabagismo'],
+ ['Nicotina (adesivo, goma, pastilha)','nicotina','E','adesivo 7, 14 e 21 mg; goma e pastilha 2 mg (programa de tabagismo)','Cautela: melhor que fumar; preferir goma ou pastilha.','Compatível (melhor que fumar).','Tabagismo'],
+ ['Diazepam','diazepam','B','comprimido 5 e 10 mg; injetável','Evitar uso prolongado e perto do parto (bebê hipotônico).','Evitar uso repetido (sedação no bebê); dose única compatível.','Benzodiazepínico'],
+ ['Clonazepam','clonazepam','B','comprimido 0,5 e 2 mg; solução oral 2,5 mg/mL','Evitar uso prolongado e perto do parto.','Cautela: dose baixa, observar sonolência no bebê.','Benzodiazepínico'],
+ ['Haloperidol','haloperidol(?! decanoato)','B','comprimido 1 e 5 mg; solução oral 2 mg/mL; injetável 5 mg/mL','Seguro quando indicado.','Compatível com cautela.','Antipsicótico'],
+ ['Haloperidol decanoato','decanoato','B','injetável 50 mg/mL','Seguro quando indicado.','Compatível com cautela.','Antipsicótico'],
+ ['Clorpromazina','clorpromazina','B','comprimido 25 e 100 mg; solução oral 40 mg/mL','Segura quando indicada.','Cautela (sedação).','Antipsicótico'],
+ ['Risperidona','risperidona','Esp','comprimido 1, 2 e 3 mg (PCDT de esquizofrenia)','Segura quando indicada.','Compatível com cautela.','Antipsicótico'],
+ ['Quetiapina','quetiapina','Esp','comprimido 25, 100, 200 e 300 mg (PCDT)','Segura quando indicada.','Compatível com cautela.','Antipsicótico'],
+ ['Olanzapina','olanzapina','Esp','comprimido 5 e 10 mg (PCDT)','Segura quando indicada (risco de DMG).','Compatível.','Antipsicótico'],
+ ['Carbonato de lítio','litio','B','comprimido 300 mg','Cautela: risco de anomalia cardíaca (Ebstein) no 1º trimestre; ajustar dose e nível sérico.','Evitar ou usar só com monitorização do bebê.','Estabilizador do humor'],
+ ['Ácido valproico','valpro|divalproato','B','cápsula 250 mg; comprimido 500 mg; xarope 50 mg/mL','Contraindicado (malformações e atraso no desenvolvimento): evitar em mulher em idade fértil.','Compatível.','Anticonvulsivante'],
+ ['Carbamazepina','carbamazepina','B','comprimido 200 mg; xarope 20 mg/mL','Evitar se possível (defeito do tubo neural): ácido fólico 5 mg antes e durante.','Compatível.','Anticonvulsivante'],
+ ['Lamotrigina','lamotrigina','Esp','comprimido 25, 50 e 100 mg (PCDT de epilepsia)','Segura (anticonvulsivante preferido na gestação).','Compatível com cautela (observar exantema no bebê).','Anticonvulsivante'],
+ ['Fenitoína','fenitoina','B','comprimido 100 mg','Evitar se possível (síndrome fetal da hidantoína).','Compatível.','Anticonvulsivante'],
+ ['Fenobarbital','fenobarbital','B','comprimido 100 mg; solução oral 40 mg/mL','Evitar se possível.','Cautela: sedação no bebê.','Anticonvulsivante'],
+ ['Biperideno','biperideno','B','comprimido 2 mg','Cautela: usar se indicado.','Cautela (pode reduzir o leite).','Antiparkinsoniano'],
+ ['Metilfenidato','metilfenidato','N','comprimido 10 mg (não consta na RENAME; alguns estados têm protocolo)','Cautela: dados limitados.','Compatível com cautela (observar sono e apetite do bebê).','TDAH'],
+ ['Sulfato ferroso','sulfato ferroso|\\bferro\\b','B','comprimido 40 mg de ferro elementar; solução oral 25 mg/mL','Seguro (suplementação de rotina).','Compatível.','Suplemento'],
+ ['Ácido fólico','acido folico','B','comprimido 5 mg; solução oral 0,2 mg/mL','Seguro (prevenção de defeito do tubo neural).','Compatível.','Suplemento'],
+ ['Carbonato de cálcio','carbonato de calcio','B','comprimido 500 mg (com ou sem colecalciferol)','Seguro (prevenção de pré-eclâmpsia se dieta pobre em cálcio).','Compatível.','Suplemento'],
+ ['Cianocobalamina (vitamina B12)','cianocobalamina|vitamina b12|hidroxocobalamina','?','injetável 1.000 mcg (conferir na REMUME)','Segura.','Compatível.','Suplemento'],
+ ['Colecalciferol (vitamina D)','colecalciferol|vitamina d','?','solução oral (conferir na REMUME)','Seguro em dose habitual.','Compatível.','Suplemento'],
+ ['Levonorgestrel + etinilestradiol','etinilestradiol|pilula combinada','B','comprimido 0,15 + 0,03 mg','Não se aplica (suspender se engravidar; sem risco se usado sem saber).','Evitar antes de 6 semanas pós-parto; preferir só progestágeno na amamentação.','Contraceptivo'],
+ ['Noretisterona 0,35 mg (minipílula)','noretisterona 0,35|minipilula','B','comprimido 0,35 mg','Não se aplica.','Compatível (método de escolha na amamentação).','Contraceptivo'],
+ ['Medroxiprogesterona 150 mg (trimestral)','medroxiprogesterona','B','injetável 150 mg/mL','Não se aplica.','Compatível (pode iniciar a partir de 6 semanas; antes, segundo protocolo).','Contraceptivo'],
+ ['Enantato de noretisterona + valerato de estradiol (mensal)','enantato|injetavel mensal','B','injetável 50 + 5 mg/mL','Não se aplica.','Evitar antes de 6 semanas pós-parto e na amamentação exclusiva (reduz o leite).','Contraceptivo'],
+ ['Levonorgestrel (emergência)','levonorgestrel (1,5|0,75)','B','comprimido 0,75 e 1,5 mg','Não interrompe gestação já estabelecida e não causa malformação.','Compatível.','Contraceptivo'],
+ ['DIU de cobre','\\bdiu\\b','B','dispositivo TCu 380A','Não se aplica.','Compatível (inserção no pós-parto imediato ou após 4 semanas).','Contraceptivo'],
+ ['Implante de etonogestrel','implante|etonogestrel','?','implante subdérmico 68 mg (oferta em ampliação no SUS; conferir no município)','Não se aplica.','Compatível.','Contraceptivo'],
+ ['Estriol creme vaginal','estriol','B','creme vaginal 1 mg/g','Não se aplica.','Compatível.','Hormônio'],
+ ['Estrogênios conjugados','estrogenios conjugados','B','comprimido 0,3 e 0,625 mg','Contraindicado.','Evitar (reduz o leite).','Hormônio'],
+ ['Imunoglobulina anti-D','anti-d|imunoglobulina anti','E','injetável 250–300 mcg (maternidade ou hemocentro, conforme a rede)','Segura (indicada na gestante Rh negativo não sensibilizada).','Compatível.','Gestação'],
+ ['Misoprostol','misoprostol','B','comprimido vaginal 25 e 200 mcg (uso hospitalar)','Uso hospitalar, nas indicações obstétricas.','Compatível (pode dar diarreia no bebê).','Gestação'],
+ ['Rifampicina, isoniazida, pirazinamida, etambutol (RHZE)','rhze|rifampicina|isoniazida','E','comprimido 4 em 1 e 2 em 1 (programa de TB)','Seguros: tratar a TB na gestação (com piridoxina).','Compatíveis.','Tuberculose'],
+ ['Antirretrovirais (TDF, 3TC, DTG)','tenofovir|lamivudina|dolutegravir','E','conforme PCDT, na UDM','Seguros: TARV indicada para toda gestante com HIV.','No Brasil, não amamentar se HIV (substituir pela fórmula).','HIV'],
+ ['Poliquimioterapia da hanseníase','dapsona|clofazimina|poliquimioterapia','E','blísteres PQT-U adulto e infantil','Seguros: manter o tratamento.','Compatíveis (clofazimina pode escurecer a pele do bebê).','Hanseníase'],
+ ['Alopurinol','alopurinol','B','comprimido 100 e 300 mg','Evitar (dados limitados).','Compatível.','Gota'],
+ ['Colchicina','colchicina','B','comprimido 0,5 e 1 mg','Cautela: usar se indicado (FMF).','Compatível.','Gota'],
+ ['Tobramicina colírio','tobramicina','?','colírio 0,3% (conferir na REMUME)','Segura (tópica).','Compatível.','Oftalmológico'],
+ ['Ciprofloxacino colírio ou gotas otológicas','ciprofloxacino 0,3','?','colírio e solução otológica 0,3% (conferir na REMUME)','Seguro (tópico).','Compatível.','Tópico'],
+ ['Trazodona','trazodona','N','comprimido 50 mg','Cautela: dados limitados.','Compatível em dose baixa.','Insônia'],
+ ['Mirtazapina','mirtazapina','N','comprimido 15 e 30 mg','Cautela: usar se indicado.','Compatível.','Antidepressivo'],
+ ['Zolpidem','zolpidem','N','comprimido 10 mg','Evitar perto do parto.','Compatível em dose baixa, observar sonolência.','Hipnótico'],
+ ['Duloxetina','duloxetina','N','cápsula 30 e 60 mg','Cautela: usar se indicado.','Compatível com cautela.','Antidepressivo'],
+ ['Doxazosina','doxazosina','B','comprimido 2 e 4 mg','Não se aplica (uso masculino).','Não se aplica.','Próstata'],
+ ['Finasterida','finasterida','B','comprimido 5 mg','Contraindicada (gestante não deve manipular comprimido partido).','Contraindicada.','Próstata'],
+ ['Tansulosina','tansulosina','N','cápsula 0,4 mg','Não se aplica.','Não se aplica.','Próstata']
+];
+const FCOMP={B:['ok','RENAME básico','na UBS'],E:['ok','RENAME estratégico','pelo programa do MS'],Esp:['warn','RENAME especializado','farmácia do estado (CEAF), com LME e critérios do PCDT'],N:['bad','Não consta na RENAME','compra própria ou lista municipal'],'?':['warn','Conferir','pode estar na RENAME ou só em algumas REMUMEs']};
+const FMUN=[['ararangua','Araranguá','https://saude.ararangua.sc.gov.br/atendimento-de-saude/farmacia-municipal','Página oficial da Farmácia Municipal. Não consegui abrir daqui para copiar a lista: cole a REMUME abaixo.'],['arroio','Balneário Arroio do Silva','https://arroiodosilva.sc.gov.br/','Não encontrei REMUME publicada on-line (busca em 21/10/2026). Peça a lista à farmácia municipal e cole abaixo.']];
+const flv=t=>/^(contraindicad|evitar|não amamentar|no brasil, não)/i.test(t)?'bad':/^(cautela|dados limitados|evitar uso|evitar se|evitar no|evitar ap|evitar antes|evitar ou)/i.test(t)?'warn':/^não se aplica/i.test(t)?'':'ok';
+const munList=k=>(store.get('kitaps:remume:'+k)||'').split(/\n+/).map(x=>norm(x).replace(/[^a-z0-9 +,]/g,' ').trim()).filter(x=>x.length>2);
+const inMun=(f,k)=>{const L=munList(k);if(!L.length)return null;const re=new RegExp(norm(f[1]));return L.some(x=>re.test(x))};
+const FARMST={q:'',sit:''};
+function farmBadges(rx){const ds=FARM.filter(f=>new RegExp(norm(f[1])).test(norm(rx)));if(!ds.length)return '';
+  return `<div class="bar farmb">${ds.map(f=>{const c=FCOMP[f[2]],ms=FMUN.map(([k,n])=>inMun(f,k)?n:null).filter(Boolean);
+   return `<span class="chip tag ${c[0]}" title="${esc(c[2])}">${esc(f[0].split(' (')[0])}: ${f[2]==='B'||f[2]==='E'?'SUS ✓':f[2]==='Esp'?'CEAF':f[2]==='N'?'fora da RENAME':'conferir'}${ms.length?' · '+esc(ms.join(', '))+' ✓':''}</span>`}).join('')}</div>`}
+function renderFARM(m){
+  m.innerHTML=`<section class="panel">
+    <div class="ph"><h2>Farmácia do SUS, gestação e lactação</h2><span class="code">RENAME 2024 · e-lactancia · LactMed · MS</span></div>
+    <div class="card"><div class="field"><label for="fm-q">Buscar remédio ou classe</label><input id="fm-q" type="search" value="${esc(FARMST.q)}" placeholder="ex.: sertralina, anti-hipertensivo, antibiótico" autocomplete="off"></div>
+      <div class="opts soft" style="grid-template-columns:repeat(auto-fit,minmax(110px,1fr))">
+        <label class="opt"><input type="radio" name="fm-s" value=""${!FARMST.sit?' checked':''}><span>Todos</span></label>
+        <label class="opt"><input type="radio" name="fm-s" value="g"${FARMST.sit==='g'?' checked':''}><span>Gestante</span></label>
+        <label class="opt"><input type="radio" name="fm-s" value="l"${FARMST.sit==='l'?' checked':''}><span>Lactante</span></label>
+        <label class="opt"><input type="radio" name="fm-s" value="s"${FARMST.sit==='s'?' checked':''}><span>Só o que tem no SUS</span></label></div></div>
+    <div id="fm-list"></div>
+    <details class="card"><summary><b>Listas do seu município (REMUME)</b></summary>
+      ${FMUN.map(([k,n,u,t])=>`<div class="field" style="margin-top:12px"><label for="fm-m-${k}">${esc(n)}: cole a lista, um remédio por linha</label><p class="note">${esc(t)} <a href="${u}" target="_blank" rel="noopener">Abrir site</a>${munList(k).length?` · ${munList(k).length} itens salvos neste aparelho`:''}</p><textarea id="fm-m-${k}" rows="4" placeholder="Amoxicilina 500 mg&#10;Losartana 50 mg">${esc(store.get('kitaps:remume:'+k)||'')}</textarea></div>`).join('')}
+      <p class="note">Com a lista colada, a busca e as receitas mostram se o remédio está na farmácia do município.</p></details>
+    <p class="note"><b>Fontes.</b> SUS: RENAME 2024 (Portaria GM/MS nº 6.324/2024), em <a href="https://www.gov.br/saude/pt-br/composicao/sectics/rename" target="_blank" rel="noopener">gov.br/saude (RENAME)</a>; a RENAME agora é atualizada continuamente, e o que a UBS tem depende da REMUME. Gestação: Manual de Gestação de Alto Risco (MS, 2022), FEBRASGO e bulas. Lactação: <a href="https://www.e-lactancia.org/" target="_blank" rel="noopener">e-lactancia</a> (APILAM), <a href="https://www.ncbi.nlm.nih.gov/books/NBK501922/" target="_blank" rel="noopener">LactMed</a> (NIH) e Amamentação e uso de medicamentos (MS, 2010). Resumo para consulta rápida: em dúvida, confira na fonte.</p>
+  </section>`;
+  const draw=()=>{const q=norm(FARMST.q.trim()),s=FARMST.sit;
+    let L=FARM.filter(f=>!q||norm(f[0]+' '+f[6]+' '+f[3]).includes(q)||new RegExp(norm(f[1])).test(q));
+    if(s==='s')L=L.filter(f=>f[2]==='B'||f[2]==='E'||FMUN.some(([k])=>inMun(f,k)));
+    const cls={ok:'var(--ok)',warn:'var(--warn)',bad:'var(--bad)','':'var(--muted)'};
+    $('#fm-list').innerHTML=L.length?`<p class="note">${L.length} remédio(s)</p>`+L.map(f=>{const c=FCOMP[f[2]],ms=FMUN.map(([k,n])=>[n,inMun(f,k)]).filter(x=>x[1]!==null);
+      const row=(lab,t)=>{const lv=flv(t);return `<div><span>${lab}</span><span style="text-align:right;color:${cls[lv]};${lv==='bad'||lv==='warn'?'font-weight:600':''}">${esc(t)}</span></div>`};
+      return `<div class="node"><h3>${esc(f[0])} <small class="ctag" style="color:var(--${c[0]})">${esc(c[1])}</small></h3><div class="rows">
+        <div><span>SUS</span><span style="text-align:right">${esc(c[2])}${f[3]?' · '+esc(f[3]):''}</span></div>
+        ${ms.map(([n,ok])=>`<div><span>${esc(n)}</span><span style="text-align:right;color:${ok?'var(--ok)':'var(--bad)'};font-weight:600">${ok?'na REMUME':'não achei na lista colada'}</span></div>`).join('')}
+        ${s!=='l'?row('Gestação',f[4]):''}${s!=='g'?row('Lactação',f[5]):''}</div></div>`}).join(''):'<p class="note">Nada encontrado. Confira na RENAME ou na REMUME do município.</p>'};
+  draw();
+  const q=$('#fm-q');q.oninput=()=>{FARMST.q=q.value;draw()};
+  m.querySelectorAll('input[name="fm-s"]').forEach(r=>r.onchange=()=>{FARMST.sit=r.value;draw()});
+  FMUN.forEach(([k])=>{const t=$('#fm-m-'+k);t.oninput=()=>{if(t.value.trim())store.set('kitaps:remume:'+k,t.value);else store.del('kitaps:remume:'+k);draw()}});
+}
+GD.farmacia={s:'Farmácia do SUS',t:'Farmácia do SUS, gestação e lactação',src:'RENAME 2024',k:'farmacia do sus rename remume tem no sus componente basico gestacao gravidez lactacao amamentacao seguro gestante lactante e-lactancia lactmed ararangua arroio do silva',sec:[],render:renderFARM};
+GD.abort_gd={s:'Abortamento: guia',t:'Abortamento e sangramento na gestação: classificação e conduta',src:'MS: Atenção Humanizada ao Abortamento (2011), Manual de Gestação de Alto Risco (2022) · FEBRASGO · FIGO 2023',k:'abortamento aborto classificacao ameaca inevitavel incompleto completo retido infectado habitual ectopica mola placenta previa descolamento rotura uterina vasa previa anti-d rh negativo beta hcg',rel:[['fx_sang1','Fluxograma 1ª metade'],['fx_sang2','Fluxograma 2ª metade'],['u_sang','Urgência'],['sang1','SOAP 1ª metade'],['sang2','SOAP 2ª metade'],['rx_abort','Receitas'],['or_sang','Folha do paciente']],sec:[
+ {h:'Classificação do abortamento',intro:'Abortamento: perda até 20–22 semanas ou feto com menos de 500 g. Precoce: até 12 semanas.',rows:[
+  ['Ameaça','Sangramento leve, colo fechado, útero compatível, embrião vivo. Expectante na APS; 80% evoluem bem.'],
+  ['Inevitável (em curso)','Colo aberto, sangramento e cólica aumentando. Maternidade.'],
+  ['Incompleto','Eliminação parcial, colo aberto, restos (endométrio ≥ 15 mm). Misoprostol, AMIU ou curetagem.'],
+  ['Completo','Eliminação total, colo fechado, sangramento pequeno, endométrio &lt; 15 mm. Expectante; beta-hCG até negativar se não havia USG prévia com gestação intrauterina.'],
+  ['Retido','Embrião sem BCF com CCN ≥ 7 mm, saco ≥ 25 mm sem embrião, ou ausência de embrião com BCF 2 semanas após saco sem vesícula. Expectante (até 4 semanas), misoprostol ou AMIU.'],
+  ['Infectado','Febre, dor, secreção fétida, útero doloroso; quase sempre após manipulação. Urgência: antibiótico IV e esvaziamento.'],
+  ['Habitual ou de repetição','3 ou mais perdas seguidas (investigar já a partir de 2). SAF, TSH, glicemia, USG de malformação uterina, cariótipo do casal. Pré-natal de alto risco.'],
+  ['Gravidez ectópica','Atraso menstrual, dor, sangramento escuro; beta-hCG acima da zona discriminatória (1.500–3.500) sem gestação intrauterina. Rota ou instável: emergência. Estável: referência no mesmo dia (metotrexato ou cirurgia).'],
+  ['Mola hidatiforme','Sangramento, útero maior que a IG, hiperêmese, pré-eclâmpsia precoce, beta-hCG muito alto, USG com imagem em "flocos de neve". Esvaziamento por AMIU e seguimento em centro de doença trofoblástica.']]},
+ {h:'USG e beta-hCG: critérios de perda (SRU, ACOG)',rows:[['Perda certa','CCN ≥ 7 mm sem BCF; saco gestacional médio ≥ 25 mm sem embrião; sem embrião com BCF ≥ 2 semanas após saco sem vesícula vitelínica, ou ≥ 11 dias após saco com vesícula.'],['Suspeita (repetir em 7–10 dias)','CCN &lt; 7 mm sem BCF; saco 16–24 mm sem embrião; âmnio vazio; vesícula vitelínica &gt; 7 mm.'],['Beta-hCG em 48 h','Subida ≥ 35–50%: gestação viável provável. Queda ≥ 50%: abortamento. Platô ou subida pequena: suspeita de ectópica.']]},
+ {h:'Sangramento na segunda metade',rows:[['Descolamento prematuro de placenta','Dor súbita, hipertonia, sangramento escuro (pode ser oculto), sofrimento fetal. Fatores: HAS, pré-eclâmpsia, trauma, cocaína, tabagismo. Emergência.'],['Placenta prévia','Sangramento vermelho vivo, indolor, recorrente, útero mole. Não fazer toque. Maternidade.'],['Rotura uterina','Cicatriz uterina, dor súbita, parada das contrações, choque. Emergência.'],['Vasa prévia','Sangramento ao romper a bolsa, com sofrimento fetal rápido. Emergência.'],['Causas locais','Ectrópio, pólipo, cervicite, trauma: diagnóstico só depois de excluir as causas obstétricas.']]},
+ {h:'Imunoglobulina anti-D',li:['Gestante Rh negativo com Coombs indireto negativo (não sensibilizada)','Indicações: abortamento, ameaça com sangramento, ectópica, mola, procedimentos invasivos, trauma abdominal, sangramento após 20 semanas, rotina com 28 semanas (onde disponível) e pós-parto se RN Rh positivo','Dose: 300 mcg IM em até 72 h (até 12 semanas, 50–120 mcg bastam onde houver essa apresentação); se passou de 72 h, aplicar até 28 dias','Coombs indireto positivo: já sensibilizada, não aplicar; pré-natal de alto risco']},
+ {h:'Depois do abortamento',li:['Acolher: sentimento de culpa e luto são comuns; oferecer retorno e apoio psicológico (e-Multi, CAPS se necessário)','Contracepção: oferecer na mesma consulta; todos os métodos podem começar imediatamente (pílula no mesmo dia; DIU após esvaziamento se sem infecção)','Pode tentar engravidar de novo assim que se sentir pronta (não é preciso esperar ciclos), com ácido fólico','Mola: beta-hCG semanal até 3 negativos seguidos, depois mensal por 6 meses (completa) com contracepção hormonal','Notificação: abortamento por violência sexual entra na ficha de violência (SINAN); o atendimento é sigiloso e a polícia não é comunicada sem consentimento']},
+ {h:'Aborto previsto em lei',li:['Gravidez por estupro (não precisa de boletim de ocorrência), risco de vida da gestante e anencefalia (STF, ADPF 54)','Papel da APS: acolher, informar, oferecer contracepção de emergência e profilaxias se violência recente, notificar e encaminhar ao serviço de referência']}]};
 
 /* Modo consulta: junta SOAP, exame físico, cálculos, receitas e orientações da mesma pessoa (só nesta sessão do navegador) */
 const CK={ef:'Exame físico',calc:'Escalas e cálculos',rx:'Prescrição',or:'Orientações'};
@@ -4331,11 +4662,18 @@ Object.assign(OR,{
   {h:'Metas (combine com o médico)',k:'grid',i:[['glico','Em jejum: 80 a 130'],['prato','2 horas depois de comer: menos de 180']]},
   {h:'Atenção',k:'note',i:[['bala','Quem toma gliclazida ou glibenclamida pode ter açúcar baixo: ande com bala no bolso'],['glico','Acima de 300, com muita sede e muito xixi: procure a unidade']]}]}
 });
+Object.assign(OR,{
+ or_sang:{s:'Sangramento na gravidez',t:'Sangramento na gravidez',sub:'Quando correr para a maternidade e cuidados depois de um abortamento',col:'#c92a2a',b:[
+  {h:'Vá já para a maternidade ou ligue 192 se tiver',k:'alarm',i:[['sangue','Sangramento maior que menstruação ou com coágulos'],['barriga','Dor forte na barriga ou no ombro'],['tontura','Tontura, fraqueza ou desmaio'],['frio','Febre, calafrio ou corrimento com mau cheiro'],['gestante','Perda de líquido ou bebê mexendo menos'],['tel','Na dúvida, ligue 192']]},
+  {h:'Sangramento pequeno, sem dor forte',k:'grid',i:[['cama','Descanse, mas não precisa ficar deitada o tempo todo'],['pill','Para cólica: só o remédio que o médico passou'],['unidade','Volte na data marcada para o exame'],['olho','Observe a cor e a quantidade do sangue']]},
+  {h:'Depois de um abortamento',k:'grid',i:[['sangue','Sangue leve por até 2 semanas é normal'],['copo','Beba água e coma bem; tome o ferro se receitado'],['pillno','Não use absorvente interno nem ducha por 2 semanas'],['coracao','Tristeza é normal: fale com a equipe se precisar de apoio']]},
+  {h:'Atenção',k:'note',i:[['agulha','Se o seu sangue é Rh negativo, você precisa da injeção anti-D em até 3 dias'],['pill','Você pode engravidar de novo logo. Se não quiser agora, peça um método para evitar gravidez']]}]}
+});
 Object.keys(OR).forEach(k=>E[k]=OR[k].s);
 const SECS={soap:Object.keys(T),calc:Object.keys(C),presc:Object.keys(P),mev:Object.keys(M),esq:Object.keys(E),fx:Object.keys(F)};
 let cur={sec:'soap',id:'has'};
 
-function chipLabel(id){return T[id]?({oma:'Otite média',otext:'Otite externa',conj:'Conjuntivite',oa:'Osteoartrite',insonia:'Insônia',anemia:'Anemia ferropriva',b12:'Deficiência de B12',vertigem:'Vertigem',hipotireo:'Hipotireoidismo',obesidade:'Obesidade',asma:'Asma',dpoc:'DPOC',idoso:'Idoso',puerperio:'Puerpério',contracepcao:'Contracepção',climaterio:'Climatério',tabagismo:'Tabagismo',itu:'ITU',ist:'IST',dengue:'Dengue',cefaleia:'Cefaleia',lombalgia:'Lombalgia',has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:F[id]?F[id].s:GD[id]?GD[id].s:AT[id]?AT[id].s:E[id])}
+function chipLabel(id){return T[id]?({sang1:'Sangramento 1ª metade',sang2:'Sangramento 2ª metade',oma:'Otite média',otext:'Otite externa',conj:'Conjuntivite',oa:'Osteoartrite',insonia:'Insônia',anemia:'Anemia ferropriva',b12:'Deficiência de B12',vertigem:'Vertigem',hipotireo:'Hipotireoidismo',obesidade:'Obesidade',asma:'Asma',dpoc:'DPOC',idoso:'Idoso',puerperio:'Puerpério',contracepcao:'Contracepção',climaterio:'Climatério',tabagismo:'Tabagismo',itu:'ITU',ist:'IST',dengue:'Dengue',cefaleia:'Cefaleia',lombalgia:'Lombalgia',has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:F[id]?F[id].s:GD[id]?GD[id].s:AT[id]?AT[id].s:E[id])}
 
 /* Navegação: menu de seções (agrupadas) + abas internas; favoritos */
 const SICON={
@@ -4366,23 +4704,24 @@ const SICON={
 const icon=(k,sz=20)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${SICON[k]}"/></svg>`;
 const SECTAG={soap:'SOAP',calc:'Cálc.',presc:'Rx',mev:'MEV',fx:'Fluxo',gd:'Guia',at:'Doc',esq:''};
 const SECTIONS=[
- {g:'Atendimento',k:'urg',t:'Urgência na UBS',ic:'urg',ids:['u_has','u_hipo','u_anaf','u_asma','u_tor']},
+ {g:'Atendimento',k:'urg',t:'Urgência na UBS',ic:'urg',ids:['u_has','u_hipo','u_anaf','u_asma','u_tor','u_sang','fx_sang1','fx_sang2','abort_gd']},
  {g:'Atendimento',k:'cons',t:'Modo consulta',ic:'cons',ids:['consulta']},
- {g:'Atendimento',k:'soap',t:'Templates SOAP',ic:'soap',ids:['has','dm','drc','hipotireo','obesidade','asma','dpoc','hpb','idoso','prenatal','puerperio','contracepcao','climaterio','puericultura','mental','ansiedade','tabagismo','insonia','ivas','oma','otext','conj','gea','itu','ist','dengue','cefaleia','vertigem','lombalgia','oa','anemia','b12']},
+ {g:'Atendimento',k:'soap',t:'Templates SOAP',ic:'soap',ids:['has','dm','drc','hipotireo','obesidade','asma','dpoc','hpb','idoso','prenatal','sang1','sang2','puerperio','contracepcao','climaterio','puericultura','mental','ansiedade','tabagismo','insonia','ivas','oma','otext','conj','gea','itu','ist','dengue','cefaleia','vertigem','lombalgia','oa','anemia','b12']},
  {g:'Atendimento',k:'ef',t:'Exame físico',ic:'steth',ids:['ef_geral','ef_cv','ef_resp','ef_abd','ef_neuro','ef_cp','ef_pele','ef_mama','ef_gin','ef_ped','efp_lomb','efp_ombro','efp_joelho','efp_vert','efp_tunel','efp_pe','efp_ulc','efp_ven','efp_art']},
- {g:'Atendimento',k:'presc',t:'Prescrições',ic:'presc',ids:['atb_guia',...Object.keys(P)]},
+ {g:'Atendimento',k:'presc',t:'Prescrições',ic:'presc',ids:['farmacia','atb_guia',...Object.keys(P)]},
  {g:'Atendimento',k:'fx',t:'Fluxogramas',ic:'fx',ids:['fx_has','fluxodm',...Object.keys(F).filter(k=>k!=='fx_has'&&!k.startsWith('u_'))]},
  {g:'Atendimento',k:'mev',t:'Estilo de vida (MEV)',ic:'mev',ids:Object.keys(M)},
  {g:'Atendimento',k:'docs',t:'Atestados e declarações',ic:'doc',ids:Object.keys(AT)},
- {g:'Atendimento',k:'esq',t:'Folha do paciente',ic:'esq',ids:['esquema','or_dengue','or_soro','or_hipo','or_pe','or_bomb','or_glp1','or_sono','or_mrpa','or_glic_ins','or_glic']},
+ {g:'Atendimento',k:'esq',t:'Folha do paciente',ic:'esq',ids:['esquema','or_dengue','or_soro','or_hipo','or_pe','or_bomb','or_glp1','or_sang','or_sono','or_mrpa','or_glic_ins','or_glic']},
  {g:'Ferramentas',k:'calc',t:'Calculadoras',ic:'calc',ids:['ig','tfg','drcest','cg','imc','rcv','insulina','cacorr','curb65','wells_tvp','wells_tep','chads','hasbled','itb','mrpa','glicres']},
+ {g:'Ferramentas',k:'farm',t:'Farmácia do SUS',ic:'presc',ids:['farmacia','ajustes']},
  {g:'Ferramentas',k:'pedi',t:'Doses pediátricas',ic:'pedi',ids:['pedi']},
  {g:'Ferramentas',k:'esc',t:'Escalas e questionários',ic:'esc',ids:['phq9','gad7','audit','fager','ipss','melanoma','marcos','centor','minicog','ivcf20','katz','lawton','quedas','pps','dhi','braden','push','mrs','ciwa','asrs','snap','isi']},
  {g:'Ferramentas',k:'exames',t:'Interpretação de exames',ic:'exames',ids:['ex_hemo','ex_tsh','ex_eas','ex_lip','ex_hep','ex_gaso','ex_espiro','ex_mamo','ex_cito','pn_img','fatorr','fib4','gasocalc','espcalc']},
  {g:'Ferramentas',k:'ecg',t:'Interpretação de ECG',ic:'ecg',ids:['ecg_passo','ecg_taqui','ecg_bradi','ecg_eixo','ecg_sobrec','ecg_bloq','ecg_isq','ecg_qt','ecg_padroes','fcecg','eixo','qtc','sve']},
- {g:'Ferramentas',k:'prot',t:'Protocolos e prevenção',ic:'prot',ids:['pn_exames','pn_img','trh','tb','tbdose','hans','rastreio','vacinas','ajustes']},
+ {g:'Ferramentas',k:'prot',t:'Protocolos e prevenção',ic:'prot',ids:['pn_exames','pn_img','abort_gd','trh','tb','tbdose','hans','rastreio','vacinas','ajustes']},
  {g:'Linhas de cuidado',k:'cronicos',t:'Crônicos',ic:'cronicos',ln:1,ids:['has','dm','drc','hpb','hipotireo','obesidade','asma','dpoc','tabagismo','oa','anemia','b12','fx_oa','fx_anemia','fx_b12','rx_oa','rx_anemia','mev_oa','mev_anemia','mrpa','glicres','or_mrpa','or_glic_ins','or_glic','rx_dm','rx_lip','rx_resp','rx_end','rx_uro','glp1','rx_glp1','or_hipo','or_pe','or_bomb','or_glp1','fx_has','fluxodm','efp_pe','efp_art','efp_ven','efp_ulc','itb','ecg_sobrec','sve','ex_espiro','ex_hep','fib4','hans','tb','fx_lip','fx_tireo','fx_asma','fx_dpoc','tfg','drcest','cg','imc','rcv','insulina','chads','hasbled','ipss','rastreio','vacinas','ajustes','melanoma','rx_cv','rx_anal','mev_has','mev_dm','mev_obes','mev_lip','mev_drc','mev_icc','mev_hpb','esquema']},
- {g:'Linhas de cuidado',k:'mulher',t:'Saúde da mulher',ic:'mulher',ln:1,ids:['prenatal','pn_exames','pn_img','anemia','rx_anemia','ef_mama','ef_gin','ex_mamo','ex_cito','puerperio','contracepcao','climaterio','trh','mrs','rx_trh','ist','itu','ig','imc','rastreio','vacinas','ajustes','fx_sif','fx_itu','rx_gest','rx_aco','rx_ist','rx_hiv','rx_atb','mev_gest','esquema']},
+ {g:'Linhas de cuidado',k:'mulher',t:'Saúde da mulher',ic:'mulher',ln:1,ids:['prenatal','sang1','sang2','abort_gd','fx_sang1','fx_sang2','u_sang','rx_abort','or_sang','farmacia','pn_exames','pn_img','anemia','rx_anemia','ef_mama','ef_gin','ex_mamo','ex_cito','puerperio','contracepcao','climaterio','trh','mrs','rx_trh','ist','itu','ig','imc','rastreio','vacinas','ajustes','fx_sif','fx_itu','rx_gest','rx_aco','rx_ist','rx_hiv','rx_atb','mev_gest','esquema']},
  {g:'Linhas de cuidado',k:'crianca',t:'Saúde da criança',ic:'crianca',ln:1,ids:['puericultura','marcos','pedi','ef_ped','oma','conj','anemia','fx_ouvido','fx_conj','fx_anemia','rx_oto','rx_anemia','imc','vacinas','fx_diar','fx_dengue','fx_farin','rx_ped','rx_par','rx_sint','rx_tdah','snap','or_soro','mev_cri','esquema']},
  {g:'Linhas de cuidado',k:'mental',t:'Saúde mental',ic:'mental',ln:1,ids:['mental','ansiedade','insonia','tabagismo','fx_dep','fx_ans','fx_ins','isi','rx_sono','or_sono','phq9','gad7','audit','fager','rx_ad','rx_ans','rx_ap','rx_bip','rx_esq','rx_alc','rx_bul','rx_tdah','rx_tab','ciwa','asrs','snap','mev_dep','mev_ans','mev_sono','mev_alc','mev_tab','esquema']},
  {g:'Linhas de cuidado',k:'idoso',t:'Saúde do idoso',ic:'idoso',ln:1,ids:['idoso','vertigem','dhi','fx_vert','efp_vert','oa','insonia','b12','fx_oa','fx_ins','fx_b12','isi','efp_pe','efp_ulc','braden','push','efp_ven','efp_art','itb','ecg_bradi','qtc','ivcf20','katz','lawton','minicog','quedas','pps','cg','has','dm','hpb','drc','ajustes','vacinas','rastreio','tfg','rcv','phq9','fx_has','fluxodm','fx_dep','fx_lomb','rx_anal','mev_has','mev_dm','mev_sono','esquema']},
@@ -4430,6 +4769,9 @@ function renderChips(){
     const tags=s.ln?[...new Set(list.map(id=>chipTag(id,s)))]:[''];
     sel.innerHTML=`<option value="">☰ Lista (${list.length})</option>`+tags.map(tg=>{const o=list.filter(id=>chipTag(id,s)===tg).map(id=>`<option value="${id}"${id===cur.id?' selected':''}>${esc(chipText(id,s))}</option>`).join('');return s.ln?`<optgroup label="${esc(({SOAP:'SOAP',Rx:'Prescrições','Cálc.':'Cálculos e escalas',MEV:'Estilo de vida',Fluxo:'Fluxogramas',Guia:'Guias e exames',Doc:'Documentos','':'Folhas do paciente'})[tg]||tg)}">${o}</optgroup>`:o}).join('');
     sel.value='';sel.onchange=()=>{if(sel.value)go(sel.value,CURS)};c.prepend(sel)}
+  const sd=$('#side');if(sd){const show=list.length>=4;document.body.classList.toggle('hasside',show);
+    sd.innerHTML=show?`<div class="sdh">${esc(s.t)}</div>`+list.map(id=>{const tg=chipTag(id,s);return `<button class="msi" type="button" data-id="${id}" aria-current="${id===cur.id}">${tg?`<small class="ctag">${tg}</small>`:''}${esc(chipText(id,s))}</button>`}).join(''):'';
+    sd.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>go(b.dataset.id,CURS));const a=sd.querySelector('[aria-current="true"]');if(a&&a.scrollIntoView&&(a.offsetTop<sd.scrollTop||a.offsetTop>sd.scrollTop+sd.clientHeight-40))sd.scrollTop=a.offsetTop-sd.clientHeight/3}
   renderMenu();renderFavs();
 }
 function addHead(){const h=$('#main .ph h2');if(h&&!h.querySelector('.hic'))h.insertAdjacentHTML('afterbegin',`<span class="hic">${icon(SECM[CURS].ic,18)}</span>`)}
@@ -4479,7 +4821,7 @@ function renderPresc(m,id){
     <div class="ph"><h2>${esc(c.t)}</h2><span class="code">adultos</span></div>
     <div class="rec"><b>Receituário:</b> ${esc(c.rec)}.</div>
     ${tocHTML(c.items.map((it,i)=>['rxa-'+i,esc(it.t)]))}
-    ${c.items.map((it,i)=>`<article class="card rxcard" id="rxa-${i}"><h3>${esc(it.t)}${edTag(it.ed,it.own)}</h3><pre class="rx" id="rx-${i}">${esc(it.rx)}</pre><div class="bar"><button class="btn primary small" data-i="${i}">Copiar prescrição</button><button class="btn small" data-e="${i}">Levar ao esquema do paciente</button><button class="btn small" data-cs="${i}" type="button">+ Consulta</button><button class="btn small" data-ed="${i}" aria-label="Editar ${esc(it.t)}">${icon('edit',14)} Editar</button></div>${it.n?`<p class="note">${esc(it.n)}</p>`:''}${(()=>{const ds=drugsIn(it.rx);return ds.length?`<details><summary>Ajustes: DRC, gestação, lactação, idoso</summary><div style="display:grid;gap:8px;margin-top:8px">${ds.map(d=>drugCard(d,{tfg:num(store.get('kitaps:tfg'))})).join('')}</div></details>`:''})()}</article>`).join('')}
+    ${c.items.map((it,i)=>`<article class="card rxcard" id="rxa-${i}"><h3>${esc(it.t)}${edTag(it.ed,it.own)}</h3><pre class="rx" id="rx-${i}">${esc(it.rx)}</pre>${farmBadges(it.rx)}<div class="bar"><button class="btn primary small" data-i="${i}">Copiar prescrição</button><button class="btn small" data-e="${i}">Levar ao esquema do paciente</button><button class="btn small" data-cs="${i}" type="button">+ Consulta</button><button class="btn small" data-ed="${i}" aria-label="Editar ${esc(it.t)}">${icon('edit',14)} Editar</button></div>${it.n?`<p class="note">${esc(it.n)}</p>`:''}${(()=>{const ds=drugsIn(it.rx);return ds.length?`<details><summary>Ajustes: DRC, gestação, lactação, idoso</summary><div style="display:grid;gap:8px;margin-top:8px">${ds.map(d=>drugCard(d,{tfg:num(store.get('kitaps:tfg'))})).join('')}</div></details>`:''})()}</article>`).join('')}
     <article class="card rxcard" id="rx-newcard"><div class="bar"><button class="btn small" id="rx-new" type="button">+ Nova prescrição nesta classe</button></div></article>
     <p class="note">Doses para adultos com função renal e hepática normais. Confira alergias, gestação, interações e a disponibilidade na REMUME do seu município. Use Editar para ajustar ao seu protocolo: fica salvo neste aparelho.</p>
   </section>`;
@@ -4535,7 +4877,7 @@ function srxDraw(id){
     ${L.length>1?`<div class="chips srxv" role="tablist" aria-label="Opções de receita">${L.map((x,i)=>`<button class="chip" type="button" role="tab" data-sv="${i}" aria-selected="${i===sel}">${esc(x.t)}</button>`).join('')}</div>`:`<h3>${esc(o.t)}</h3>`}
     <div class="rec"><b>Receituário:</b> ${esc(o.rec||RS)}.${/Notifica/.test(o.rec||'')?' A notificação vai no talão oficial; esta impressão é a receita que acompanha.':''}</div>
     <textarea class="soap rxta" id="srx-ta" spellcheck="false" aria-label="Receita: ${esc(o.t)}"></textarea>
-    ${o.n?`<p class="note">${esc(o.n)}</p>`:''}
+    ${farmBadges(o.rx)}${o.n?`<p class="note">${esc(o.n)}</p>`:''}
     <div class="bar"><button class="btn primary small" id="srx-cp" type="button">Copiar receita</button><button class="btn small" id="srx-pr" type="button">Imprimir receita</button><button class="btn small" id="srx-cs" type="button">+ Consulta</button><button class="btn small" id="srx-es" type="button">Levar ao esquema</button><button class="btn small" id="srx-rs" type="button"${saved==null?' hidden':''}>Restaurar</button>${o.pid?`<button class="btn small" type="button" data-go="${o.pid}">Todas as receitas</button>`:''}</div>
     <details><summary class="note">Seus dados no rodapé da receita impressa (salvos neste aparelho)</summary><div class="grid2" style="margin-top:10px">
       <div class="field"><label for="srx-med">Nome do(a) médico(a)</label><input id="srx-med" data-k="kitaps:medico" value="${esc(store.get('kitaps:medico')||'')}"></div>
@@ -4564,11 +4906,11 @@ GD.efp_vert.sec.splice(2,1,
  {h:'2. Skew (teste de cobertura alternada)',svg:EFSVG.hskew,li:['A pessoa olha fixo para o seu nariz','Cubra um olho por 2 segundos e passe rápido para o outro, várias vezes','Normal: nenhum olho se mexe. Alterado: o olho que é descoberto faz um movimento vertical para fixar (desalinhamento vertical) = central']},
  {h:'3. Impulso cefálico (head impulse)',svg:EFSVG.hhit,li:['Segure a cabeça com as duas mãos, pescoço relaxado; a pessoa olha fixo para o seu nariz','Gire a cabeça 10–20° para um lado, de forma rápida, curta e imprevisível; volte e repita para o outro lado','Alterado (sacada corretiva para voltar ao seu nariz): lesão periférica do lado para onde girou, como na neurite vestibular','Normal em quem está com vertigem contínua e nistagmo: <b>preocupante</b>, sugere central (AVC)']},
  {h:'Resumo: HINTS perigoso (INFARCT)',rows:[['<b>IN</b>: Impulso Normal','Impulso cefálico normal na vertigem contínua.'],['<b>FA</b>: Fast-phase Alternating','Nistagmo que muda de direção com o olhar.'],['<b>RCT</b>: Refixação no Cover Test','Skew presente.'],['HINTS plus: perda auditiva súbita nova','Pode ser AVC (artéria cerebelar anteroinferior), mesmo com impulso alterado.'],['Qualquer achado central, ataxia que impede ficar de pé, cefaleia ou cervicalgia intensa, déficit neurológico','Emergência: SAMU 192 e centro com neuroimagem (RM). Não esperar.'],['Os três periféricos (impulso alterado, nistagmo unidirecional, sem skew)','Provável neurite vestibular: sintomático por até 3 dias, corticoide pode ser considerado nas primeiras 72 h, reabilitação vestibular.']]});
-Object.assign(SRX,{oma:[['rx_oto',0]],otext:[['rx_oto',1]],conj:[['rx_oto',2],['rx_oto',3],['rx_oto',4]],oa:[['rx_oa',0],['rx_oa',1],['rx_oa',2],['rx_oa',3]],insonia:[['rx_sono',0],['rx_sono',1],['rx_sono',2],['rx_sono',3],['rx_sono',4]],anemia:[['rx_anemia',0],['rx_anemia',1],['rx_anemia',2]],b12:[['rx_anemia',4],['rx_anemia',3],['rx_anemia',5]]});
-Object.assign(SOAPLINK,{oma:[['fx_ouvido','Fluxograma'],['atb_guia','Antibióticos (dose por peso)'],['ef_cp','Otoscopia'],['pedi','Doses pediátricas'],['mev_oto','Orientações']],otext:[['fx_ouvido','Fluxograma'],['ef_cp','Otoscopia'],['mev_oto','Orientações']],conj:[['fx_conj','Fluxograma'],['mev_oto','Orientações']],
+Object.assign(SRX,{sang1:[['rx_abort',0],['rx_abort',1],['rx_abort',2]],sang2:[['rx_abort',2]],oma:[['rx_oto',0]],otext:[['rx_oto',1]],conj:[['rx_oto',2],['rx_oto',3],['rx_oto',4]],oa:[['rx_oa',0],['rx_oa',1],['rx_oa',2],['rx_oa',3]],insonia:[['rx_sono',0],['rx_sono',1],['rx_sono',2],['rx_sono',3],['rx_sono',4]],anemia:[['rx_anemia',0],['rx_anemia',1],['rx_anemia',2]],b12:[['rx_anemia',4],['rx_anemia',3],['rx_anemia',5]]});
+Object.assign(SOAPLINK,{sang1:[['fx_sang1','Fluxograma'],['abort_gd','Classificação'],['u_sang','Urgência'],['or_sang','Folha do paciente']],sang2:[['fx_sang2','Fluxograma'],['abort_gd','Classificação'],['u_sang','Urgência'],['or_sang','Folha do paciente']],oma:[['fx_ouvido','Fluxograma'],['atb_guia','Antibióticos (dose por peso)'],['ef_cp','Otoscopia'],['pedi','Doses pediátricas'],['mev_oto','Orientações']],otext:[['fx_ouvido','Fluxograma'],['ef_cp','Otoscopia'],['mev_oto','Orientações']],conj:[['fx_conj','Fluxograma'],['mev_oto','Orientações']],
  oa:[['fx_oa','Fluxograma'],['efp_joelho','Exame do joelho'],['imc','IMC'],['mev_oa','Exercícios']],insonia:[['fx_ins','Fluxograma'],['isi','ISI'],['phq9','PHQ-9'],['gad7','GAD-7'],['mev_sono','Higiene do sono'],['or_sono','Folha do paciente']],
  anemia:[['fx_anemia','Fluxograma'],['ex_hemo','Hemograma'],['pedi','Doses pediátricas'],['mev_anemia','Alimentação']],b12:[['fx_b12','Fluxograma'],['ex_hemo','Hemograma'],['mev_anemia','Alimentação']]});
-[['has','or_mrpa','Folha: MRPA'],['has','mrpa','Média da MRPA'],['dm','or_glic_ins','Folha: glicemia com insulina'],['dm','or_glic','Folha: glicemia sem insulina'],['dm','glicres','Resumo da glicemia'],['vertigem','efp_vert','HINTS']].forEach(([k,id,l])=>(SOAPLINK[k]=SOAPLINK[k]||[]).push([id,l]));
+[['prenatal','abort_gd','Sangramento e abortamento'],['prenatal','farmacia','Remédios na gestação'],['puerperio','farmacia','Remédios na lactação'],['has','or_mrpa','Folha: MRPA'],['has','mrpa','Média da MRPA'],['dm','or_glic_ins','Folha: glicemia com insulina'],['dm','or_glic','Folha: glicemia sem insulina'],['dm','glicres','Resumo da glicemia'],['vertigem','efp_vert','HINTS']].forEach(([k,id,l])=>(SOAPLINK[k]=SOAPLINK[k]||[]).push([id,l]));
 function renderSoap(m,id){
   const t=T[id],key='kitaps:soap:'+id,saved=store.get(key);
   m.innerHTML=`<section class="panel">
@@ -5505,7 +5847,7 @@ const known=id=>!!(T[id]||C[id]||P[id]||M[id]||F[id]||GD[id]||AT[id]||E[id]);
 const start=known(h)?h:(store.get('kitaps:last')||'has');
 go(known(start)?start:'has');
 /* ---------- Busca única ---------- */
-const CKEY={isi:'insonia sono gravidade isi dormir',mrpa:'mrpa pressao em casa media residencial monitorizacao hipertensao avental branco mascarada',glicres:'glicemia capilar em casa automonitorizacao media hipoglicemia perfil glicemico insulina',ciwa:'abstinencia alcoolica alcool delirium tremens benzodiazepinico diazepam tiamina',asrs:'tdah deficit atencao hiperatividade adulto rastreio desatencao',snap:'tdah deficit atencao hiperatividade crianca escola professor rastreio',marcos:'desenvolvimento marcos caderneta puericultura atraso neuropsicomotor crianca suplementacao ferro vitamina',dhi:'tontura vertigem labirintite dizziness impacto',curb65:'pneumonia curb crb gravidade internacao',wells_tvp:'trombose tvp perna edema d-dimero doppler',wells_tep:'embolia tep pulmonar dispneia d-dimero',chads:'fibrilacao atrial fa anticoagulacao avc chads vasc',hasbled:'sangramento anticoagulacao has-bled varfarina',centor:'garganta faringite amigdalite mcisaac estreptococo',katz:'idoso avd atividades basicas dependencia funcionalidade',lawton:'idoso aivd atividades instrumentais funcionalidade',minicog:'idoso memoria demencia cognicao relogio rastreio',ivcf20:'idoso fragilidade vulnerabilidade ivcf',quedas:'idoso queda steadi tug equilibrio',pps:'paliativo cuidados paliativos funcionalidade karnofsky',drcest:'drc estagio kdigo albuminuria rac renal',cg:'clearance creatinina cockcroft gault ajuste dose renal',cacorr:'calcio albumina hipocalcemia hipercalcemia',pedi:'pediatria pediatrica crianca dose peso mg/kg gotas xarope suspensao paracetamol dipirona ibuprofeno amoxicilina azitromicina cefalexina prednisolona salbutamol albendazol sulfato ferroso vitamina',ig:'idade gestacional dpp dum usg gestacao gravidez parto',tfg:'creatinina rim renal ckd-epi filtracao drc',imc:'peso altura obesidade indice de massa corporal',phq9:'depressao humor rastreio',gad7:'ansiedade rastreio',audit:'alcool bebida etilismo',insulina:'nph regular diabetes titulacao dose glicemia hipoglicemia',fluxodm:'diabetes metformina fluxograma tratamento dm2 gliclazida dapagliflozina',melanoma:'pele nevo pinta lesao abcde glasgow cancer',rcv:'framingham colesterol risco cardiovascular estatina ldl',rastreio:'rastreamento preventivo citopatologico papanicolau preventivo mamografia colonoscopia sangue oculto psof densitometria osteoporose psa sorologias hiv sifilis hepatite',ajustes:'ajuste dose renal drc tfg gestacao gravidez lactacao amamentacao idoso beers interacao seguranca',vacinas:'vacina calendario vacinal pni imunizacao bcg penta hpv dtpa influenza gestante crianca idoso',fager:'cigarro tabagismo fumo fagerstrom anos-maco nicotina',ipss:'prostata hpb urinario luts',itb:'indice tornozelo braquial doenca arterial periferica claudicacao pulsos doppler',braden:'lesao por pressao escara acamado risco ulcera',push:'ulcera ferida cicatrizacao curativo lesao por pressao venosa',mrs:'menopausa climaterio fogacho ondas de calor trh kupperman',fcecg:'ecg frequencia cardiaca quadradinhos rr',eixo:'ecg eixo eletrico desvio di avf',qtc:'ecg qt corrigido bazett fridericia framingham',sve:'ecg sobrecarga ventricular esquerda hipertrofia sokolow cornell peguero',fatorr:'hepatograma transaminases fosfatase colestase hepatocelular',fib4:'fibrose hepatica esteatose figado gorduroso',gasocalc:'gasometria acidose alcalose anion gap winter',espcalc:'espirometria vef1 cvf tiffeneau obstrucao dpoc asma',tbdose:'tuberculose rhze dose peso comprimidos esquema basico'};
+const CKEY={farmacia:'farmacia do sus rename remume gestacao lactacao amamentacao seguro gravidez',isi:'insonia sono gravidade isi dormir',mrpa:'mrpa pressao em casa media residencial monitorizacao hipertensao avental branco mascarada',glicres:'glicemia capilar em casa automonitorizacao media hipoglicemia perfil glicemico insulina',ciwa:'abstinencia alcoolica alcool delirium tremens benzodiazepinico diazepam tiamina',asrs:'tdah deficit atencao hiperatividade adulto rastreio desatencao',snap:'tdah deficit atencao hiperatividade crianca escola professor rastreio',marcos:'desenvolvimento marcos caderneta puericultura atraso neuropsicomotor crianca suplementacao ferro vitamina',dhi:'tontura vertigem labirintite dizziness impacto',curb65:'pneumonia curb crb gravidade internacao',wells_tvp:'trombose tvp perna edema d-dimero doppler',wells_tep:'embolia tep pulmonar dispneia d-dimero',chads:'fibrilacao atrial fa anticoagulacao avc chads vasc',hasbled:'sangramento anticoagulacao has-bled varfarina',centor:'garganta faringite amigdalite mcisaac estreptococo',katz:'idoso avd atividades basicas dependencia funcionalidade',lawton:'idoso aivd atividades instrumentais funcionalidade',minicog:'idoso memoria demencia cognicao relogio rastreio',ivcf20:'idoso fragilidade vulnerabilidade ivcf',quedas:'idoso queda steadi tug equilibrio',pps:'paliativo cuidados paliativos funcionalidade karnofsky',drcest:'drc estagio kdigo albuminuria rac renal',cg:'clearance creatinina cockcroft gault ajuste dose renal',cacorr:'calcio albumina hipocalcemia hipercalcemia',pedi:'pediatria pediatrica crianca dose peso mg/kg gotas xarope suspensao paracetamol dipirona ibuprofeno amoxicilina azitromicina cefalexina prednisolona salbutamol albendazol sulfato ferroso vitamina',ig:'idade gestacional dpp dum usg gestacao gravidez parto',tfg:'creatinina rim renal ckd-epi filtracao drc',imc:'peso altura obesidade indice de massa corporal',phq9:'depressao humor rastreio',gad7:'ansiedade rastreio',audit:'alcool bebida etilismo',insulina:'nph regular diabetes titulacao dose glicemia hipoglicemia',fluxodm:'diabetes metformina fluxograma tratamento dm2 gliclazida dapagliflozina',melanoma:'pele nevo pinta lesao abcde glasgow cancer',rcv:'framingham colesterol risco cardiovascular estatina ldl',rastreio:'rastreamento preventivo citopatologico papanicolau preventivo mamografia colonoscopia sangue oculto psof densitometria osteoporose psa sorologias hiv sifilis hepatite',ajustes:'ajuste dose renal drc tfg gestacao gravidez lactacao amamentacao idoso beers interacao seguranca',vacinas:'vacina calendario vacinal pni imunizacao bcg penta hpv dtpa influenza gestante crianca idoso',fager:'cigarro tabagismo fumo fagerstrom anos-maco nicotina',ipss:'prostata hpb urinario luts',itb:'indice tornozelo braquial doenca arterial periferica claudicacao pulsos doppler',braden:'lesao por pressao escara acamado risco ulcera',push:'ulcera ferida cicatrizacao curativo lesao por pressao venosa',mrs:'menopausa climaterio fogacho ondas de calor trh kupperman',fcecg:'ecg frequencia cardiaca quadradinhos rr',eixo:'ecg eixo eletrico desvio di avf',qtc:'ecg qt corrigido bazett fridericia framingham',sve:'ecg sobrecarga ventricular esquerda hipertrofia sokolow cornell peguero',fatorr:'hepatograma transaminases fosfatase colestase hepatocelular',fib4:'fibrose hepatica esteatose figado gorduroso',gasocalc:'gasometria acidose alcalose anion gap winter',espcalc:'espirometria vef1 cvf tiffeneau obstrucao dpoc asma',tbdose:'tuberculose rhze dose peso comprimidos esquema basico'};
 let IDX=null;
 function buildIdx(){
   const L=[];
@@ -5543,6 +5885,7 @@ function openResult(e){
   q.addEventListener('keydown',e=>{if(e.key==='Enter'&&res[0]){e.preventDefault();openResult(res[0])}if(e.key==='Escape'){q.value='';box.hidden=true}});
   document.addEventListener('click',e=>{if(!e.target.closest('.search'))box.hidden=true});
 })();
+document.addEventListener('wheel',e=>{const c=e.target.closest&&e.target.closest('.chips');if(c&&c.scrollWidth>c.clientWidth+2&&Math.abs(e.deltaY)>Math.abs(e.deltaX)){c.scrollLeft+=e.deltaY;e.preventDefault()}},{passive:false});
 window.__test={ckdepi,usgLimit,framingham,parseList,searchKit,go,F,fxPlain,get CURS(){return CURS}};
 })();
 </script>
