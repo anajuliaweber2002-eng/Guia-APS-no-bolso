@@ -122,7 +122,7 @@ h2{margin:0;font-size:1.05rem;text-wrap:balance}
 .note{color:var(--muted);font-size:.82rem;margin:0}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:grid;gap:12px}
 
-textarea.soap{width:100%;min-height:60vh;resize:vertical;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--fg);font:13.5px/1.55 var(--f-mono);padding:12px}
+textarea.soap{width:100%;min-height:60vh;resize:vertical;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--fg);font:13.5px/1.55 var(--f-mono);padding:12px}.soap.efn{min-height:80px;resize:none;overflow:hidden}
 .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .btn{border:1px solid var(--line);background:var(--surface);color:var(--fg);font:600 .88rem var(--f-ui);padding:9px 14px;border-radius:8px;cursor:pointer}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
@@ -3743,7 +3743,7 @@ function mevEditor(id){
   const r=$('#ed-reset');if(r)r.onclick=()=>confirm2(r,()=>{delete ED['mev:'+id];saveEd();rerender();toast('Texto original restaurado')});
 }
 /* Backup: tudo que a pessoa personalizou (SOAP, prescrições, MEV, anotações, favoritos, unidade) */
-const BK=['kitaps:soap:','kitaps:ed','kitaps:favs','kitaps:unidade','kitaps:nota:','kitaps:at:','kitaps:medico','kitaps:crm','kitaps:cidade'];
+const BK=['kitaps:soap:','kitaps:efn:','kitaps:ed','kitaps:favs','kitaps:unidade','kitaps:nota:','kitaps:at:','kitaps:medico','kitaps:crm','kitaps:cidade'];
 function lsKeys(){try{return Object.keys(localStorage)}catch(e){return []}}
 function myKeys(){return lsKeys().filter(k=>BK.some(p=>k===p||k.startsWith(p))).sort()}
 async function saveFile(blob,fname,okMsg){
@@ -3756,6 +3756,7 @@ function renderMeu(m){
     nota=ks.filter(k=>k.startsWith('kitaps:nota:')).map(k=>k.slice(12)).filter(id=>F[id]||C[id]);
   const rows=[];
   soap.forEach(id=>rows.push([id,'SOAP',T[id].t,'editado']));
+  ks.filter(k=>k.startsWith('kitaps:efn:')).forEach(k=>{const [,,gid,hk]=k.split(':'),x=GD[gid]&&GD[gid].sec.find(s=>s.normal&&efnKey(gid,s)===k);if(x)rows.push([gid,'Exame físico',GD[gid].t+(x.h==='Texto normal'?'':' · '+x.h),'editado'])});
   Object.keys(ED).forEach(k=>{const [tp,id,i]=k.split(':');
     if(tp==='rx'&&P[id]&&P[id].items[+i])rows.push([id,'Prescrição',P[id].items[+i].t,'editada']);
     if(tp==='rxnew'&&P[id])ED[k].forEach(x=>rows.push([id,'Prescrição',x.t,'minha']));
@@ -3764,13 +3765,13 @@ function renderMeu(m){
   const d=new Date(),stamp=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
   m.innerHTML=`<section class="panel">
     <div class="ph"><h2>Minhas edições e backup</h2><span class="code">salvo neste aparelho</span></div>
-    <p class="note">Você pode editar os templates SOAP, as prescrições (botão Editar em cada uma, ou criar a sua) e as orientações de MEV, e anotar nos fluxogramas. Tudo fica guardado só neste aparelho; salve um backup para levar ao celular ou ao computador.</p>
+    <p class="note">Você pode editar os templates SOAP, os textos de exame físico normal, as prescrições (botão Editar em cada uma, ou criar a sua) e as orientações de MEV, e anotar nos fluxogramas. Tudo fica guardado só neste aparelho; salve um backup para levar ao celular ou ao computador.</p>
     <div class="card"><div class="lbl">O que você mudou (${rows.length})</div>
       ${rows.length?`<div class="edlist">${rows.map((r,k)=>`<button class="edrow" data-k="${k}" type="button"><span class="qs">${esc(r[1])}</span><span class="ql">${esc(r[2])}</span><span class="edtag">${esc(r[3])}</span></button>`).join('')}</div>`:'<p class="note">Nada editado ainda.</p>'}
     </div>
     <div class="card"><div class="lbl">Backup</div>
       <div class="bar"><button class="btn primary small" id="bk-save" type="button">Salvar backup (.json)</button><button class="btn small" id="bk-load" type="button">Restaurar backup</button><input type="file" id="bk-file" accept=".json,application/json" hidden></div>
-      <p class="note">O backup inclui SOAP, prescrições e MEV editadas, suas prescrições, anotações, favoritos e o nome da unidade. Restaurar junta o arquivo com o que já está aqui (o arquivo vence nos itens repetidos).</p>
+      <p class="note">O backup inclui SOAP, exame físico, prescrições e MEV editadas, suas prescrições, anotações, favoritos e o nome da unidade. Restaurar junta o arquivo com o que já está aqui (o arquivo vence nos itens repetidos).</p>
     </div>
     <div class="card"><div class="lbl">Começar do zero</div>
       <div class="bar"><button class="btn small danger" id="bk-clear" type="button">Apagar todas as edições</button></div>
@@ -4353,6 +4354,9 @@ const GD={
   {h:'Seguimento',li:['Reavaliar em 6–12 semanas: sintomas, PA, sangramento, mastalgia, adesão; ajustar dose','Depois, anualmente: indicação, dose, riscos, rastreios em dia','Sangramento irregular nos primeiros 3–6 meses é esperado. Persistente após 6 meses de esquema contínuo, ou novo: USG transvaginal (endométrio &gt; 4 mm: investigar)','Parar com redução gradual ou de uma vez (os sintomas podem voltar)','Parar e avaliar: dor e edema na panturrilha, dispneia súbita, dor torácica, déficit neurológico, icterícia, nódulo mamário']},
   {h:'Riscos em números (TRH combinada)',rows:[['Câncer de mama','Cerca de 1 caso a mais por 1.000 mulheres por ano de uso após 3–5 anos; menor com estrogênio isolado e com progesterona micronizada.'],['TEV e AVC','Aumentam com a via oral e com início após 60 anos; a via transdérmica em dose baixa praticamente não aumenta o TEV.'],['Benefícios','Alívio dos sintomas, menos fraturas, menos câncer colorretal e de DM2; possível proteção cardiovascular quando iniciada na janela.']]}]}
 };
+/* Texto normal do exame físico: editável, salvo neste aparelho (kitaps:efn:<guia>:<seção>) */
+const efnKey=(id,x)=>'kitaps:efn:'+id+':'+norm(x.h).replace(/[^a-z0-9]+/g,'-');
+const efnGet=(id,x)=>store.get(efnKey(id,x))||x.normal;
 function renderGD(m,id){
   const g=GD[id];if(g.render)return g.render(m,id);
   m.innerHTML=`<section class="panel">
@@ -4369,15 +4373,18 @@ function renderGD(m,id){
       ${x.svg?`<div class="gsvg">${x.svg}</div>`:''}
       ${x.li?`<ul class="gl">${x.li.map(l=>`<li>${l}</li>`).join('')}</ul>`:''}
       ${x.rows?`<table class="scale pdt"><tbody>${x.rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</tbody></table>`:''}
-      ${x.normal?`<div class="lbl">${x.h==='Texto normal'?'Texto normal para o O do SOAP':'Modelo para copiar'}</div><pre class="rx">${esc(x.normal)}</pre><div class="bar"><button class="btn small" data-cs="${i}" type="button">+ Consulta</button></div>`:''}
+      ${x.normal?`<div class="lbl">${x.h==='Texto normal'?'Texto normal para o O do SOAP':'Modelo para copiar'}</div><textarea class="soap efn" data-en="${i}" spellcheck="false" aria-label="${esc(x.h)}: texto editável">${esc(efnGet(id,x))}</textarea><div class="bar"><button class="btn small" data-cs="${i}" type="button">+ Consulta</button><button class="btn small" data-er="${i}" type="button"${store.get(efnKey(id,x))?'':' hidden'}>Restaurar modelo</button><span class="note" data-et="${i}">${store.get(efnKey(id,x))?'Seu texto, salvo neste aparelho':'Edite à vontade: fica salvo neste aparelho'}</span></div>`:''}
     </div>`).join('')}
     ${(g.rel||[]).filter(x=>known(x[0])).length?`<div class="lbl">Ferramentas relacionadas</div><div class="bar">${g.rel.filter(x=>known(x[0])).map(x=>`<button class="chip" data-go="${x[0]}" type="button">${esc(x[1])}</button>`).join('')}</div>`:''}
     <p class="note">Resumo para consulta rápida. Confira o protocolo vigente do MS e do seu município.</p>
   </section>`;
-  m.querySelectorAll('[data-cs]').forEach(b=>b.onclick=()=>addCons('ef',g.t,g.sec[+b.dataset.cs].normal));bindToc(m);
+  m.querySelectorAll('[data-cs]').forEach(b=>b.onclick=()=>addCons('ef',g.t,efnGet(id,g.sec[+b.dataset.cs])));bindToc(m);
+  m.querySelectorAll('[data-en]').forEach(t=>{const i=+t.dataset.en,x=g.sec[i],k=efnKey(id,x),fit=()=>{t.style.height='auto';t.style.height=(t.scrollHeight+4)+'px'};fit();
+    t.oninput=()=>{fit();const v=t.value;if(v.trim()&&v!==x.normal)store.set(k,v);else store.del(k);const ed=!!store.get(k);m.querySelector(`[data-er="${i}"]`).hidden=!ed;m.querySelector(`[data-et="${i}"]`).textContent=ed?'Seu texto, salvo neste aparelho':'Edite à vontade: fica salvo neste aparelho'}});
+  m.querySelectorAll('[data-er]').forEach(b=>b.onclick=()=>confirm2(b,()=>{const i=+b.dataset.er,x=g.sec[i],t=m.querySelector(`[data-en="${i}"]`);store.del(efnKey(id,x));t.value=x.normal;t.oninput();toast('Modelo restaurado')}));
   m.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
   m.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{const x=g.sec[+b.dataset.c];
-    copy(x.normal?x.normal:fxText(x.h)+'\n'+(x.li||[]).map(l=>'- '+fxText(l)).join('\n')+(x.rows||[]).map(r=>'- '+fxText(r[0])+': '+fxText(r[1])).join('\n'))});
+    copy(x.normal?efnGet(id,x):fxText(x.h)+'\n'+(x.li||[]).map(l=>'- '+fxText(l)).join('\n')+(x.rows||[]).map(r=>'- '+fxText(r[0])+': '+fxText(r[1])).join('\n'))});
   if(g.calc==='lip'){let line='';
     const upd=()=>{const ct=num($('#lp-ct').value),h=num($('#lp-hdl').value),tg=num($('#lp-tg').value),r=$('#lp-r');
       if(!(ct>0&&h>0&&tg>0)){r.className='result';r.innerHTML='<div class="sub">Preencha os 3 valores.</div>';line='';return}
