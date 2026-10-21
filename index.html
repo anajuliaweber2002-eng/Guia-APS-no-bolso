@@ -243,7 +243,7 @@ textarea.soap.rxta{min-height:0;overflow:hidden}
 .lnk{background:none;border:0;padding:0;color:var(--accent);font:600 .84rem var(--f-ui);text-align:left;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 .out{font-weight:600}
 .sec-h{margin:6px 0 0;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-@media print{@page{margin:8mm}body{background:#fff}body::before,header,.toast{display:none!important}main .wrap>section>*:not(#sheet){display:none!important}#sheet{border:0!important;padding:0!important}#sheet.rxsheet{display:grid!important}main .wrap{padding:0!important;max-width:none}}
+@media print{@page{margin:8mm}body{background:#fff}body::before,header,.toast{display:none!important}main .wrap>section>*:not(#sheet){display:none!important}#sheet{border:0!important;padding:0!important}#sheet.rxsheet{display:grid!important}#sheet.fit1>svg{max-height:279mm;width:auto!important;max-width:100%;margin:0 auto}main .wrap{padding:0!important;max-width:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -4681,24 +4681,35 @@ const OR={
 };
 function orSVG(o){
   const W=800,F='Arial,Helvetica,sans-serif',X=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');let y=0,s='';
-  const tl=wrapT(o.t,30);s+=`<rect width="${W}" height="${60+tl.length*44}" fill="${o.col}"/>`;tl.forEach((l,i)=>s+=`<text x="30" y="${58+i*44}" font-family="${F}" font-size="40" font-weight="700" fill="#fff">${X(l)}</text>`);
-  y=60+tl.length*44;s+=`<text x="30" y="${y-14}" font-family="${F}" font-size="22" fill="#fff" opacity=".92">${X(o.sub)}</text>`;y+=24;
+  const cp=!!o.cp,TL=cp?38:44;const tl=wrapT(o.t,cp?36:30);s+=`<rect width="${W}" height="${60+tl.length*TL}" fill="${o.col}"/>`;tl.forEach((l,i)=>s+=`<text x="30" y="${(cp?50:58)+i*TL}" font-family="${F}" font-size="${cp?34:40}" font-weight="700" fill="#fff">${X(l)}</text>`);
+  y=60+tl.length*TL;s+=`<text x="30" y="${y-14}" font-family="${F}" font-size="22" fill="#fff" opacity=".92">${X(o.sub)}</text>`;y+=cp?14:24;
   o.b.forEach(b=>{
     const al=b.k==='alarm';
+    if(al&&cp){const rows=Math.ceil(b.i.length/2),h=46+rows*62;s+=`<rect x="12" y="${y}" width="${W-24}" height="${h}" rx="12" fill="#fff5f5" stroke="#c92a2a" stroke-width="3"/>`;
+      s+=`<text x="28" y="${y+32}" font-family="${F}" font-size="22" font-weight="700" fill="#c92a2a">${X(b.h)}</text>`;let yy=y+42;
+      b.i.forEach(([ic,t],i)=>{const col=i%2,x=22+col*384,L=wrapT(t,30).slice(0,2);s+=`<svg x="${x}" y="${yy+4}" width="52" height="52" viewBox="0 0 100 100">${OI[ic]||''}</svg>`;
+        L.forEach((l,j)=>s+=`<text x="${x+62}" y="${yy+36-(L.length-1)*10+j*20}" font-family="${F}" font-size="17" font-weight="700" fill="#222">${X(l)}</text>`);if(col===1)yy+=62});
+      y+=h+12;return}
+    if(b.k==='line'){b.i.forEach(t=>{const L=wrapT(t,74);L.forEach((l,j)=>s+=`<text x="24" y="${y+20+j*23}" font-family="${F}" font-size="18" fill="#222">${X(l)}</text>`);y+=L.length*23+6});y+=8;return}
     if(al){const rows=Math.ceil(b.i.length/2),h=60+rows*96;s+=`<rect x="12" y="${y}" width="${W-24}" height="${h}" rx="14" fill="#fff5f5" stroke="#c92a2a" stroke-width="4"/>`;
       s+=`<text x="30" y="${y+40}" font-family="${F}" font-size="27" font-weight="700" fill="#c92a2a">${X(b.h)}</text>`;let yy=y+56;
       b.i.forEach(([ic,t],i)=>{const col=i%2,x=24+col*380,L=wrapT(t,22).slice(0,3);s+=`<svg x="${x}" y="${yy+6}" width="72" height="72" viewBox="0 0 100 100">${OI[ic]||''}</svg>`;
         L.forEach((l,j)=>s+=`<text x="${x+84}" y="${yy+46-(L.length-1)*13+j*26}" font-family="${F}" font-size="21" font-weight="700" fill="#222">${X(l)}</text>`);if(col===1)yy+=96});
       y+=h+18;return}
-    s+=`<text x="24" y="${y+30}" font-family="${F}" font-size="28" font-weight="700" fill="#111">${X(b.h)}</text>`;y+=46;
-    if(b.k==='table'){const c=b.cols,w0=150,cw=(W-24-w0)/(c.length-1),hh=56,rh=54,H=hh+rh*b.rows;
+    s+=`<text x="24" y="${y+(cp?24:30)}" font-family="${F}" font-size="${cp?22:28}" font-weight="700" fill="#111">${X(b.h)}</text>`;y+=cp?34:46;
+    if(b.k==='table'){const c=b.cols,w0=cp?120:150,cw=(W-24-w0)/(c.length-1),hh=cp?44:56,rh=cp?38:54,H=hh+rh*b.rows;
       s+=`<rect x="12" y="${y}" width="${W-24}" height="${H}" fill="#fff" stroke="#495057" stroke-width="2"/><rect x="12" y="${y}" width="${W-24}" height="${hh}" fill="${o.col}"/>`;
       c.forEach((t,i)=>{const x=i?12+w0+cw*(i-1):12,w=i?cw:w0,L=wrapT(t,Math.max(7,Math.floor(w/10.5))).slice(0,2);
         L.forEach((l,j)=>s+=`<text x="${x+w/2}" y="${y+hh/2+7-(L.length-1)*10+j*20}" text-anchor="middle" font-family="${F}" font-size="17" font-weight="700" fill="#fff">${X(l)}</text>`);
         if(i)s+=`<path d="M${x} ${y} V${y+H}" stroke="#adb5bd" stroke-width="1.5"/>`});
       for(let r=0;r<b.rows;r++){const yy=y+hh+r*rh,lb=(b.lab||[])[r];if(r)s+=`<path d="M12 ${yy} H${W-12}" stroke="#adb5bd" stroke-width="1.5"/>`;
-        if(lb)s+=`<text x="${12+w0/2}" y="${yy+rh/2+7}" text-anchor="middle" font-family="${F}" font-size="19" fill="#333">${X(lb)}</text>`}
-      y+=H+20;return}
+        if(lb)s+=`<text x="${12+w0/2}" y="${yy+rh/2+7}" text-anchor="middle" font-family="${F}" font-size="${cp?17:19}" fill="#333">${X(lb)}</text>`}
+      y+=H+(cp?12:20);return}
+    if(b.k==='mini'){let rh=0;b.i.forEach(([ic,t],i)=>{const col=i%2,x=12+col*392,hf=q=>Math.max(60,wrapT(q,32).slice(0,3).length*21+18),L=wrapT(t,32).slice(0,3);
+      if(col===0)rh=Math.max(hf(t),b.i[i+1]?hf(b.i[i+1][1]):0);
+      s+=`<rect x="${x}" y="${y}" width="384" height="${rh}" rx="10" fill="#fff" stroke="#ced4da" stroke-width="2"/><svg x="${x+8}" y="${y+rh/2-25}" width="50" height="50" viewBox="0 0 100 100">${OI[ic]||''}</svg>`;
+      L.forEach((l,j)=>s+=`<text x="${x+66}" y="${y+rh/2-(L.length-1)*10.5+6+j*21}" font-family="${F}" font-size="18" fill="#111">${X(l)}</text>`);
+      if(col===1||i===b.i.length-1)y+=rh+6});y+=8;return}
     if(b.k==='steps'){b.i.forEach(([ic,t],i)=>{const L=wrapT(t,44),h=Math.max(100,L.length*28+30);
       s+=`<rect x="12" y="${y}" width="${W-24}" height="${h}" rx="12" fill="#fff" stroke="#ced4da" stroke-width="2"/><circle cx="46" cy="${y+h/2}" r="22" fill="${o.col}"/><text x="46" y="${y+h/2+9}" text-anchor="middle" font-family="${F}" font-size="26" font-weight="700" fill="#fff">${i+1}</text><svg x="80" y="${y+h/2-40}" width="80" height="80" viewBox="0 0 100 100">${OI[ic]||''}</svg>`;
       L.forEach((l,j)=>s+=`<text x="176" y="${y+h/2-(L.length-1)*14+8+j*28}" font-family="${F}" font-size="23" fill="#111">${X(l)}</text>`);y+=h+10});y+=10;return}
@@ -4717,7 +4728,7 @@ function renderOR(m,id){
   m.innerHTML=`<section class="panel">
     <div class="ph"><h2>${esc(o.t)}</h2><span class="code">folha para o paciente</span></div>
     <p class="note">Linguagem simples e desenhos para quem lê pouco. Imprima ou baixe a imagem para mandar por WhatsApp. O nome da unidade (se salvo na folha de remédios ou nos atestados) aparece no rodapé.</p>
-    <div id="sheet" class="card" style="padding:8px;background:#fff"></div>
+    <div id="sheet" class="card${o.cp?' fit1':''}" style="padding:8px;background:#fff"></div>
     <div class="bar sticky-bar"><button class="btn primary" id="or-print" type="button">Imprimir</button><button class="btn" id="or-img" type="button">Baixar imagem</button></div>
     <div id="or-out" hidden class="card"><p class="note">Se o download não começar, toque e segure a imagem para salvar ou compartilhar.</p><img id="or-png" alt="${esc(o.t)}" style="width:100%;border:1px solid var(--line);border-radius:8px"></div>
   </section>`;
@@ -4744,25 +4755,21 @@ Object.assign(OR,{
   {h:'Evite',k:'grid',i:[['cafeno','Café, chá preto, chimarrão e refrigerante depois das 16 h'],['celno','Celular e TV na última hora antes de deitar'],['garrafa','Bebida alcoólica para dormir'],['sono','Cochilar de dia (no máximo 20 minutos)']]},
   {h:'Não conseguiu dormir em 20 minutos?',k:'steps',i:[['cama','Saia da cama'],['lua','Vá para outro lugar com pouca luz e faça algo calmo, como ler'],['sono','Volte para a cama só quando tiver sono'],['relogio','Não fique olhando o relógio']]},
   {h:'Atenção',k:'note',i:[['pillno','Não tome remédio para dormir por conta própria. Calmante e remédio para dormir podem viciar e causar quedas'],['caderno','Anote no caderno a hora que deitou, que dormiu e que acordou, e traga na consulta']]}]},
- or_mrpa:{s:'MRPA',t:'Medir a pressão em casa (MRPA)',sub:'Anote os valores e traga esta folha na consulta',col:'#c2255c',b:[
-  {h:'Antes de medir',k:'steps',i:[['cafeno','Não tome café, não fume e não faça exercício 30 minutos antes'],['xixi','Esvazie a bexiga'],['sentado','Sente com as costas apoiadas e os pés no chão. Descanse 5 minutos, sem falar'],['braco','Braço apoiado na mesa, na altura do coração, sem roupa apertada'],['aparelho','Use aparelho de braço. A braçadeira fica 2 dedos acima da dobra do cotovelo']]},
-  {h:'Quando medir',k:'grid',i:[['sol','De manhã: antes do café e antes dos remédios'],['lua','À noite: antes do jantar'],['relogio','Meça 2 vezes seguidas, com 1 minuto entre elas'],['semana','Por 7 dias seguidos (ou como o médico pediu)']]},
-  {h:'Anote aqui',k:'table',cols:['Dia','Manhã 1ª','Manhã 2ª','Noite 1ª','Noite 2ª'],rows:7,lab:['1º dia','2º dia','3º dia','4º dia','5º dia','6º dia','7º dia']},
-  {h:'Atenção',k:'note',i:[['caderno','Anote todos os valores, mesmo os muito altos ou baixos. Não mude o remédio por conta própria']]},
+ or_mrpa:{s:'MRPA',t:'Medir a pressão em casa (MRPA)',sub:'Anote os valores e traga esta folha na consulta',col:'#c2255c',cp:1,b:[
+  {h:'Como medir',k:'mini',i:[['cafeno','30 min antes: sem café, cigarro ou exercício'],['xixi','Esvazie a bexiga antes'],['sentado','Sentada, costas apoiadas, pés no chão. Descanse 5 min sem falar'],['braco','Braço apoiado na mesa, na altura do coração, sem roupa apertada'],['aparelho','Aparelho de braço, braçadeira 2 dedos acima do cotovelo'],['relogio','Meça 2 vezes seguidas, com 1 minuto entre elas'],['sol','Manhã: antes do café e dos remédios'],['lua','Noite: antes do jantar']]},
+  {h:'Anote aqui (10 dias seguidos, ou como o médico pediu)',k:'table',cols:['Dia','Manhã 1ª','Manhã 2ª','Noite 1ª','Noite 2ª'],rows:10,lab:['1º dia','2º dia','3º dia','4º dia','5º dia','6º dia','7º dia','8º dia','9º dia','10º dia']},
+  {k:'line',i:['Anote todos os valores, mesmo os muito altos ou baixos. Não mude o remédio por conta própria.']},
   {h:'Ligue 192 se a pressão alta vier com',k:'alarm',i:[['coracao','Dor ou aperto no peito'],['ar','Falta de ar'],['tontura','Fraqueza, boca torta ou fala enrolada'],['olho','Dor de cabeça forte ou visão turva']]}]},
- or_glic_ins:{s:'Glicemia (insulina)',t:'Medir o açúcar em casa: quem usa insulina',sub:'Anote os valores e traga esta folha e o aparelho na consulta',col:'#7048e8',b:[
-  {h:'Como medir',k:'steps',i:[['maos','Lave as mãos com água e sabão e seque bem'],['agulha','Fure a lateral da ponta do dedo com a lanceta. Troque o dedo a cada vez'],['glico','Encoste a gota na fita e espere o resultado'],['caderno','Anote o valor, o horário e a dose de insulina']]},
-  {h:'Quando medir',k:'grid',i:[['sol','Em jejum, ao acordar'],['prato','Antes do almoço e antes do jantar'],['cama','Ao deitar'],['tremor','Sempre que sentir tremor, suor frio ou tontura']]},
-  {h:'Anote aqui',k:'table',cols:['Dia','Jejum','Antes do almoço','Antes do jantar','Ao deitar','Insulina (unidades)'],rows:7,lab:['1º dia','2º dia','3º dia','4º dia','5º dia','6º dia','7º dia']},
-  {h:'Metas (combine com o médico)',k:'grid',i:[['glico','Em jejum e antes das refeições: 80 a 130'],['cama','Ao deitar: 100 a 180']]},
-  {h:'Açúcar baixo (menos de 70)',k:'alarm',i:[['acucar','Tome 1 colher de açúcar na água e meça de novo em 15 min'],['tel','Desmaiou: nada pela boca, deite de lado e ligue 192']]},
-  {h:'Atenção',k:'note',i:[['glico','Acima de 300 duas vezes seguidas, ou com vômitos: procure a unidade'],['geladeira','Insulina fechada fica na geladeira, fora do congelador. A que está em uso pode ficar fora, longe do sol, por até 4 semanas']]}]},
- or_glic:{s:'Glicemia (sem insulina)',t:'Medir o açúcar em casa: quem não usa insulina',sub:'Meça só nos dias que o médico pedir',col:'#1971c2',b:[
-  {h:'Como medir',k:'steps',i:[['maos','Lave as mãos com água e sabão e seque bem'],['agulha','Fure a lateral da ponta do dedo com a lanceta'],['glico','Encoste a gota na fita e espere o resultado'],['caderno','Anote o valor e o horário']]},
-  {h:'Quando medir',k:'grid',i:[['semana','Poucas vezes: por exemplo, 2 a 3 dias por semana, ou como o médico pediu'],['sol','Em jejum, ao acordar'],['prato','2 horas depois de comer, cada dia numa refeição diferente'],['tremor','Se sentir tremor, suor frio, tontura ou muita sede']]},
-  {h:'Anote aqui',k:'table',cols:['Dia','Jejum','2 h após café','2 h após almoço','2 h após jantar'],rows:7,lab:['____/____','____/____','____/____','____/____','____/____','____/____','____/____']},
-  {h:'Metas (combine com o médico)',k:'grid',i:[['glico','Em jejum: 80 a 130'],['prato','2 horas depois de comer: menos de 180']]},
-  {h:'Atenção',k:'note',i:[['bala','Quem toma gliclazida ou glibenclamida pode ter açúcar baixo: ande com bala no bolso'],['glico','Acima de 300, com muita sede e muito xixi: procure a unidade']]}]}
+ or_glic_ins:{s:'Glicemia (insulina)',t:'Medir o açúcar em casa: quem usa insulina',sub:'Anote os valores e traga esta folha e o aparelho na consulta',col:'#7048e8',cp:1,b:[
+  {h:'Como e quando medir',k:'mini',i:[['maos','Lave as mãos com água e sabão e seque bem'],['agulha','Fure a lateral da ponta do dedo. Troque o dedo a cada vez'],['glico','Encoste a gota na fita e espere o resultado'],['caderno','Anote o valor e a dose de insulina'],['sol','Em jejum, ao acordar'],['prato','Antes do almoço e antes do jantar'],['cama','Ao deitar'],['tremor','Sempre que sentir tremor, suor frio ou tontura']]},
+  {h:'Anote aqui (10 dias)',k:'table',cols:['Dia','Jejum','Antes do almoço','Antes do jantar','Ao deitar','Insulina (unidades)'],rows:10,lab:['1º dia','2º dia','3º dia','4º dia','5º dia','6º dia','7º dia','8º dia','9º dia','10º dia']},
+  {k:'line',i:['Metas (combine com o médico): em jejum e antes das refeições, 80 a 130; ao deitar, 100 a 180.','Insulina fechada fica na geladeira, fora do congelador. A que está em uso pode ficar fora, longe do sol, por até 4 semanas.']},
+  {h:'Açúcar baixo ou muito alto',k:'alarm',i:[['acucar','Menos de 70: água com 1 colher de açúcar'],['relogio','Meça de novo em 15 min; se baixo, repita'],['tel','Desmaiou: nada pela boca, deite de lado, 192'],['glico','Acima de 300 duas vezes ou vômitos: unidade']]}]},
+ or_glic:{s:'Glicemia (sem insulina)',t:'Medir o açúcar em casa: quem não usa insulina',sub:'Meça só nos dias que o médico pedir',col:'#1971c2',cp:1,b:[
+  {h:'Como e quando medir',k:'mini',i:[['maos','Lave as mãos com água e sabão e seque bem'],['agulha','Fure a lateral da ponta do dedo com a lanceta'],['glico','Encoste a gota na fita e espere o resultado'],['caderno','Anote o valor e o horário'],['semana','2 a 3 dias por semana, ou como o médico pediu'],['sol','Em jejum, ao acordar'],['prato','2 horas depois de comer, cada dia numa refeição'],['tremor','Se sentir tremor, suor frio, tontura ou muita sede']]},
+  {h:'Anote aqui (10 dias de medida)',k:'table',cols:['Data','Jejum','2 h após café','2 h após almoço','2 h após jantar'],rows:10,lab:['____/____','____/____','____/____','____/____','____/____','____/____','____/____','____/____','____/____','____/____']},
+  {k:'line',i:['Metas (combine com o médico): em jejum, 80 a 130; 2 horas depois de comer, menos de 180.']},
+  {h:'Atenção',k:'alarm',i:[['bala','Usa gliclazida ou glibenclamida? Leve bala'],['glico','Acima de 300 com muita sede: procure a unidade']]}]}
 });
 Object.assign(OR,{
  or_sang:{s:'Sangramento na gravidez',t:'Sangramento na gravidez',sub:'Quando correr para a maternidade e cuidados depois de um abortamento',col:'#c92a2a',b:[
