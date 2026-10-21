@@ -195,6 +195,8 @@ textarea.nota{font-family:var(--f-ui);font-size:.9rem}
 .edrow{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;color:var(--fg);font:500 .88rem var(--f-ui);cursor:pointer}
 .edrow .edtag{margin:0}
 .pdt td:first-child{white-space:normal;width:38%}
+.gl{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.9rem}
+.gsvg svg{width:100%;max-width:420px;height:auto;display:block;margin:0 auto;color:var(--fg)}
 .lnk{background:none;border:0;padding:0;color:var(--accent);font:600 .84rem var(--f-ui);text-align:left;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 .out{font-weight:600}
 .sec-h{margin:6px 0 0;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
@@ -584,7 +586,8 @@ Ingesta hídrica noturna [ ] e consumo de cafeína [ ]. [Nega uso de medicaçõe
 O:
 PA [ ]x[ ] | Abdome: [sem globo vesical palpável]
 Genitália: [ ] | Meato uretral: [ ]
-Toque retal: próstata [aumentada __ g estimados], [fibroelástica], [lisa], [indolor], [sulco mediano presente], [sem nódulos]
+Toque retal (decúbito lateral esquerdo com joelhos fletidos / posição genupeitoral, com consentimento e acompanhante): inspeção anal sem fissuras, fístulas ou hemorroidas externas; tônus esfincteriano preservado; ampola retal [vazia / com fezes], sem massas palpáveis. Próstata [aumentada de volume, cerca de __ g estimados (normal 20–25 g, como uma castanha)], de consistência [fibroelástica], superfície [lisa], limites [precisos], sulco mediano [presente / apagado], [móvel], [indolor à palpação], [sem nódulos ou áreas endurecidas]. Dedo de luva [sem sangue ou secreção].
+ Se alterado: [nódulo endurecido/pétreo em lobo D/E, assimetria, limites imprecisos ou sulco apagado (suspeito de câncer → PSA e urologia)] / [próstata amolecida, quente e muito dolorosa (prostatite aguda: não massagear)]
 Exames ([data]): EAS [ ] | Cr [ ] TFG [ ] | Glicemia [ ] | PSA total [ ] ng/mL
 USG de rins e vias urinárias: volume prostático [ ] g, resíduo pós-miccional [ ] mL, hidronefrose [ ]
 Diário miccional: [ ]
@@ -1051,7 +1054,7 @@ P:
 };
 
 /* ---------- Calculadoras ---------- */
-const C={ig:'IG / DPP',tfg:'TFG CKD-EPI',imc:'IMC',phq9:'PHQ-9',audit:'AUDIT',gad7:'GAD-7',insulina:'Insulina',fluxodm:'Fluxo DM2',melanoma:'Melanoma',rcv:'Risco CV',rastreio:'Rastreios',vacinas:'Vacinas',ajustes:'Ajustes de dose',fager:'Tabagismo',ipss:'IPSS',pedi:'Doses pediátricas',curb65:'CURB-65',wells_tvp:'Wells TVP',wells_tep:'Wells TEP',chads:'CHA₂DS₂-VASc',hasbled:'HAS-BLED',centor:'Centor',katz:'Katz',lawton:'Lawton',minicog:'Mini-Cog',ivcf20:'IVCF-20',quedas:'Risco de quedas',pps:'PPS',dhi:'DHI',drcest:'Estágio DRC',cg:'Cockcroft-Gault',cacorr:'Cálcio corrigido'};
+const C={ig:'IG / DPP',tfg:'TFG CKD-EPI',imc:'IMC',phq9:'PHQ-9',audit:'AUDIT',gad7:'GAD-7',insulina:'Insulina',fluxodm:'Fluxo DM2',melanoma:'Melanoma',rcv:'Risco CV',rastreio:'Rastreios',vacinas:'Vacinas',ajustes:'Ajustes de dose',fager:'Tabagismo',ipss:'IPSS',pedi:'Doses pediátricas',curb65:'CURB-65',wells_tvp:'Wells TVP',wells_tep:'Wells TEP',chads:'CHA₂DS₂-VASc',hasbled:'HAS-BLED',centor:'Centor',katz:'Katz',lawton:'Lawton',minicog:'Mini-Cog',ivcf20:'IVCF-20',quedas:'Risco de quedas',pps:'PPS',dhi:'DHI',marcos:'Marcos do desenvolvimento',drcest:'Estágio DRC',cg:'Cockcroft-Gault',cacorr:'Cálcio corrigido'};
 /* ---------- Prescrições padrão (adultos) ---------- */
 const RS='Receita simples',RA='Receita simples em 2 vias (retenção na farmácia), validade 10 dias',RC='Receita de Controle Especial em 2 vias (lista C1), validade 30 dias',RB='Notificação de Receita B (azul) + receita, validade 30 dias, até 60 dias de tratamento',RA2='Receita de Controle Especial em 2 vias';
 const P={
@@ -2458,11 +2461,183 @@ const NC={
   note:'Se disponível, o cálcio iônico é mais confiável, principalmente em DRC e doença grave.'}
 };
 
+/* Vigilância do desenvolvimento (Caderneta da Criança / AIDPI): marcos por faixa etária */
+const MARCOS=[
+ ['até 1 mês',['Postura: de barriga para cima, braços e pernas fletidos, cabeça lateralizada','Observa um rosto','Reage ao som (chocalho, palmas)','Eleva a cabeça de bruços']],
+ ['2 meses',['Sorriso quando estimulada (sorriso social)','Abre as mãos','Emite sons (vocaliza)','Movimenta ativamente os membros']],
+ ['4 meses',['Responde ativamente ao contato social','Segura objetos','Emite sons e ri','De bruços, levanta a cabeça apoiada nos antebraços']],
+ ['6 meses',['Busca ativa de objetos','Leva objetos à boca','Localiza o som','Muda de posição ativamente (rola)']],
+ ['9 meses',['Brinca de esconde-achou','Transfere objetos de uma mão para a outra','Duplica sílabas (papa, dada)','Senta sem apoio']],
+ ['12 meses',['Imita gestos (tchau, bater palmas)','Faz pinça (polegar e indicador)','Produz jargão','Anda com apoio']],
+ ['15 meses',['Executa gestos a pedido','Coloca cubos na caneca','Fala uma palavra','Anda sem apoio']],
+ ['18 meses',['Identifica dois objetos','Faz rabisco espontâneo','Fala três palavras','Anda para trás']],
+ ['24 meses',['Tira a roupa','Constrói torre de 3 cubos','Aponta 2 figuras','Chuta a bola']],
+ ['30 meses',['Veste-se com supervisão','Constrói torre de 6 cubos','Fala frases com 2 palavras','Pula com ambos os pés']],
+ ['36 meses',['Brinca com outras crianças','Imita linha vertical','Reconhece 2 ações','Arremessa a bola']]
+];
+const SUPL=[
+ ['Vitamina D (SBP)','400 UI/dia da 1ª semana aos 12 meses; 600 UI/dia dos 12 aos 24 meses',m=>m<24],
+ ['Ferro, a termo e peso adequado','1 mg/kg/dia de ferro elementar dos 3 aos 24 meses (SBP); PNSF/MS: dos 6 aos 24 meses',m=>m>=3&&m<24],
+ ['Ferro, prematuro ou < 2.500 g','2 mg/kg/dia a partir de 30 dias por 1 ano (< 1.000 g: 4 mg/kg/dia; 1.000–1.500 g: 3 mg/kg/dia), depois 1 mg/kg/dia até 24 meses',m=>m<24],
+ ['Vitamina A (PNSVA)','6–11 meses: 100.000 UI dose única; 12–59 meses: 200.000 UI a cada 6 meses',m=>m>=6&&m<60]
+];
+const MAGE=[1,2,4,6,9,12,15,18,24,30,36];
+function renderMARCOS(m){
+  m.innerHTML=`<section class="panel">
+    <div class="ph"><h2>Marcos do desenvolvimento</h2><span class="code">Caderneta da Criança · AIDPI</span></div>
+    <div class="card"><div class="field"><label for="mc-i">Faixa etária da consulta</label><select id="mc-i">${MARCOS.map((x,i)=>`<option value="${i}">${esc(x[0])}</option>`).join('')}</select></div></div>
+    <div class="lbl">Marcos da faixa atual</div><div class="card"><div class="opts" style="grid-template-columns:1fr" id="mc-cur"></div></div>
+    <div id="mc-prevw"><div class="lbl">Faixa anterior: desmarque o que a criança ainda não faz</div><div class="card"><div class="opts" style="grid-template-columns:1fr" id="mc-prev"></div></div></div>
+    <div class="lbl">Outros achados</div><div class="card"><div class="opts" style="grid-template-columns:1fr">
+      <label class="opt"><input type="checkbox" id="mc-pc"><span>Perímetro cefálico &lt; −2 ou &gt; +2 escores-z</span></label>
+      <label class="opt"><input type="checkbox" id="mc-fen"><span>3 ou mais alterações fenotípicas</span></label>
+      <label class="opt"><input type="checkbox" id="mc-fr"><span>Fatores de risco (prematuridade, baixo peso, asfixia, infecção congênita, internação neonatal, vulnerabilidade social)</span></label></div></div>
+    ${resultBox('mc-r')}
+    ${copyBtn()}
+    <div class="lbl">Suplementação por idade</div>
+    <table class="scale pdt" id="mc-sup"><tbody></tbody></table>
+    <p class="note">Marque os marcos que a criança apresenta (observe ou pergunte ao cuidador). Até 36 meses; dos 3 aos 6 anos use a Caderneta da Criança. Entre 16 e 30 meses aplique também o M-CHAT-R da Caderneta para rastreio de autismo.</p>
+  </section>`;
+  const sel=$('#mc-i');let line='';
+  const box=(id,list,p,on)=>{$(id).innerHTML=list.map((t,i)=>`<label class="opt"><input type="checkbox" id="${p}-${i}"${on?' checked':''}><span>${esc(t)}</span></label>`).join('')};
+  const build=()=>{const i=+sel.value;box('#mc-cur',MARCOS[i][1],'mcc');const pv=i>0?i-1:null;$('#mc-prevw').hidden=pv==null;if(pv!=null)box('#mc-prev',MARCOS[pv][1],'mcp',1);
+    m.querySelectorAll('#mc-cur input,#mc-prev input').forEach(e=>e.onchange=upd);
+    const mo=MAGE[i];$('#mc-sup tbody').innerHTML=SUPL.map(s=>`<tr${s[2](mo)?' style="background:var(--accent-soft)"':''}><td>${esc(s[0])}</td><td>${esc(s[1])}</td></tr>`).join('');upd()};
+  const upd=()=>{
+    const i=+sel.value,cur=MARCOS[i][1],pv=i>0?MARCOS[i-1][1]:null;
+    const miss=cur.filter((_,k)=>!$('#mcc-'+k).checked),pmiss=pv?pv.filter((_,k)=>!$('#mcp-'+k).checked):[];
+    const pc=$('#mc-pc').checked,fen=$('#mc-fen').checked,fr=$('#mc-fr').checked;
+    $('#mc-prevw').hidden=!pv||!miss.length;
+    let cls,tit,txt;
+    if(pc||fen||(miss.length&&pv&&pmiss.length)){cls='bad';tit='Provável atraso no desenvolvimento';txt='Encaminhar para avaliação neuropsicomotora (pediatria, eMulti, CER), manter estimulação e acompanhamento na UBS.'}
+    else if(miss.length){cls='warn';tit='Alerta para o desenvolvimento';txt='Orientar o cuidador sobre estimulação e marcar retorno em 30 dias'+(fr?'; com fatores de risco, considerar encaminhar já':'')+'. Se persistir, encaminhar.'}
+    else if(fr){cls='warn';tit='Desenvolvimento adequado com fatores de risco';txt='Orientar estimulação e sinais de alerta; manter consultas de rotina.'}
+    else{cls='ok';tit='Desenvolvimento adequado';txt='Elogiar e orientar estimulação para a próxima fase; seguir o calendário de consultas.'}
+    const r=$('#mc-r');r.className='result '+cls;
+    r.innerHTML=`<div class="big" style="font-size:1.3rem">${esc(tit)}</div><div class="sub">${esc(txt)}</div>${miss.length?`<div class="sub">Ausentes na faixa (${esc(MARCOS[i][0])}): ${esc(miss.join('; '))}</div>`:''}`;
+    line=`Desenvolvimento (Caderneta da Criança, faixa ${MARCOS[i][0]}): ${miss.length?'ausentes: '+miss.join('; ')+(pv&&pmiss.length?'; da faixa anterior ausentes: '+pmiss.join('; '):''):'marcos presentes para a idade'}${pc?'; PC alterado':''}${fen?'; ≥ 3 alterações fenotípicas':''}${fr?'; com fatores de risco':''}. Classificação: ${tit.toLowerCase()}.`;
+  };
+  ['#mc-pc','#mc-fen','#mc-fr'].forEach(s=>$(s).onchange=upd);
+  sel.onchange=build;bindCopy(()=>line);build();
+}
+
+/* Guias de consulta (exames, exame físico): seções com lista, tabela achado → conduta, texto para copiar e ilustração */
+const GD={
+ pn_exames:{s:'Pré-natal',t:'Exames do pré-natal por trimestre',src:'MS · Caderno AB 32 · Rede Alyne · PCDT TV/IST',k:'pre-natal prenatal gestante exames trimestre totg vdrl hiv toxoplasmose urocultura coombs rh anemia gestacao',sec:[
+  {h:'1º trimestre (primeira consulta)',li:['Hemograma','Tipagem ABO/Rh e Coombs indireto (se Rh negativo)','Glicemia de jejum','Teste rápido de sífilis + VDRL, teste rápido de HIV, HBsAg e anti-HCV (teste rápido)','Toxoplasmose IgG e IgM','EAS e urocultura com antibiograma','USG obstétrica (idealmente 11–14 semanas)','Citopatológico se em atraso; eletroforese de hemoglobina; conforme protocolo local: TSH, rubéola, parasitológico']},
+  {h:'2º trimestre',li:['TOTG 75 g entre 24 e 28 semanas (se glicemia de jejum &lt; 92)','Toxoplasmose IgM a cada 2–3 meses se suscetível (IgG negativo)','Coombs indireto com 28 semanas se Rh negativo','USG morfológica 20–24 semanas, se disponível']},
+  {h:'3º trimestre',li:['Hemograma','Teste rápido de sífilis + VDRL, HIV, HBsAg (e anti-HCV conforme risco)','EAS e urocultura','Toxoplasmose se suscetível','Coombs indireto se Rh negativo','Cultura para estreptococo do grupo B entre 35 e 37 semanas, onde disponível']},
+  {h:'O que fazer com cada resultado',rows:[
+   ['Hb 8–11 g/dL (anemia leve a moderada)','Sulfato ferroso 120–240 mg de ferro elementar/dia (3 a 6 comprimidos de 40 mg), parasitológico, repetir Hb em 30–60 dias. Sem resposta: investigar e compartilhar.'],
+   ['Hb &lt; 8 g/dL','Anemia grave: pré-natal de alto risco.'],
+   ['Glicemia de jejum 92–125 mg/dL (qualquer IG)','Diabetes gestacional: dieta, atividade física, automonitorização; metas jejum &lt; 95, 1 h &lt; 140, 2 h &lt; 120. Insulina se fora da meta em 1–2 semanas; compartilhar com alto risco.'],
+   ['Glicemia de jejum ≥ 126 ou HbA1c ≥ 6,5%','Diabetes prévio à gestação: pré-natal de alto risco.'],
+   ['TOTG 75 g: jejum ≥ 92, 1 h ≥ 180 ou 2 h ≥ 153','Diabetes gestacional (basta um valor). Conduta como acima; TOTG 6 semanas após o parto.'],
+   ['Teste rápido de sífilis reagente','Tratar no mesmo dia com penicilina benzatina (sem esperar o VDRL): 3 doses semanais de 2,4 milhões UI se tardia ou duração ignorada. Coletar VDRL, tratar parceria, notificar, VDRL mensal até o parto.'],
+   ['Teste rápido de HIV reagente','Fazer o 2º teste rápido (outro fabricante); confirmado: carga viral, CD4, iniciar TARV o quanto antes, encaminhar ao SAE e notificar. Orientar não amamentar.'],
+   ['HBsAg reagente','HBeAg, carga viral do HBV e TGO/TGP; encaminhar. Tenofovir a partir de 28 semanas se carga viral alta. RN: vacina e imunoglobulina nas primeiras 12 h.'],
+   ['HBsAg não reagente e sem vacina','Vacinar contra hepatite B (3 doses) durante a gestação.'],
+   ['Anti-HCV reagente','Carga viral do HCV; encaminhar. Tratamento após o parto.'],
+   ['Toxoplasmose IgG + / IgM −','Imune (infecção antiga): não repetir.'],
+   ['Toxoplasmose IgG − / IgM −','Suscetível: prevenção (carne bem passada, lavar frutas e verduras, luvas na terra, evitar fezes de gato) e repetir a cada 2–3 meses.'],
+   ['Toxoplasmose IgM +','Possível infecção aguda: iniciar espiramicina 1 g 8/8 h, teste de avidez de IgG (se &lt; 16 semanas; alta avidez indica infecção antiga) e encaminhar ao alto risco. IgG − e IgM +: repetir em 2–3 semanas.'],
+   ['Urocultura ≥ 100.000 UFC/mL (mesmo sem sintomas)','Bacteriúria assintomática: tratar pelo antibiograma (cefalexina 500 mg 6/6 h ou amoxicilina 500 mg 8/8 h por 7 dias; nitrofurantoína evitando perto do termo). Urocultura de controle 1–2 semanas após.'],
+   ['Proteinúria no EAS com ≥ 20 semanas e PA ≥ 140/90','Suspeita de pré-eclâmpsia: avaliar sinais de gravidade e encaminhar no mesmo dia.'],
+   ['Rh negativo com Coombs indireto negativo','Repetir Coombs com 28 semanas; imunoglobulina anti-D com 28 semanas (se disponível) e até 72 h após parto, aborto, sangramento ou procedimento, se RN/feto Rh positivo.'],
+   ['Coombs indireto positivo','Aloimunização: pré-natal de alto risco.'],
+   ['Rubéola IgG negativa','Vacinar no puerpério (tríplice viral é contraindicada na gestação).'],
+   ['Estreptococo do grupo B positivo','Anotar no cartão: antibiótico profilático intraparto.']]}]},
+
+ ex_hemo:{s:'Hemograma',t:'Hemograma',src:'Protocolos de APS · SBHH',k:'hemograma anemia ferritina vcm leucocitose leucopenia neutropenia plaquetas plaquetopenia trombocitose eosinofilia linfocitose',sec:[
+  {h:'Anemia',intro:'Hb &lt; 13 g/dL (homem), &lt; 12 (mulher), &lt; 11 (gestante). Comece pelo VCM.',rows:[
+   ['VCM &lt; 80 (microcítica)','Ferritina: &lt; 30 ng/mL confirma ferropenia. Procurar a causa (perda menstrual, dieta; homem ou mulher após menopausa: sangramento digestivo, EDA e colonoscopia). Sulfato ferroso 40–60 mg de ferro elementar/dia ou em dias alternados por 3 meses após normalizar a Hb. Ferritina normal ou alta: talassemia (eletroforese) ou doença crônica.'],
+   ['VCM 80–100 (normocítica)','Reticulócitos, função renal, ferritina, TSH; pensar em doença crônica, DRC, sangramento agudo, hemólise ou anemia mista.'],
+   ['VCM &gt; 100 (macrocítica)','Vitamina B12, folato, TSH, função hepática; perguntar álcool e medicamentos (metformina, metotrexato, anticonvulsivantes, antirretrovirais). B12 baixa: repor.'],
+   ['Hb &lt; 7 g/dL, sintomas (dispneia, dor torácica, síncope) ou queda rápida','Urgência.']]},
+  {h:'Leucócitos',rows:[
+   ['Leucocitose &gt; 11.000 com neutrofilia','Infecção bacteriana, estresse, corticoide, tabagismo, gestação. Tratar a causa e repetir.'],
+   ['Leucócitos &gt; 30.000, blastos ou alteração de outras séries','Hematologia com urgência.'],
+   ['Neutrófilos 1.000–1.500','Neutropenia leve: revisar medicamentos (dipirona, metimazol, antipsicóticos), infecção viral recente; repetir em 2–4 semanas. Neutropenia étnica benigna é comum em pessoas negras.'],
+   ['Neutrófilos &lt; 1.000, ou &lt; 500 com febre','Moderada a grave: suspender drogas suspeitas e encaminhar; febre com &lt; 500 é emergência.'],
+   ['Linfocitose &gt; 4.000','Geralmente viral. Persistente em adulto acima de 50 anos ou com adenomegalia: hematologia (LLC).'],
+   ['Eosinofilia &gt; 500','Parasitoses (parasitológico ou tratamento empírico com albendazol; ivermectina se estrongiloidíase), alergia/asma, medicamentos. &gt; 1.500 persistente: investigar e encaminhar.']]},
+  {h:'Plaquetas',rows:[
+   ['100.000–150.000','Repetir (pedir em tubo com citrato se suspeita de pseudoplaquetopenia). Causas: viroses (dengue), álcool, hepatopatia, medicamentos, gestação, HIV/HCV.'],
+   ['&lt; 50.000 ou queda progressiva','Encaminhar à hematologia; investigar dengue se febre.'],
+   ['&lt; 20.000 ou sangramento','Urgência.'],
+   ['&gt; 450.000','Geralmente reativa (ferropenia, inflamação, infecção, pós-esplenectomia). Persistente sem causa: hematologia.'],
+   ['Pancitopenia','Hematologia.']]}]},
+
+ ex_tsh:{s:'TSH e T4',t:'TSH e T4 livre',src:'SBEM · protocolos de APS',k:'tsh t4 livre tireoide hipotireoidismo hipertireoidismo levotiroxina metimazol',sec:[
+  {h:'Interpretação',rows:[
+   ['TSH alto + T4 livre baixo','Hipotireoidismo clínico: levotiroxina 1,6 mcg/kg/dia (idoso ou cardiopata: 12,5–25 mcg e aumentar a cada 4–6 semanas).'],
+   ['TSH alto (4,5–10) + T4 livre normal','Hipotireoidismo subclínico: repetir em 4–12 semanas com anti-TPO. Em geral não tratar; tratar se gestante ou planejando gestar.'],
+   ['TSH ≥ 10 + T4 livre normal','Subclínico com TSH alto: tratar na maioria, sobretudo abaixo de 70 anos.'],
+   ['TSH baixo + T4 livre alto','Hipertireoidismo: propranolol 20–40 mg 8/8 h para sintomas, TRAb e cintilografia, encaminhar à endocrinologia (metimazol conforme a causa).'],
+   ['TSH baixo (&lt; 0,4) + T4 livre normal','Hipertireoidismo subclínico: repetir em 6–12 semanas (com T3). TSH &lt; 0,1 persistente em idoso, cardiopata ou osteoporose: encaminhar.'],
+   ['TSH normal ou baixo + T4 livre baixo','Hipotireoidismo central ou doença não tireoidiana: endocrinologia.'],
+   ['Em uso de levotiroxina: TSH alto','Checar adesão, horário (jejum) e interações (cálcio, ferro, IBP); aumentar 12,5–25 mcg e repetir em 6–8 semanas.'],
+   ['Em uso de levotiroxina: TSH baixo','Reduzir 12,5–25 mcg (risco de FA e osteoporose em idosos).']]},
+  {h:'Cuidados',li:['Não dosar TSH durante doença aguda grave','Biotina (suplementos de cabelo) interfere no exame: suspender 2 dias antes','Gestação: use valores de referência por trimestre (TSH costuma ser menor no 1º trimestre)']}]},
+
+ ex_eas:{s:'EAS',t:'EAS (urina tipo 1)',src:'SBU · SBN · protocolos de APS',k:'eas urina tipo 1 leucocituria hematuria proteinuria glicosuria nitrito cilindros',sec:[
+  {h:'Interpretação',rows:[
+   ['Leucocitúria e/ou nitrito positivo com sintomas','ITU: tratar (ver fluxograma de ITU).'],
+   ['Leucocitúria ou bacteriúria sem sintomas','Não tratar, exceto em gestante ou antes de procedimento urológico. Leucocitúria estéril persistente: pensar em tuberculose urinária, IST, litíase.'],
+   ['Hematúria (&gt; 3 hemácias/campo)','Repetir fora da menstruação, sem exercício intenso e sem ITU. Persistente: com proteinúria, dismorfismo ou cilindros hemáticos é glomerular (nefrologia); sem isso, acima de 35–40 anos ou tabagista: USG de vias urinárias e urologia (cistoscopia).'],
+   ['Proteinúria na fita (≥ 1+)','Quantificar com relação albumina/creatinina ou proteína/creatinina em amostra. RAC &gt; 300 mg/g ou proteinúria &gt; 1 g/dia: nefrologia. Gestante ≥ 20 semanas com PA elevada: pré-eclâmpsia.'],
+   ['Glicosúria','Dosar glicemia e HbA1c. Esperada com iSGLT2 (dapagliflozina).'],
+   ['Cetonúria','Jejum, vômitos, dieta. Com glicemia alta e sintomas: cetoacidose (urgência).'],
+   ['Cilindros hemáticos','Glomerulonefrite: nefrologia com prioridade.'],
+   ['Cilindros leucocitários','Pielonefrite ou nefrite intersticial.'],
+   ['Bilirrubina positiva','Doença hepatobiliar: dosar bilirrubinas e enzimas.'],
+   ['Cristais','Em geral sem significado; considerar se litíase.']]}]},
+
+ ex_lip:{s:'Lipidograma',t:'Lipidograma',src:'SBC 2017 · protocolos de APS',k:'lipidograma colesterol ldl hdl triglicerides nao-hdl friedewald estatina fibrato',calc:'lip',sec:[
+  {h:'Interpretação',rows:[
+   ['LDL acima da meta para o risco','Estratificar (aba Risco CV) e seguir o fluxograma de dislipidemia: MEV e estatina conforme o risco.'],
+   ['LDL ≥ 190 mg/dL','Alto risco por si só: estatina de alta intensidade; investigar hipercolesterolemia familiar (história familiar, xantomas) e causas secundárias.'],
+   ['Triglicerídeos 150–499','MEV: reduzir álcool, açúcares e ultraprocessados, perder peso, controlar glicemia. Tratar o LDL primeiro.'],
+   ['Triglicerídeos ≥ 500','Risco de pancreatite: MEV rigorosa e fibrato (ciprofibrato 100 mg ou fenofibrato). ≥ 880 ou dor abdominal: avaliar com urgência.'],
+   ['HDL baixo (&lt; 40 homem, &lt; 50 mulher)','Marcador de risco: atividade física, cessar tabagismo, perder peso. Não há remédio para subir HDL.'],
+   ['Alterações recentes ou desproporcionais','Pesquisar causas secundárias: hipotireoidismo (TSH), diabetes, DRC, síndrome nefrótica, colestase, álcool, medicamentos (corticoide, tiazídico, betabloqueador, antirretrovirais, isotretinoína).']]},
+  {h:'Cuidados',li:['Jejum não é obrigatório; se TG &gt; 440 sem jejum, repetir com jejum de 12 h','Não HDL = CT − HDL; meta é a do LDL + 30','Friedewald só vale com TG &lt; 400; acima disso use o LDL medido diretamente ou o não HDL']}]}
+};
+function renderGD(m,id){
+  const g=GD[id];
+  m.innerHTML=`<section class="panel">
+    <div class="ph"><h2>${esc(g.t)}</h2><span class="code">${esc(g.src)}</span></div>
+    ${g.calc==='lip'?`<div class="card"><div class="lbl">Calcular LDL e não HDL</div><div class="grid2">
+      <div class="field"><label for="lp-ct">Colesterol total</label><input id="lp-ct" inputmode="decimal" value="230"></div>
+      <div class="field"><label for="lp-hdl">HDL</label><input id="lp-hdl" inputmode="decimal" value="45"></div>
+      <div class="field"><label for="lp-tg">Triglicerídeos</label><input id="lp-tg" inputmode="decimal" value="180"></div></div>
+      <p class="ex">Exemplo: substitua pelos dados da pessoa</p><div class="result" id="lp-r"></div>${copyBtn()}</div>`:''}
+    ${g.sec.map((x,i)=>`<div class="card gd">
+      <div class="lbl lbl-row"><span>${x.h}</span><button class="btn small" data-c="${i}" type="button">Copiar</button></div>
+      ${x.intro?`<p class="note" style="color:var(--fg)">${x.intro}</p>`:''}
+      ${x.svg?`<div class="gsvg">${x.svg}</div>`:''}
+      ${x.li?`<ul class="gl">${x.li.map(l=>`<li>${l}</li>`).join('')}</ul>`:''}
+      ${x.rows?`<table class="scale pdt"><tbody>${x.rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</tbody></table>`:''}
+      ${x.normal?`<div class="lbl">Texto normal para o O do SOAP</div><pre class="rx">${esc(x.normal)}</pre>`:''}
+    </div>`).join('')}
+    <p class="note">Resumo para consulta rápida. Confira o protocolo vigente do MS e do seu município.</p>
+  </section>`;
+  m.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{const x=g.sec[+b.dataset.c];
+    copy(x.normal?x.normal:fxText(x.h)+'\n'+(x.li||[]).map(l=>'- '+fxText(l)).join('\n')+(x.rows||[]).map(r=>'- '+fxText(r[0])+': '+fxText(r[1])).join('\n'))});
+  if(g.calc==='lip'){let line='';
+    const upd=()=>{const ct=num($('#lp-ct').value),h=num($('#lp-hdl').value),tg=num($('#lp-tg').value),r=$('#lp-r');
+      if(!(ct>0&&h>0&&tg>0)){r.className='result';r.innerHTML='<div class="sub">Preencha os 3 valores.</div>';line='';return}
+      const nh=ct-h,ldl=tg<400?ct-h-tg/5:null;r.className='result';
+      r.innerHTML=`<div class="big">${ldl!=null?nf(ldl,0)+' <small>mg/dL de LDL</small>':'<small>LDL não calculável (TG ≥ 400)</small>'}</div><div class="sub">Não HDL: <b>${nf(nh,0)} mg/dL</b></div>`;
+      line=`Lipidograma: CT ${nf(ct,0)}, HDL ${nf(h,0)}, TG ${nf(tg,0)}${ldl!=null?', LDL (Friedewald) '+nf(ldl,0):''}, não HDL ${nf(nh,0)} mg/dL.`};
+    ['#lp-ct','#lp-hdl','#lp-tg'].forEach(s=>$(s).oninput=upd);upd();bindCopy(()=>line)}
+}
+
 const E={esquema:'Esquema',meu:'Minhas edições'};
 const SECS={soap:Object.keys(T),calc:Object.keys(C),presc:Object.keys(P),mev:Object.keys(M),esq:Object.keys(E),fx:Object.keys(F)};
 let cur={sec:'soap',id:'has'};
 
-function chipLabel(id){return T[id]?({vertigem:'Vertigem',hipotireo:'Hipotireoidismo',obesidade:'Obesidade',asma:'Asma',dpoc:'DPOC',idoso:'Idoso',puerperio:'Puerpério',contracepcao:'Contracepção',tabagismo:'Tabagismo',itu:'ITU',ist:'IST',dengue:'Dengue',cefaleia:'Cefaleia',lombalgia:'Lombalgia',has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:F[id]?F[id].s:E[id])}
+function chipLabel(id){return T[id]?({vertigem:'Vertigem',hipotireo:'Hipotireoidismo',obesidade:'Obesidade',asma:'Asma',dpoc:'DPOC',idoso:'Idoso',puerperio:'Puerpério',contracepcao:'Contracepção',tabagismo:'Tabagismo',itu:'ITU',ist:'IST',dengue:'Dengue',cefaleia:'Cefaleia',lombalgia:'Lombalgia',has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:F[id]?F[id].s:GD[id]?GD[id].s:E[id])}
 
 /* Navegação: menu de seções (agrupadas) + abas internas; favoritos */
 const SICON={
@@ -2480,12 +2655,13 @@ const SICON={
  agudos:'M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0z M12 10v6.5',
  idoso:'M10 3.5a1.8 1.8 0 1 0 0 3.6 1.8 1.8 0 0 0 0-3.6z M10 8.5v6 M10 14.5l-2.5 6.5 M10 14.5l2.5 6.5 M10 9.5l-3 4 M10 9.5l4.5 2.5 M16.5 12v9 M16.5 12c0-1.5-1.8-1.8-2.2-.5',
  pedi:'M9 2h6 M10 2v3 M14 2v3 M8 9a4 4 0 0 1 8 0v10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2z M8 13h3 M8 17h3',
+ exames:'M9 3h6 M10 3v12.5a2 2 0 0 0 4 0V3 M10 10h4 M16 8h4 M18 6v4',
  edit:'M4 20h4L19 9l-4-4L4 16z M13.5 6.5l4 4',
  fx:'M5 3h6v5H5z M13 16h6v5h-6z M8 8v4h8v4 M16 3l3 3-3 3',
  box:'M4 7l8-4 8 4v10l-8 4-8-4z M4 7l8 4 8-4 M12 11v10'
 };
 const icon=(k,sz=20)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${SICON[k]}"/></svg>`;
-const SECTAG={soap:'SOAP',calc:'Cálc.',presc:'Rx',mev:'MEV',fx:'Fluxo',esq:''};
+const SECTAG={soap:'SOAP',calc:'Cálc.',presc:'Rx',mev:'MEV',fx:'Fluxo',gd:'Guia',esq:''};
 const SECTIONS=[
  {g:'Atendimento',k:'soap',t:'Templates SOAP',ic:'soap',ids:['has','dm','drc','hipotireo','obesidade','asma','dpoc','hpb','idoso','prenatal','puerperio','contracepcao','puericultura','mental','ansiedade','tabagismo','ivas','gea','itu','ist','dengue','cefaleia','vertigem','lombalgia']},
  {g:'Atendimento',k:'presc',t:'Prescrições',ic:'presc',ids:Object.keys(P)},
@@ -2494,20 +2670,21 @@ const SECTIONS=[
  {g:'Atendimento',k:'esq',t:'Folha do paciente',ic:'esq',ids:['esquema']},
  {g:'Ferramentas',k:'calc',t:'Calculadoras',ic:'calc',ids:['ig','tfg','drcest','cg','imc','rcv','insulina','cacorr','curb65','wells_tvp','wells_tep','chads','hasbled']},
  {g:'Ferramentas',k:'pedi',t:'Doses pediátricas',ic:'pedi',ids:['pedi']},
- {g:'Ferramentas',k:'esc',t:'Escalas e questionários',ic:'esc',ids:['phq9','gad7','audit','fager','ipss','melanoma','centor','minicog','ivcf20','katz','lawton','quedas','pps','dhi']},
- {g:'Ferramentas',k:'prot',t:'Protocolos e prevenção',ic:'prot',ids:['rastreio','vacinas','ajustes']},
+ {g:'Ferramentas',k:'esc',t:'Escalas e questionários',ic:'esc',ids:['phq9','gad7','audit','fager','ipss','melanoma','marcos','centor','minicog','ivcf20','katz','lawton','quedas','pps','dhi']},
+ {g:'Ferramentas',k:'exames',t:'Interpretação de exames',ic:'exames',ids:['ex_hemo','ex_tsh','ex_eas','ex_lip']},
+ {g:'Ferramentas',k:'prot',t:'Protocolos e prevenção',ic:'prot',ids:['pn_exames','rastreio','vacinas','ajustes']},
  {g:'Linhas de cuidado',k:'cronicos',t:'Crônicos',ic:'cronicos',ln:1,ids:['has','dm','drc','hpb','hipotireo','obesidade','asma','dpoc','tabagismo','fx_has','fluxodm','fx_lip','fx_tireo','fx_asma','fx_dpoc','tfg','drcest','cg','imc','rcv','insulina','chads','hasbled','ipss','rastreio','vacinas','ajustes','melanoma','rx_cv','rx_anal','mev_has','mev_dm','mev_obes','mev_lip','mev_drc','mev_icc','mev_hpb','esquema']},
- {g:'Linhas de cuidado',k:'mulher',t:'Saúde da mulher',ic:'mulher',ln:1,ids:['prenatal','puerperio','contracepcao','ist','itu','ig','imc','rastreio','vacinas','ajustes','fx_sif','fx_itu','rx_aco','rx_ist','rx_hiv','rx_atb','mev_gest','esquema']},
- {g:'Linhas de cuidado',k:'crianca',t:'Saúde da criança',ic:'crianca',ln:1,ids:['puericultura','pedi','imc','vacinas','fx_diar','fx_dengue','fx_farin','rx_par','rx_sint','mev_cri','esquema']},
+ {g:'Linhas de cuidado',k:'mulher',t:'Saúde da mulher',ic:'mulher',ln:1,ids:['prenatal','pn_exames','puerperio','contracepcao','ist','itu','ig','imc','rastreio','vacinas','ajustes','fx_sif','fx_itu','rx_aco','rx_ist','rx_hiv','rx_atb','mev_gest','esquema']},
+ {g:'Linhas de cuidado',k:'crianca',t:'Saúde da criança',ic:'crianca',ln:1,ids:['puericultura','marcos','pedi','imc','vacinas','fx_diar','fx_dengue','fx_farin','rx_par','rx_sint','mev_cri','esquema']},
  {g:'Linhas de cuidado',k:'mental',t:'Saúde mental',ic:'mental',ln:1,ids:['mental','ansiedade','tabagismo','fx_dep','fx_ans','phq9','gad7','audit','fager','rx_ad','rx_ans','rx_ap','rx_tab','mev_dep','mev_ans','mev_sono','mev_alc','mev_tab','esquema']},
  {g:'Linhas de cuidado',k:'idoso',t:'Saúde do idoso',ic:'idoso',ln:1,ids:['idoso','vertigem','dhi','fx_vert','ivcf20','katz','lawton','minicog','quedas','pps','cg','has','dm','hpb','drc','ajustes','vacinas','rastreio','tfg','rcv','phq9','fx_has','fluxodm','fx_dep','fx_lomb','rx_anal','mev_has','mev_dm','mev_sono','esquema']},
  {g:'Linhas de cuidado',k:'agudos',t:'Agudos',ic:'agudos',ln:1,ids:['ivas','gea','itu','ist','dengue','cefaleia','lombalgia','vertigem','dhi','fx_vert','curb65','centor','wells_tvp','wells_tep','fx_dengue','fx_farin','fx_sinus','fx_pac','fx_itu','fx_diar','fx_tor','fx_cef','fx_lomb','fx_tb','rx_atb','rx_sint','rx_anal','rx_par','rx_ist','rx_hiv','mev_ivas','mev_diar','esquema']},
  {g:'Meu kit',k:'meu',t:'Minhas edições',ic:'edit',ids:['meu']}
 ];
 const SECM=Object.fromEntries(SECTIONS.map(s=>[s.k,s]));
-const secOf=id=>T[id]?'soap':C[id]?'calc':P[id]?'presc':M[id]?'mev':F[id]?'fx':'esq';
+const secOf=id=>T[id]?'soap':C[id]?'calc':P[id]?'presc':M[id]?'mev':F[id]?'fx':GD[id]?'gd':'esq';
 let CURS=SECM[store.get('kitaps:sec')]?store.get('kitaps:sec'):'soap';
-let FAV=[];try{FAV=JSON.parse(store.get('kitaps:favs')||'[]').filter(id=>T[id]||C[id]||P[id]||M[id]||F[id]||E[id])}catch(e){FAV=[]}
+let FAV=[];try{FAV=JSON.parse(store.get('kitaps:favs')||'[]').filter(id=>T[id]||C[id]||P[id]||M[id]||F[id]||GD[id]||E[id])}catch(e){FAV=[]}
 const saveFav=()=>store.set('kitaps:favs',JSON.stringify(FAV));
 function renderMenu(){
   const nav=$('#menu-list');let g='',h='';
@@ -2563,6 +2740,8 @@ function render(){
   if(cur.sec==='esq')return cur.id==='meu'?renderMeu(m):renderESQ(m);
   if(cur.sec==='mev')return renderMEV(m,cur.id);
   if(cur.sec==='fx')return renderFX(m,cur.id);
+  if(cur.sec==='gd')return renderGD(m,cur.id);
+  if(cur.id==='marcos')return renderMARCOS(m);
   if(SC[cur.id])return renderSC(m,cur.id);
   if(NC[cur.id])return numCalc(m,NC[cur.id]);
   ({ig:renderIG,tfg:renderTFG,imc:renderIMC,phq9:renderPHQ,audit:renderAUDIT,gad7:renderGAD,insulina:renderINS,fluxodm:renderFLUXO,melanoma:renderMEL,rcv:renderRCV,rastreio:renderRAST,vacinas:renderVAC,ajustes:renderAJ,fager:renderFAGER,ipss:renderIPSS,pedi:renderPEDI})[cur.id](m);
@@ -2583,6 +2762,12 @@ function renderPresc(m,id){
   m.querySelectorAll('button[data-e]').forEach(b=>b.onclick=()=>{const n=addToEsq(c.items[+b.dataset.e].rx);toast(n?n+' remédio(s) no esquema do paciente':'Não consegui ler esta receita')});
 }
 
+const SOAPLINK={has:[['fx_has','Fluxograma HAS'],['rcv','Risco CV'],['tfg','TFG'],['mev_has','MEV']],dm:[['fluxodm','Fluxograma DM2'],['insulina','Insulina'],['tfg','TFG'],['mev_dm','MEV']],
+ drc:[['drcest','Estágio DRC'],['tfg','TFG'],['cg','Cockcroft-Gault'],['ajustes','Ajustes de dose']],hpb:[['ipss','IPSS']],prenatal:[['pn_exames','Exames do pré-natal'],['ig','IG/DPP'],['vacinas','Vacinas']],
+ puericultura:[['marcos','Marcos do desenvolvimento'],['pedi','Doses pediátricas'],['vacinas','Vacinas']],mental:[['phq9','PHQ-9'],['fx_dep','Fluxograma']],ansiedade:[['gad7','GAD-7'],['fx_ans','Fluxograma']],
+ idoso:[['ivcf20','IVCF-20'],['katz','Katz'],['lawton','Lawton'],['minicog','Mini-Cog'],['quedas','Quedas'],['ajustes','Beers']],asma:[['fx_asma','Fluxograma']],dpoc:[['fx_dpoc','Fluxograma']],
+ vertigem:[['dhi','DHI'],['fx_vert','Fluxograma']],tabagismo:[['fager','Fagerström']],itu:[['fx_itu','Fluxograma']],dengue:[['fx_dengue','Fluxograma']],cefaleia:[['fx_cef','Fluxograma']],lombalgia:[['fx_lomb','Fluxograma']],
+ hipotireo:[['fx_tireo','Fluxograma']],ivas:[['centor','Centor'],['fx_farin','Faringite'],['fx_sinus','Sinusite']],gea:[['fx_diar','Fluxograma']],ist:[['fx_sif','Sífilis']]};
 function renderSoap(m,id){
   const t=T[id],key='kitaps:soap:'+id,saved=store.get(key);
   m.innerHTML=`<section class="panel">
@@ -2593,7 +2778,9 @@ function renderSoap(m,id){
       <button class="btn primary" id="cp">Copiar SOAP</button>
       <button class="btn" id="rs">Restaurar modelo</button>
     </div>
+    ${(SOAPLINK[id]||[]).filter(x=>known(x[0])).length?`<div class="lbl">Ferramentas relacionadas</div><div class="bar">${SOAPLINK[id].filter(x=>known(x[0])).map(x=>`<button class="chip" data-go="${x[0]}" type="button">${esc(x[1])}</button>`).join('')}</div>`:''}
   </section>`;
+  m.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
   const ta=$('#ta-'+id);ta.value=saved!=null?saved:t.body;
   ta.oninput=()=>store.set(key,ta.value);
   $('#cp').onclick=()=>copy(ta.value,ta);
@@ -3507,11 +3694,11 @@ function renderIPSS(m){
 }
 
 const h=(location.hash||'').slice(1);
-const known=id=>!!(T[id]||C[id]||P[id]||M[id]||F[id]||E[id]);
+const known=id=>!!(T[id]||C[id]||P[id]||M[id]||F[id]||GD[id]||E[id]);
 const start=known(h)?h:(store.get('kitaps:last')||'has');
 go(known(start)?start:'has');
 /* ---------- Busca única ---------- */
-const CKEY={dhi:'tontura vertigem labirintite dizziness impacto',curb65:'pneumonia curb crb gravidade internacao',wells_tvp:'trombose tvp perna edema d-dimero doppler',wells_tep:'embolia tep pulmonar dispneia d-dimero',chads:'fibrilacao atrial fa anticoagulacao avc chads vasc',hasbled:'sangramento anticoagulacao has-bled varfarina',centor:'garganta faringite amigdalite mcisaac estreptococo',katz:'idoso avd atividades basicas dependencia funcionalidade',lawton:'idoso aivd atividades instrumentais funcionalidade',minicog:'idoso memoria demencia cognicao relogio rastreio',ivcf20:'idoso fragilidade vulnerabilidade ivcf',quedas:'idoso queda steadi tug equilibrio',pps:'paliativo cuidados paliativos funcionalidade karnofsky',drcest:'drc estagio kdigo albuminuria rac renal',cg:'clearance creatinina cockcroft gault ajuste dose renal',cacorr:'calcio albumina hipocalcemia hipercalcemia',pedi:'pediatria pediatrica crianca dose peso mg/kg gotas xarope suspensao paracetamol dipirona ibuprofeno amoxicilina azitromicina cefalexina prednisolona salbutamol albendazol sulfato ferroso vitamina',ig:'idade gestacional dpp dum usg gestacao gravidez parto',tfg:'creatinina rim renal ckd-epi filtracao drc',imc:'peso altura obesidade indice de massa corporal',phq9:'depressao humor rastreio',gad7:'ansiedade rastreio',audit:'alcool bebida etilismo',insulina:'nph regular diabetes titulacao dose glicemia hipoglicemia',fluxodm:'diabetes metformina fluxograma tratamento dm2 gliclazida dapagliflozina',melanoma:'pele nevo pinta lesao abcde glasgow cancer',rcv:'framingham colesterol risco cardiovascular estatina ldl',rastreio:'rastreamento preventivo citopatologico papanicolau preventivo mamografia colonoscopia sangue oculto psof densitometria osteoporose psa sorologias hiv sifilis hepatite',ajustes:'ajuste dose renal drc tfg gestacao gravidez lactacao amamentacao idoso beers interacao seguranca',vacinas:'vacina calendario vacinal pni imunizacao bcg penta hpv dtpa influenza gestante crianca idoso',fager:'cigarro tabagismo fumo fagerstrom anos-maco nicotina',ipss:'prostata hpb urinario luts'};
+const CKEY={marcos:'desenvolvimento marcos caderneta puericultura atraso neuropsicomotor crianca suplementacao ferro vitamina',dhi:'tontura vertigem labirintite dizziness impacto',curb65:'pneumonia curb crb gravidade internacao',wells_tvp:'trombose tvp perna edema d-dimero doppler',wells_tep:'embolia tep pulmonar dispneia d-dimero',chads:'fibrilacao atrial fa anticoagulacao avc chads vasc',hasbled:'sangramento anticoagulacao has-bled varfarina',centor:'garganta faringite amigdalite mcisaac estreptococo',katz:'idoso avd atividades basicas dependencia funcionalidade',lawton:'idoso aivd atividades instrumentais funcionalidade',minicog:'idoso memoria demencia cognicao relogio rastreio',ivcf20:'idoso fragilidade vulnerabilidade ivcf',quedas:'idoso queda steadi tug equilibrio',pps:'paliativo cuidados paliativos funcionalidade karnofsky',drcest:'drc estagio kdigo albuminuria rac renal',cg:'clearance creatinina cockcroft gault ajuste dose renal',cacorr:'calcio albumina hipocalcemia hipercalcemia',pedi:'pediatria pediatrica crianca dose peso mg/kg gotas xarope suspensao paracetamol dipirona ibuprofeno amoxicilina azitromicina cefalexina prednisolona salbutamol albendazol sulfato ferroso vitamina',ig:'idade gestacional dpp dum usg gestacao gravidez parto',tfg:'creatinina rim renal ckd-epi filtracao drc',imc:'peso altura obesidade indice de massa corporal',phq9:'depressao humor rastreio',gad7:'ansiedade rastreio',audit:'alcool bebida etilismo',insulina:'nph regular diabetes titulacao dose glicemia hipoglicemia',fluxodm:'diabetes metformina fluxograma tratamento dm2 gliclazida dapagliflozina',melanoma:'pele nevo pinta lesao abcde glasgow cancer',rcv:'framingham colesterol risco cardiovascular estatina ldl',rastreio:'rastreamento preventivo citopatologico papanicolau preventivo mamografia colonoscopia sangue oculto psof densitometria osteoporose psa sorologias hiv sifilis hepatite',ajustes:'ajuste dose renal drc tfg gestacao gravidez lactacao amamentacao idoso beers interacao seguranca',vacinas:'vacina calendario vacinal pni imunizacao bcg penta hpv dtpa influenza gestante crianca idoso',fager:'cigarro tabagismo fumo fagerstrom anos-maco nicotina',ipss:'prostata hpb urinario luts'};
 let IDX=null;
 function buildIdx(){
   const L=[];
@@ -3521,6 +3708,7 @@ function buildIdx(){
     c.items.forEach((it,i)=>{const drugs=(it.rx.match(/^\d+\.\s*([^\n.]+?)\s*\.{3,}/gm)||[]).map(x=>x.replace(/^\d+\.\s*/,'').replace(/\s*\.{3,}$/,''));
       L.push({id,i,sec:'Prescrições',lab:it.t,sub:c.s+(drugs.length?' · '+drugs.join(', '):''),key:norm(it.t+' '+c.t+' '+drugs.join(' ')+' '+it.n)})})});
   Object.entries(M).forEach(([id,c])=>L.push({id,sec:'MEV',lab:'MEV: '+c.t,key:norm('mev estilo de vida orientacoes '+c.t+' '+c.s)}));
+  Object.entries(GD).forEach(([id,g])=>L.push({id,sec:'Guia',lab:g.t,key:norm('exame exames interpretacao conduta '+g.t+' '+g.s+' '+g.k)}));
   Object.entries(F).forEach(([id,f])=>L.push({id,sec:'Fluxograma',lab:f.t,key:norm('fluxograma conduta '+f.t+' '+f.s+' '+f.k)}));
   L.push({id:'meu',sec:'Meu kit',lab:'Minhas edições e backup',key:norm('editar edicoes minhas backup exportar importar restaurar salvar arquivo personalizar')});
   L.push({id:'esquema',sec:'Paciente',lab:'Esquema de remédios do paciente',key:norm('esquema paciente folha imprimir horarios manha tarde noite figuras analfabeto')});
