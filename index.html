@@ -9179,5 +9179,305 @@ if('serviceWorker' in navigator){
   ['input','pointerdown','keydown'].forEach(e=>addEventListener(e,()=>{window.__touched=true},{once:true,capture:true}));
 }
 </script>
+<style>
+.ia{position:fixed;inset:0;z-index:40;background:var(--bg);color:var(--fg);overflow-y:auto;font-family:var(--f-ui);padding:calc(10px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.ia-in{max-width:760px;margin:0 auto;display:grid;gap:12px}
+.ia-top{display:flex;align-items:center;gap:8px;position:sticky;top:calc(-10px - env(safe-area-inset-top,0px));background:var(--bg);padding:8px 0;z-index:1}
+.ia-top h2{flex:1;margin:0;font-size:1.15rem}
+.ia-ic{border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:10px;min-width:40px;height:40px;font:600 .9rem var(--f-ui);cursor:pointer;padding:0 10px}
+.ia-modes{display:flex;gap:6px;flex-wrap:wrap}
+.ia-modes button{border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:8px 14px;font:600 .88rem var(--f-ui);cursor:pointer}
+.ia-modes button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+.ia label{display:grid;gap:4px;font-size:.85rem;color:var(--muted);font-weight:600}
+.ia textarea,.ia input[type=text],.ia input[type=url],.ia input[type=password]{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--fg);font:1rem/1.45 var(--f-ui);padding:10px 12px}
+.ia textarea{min-height:150px;resize:vertical}
+.ia-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:560px){.ia-row{grid-template-columns:1fr}}
+.ia-lock{background:var(--ok-soft);border-radius:var(--r);padding:9px 12px;font-size:.88rem;line-height:1.4}
+.ia-lock b{color:var(--ok)}
+.ia-lock button{border:0;background:none;color:var(--accent);font:600 .88rem var(--f-ui);padding:0;cursor:pointer;text-decoration:underline}
+.ia-prev{white-space:pre-wrap;background:var(--sunk);border-radius:var(--r);padding:10px 12px;font:.88rem/1.45 var(--f-mono);max-height:240px;overflow:auto}
+.ia-prev mark,.ia-out mark{background:var(--accent-soft);color:var(--fg);border-radius:4px;padding:0 2px}
+.ia-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ia-out{white-space:pre-wrap;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;font:.97rem/1.5 var(--f-ui);min-height:60px}
+.ia-out .ia-conf{display:block;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);color:var(--muted)}
+.ia-msg{font-size:.88rem;color:var(--muted)}
+.ia-msg.bad{color:var(--bad)}
+.ia-turn{font-size:.82rem;color:var(--muted);font-weight:600;margin-top:4px}
+.ia details{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:8px 12px}
+.ia summary{cursor:pointer;font-weight:600}
+.ia-h{display:grid;gap:6px;margin-top:8px}
+.ia-h button{text-align:left;border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:10px;padding:8px 10px;font:.86rem var(--f-ui);cursor:pointer}
+.ia-h small{color:var(--muted)}
+.ia-note{font-size:.84rem;color:var(--muted);line-height:1.45}
+.ia-chk{display:flex!important;align-items:center;gap:8px;font-weight:500!important;color:var(--fg)!important}
+</style>
+<div class="ia" id="ia" hidden role="dialog" aria-modal="true" aria-labelledby="ia-t">
+ <div class="ia-in">
+  <div class="ia-top"><h2 id="ia-t">IA do Kit</h2><button class="ia-ic" id="ia-cfgb" type="button" aria-label="Configurar">⚙︎</button><button class="ia-ic" id="ia-x" type="button" aria-label="Fechar">✕</button></div>
+
+  <div id="ia-main">
+   <div class="ia-in">
+    <div class="ia-modes" id="ia-modes" role="group" aria-label="O que a IA deve fazer"></div>
+    <label><span id="ia-lbl">Relato da consulta</span><textarea id="ia-txt" placeholder=""></textarea></label>
+    <div class="ia-row">
+     <label>Nome do paciente (só para ocultar)<input type="text" id="ia-nome" autocomplete="off" placeholder="Ex.: Maria da Silva"></label>
+     <label>Outros dados para ocultar<input type="text" id="ia-extra" autocomplete="off" placeholder="Separe por vírgula: nome da mãe, empresa…"></label>
+    </div>
+    <div class="ia-lock" id="ia-lock"></div>
+    <div class="ia-prev" id="ia-prev" hidden></div>
+    <div class="ia-bar"><button class="btn primary" id="ia-go" type="button">Gerar</button><button class="btn" id="ia-new" type="button">Limpar</button><span class="ia-msg" id="ia-st"></span></div>
+    <div id="ia-res" hidden>
+     <div id="ia-conv"></div>
+     <div class="ia-bar" style="margin-top:8px"><button class="btn primary small" id="ia-cp" type="button">Copiar</button><button class="btn small" id="ia-cpall" type="button" hidden>Copiar com notas</button></div>
+     <label style="margin-top:10px">Pedir ajuste ou continuar<textarea id="ia-fu" style="min-height:70px" placeholder="Ex.: inclua que a PA foi 150x95; deixe o plano mais curto"></textarea></label>
+     <div class="ia-bar" style="margin-top:6px"><button class="btn small" id="ia-fugo" type="button">Enviar</button></div>
+    </div>
+    <details id="ia-hd"><summary>Histórico neste aparelho</summary><div class="ia-h" id="ia-h"></div></details>
+   </div>
+  </div>
+
+  <div id="ia-cfg" hidden>
+   <div class="ia-in">
+    <p class="ia-note">A IA usa a sua conta da API do Claude por meio de um servidor seu no Cloudflare. Cole aqui o endereço do servidor e o código de acesso que você criou.</p>
+    <label>Endereço do servidor<input type="url" id="ia-url" placeholder="https://kit-aps-ia.seunome.workers.dev" autocomplete="off"></label>
+    <label>Código de acesso<input type="password" id="ia-cod" autocomplete="off"></label>
+    <label class="ia-chk"><input type="checkbox" id="ia-keep"> Guardar histórico neste aparelho por 7 dias</label>
+    <div class="ia-bar"><button class="btn primary" id="ia-save" type="button">Salvar</button><button class="btn" id="ia-test" type="button">Testar conexão</button><button class="btn" id="ia-back" type="button">Voltar</button><span class="ia-msg" id="ia-cst"></span></div>
+    <p class="ia-note">Privacidade: antes de enviar, o app troca nome, CPF, cartão SUS, telefone, e-mail, endereço, CEP, data de nascimento e números longos por marcadores como [NOME1]. A IA só vê o texto clínico; os dados voltam para o lugar no seu aparelho. O mascaramento pega os formatos comuns, então confira em "ver o que a IA recebe". O servidor não grava nada.</p>
+    <div class="ia-bar"><button class="btn small" id="ia-clr" type="button">Apagar histórico</button></div>
+   </div>
+  </div>
+ </div>
+</div>
+<script>
+/* IA do Kit (só no app): mascara dados do paciente, envia ao servidor da IA e recoloca os dados na resposta */
+(()=>{
+const $i=id=>document.getElementById(id);
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+const CFG='kitaps:ia:cfg',HIST='kitaps:ia:hist',DIAS7=7*864e5;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const say=m=>{if(typeof toast==='function')toast(m)};
+const cp=t=>{if(typeof copy==='function')copy(t);else if(navigator.clipboard)navigator.clipboard.writeText(t).then(()=>say('Copiado'))};
+
+/* ---------- Mascaramento ---------- */
+const ACC={a:'aáàâãä',e:'eéèêë',i:'iíìîï',o:'oóòôõö',u:'uúùûü',c:'cç',n:'nñ'};
+const PRE='(?<![\\p{L}\\d])',POS='(?![\\p{L}\\d])';
+function termRx(term){
+  const body=[...term.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()].map(ch=>ACC[ch]?'['+ACC[ch]+ACC[ch].toUpperCase()+']':/\s/.test(ch)?'\\s+':ch.replace(/[.*+?^${}()|[\]\\\/-]/g,'\\$&')).join('');
+  return new RegExp(PRE+body+POS,'giu');
+}
+const STOP=new Set(['de','da','do','das','dos','e','di','du','van','von']);
+const CAPW="[A-ZÀ-ÖØ-Þ][a-zß-öø-ÿ']+";
+const NAMEW=new RegExp('^'+CAPW+"(?:\\s+(?:(?:d[aeo]s?|e)\\s+)?"+CAPW+')*','u');
+const UPLINE=/^[A-ZÀ-ÖØ-Þ][A-ZÀ-ÖØ-Þ' ]{2,60}[A-ZÀ-ÖØ-Þ]/u;
+function idade(d){const m=d.match(/(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})/);if(!m)return '';let y=+m[3];if(y<100)y+=y>(new Date().getFullYear()%100)?1900:2000;const b=new Date(y,m[2]-1,+m[1]),n=new Date();let a=n.getFullYear()-b.getFullYear();if(n<new Date(n.getFullYear(),b.getMonth(),b.getDate()))a--;return a>=0&&a<120?a:''}
+
+// sess.map: [{ph,orig,tipo}] compartilhado entre o pedido e os ajustes da mesma conversa
+function mask(text,sess,nome,extras){
+  const cnt={};sess.map.forEach(m=>{cnt[m.tipo]=Math.max(cnt[m.tipo]||0,+m.ph.match(/\d+/)[0])});
+  const put=(tipo,orig)=>{const o=orig.trim();const ex=sess.map.find(m=>m.orig===o);if(ex)return ex.ph;cnt[tipo]=(cnt[tipo]||0)+1;const ph='['+tipo+cnt[tipo]+']';sess.map.push({ph,orig:o,tipo});return ph};
+  let t=text;
+  // nomes: o informado, os de rótulos (Nome:, paciente, Sr./Sra., mãe…) e os já vistos na conversa
+  const names=new Set();
+  if(nome&&nome.trim())names.add(nome.trim());
+  t.replace(/(?<![\p{L}])(nome(?: completo| do paciente| da paciente| da mãe| do pai)?|paciente|pcte|pct|sr\.?|sra\.?|srta\.?|dona|seu|m[ãa]e|pai|esposa|esposo|marido|companheir[oa]|filh[oa]|net[oa]|irm[ãa]o?|acompanhante|acompanhad[oa] (?:pel[oa]|da|do)|respons[áa]vel)(\s*:?\s+)([^\n]{0,80})/giu,(all,lab,sp,rest)=>{
+    let m=rest.match(NAMEW);
+    if(!m&&/:/.test(sp))m=rest.match(UPLINE);
+    if(m&&!/^(Paciente|Refere|Relata|Nega|Com|Sem|Em|Hoje|Ontem|Retorno|Vem|Veio|Traz|Apresenta|Queixa|Diz|Conta|Informa|Est[áa]|Tem)$/u.test(m[0].split(/\s+/)[0]))names.add(m[0].trim().replace(/\s+(?:d[aeo]s?|e)$/i,''));
+    return all});
+  sess.map.filter(m=>m.tipo==='NOME').forEach(m=>names.add(m.orig));
+  const parts=new Set();
+  [...names].forEach(n=>n.split(/\s+/).forEach(p=>{if(p.length>=3&&!STOP.has(p.toLowerCase()))parts.add(p)}));
+  const terms=[...names].sort((a,b)=>b.length-a.length).concat([...parts]);
+  (extras||'').split(/[,;\n]/).map(s=>s.trim()).filter(s=>s.length>=2).forEach(x=>{t=t.replace(termRx(x),m=>put('OCULTO',m))});
+  t=t.replace(/[\w.+-]+@[\w-]+\.[\w.-]+/g,m=>put('EMAIL',m));
+  terms.forEach(n=>{t=t.replace(termRx(n),m=>put('NOME',m))});
+  t=t.replace(/(?<!\d)[1-9]\d{2}[ .]?\d{4}[ .]?\d{4}[ .]?\d{4}(?!\d)/g,m=>put('CNS',m));
+  t=t.replace(/(?<!\d)\d{3}\.?\d{3}\.?\d{3}-?\d{2}(?!\d)/g,m=>put('CPF',m));
+  t=t.replace(/(?<!\d)\d{1,2}\.\d{3}\.\d{3}-?[\dxX](?![\d])/g,m=>put('RG',m));
+  t=t.replace(/(\b(?:DN|D\.N\.|nasc\.?|nascid[oa] em|data de nascimento|nascimento)\s*:?\s*)(\d{1,2}[\/.-]\d{1,2}[\/.-]\d{2,4})/giu,(all,lab,d)=>{const a=idade(d);return lab+put('NASC',d)+(a!==''?' ('+a+' anos)':'')});
+  t=t.replace(/(?<!\d)\d{5}-\d{3}(?!\d)/g,m=>put('CEP',m));
+  t=t.replace(/(?<![\d\/])(?:(?:\(?\d{2}\)?\s?)?9\s?\d{4}[-\s]?\d{4}|\(?\d{2}\)?\s?[2-5]\d{3}[-\s]?\d{4})(?![\d\/])/g,m=>put('TEL',m));
+  t=t.replace(/(?<![\d\/,])\d(?:[\d.\-]){6,}\d(?![\d\/,])/g,m=>m.replace(/\D/g,'').length>=8&&!/^\d{1,2}[.-]\d{1,2}[.-]\d{2,4}$|^(?:19|20)\d\d-(?:19|20)\d\d$/.test(m)?put('NUM',m):m);
+  t=t.replace(/(?<![\p{L}])(?:rua|avenida|av\.|travessa|tv\.|servid[ãa]o|estrada|rodovia|rod\.|alameda|pra[çc]a|loteamento|condom[íi]nio|bairro|residencial)\s+[^\n,;.]{2,60}(?:,\s*(?:n[º°o.]?\s*)?\d+\s*[a-zA-Z]?\b)?/giu,m=>put('ENDERECO',m));
+  return t;
+}
+function unmask(t,sess){return sess.map.reduce((s,m)=>s.split(m.ph).join(m.orig),t)}
+function resumo(sess){const L={NOME:'nome',CPF:'CPF',CNS:'cartão SUS',RG:'RG',NASC:'nascimento',TEL:'telefone',EMAIL:'e-mail',CEP:'CEP',ENDERECO:'endereço',NUM:'número',OCULTO:'outro'};const c={};sess.map.forEach(m=>c[m.tipo]=(c[m.tipo]||0)+1);return Object.keys(c).map(k=>c[k]+' '+L[k]+(c[k]>1&&!/[sl]$/.test(L[k])?'s':'')).join(', ')}
+const hl=t=>esc(t).replace(/\[(NOME|CPF|CNS|RG|NASC|TEL|EMAIL|CEP|ENDERECO|NUM|OCULTO)\d+\]/g,'<mark>$&</mark>');
+
+/* ---------- Modos ---------- */
+const BASE=`Você ajuda uma médica de família e comunidade da Atenção Primária do SUS, que atende em Balneário Arroio do Silva e Araranguá (SC). Responda em português do Brasil.
+Por privacidade, dados que identificam pessoas foram trocados por marcadores entre colchetes, como [NOME1], [CPF1], [TEL1], [NASC1], [ENDERECO1]. Quando precisar citá-los, copie o marcador exatamente; não tente adivinhar o conteúdo.
+Escreva em texto simples, sem markdown (sem asteriscos, #, tabelas ou negrito), porque o texto será colado no prontuário ou entregue ao paciente. Para listas, use linhas que começam com "- ".
+Não invente dados que não estejam no relato.`;
+const SEP='----- PARA CONFERIR (não vai no prontuário) -----';
+const MODES={
+ soap:{n:'SOAP da consulta',lbl:'Relato da consulta',ph:'Cole ou dite a história, o exame e a conduta, do jeito que vier. Ex.: mulher 54a, HAS e DM2, vem p/ renovar receita, glicemias 130-180…',eff:'medium',
+  sys:`Tarefa: transformar o relato (anotações soltas, ditado ou texto corrido) em uma evolução SOAP exatamente neste formato:
+
+INFORMAÇÕES IMPORTANTES
+Comorbidades:
+Alergias:
+Medicações de uso contínuo:
+Profissão:
+Tabagismo:
+Etilismo:
+Outras drogas:
+
+S:
+(texto corrido)
+
+O:
+(exame)
+
+A:
+(avaliação)
+
+P:
+(um item por linha)
+Paciente ciente e concordante, nega dúvidas. Retorno em X dias ou alta.
+
+Regras:
+- No cabeçalho, o que não foi informado fica como [ ].
+- S em texto corrido, linguagem de prontuário, incluindo as negativas pertinentes que aparecem no relato. Inclua história patológica pregressa, cirurgias, história familiar e ginecológica quando informadas.
+- O só com o que foi examinado ou medido; sinais vitais numa linha (PA, FC, FR, SatO2, Tax, peso, IMC quando houver).
+- A com os problemas e hipóteses; acrescente o CIAP-2 quando for claro.
+- P com um item por linha, sem números, letras ou marcadores, para ser fácil apagar ou acrescentar. Medicamentos com dose e posologia. Use só condutas que estão no relato.
+- A última linha do P é sempre "Paciente ciente e concordante, nega dúvidas. Retorno em X dias ou alta.", com o prazo do relato ou [ ] se não houver.
+- Depois do SOAP, escreva numa linha sozinha "${SEP}" e, abaixo, até 5 pontos curtos para a médica conferir: negativas ou dados importantes que faltaram, sinais de alarme, e condutas que as diretrizes (Ministério da Saúde, SBMFC, sociedades) recomendariam e não estão no plano, preferindo medicamentos da RENAME. Se não houver nada relevante, escreva "- Nada a acrescentar".`},
+ duvida:{n:'Dúvida clínica',lbl:'Sua pergunta',ph:'Ex.: qual a dose de amoxicilina para OMA em criança de 14 kg? Quando encaminhar nódulo de tireoide?',eff:'medium',
+  sys:`Tarefa: responder dúvidas clínicas de forma direta e prática para a APS. Comece pela resposta. Doses em mg com posologia completa; prefira medicamentos disponíveis no SUS (RENAME). Diga sinais de alarme e quando encaminhar. Cite a diretriz ou fonte quando for relevante e diga quando houver incerteza ou divergência entre diretrizes. Seja conciso (até cerca de 250 palavras, a menos que peçam mais).`},
+ pac:{n:'Texto para o paciente',lbl:'O que explicar',ph:'Ex.: orientações para DM2 recém-diagnosticado, metformina 500 mg 1x ao dia no jantar, caminhar 30 min…',eff:'low',
+  sys:`Tarefa: escrever orientações para o paciente levar para casa. Linguagem simples, frases curtas, tratando por "você", sem termos técnicos. Inclua o que ele tem, como usar os remédios (com horários), cuidados em casa e sinais de alerta para voltar à unidade ou procurar a emergência. Até cerca de 200 palavras.`}
+};
+
+/* ---------- Estado ---------- */
+let mode='soap',sess=null,ctl=null;
+const cfg=()=>LS.get(CFG,{url:'',cod:'',keep:true});
+function hist(){const h=LS.get(HIST,[]).filter(x=>Date.now()-x.t<DIAS7);return h}
+
+function newSess(){sess={mode,map:[],msgs:[],view:[],nome:$i('ia-nome').value.trim(),extra:$i('ia-extra').value.trim()}}
+function renderModes(){
+  $i('ia-modes').innerHTML=Object.keys(MODES).map(k=>`<button type="button" data-m="${k}" aria-pressed="${k===mode}">${MODES[k].n}</button>`).join('');
+  $i('ia-lbl').textContent=MODES[mode].lbl;$i('ia-txt').placeholder=MODES[mode].ph;
+}
+function preview(){
+  const s={map:sess&&sess.mode===mode?sess.map.slice():[]};
+  const t=$i('ia-txt').value;
+  const m=mask(t,s,$i('ia-nome').value,$i('ia-extra').value);
+  const r=resumo(s);
+  $i('ia-lock').innerHTML=t.trim()?`🔒 ${r?'<b>Ocultados:</b> '+esc(r)+'.':'Nenhum dado pessoal encontrado.'} <button type="button" id="ia-pv">${$i('ia-prev').hidden?'ver o que a IA recebe':'esconder'}</button>`:'🔒 Nome, CPF, cartão SUS, telefone, endereço e nascimento são ocultados antes de enviar.';
+  $i('ia-prev').innerHTML=hl(m);
+  const b=$i('ia-pv');if(b)b.onclick=()=>{$i('ia-prev').hidden=!$i('ia-prev').hidden;preview()};
+}
+function renderConv(){
+  const v=sess.view;
+  $i('ia-res').hidden=!v.length;
+  $i('ia-conv').innerHTML=v.map((x,i)=>{
+    if(x.role==='user')return i?`<div class="ia-turn">Ajuste: ${esc(x.text)}</div>`:'';
+    const k=x.text.indexOf(SEP);
+    const body=k<0?esc(x.text):esc(x.text.slice(0,k).trimEnd())+`<span class="ia-conf">${esc(x.text.slice(k))}</span>`;
+    return `<div class="ia-out" style="margin-top:8px">${body||'<span class="ia-msg">Escrevendo…</span>'}</div>`}).join('');
+  const last=v.filter(x=>x.role==='assistant').pop();
+  $i('ia-cpall').hidden=!(last&&last.text.includes(SEP));
+}
+const lastOut=()=>{const a=sess&&sess.view.filter(x=>x.role==='assistant').pop();return a?a.text:''};
+
+async function ask(userText,isFollow){
+  const c=cfg();
+  if(!c.url||!c.cod){showCfg(true);$i('ia-cst').textContent='Configure o servidor primeiro.';return}
+  if(!navigator.onLine){status('Sem internet: a IA precisa de conexão.',1);return}
+  if(!isFollow||!sess)newSess();
+  const masked=mask(userText,sess,$i('ia-nome').value,$i('ia-extra').value);
+  sess.msgs.push({role:'user',content:masked});
+  sess.view.push({role:'user',text:userText});
+  const out={role:'assistant',text:''};sess.view.push(out);renderConv();
+  busy(true);status('Gerando…');
+  ctl=new AbortController();
+  let raw='',stop='',err='';
+  try{
+    const r=await fetch(c.url.replace(/\/+$/,''),{method:'POST',signal:ctl.signal,headers:{'Content-Type':'application/json','X-Codigo':c.cod},body:JSON.stringify({system:BASE+'\n\n'+MODES[sess.mode].sys,messages:sess.msgs,effort:MODES[sess.mode].eff})});
+    if(!r.ok){let m='';try{m=(await r.json()).erro}catch(e){}throw new Error(m||('Erro '+r.status))}
+    const rd=r.body.getReader(),dec=new TextDecoder();let buf='';
+    for(;;){
+      const {done,value}=await rd.read();if(done)break;
+      buf+=dec.decode(value,{stream:true});
+      let i;while((i=buf.indexOf('\n'))>=0){
+        const line=buf.slice(0,i).trim();buf=buf.slice(i+1);
+        if(!line.startsWith('data:'))continue;
+        let ev;try{ev=JSON.parse(line.slice(5))}catch(e){continue}
+        if(ev.type==='content_block_delta'&&ev.delta&&ev.delta.type==='text_delta'){raw+=ev.delta.text;out.text=unmask(raw,sess);renderConv()}
+        else if(ev.type==='message_delta'&&ev.delta&&ev.delta.stop_reason)stop=ev.delta.stop_reason;
+        else if(ev.type==='error')err=(ev.error&&ev.error.message)||'Erro na resposta';
+      }
+    }
+  }catch(e){err=e.name==='AbortError'?'Interrompido.':(e.message==='Failed to fetch'?'Não consegui falar com o servidor. Confira a internet e o endereço nas configurações.':e.message)}
+  busy(false);ctl=null;
+  if(stop==='refusal'){err='A IA recusou este pedido. Tente reformular.';raw=''}
+  if(raw)sess.msgs.push({role:'assistant',content:raw});
+  else{sess.msgs.pop();sess.view.pop();sess.view.pop();if(!isFollow)sess=null}
+  if(sess)renderConv();else $i('ia-res').hidden=true;
+  if(err)status(err,1);else status(stop==='max_tokens'?'A resposta foi cortada por ser longa demais.':'Pronto. Confira antes de usar.');
+  if(raw)saveHist();
+}
+function saveHist(){
+  if(!cfg().keep)return;
+  const h=hist();const first=sess.view[0].text;
+  const item={id:sess.id||(sess.id=Date.now()),t:Date.now(),mode:sess.mode,in:first,out:lastOut(),nome:sess.nome||'',extra:sess.extra||''};
+  const i=h.findIndex(x=>x.id===item.id);if(i>=0)h.splice(i,1);
+  h.unshift(item);LS.set(HIST,h.slice(0,30));renderHist();
+}
+function renderHist(){
+  const h=hist();LS.set(HIST,h);
+  $i('ia-h').innerHTML=h.length?h.map((x,i)=>`<button type="button" data-h="${i}"><small>${new Date(x.t).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})} · ${MODES[x.mode]?MODES[x.mode].n:''}</small><br>${esc(x.in.slice(0,90))}${x.in.length>90?'…':''}</button>`).join(''):'<span class="ia-note">Nada salvo. O histórico some sozinho depois de 7 dias.</span>';
+}
+function status(m,bad){const s=$i('ia-st');s.textContent=m||'';s.classList.toggle('bad',!!bad)}
+function busy(b){const g=$i('ia-go');g.textContent=b?'Parar':'Gerar';g.classList.toggle('primary',!b);$i('ia-fugo').disabled=b}
+function showCfg(on){
+  $i('ia-cfg').hidden=!on;$i('ia-main').hidden=on;
+  if(on){const c=cfg();$i('ia-url').value=c.url||'';$i('ia-cod').value=c.cod||'';$i('ia-keep').checked=c.keep!==false;$i('ia-cst').textContent=''}
+}
+function open(){$i('ia').hidden=false;document.documentElement.style.overflow='hidden';renderModes();preview();renderHist();if(!cfg().url)showCfg(true);else showCfg(false)}
+function close(){$i('ia').hidden=true;document.documentElement.style.overflow=''}
+
+/* ---------- Ligações ---------- */
+$i('ia-x').onclick=close;
+$i('ia-cfgb').onclick=()=>showCfg($i('ia-cfg').hidden);
+$i('ia-back').onclick=()=>showCfg(false);
+$i('ia-modes').onclick=e=>{const b=e.target.closest('[data-m]');if(!b||ctl)return;mode=b.dataset.m;renderModes();preview()};
+['ia-txt','ia-nome','ia-extra'].forEach(id=>$i(id).addEventListener('input',()=>{clearTimeout(preview._h);preview._h=setTimeout(preview,250)}));
+$i('ia-go').onclick=()=>{if(ctl){ctl.abort();return}const t=$i('ia-txt').value.trim();if(!t){status('Escreva o relato ou a pergunta primeiro.',1);return}ask(t,false)};
+$i('ia-fugo').onclick=()=>{const t=$i('ia-fu').value.trim();if(!t||!sess||ctl)return;$i('ia-fu').value='';ask(t,true)};
+$i('ia-new').onclick=()=>{if(ctl)return;sess=null;['ia-txt','ia-nome','ia-extra','ia-fu'].forEach(id=>$i(id).value='');$i('ia-res').hidden=true;$i('ia-prev').hidden=true;status('');preview()};
+$i('ia-cp').onclick=()=>{const t=lastOut();const k=t.indexOf(SEP);cp((k<0?t:t.slice(0,k)).trim())};
+$i('ia-cpall').onclick=()=>cp(lastOut().trim());
+$i('ia-h').onclick=e=>{const b=e.target.closest('[data-h]');if(!b||ctl)return;const x=hist()[+b.dataset.h];if(!x)return;
+  mode=MODES[x.mode]?x.mode:'soap';renderModes();sess={mode,map:[],msgs:[],view:[{role:'user',text:x.in},{role:'assistant',text:x.out}],id:x.id,nome:x.nome||'',extra:x.extra||''};
+  $i('ia-nome').value=sess.nome;$i('ia-extra').value=sess.extra;
+  // ajuste depois de reabrir: reenvia o pedido e a resposta (mascarados) como contexto
+  sess.msgs=[{role:'user',content:mask(x.in,sess,sess.nome,sess.extra)},{role:'assistant',content:mask(x.out,sess,sess.nome,sess.extra)}];
+  $i('ia-txt').value=x.in;renderConv();preview();status('Do histórico.');$i('ia-hd').open=false};
+$i('ia-save').onclick=()=>{const url=$i('ia-url').value.trim();if(url&&!/^https:\/\//.test(url)){$i('ia-cst').textContent='O endereço começa com https://';return}
+  LS.set(CFG,{url,cod:$i('ia-cod').value.trim(),keep:$i('ia-keep').checked});if(!$i('ia-keep').checked)LS.del(HIST);$i('ia-cst').textContent='Salvo.';renderHist()};
+$i('ia-test').onclick=async()=>{$i('ia-save').onclick();const c=cfg(),s=$i('ia-cst');if(!c.url){s.textContent='Coloque o endereço.';return}s.textContent='Testando…';
+  try{const r=await fetch(c.url.replace(/\/+$/,''),{method:'POST',headers:{'Content-Type':'application/json','X-Codigo':c.cod},body:JSON.stringify({system:'Responda apenas: OK',messages:[{role:'user',content:'teste'}],effort:'low'})});
+    if(!r.ok){let m='';try{m=(await r.json()).erro}catch(e){}s.textContent='Falhou: '+(m||r.status);return}
+    const t=await r.text();s.textContent=/text_delta/.test(t)?'Funcionando ✓':'Respondeu, mas sem texto. Confira a chave da API.'}
+  catch(e){s.textContent='Não consegui falar com o servidor. Confira o endereço.'}};
+$i('ia-clr').onclick=()=>{if(confirm('Apagar todo o histórico da IA deste aparelho?')){LS.del(HIST);renderHist();$i('ia-cst').textContent='Histórico apagado.'}};
+addEventListener('keydown',e=>{if(e.key==='Escape'&&!$i('ia').hidden)close()});
+
+// botão "IA" no topo, ao lado de Consulta e Receita
+const ref=$i('rxb-btn')||$i('cons-btn');
+const btn=document.createElement('button');
+btn.className='cons-btn';btn.id='ia-btn';btn.type='button';btn.setAttribute('aria-label','Abrir IA');
+btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg><span>IA</span>';
+btn.onclick=open;
+if(ref)ref.after(btn);else{btn.style.cssText='position:fixed;left:16px;bottom:90px;z-index:7';document.body.appendChild(btn)}
+window.kitIA={open,mask,unmask};
+})();
+</script>
 </body>
 </html>
