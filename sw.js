@@ -1,5 +1,5 @@
 /* Kit APS: service worker. A cada publicação, aumente VERSION para forçar a atualização. */
-const VERSION = '2026-10-25.1';
+const VERSION = '2026-10-26.1';
 const CACHE = 'kitaps-' + VERSION;
 const ASSETS = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png', 'icons/apple-touch-icon.png'];
 
