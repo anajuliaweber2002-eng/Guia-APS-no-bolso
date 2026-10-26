@@ -264,7 +264,7 @@ textarea.soap.rxta{min-height:0;overflow:hidden}
 :root{--g-cv:#c92a2a;--g-endo:#d9480f;--g-resp:#1971c2;--g-renal:#0c8599;--g-dig:#8d6e00;--g-inf:#2b8a3e;--g-neuro:#4263eb;--g-osteo:#5f6b78;--g-pele:#a0522d;--g-mental:#862e9c;--g-mulher:#c2255c;--g-crianca:#c98a00;--g-idoso:#087f5b;--g-geral:#868e96;}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--g-cv:#ff8787;--g-endo:#ffa94d;--g-resp:#74c0fc;--g-renal:#66d9e8;--g-dig:#e3c35a;--g-inf:#8ce99a;--g-neuro:#91a7ff;--g-osteo:#b8c4d0;--g-pele:#e8a77f;--g-mental:#e599f7;--g-mulher:#f783ac;--g-crianca:#ffd43b;--g-idoso:#63e6be;--g-geral:#adb5bd;}}
 :root[data-theme="dark"]{--g-cv:#ff8787;--g-endo:#ffa94d;--g-resp:#74c0fc;--g-renal:#66d9e8;--g-dig:#e3c35a;--g-inf:#8ce99a;--g-neuro:#91a7ff;--g-osteo:#b8c4d0;--g-pele:#e8a77f;--g-mental:#e599f7;--g-mulher:#f783ac;--g-crianca:#ffd43b;--g-idoso:#63e6be;--g-geral:#adb5bd;}
-[data-g="cv"]{--g:var(--g-cv)}[data-g="endo"]{--g:var(--g-endo)}[data-g="resp"]{--g:var(--g-resp)}[data-g="renal"]{--g:var(--g-renal)}[data-g="dig"]{--g:var(--g-dig)}[data-g="inf"]{--g:var(--g-inf)}[data-g="neuro"]{--g:var(--g-neuro)}[data-g="osteo"]{--g:var(--g-osteo)}[data-g="pele"]{--g:var(--g-pele)}[data-g="mental"]{--g:var(--g-mental)}[data-g="mulher"]{--g:var(--g-mulher)}[data-g="crianca"]{--g:var(--g-crianca)}[data-g="idoso"]{--g:var(--g-idoso)}[data-g="geral"]{--g:var(--g-geral)}
+[data-g="normal"]{--g:var(--g-geral)}[data-g="cv"]{--g:var(--g-cv)}[data-g="endo"]{--g:var(--g-endo)}[data-g="resp"]{--g:var(--g-resp)}[data-g="renal"]{--g:var(--g-renal)}[data-g="dig"]{--g:var(--g-dig)}[data-g="inf"]{--g:var(--g-inf)}[data-g="neuro"]{--g:var(--g-neuro)}[data-g="osteo"]{--g:var(--g-osteo)}[data-g="pele"]{--g:var(--g-pele)}[data-g="mental"]{--g:var(--g-mental)}[data-g="mulher"]{--g:var(--g-mulher)}[data-g="crianca"]{--g:var(--g-crianca)}[data-g="idoso"]{--g:var(--g-idoso)}[data-g="geral"]{--g:var(--g-geral)}
 .chip[data-g]::before,.msi[data-g]::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--g);margin-right:6px;vertical-align:1px}
 .chip[data-g][aria-selected="true"]::before{box-shadow:0 0 0 2px var(--accent-fg)}
 .cgl{flex:none;align-self:center;font:700 .66rem var(--f-ui);text-transform:uppercase;letter-spacing:.06em;color:var(--g);padding:0 2px 0 8px;border-left:3px solid var(--g);margin-left:4px;white-space:nowrap}
@@ -342,6 +342,49 @@ function copy(text,ta){
 
 /* ---------- Templates SOAP ---------- */
 const T={
+soap_normal:{t:'SOAP normal (consulta sem alterações)',code:'CIAP-2 A98 · CID-10 Z00.0',body:
+`INFORMAÇÕES IMPORTANTES
+Comorbidades: [nega]
+Alergias: [nega]
+Medicações de uso contínuo: [nega]
+Profissão: [ ]
+Tabagismo: [nega / __ cigarros/dia há __ anos (__ anos-maço) / ex-tabagista há __ anos]
+Etilismo: [nega / tipo de bebida, quantidade e frequência]
+Outras drogas: [nega / ]
+
+S:
+Paciente comparece para [consulta de rotina / __]. Refere estar bem, sem queixas no momento. Nega febre, perda de peso não intencional, astenia e sudorese noturna. Nega cefaleia, tontura e alterações visuais ou auditivas. Nega tosse, dispneia, dor torácica e palpitações. Nega náuseas, vômitos, dor abdominal, alteração do hábito intestinal, sangue nas fezes e melena. Nega disúria, polaciúria, hematúria e alterações do jato urinário. Nega edema, dores articulares e lesões de pele. Sono, apetite e humor preservados.
+Alimentação: [ ]. Atividade física: [ ] min/semana.
+História patológica pregressa: [nega / ]
+Cirurgias prévias: [nega / ]
+História familiar: [nega / ]
+História ginecológica (mulheres): G[ ]P[ ]A[ ] | menarca [ ] anos | DUM [ ] | ciclos [regulares] | método contraceptivo [ ] | último preventivo [ ] | [menopausa aos __ anos]
+Vacinas: [caderneta em dia / pendentes: __]
+
+O:
+BEG, LOTE, corado(a), hidratado(a), acianótico(a), anictérico(a), afebril, eupneico(a) em ar ambiente.
+PA [ ]x[ ] mmHg | FC [ ] bpm | FR [ ] irpm | Tax [ ] °C | SpO2 [ ]% em ar ambiente
+Peso [ ] kg | Altura [ ] m | IMC [ ] kg/m² | CA [ ] cm
+Cabeça e pescoço: oroscopia sem alterações, linfonodos cervicais não palpáveis, tireoide sem nódulos palpáveis.
+ACV: RCR em 2T, BNF, sem sopros. Pulsos periféricos palpáveis e simétricos. TEC < 3 s.
+AR: MV presente bilateralmente, sem ruídos adventícios, sem esforço respiratório.
+Abdome: plano, RHA presentes, flácido, indolor à palpação superficial e profunda, sem massas ou visceromegalias. Blumberg e Murphy negativos. Giordano negativo bilateralmente.
+Extremidades: sem edema, panturrilhas livres.
+Neurológico: vígil, orientado(a), Glasgow 15, sem déficits focais. Marcha atípica.
+Pele: íntegra, normocorada, sem lesões.
+
+A:
+Paciente [hígido(a)], assintomático(a), exame físico sem alterações.
+Rastreios: [em dia / pendentes: __]
+
+P:
+Rastreios conforme idade e sexo: [ ]
+Exames: [ ]
+Vacinas: [atualizar caderneta / em dia]
+MEV: alimentação saudável, atividade física ≥ 150 min/semana, sono adequado, cessar tabagismo, reduzir álcool
+Orientado(a) a procurar a unidade se surgirem sintomas
+Paciente ciente e concordante com a conduta, nega dúvidas.
+Retorno em [ ] dias / alta`},
 has:{t:'Hipertensão arterial',code:'CIAP-2 K86/K87 · CID-10 I10',body:
 `INFORMAÇÕES IMPORTANTES
 Comorbidades: [ ]
@@ -9574,7 +9617,7 @@ Object.keys(OR).forEach(k=>E[k]=OR[k].s);
 const SECS={soap:Object.keys(T),calc:Object.keys(C),presc:Object.keys(P),mev:Object.keys(M),esq:Object.keys(E),fx:Object.keys(F)};
 let cur={sec:'soap',id:'has'};
 
-function chipLabel(id){return id==='inicio'?'Início':id==='receita'?'Receita montada':id==='labs'?'Preencher exames':id==='enc'?'Encaminhamento':DZ[id]?chipLabel(DZ[id].s):T[id]?({tbdx:'TB: diagnóstico',tuberculose:'TB em tratamento',hda:'HDA',hdb:'HDB',nod_tireo:'Nódulo de tireoide',nod_mama:'Nódulo de mama',dislip:'Dislipidemia',cef_alarme:'Cefaleia com alarme',rinite:'Rinite alérgica',sinusite:'Sinusite',itur:'ITU de repetição',incont:'Incontinência urinária',trans_fem:'Mulher trans: hormonização',trans_masc:'Homem trans: hormonização',lgbt:'Saúde LGBTQIA+',de:'Disfunção erétil',violencia:'Violência',vd:'Visita domiciliar',mordedura:'Mordedura',tunel:'Túnel do carpo',bronq:'Bronquiolite',parasit:'Parasitoses',hiv:'HIV',sifilis:'Sífilis',hepvir:'Hepatites B e C',diu:'Inserção de DIU',hipert:'Hipertireoidismo',folato:'Deficiência de folato',osteoporose:'Osteoporose',sincope:'Síncope',queda:'Queda no idoso',icc:'IC crônica',icagu:'IC aguda',drge:'DRGE',demencia:'Demência',parkinson:'Parkinson',epilepsia:'Epilepsia',sua:'SUA',corrimento:'Corrimento vaginal',sop:'SOMP',febre:'Febre sem foco',dermatite:'Dermatites',micose:'Micoses',escabiose:'Escabiose',acne:'Acne',gota:'Gota',fa:'Fibrilação atrial',panico:'Pânico',toc:'TOC',luto:'Luto',esquizofrenia:'Esquizofrenia',sang1:'Sangramento 1ª metade',sang2:'Sangramento 2ª metade',oma:'Otite média',otext:'Otite externa',conj:'Conjuntivite',oa:'Osteoartrite',insonia:'Insônia',anemia:'Anemia ferropriva',b12:'Deficiência de B12',vertigem:'Vertigem',hipotireo:'Hipotireoidismo',obesidade:'Obesidade',asma:'Asma',dpoc:'DPOC',idoso:'Idoso',puerperio:'Puerpério',contracepcao:'Contracepção',climaterio:'Climatério',tabagismo:'Tabagismo',itu:'ITU',ist:'IST',dengue:'Dengue',cefaleia:'Cefaleia',lombalgia:'Lombalgia',has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:F[id]?F[id].s:GD[id]?GD[id].s:AT[id]?AT[id].s:E[id])}
+function chipLabel(id){return id==='inicio'?'Início':id==='receita'?'Receita montada':id==='labs'?'Preencher exames':id==='enc'?'Encaminhamento':DZ[id]?chipLabel(DZ[id].s):T[id]?({soap_normal:'SOAP normal',tbdx:'TB: diagnóstico',tuberculose:'TB em tratamento',hda:'HDA',hdb:'HDB',nod_tireo:'Nódulo de tireoide',nod_mama:'Nódulo de mama',dislip:'Dislipidemia',cef_alarme:'Cefaleia com alarme',rinite:'Rinite alérgica',sinusite:'Sinusite',itur:'ITU de repetição',incont:'Incontinência urinária',trans_fem:'Mulher trans: hormonização',trans_masc:'Homem trans: hormonização',lgbt:'Saúde LGBTQIA+',de:'Disfunção erétil',violencia:'Violência',vd:'Visita domiciliar',mordedura:'Mordedura',tunel:'Túnel do carpo',bronq:'Bronquiolite',parasit:'Parasitoses',hiv:'HIV',sifilis:'Sífilis',hepvir:'Hepatites B e C',diu:'Inserção de DIU',hipert:'Hipertireoidismo',folato:'Deficiência de folato',osteoporose:'Osteoporose',sincope:'Síncope',queda:'Queda no idoso',icc:'IC crônica',icagu:'IC aguda',drge:'DRGE',demencia:'Demência',parkinson:'Parkinson',epilepsia:'Epilepsia',sua:'SUA',corrimento:'Corrimento vaginal',sop:'SOMP',febre:'Febre sem foco',dermatite:'Dermatites',micose:'Micoses',escabiose:'Escabiose',acne:'Acne',gota:'Gota',fa:'Fibrilação atrial',panico:'Pânico',toc:'TOC',luto:'Luto',esquizofrenia:'Esquizofrenia',sang1:'Sangramento 1ª metade',sang2:'Sangramento 2ª metade',oma:'Otite média',otext:'Otite externa',conj:'Conjuntivite',oa:'Osteoartrite',insonia:'Insônia',anemia:'Anemia ferropriva',b12:'Deficiência de B12',vertigem:'Vertigem',hipotireo:'Hipotireoidismo',obesidade:'Obesidade',asma:'Asma',dpoc:'DPOC',idoso:'Idoso',puerperio:'Puerpério',contracepcao:'Contracepção',climaterio:'Climatério',tabagismo:'Tabagismo',itu:'ITU',ist:'IST',dengue:'Dengue',cefaleia:'Cefaleia',lombalgia:'Lombalgia',has:'HAS',dm:'DM',prenatal:'Pré-natal',puericultura:'Puericultura',mental:'Saúde mental',ivas:'IVAS',hpb:'HPB',ansiedade:'Ansiedade',drc:'Renal crônico',gea:'Diarreia/vômitos'})[id]:C[id]||(P[id]?P[id].s:M[id]?M[id].s:F[id]?F[id].s:GD[id]?GD[id].s:AT[id]?AT[id].s:E[id])}
 
 /* Navegação: menu de seções (agrupadas) + abas internas; favoritos */
 const SICON={
@@ -9724,7 +9767,7 @@ const SECTIONS=[
  {g:'Atendimento',k:'enc',t:'Encaminhamento',ic:'doc',ids:['enc','enc_derm']},
  {g:'Atendimento',k:'rast',t:'Rastreios por idade',ic:'prot',ids:['rastreio']},
  {g:'Atendimento',k:'doenca',t:'Por doença',ic:'box',ids:Object.keys(DZ)},
- {g:'Atendimento',k:'soap',t:'Templates SOAP',ic:'soap',ids:['has','dm','drc','hipotireo','obesidade','asma','dpoc','hpb','idoso','prenatal','sang1','sang2','puerperio','contracepcao','climaterio','puericultura','mental','esquizofrenia','ansiedade','tabagismo','insonia','ivas','oma','otext','conj','gea','itu','ist','dengue','cefaleia','vertigem','lombalgia','oa','anemia','b12','sua','corrimento','sop','febre','dermatite','micose','escabiose','acne','gota','fa','panico','toc','luto','demencia','parkinson','epilepsia','icc','icagu','drge','sincope','queda','diu','hipert','folato','osteoporose','bronq','parasit','hiv','sifilis','hepvir','tunel','de','violencia','vd','mordedura','lgbt','trans_fem','trans_masc','itur','incont','rinite','sinusite','cef_alarme','nod_tireo','nod_mama','dislip','hda','hdb','tbdx','tuberculose']},
+ {g:'Atendimento',k:'soap',t:'Templates SOAP',ic:'soap',ids:['soap_normal','has','dm','drc','hipotireo','obesidade','asma','dpoc','hpb','idoso','prenatal','sang1','sang2','puerperio','contracepcao','climaterio','puericultura','mental','esquizofrenia','ansiedade','tabagismo','insonia','ivas','oma','otext','conj','gea','itu','ist','dengue','cefaleia','vertigem','lombalgia','oa','anemia','b12','sua','corrimento','sop','febre','dermatite','micose','escabiose','acne','gota','fa','panico','toc','luto','demencia','parkinson','epilepsia','icc','icagu','drge','sincope','queda','diu','hipert','folato','osteoporose','bronq','parasit','hiv','sifilis','hepvir','tunel','de','violencia','vd','mordedura','lgbt','trans_fem','trans_masc','itur','incont','rinite','sinusite','cef_alarme','nod_tireo','nod_mama','dislip','hda','hdb','tbdx','tuberculose']},
  {g:'Atendimento',k:'ef',t:'Exame físico',ic:'steth',ids:['ef_geral','ef_cv','ef_resp','ef_abd','ef_neuro','ef_cp','ef_pele','ef_mama','ef_gin','ef_ped','ef_reflex','efp_osteo','efp_cerv','efp_lomb','efp_ombro','efp_joelho','efp_vert','efp_tunel','efp_pe','efp_ulc','efp_ven','efp_art']},
  {g:'Atendimento',k:'presc',t:'Prescrições',ic:'presc',ids:['farmacia','titr_gd','anticonv_gd','atb_guia',...Object.keys(P)]},
  {g:'Atendimento',k:'fx',t:'Fluxogramas',ic:'fx',ids:['fx_has','fluxodm',...Object.keys(F).filter(k=>k!=='fx_has'&&!k.startsWith('u_'))]},
@@ -9780,14 +9823,14 @@ function renderFavs(){
   f.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>go(b.dataset.id));
 }
 const GSYS=[['cv','has u_has u_tor fx_has fx_lip fx_tor rx_cv rx_lip mev_has mev_lip mev_icc ef_cv efp_ven efp_art rcv chads hasbled itb wells_tvp wells_tep mrpa or_mrpa ecg_passo ecg_taqui ecg_bradi ecg_eixo ecg_sobrec ecg_bloq ecg_isq ecg_qt ecg_padroes fcecg eixo qtc sve ex_lip fa fx_fa rx_fa mev_fa or_anticoag icc icagu fx_icc u_ic rx_ic or_icc sincope fx_sinc mev_sinc or_sinc rx_ven dislip'],['endo','dm hipotireo obesidade u_hipo fluxodm fx_tireo rx_dm rx_end rx_glp1 glp1 mev_dm mev_obes or_hipo or_pe or_glp1 or_glic_ins or_glic efp_pe imc insulina glicres cacorr ex_tsh anemia b12 fx_anemia fx_b12 rx_anemia mev_anemia ex_hemo hipert fx_hiper folato fx_folato mev_dmali or_dmali lgbt trans_fem trans_masc rx_fem rx_masc hormon_gd lgbt_gd nod_tireo fx_nodtir ex_tirads'],['resp','rxt_passo rxt_pad rxt_ex rxt_aps asma dpoc u_asma fx_asma fx_dpoc rx_resp or_bomb ef_resp ivas fx_farin fx_sinus mev_ivas fx_pac curb65 centor ex_espiro espcalc ex_gaso gasocalc oma otext conj fx_ouvido fx_conj rx_oto mev_oto ef_cp tabagismo rx_tab mev_tab fager fx_tab or_tab rinite sinusite fx_rinite rx_nasal or_nasal'],['renal','drc hpb itu fx_itu rx_uro mev_drc mev_hpb tfg drcest cg ipss ex_eas de fx_hpb fx_de rx_de mev_de or_hpb psa_gd itur incont fx_itur fx_incont rx_itur rx_incont or_itur or_incont'],['dig','gea fx_diar mev_diar or_soro ef_abd ex_hep fatorr fib4 fli drge fx_drge rx_drge mev_drge or_drge parasit fx_parasit mev_parasit or_parasit rx_ibp hda hdb u_hd fx_hda fx_hdb rx_hd or_hd gbs rockall'],['inf','ist dengue fx_dengue fx_sif fx_tb rx_atb rx_ist rx_hiv atb_guia or_dengue tb tbdose hans rx_par hiv sifilis hepvir fx_hiv hiv_gd fx_hepb fx_hepc tr_gd mev_ist mordedura fx_raiva rx_mord notif_gd tbped tuberculose rx_tb'],['neuro','cefaleia vertigem fx_cef fx_vert ef_neuro efp_vert dhi rx_anal demencia parkinson epilepsia fx_dem fx_park fx_epi anticonv_gd rx_dem rx_park rx_epi mev_dem mev_park mev_epi or_epi or_dem rx_vert mev_vert or_vert dor_gd rx_dor cef_alarme rx_enxaq mev_cef or_cef'],['osteo','lombalgia oa fx_lomb fx_oa rx_oa mev_oa efp_lomb efp_ombro efp_joelho efp_tunel efp_cerv efp_osteo gota fx_gota rx_gota mev_gota osteoporose fx_osteo mev_osteo or_gota tunel rx_tunel or_ex_lomb or_ex_joelho or_ex_ombro'],['pele','dmi_elem dmi_inf dmi_infl dmi_tum dmi_dsc ef_pele efp_ulc melanoma braden push dermatite micose escabiose acne fx_derm fx_mic fx_escab fx_acne rx_pele mev_derm mev_mic mev_escab mev_acne or_escab'],['mental','mental esquizofrenia ansiedade insonia fx_dep fx_ans fx_ins rx_bip rx_esq rx_alc rx_bul rx_tdah rx_ans rx_ad rx_ap rx_sono mev_dep mev_ans mev_sono mev_alc or_sono phq9 gad7 audit ciwa asrs snap isi panico toc luto fx_pan fx_toc fx_luto rx_pan mev_pan mev_toc mev_luto'],['mulher','prenatal sang1 sang2 puerperio contracepcao climaterio u_sang fx_sang1 fx_sang2 abort_gd rx_aco rx_trh rx_gest rx_abort mev_gest or_sang ef_mama ef_gin ex_mamo ex_cito pn_img pn_exames trh mrs ig sua corrimento sop fx_sua fx_corr fx_sop rx_gin mev_sua mev_corr mev_sop or_corr pf_gd fx_pf diu or_diu pn_mes fx_clim mev_clim or_clim violencia fx_viol rx_viol nod_mama fx_nodmama'],['crianca','puericultura ef_ped ef_reflex rx_ped mev_cri marcos pedi febre fx_febre rx_febre mev_febre or_febre ia_gd mev_ia or_ia bronq fx_bronq rx_bronq mev_bronq or_bronq puer_cal curvas tbped'],['idoso','idoso minicog ivcf20 katz lawton quedas pps demencia parkinson queda fx_queda rx_queda mev_queda or_queda polif despr_gd rx_despr or_despr vd vd_gd or_lpp vac_ad']];
-const GRP={cv:['Cardio','Coração e vasos'],endo:['Endócrino','Endócrino, nutrição e sangue'],resp:['Respiratório','Respiratório, ouvido e olhos'],renal:['Rins','Rins e urologia'],dig:['Digestivo','Digestivo e fígado'],inf:['Infecções','Infecções'],neuro:['Neuro','Neurológico e dor'],osteo:['Músculos','Músculos e articulações'],pele:['Pele','Pele e feridas'],mental:['Mental','Saúde mental'],mulher:['Mulher','Saúde da mulher'],crianca:['Criança','Saúde da criança'],idoso:['Idoso','Saúde do idoso'],geral:['Geral','Geral']};
-const GOF={};GSYS.forEach(([k,v])=>v.split(' ').forEach(id=>GOF[id]=k));
+const GRP={normal:['Normal','Consulta normal'],cv:['Cardio','Coração e vasos'],endo:['Endócrino','Endócrino, nutrição e sangue'],resp:['Respiratório','Respiratório, ouvido e olhos'],renal:['Rins','Rins e urologia'],dig:['Digestivo','Digestivo e fígado'],inf:['Infecções','Infecções'],neuro:['Neuro','Neurológico e dor'],osteo:['Músculos','Músculos e articulações'],pele:['Pele','Pele e feridas'],mental:['Mental','Saúde mental'],mulher:['Mulher','Saúde da mulher'],crianca:['Criança','Saúde da criança'],idoso:['Idoso','Saúde do idoso'],geral:['Geral','Geral']};
+const GOF={soap_normal:'normal'};GSYS.forEach(([k,v])=>v.split(' ').forEach(id=>GOF[id]=k));
 const gOf=id=>GOF[id]||(DZ[id]&&GOF[DZ[id].s])||'geral',GORD=Object.keys(GRP);
 const LNG={lgbt:'endo',homem:'renal',cronicos:'cv',mulher:'mulher',crianca:'crianca',mental:'mental',idoso:'idoso',agudos:'inf'};
 let ORD=store.get('kitaps:ord')==='az'?'az':'sis';
 /* ordem da lista: por sistema (padrão) ou A–Z; linhas de cuidado mantêm a ordem por tipo */
 function secList(s){const L=s.ids.slice();if(s.ln)return L;
-  if(ORD==='az')return L.sort((a,b)=>chipText(a,s).localeCompare(chipText(b,s),'pt',{sensitivity:'base'}));
+  if(ORD==='az'){L.sort((a,b)=>chipText(a,s).localeCompare(chipText(b,s),'pt',{sensitivity:'base'}));const i=L.indexOf('soap_normal');if(i>0)L.unshift(...L.splice(i,1));return L}
   return L.map((id,i)=>[id,i]).sort((a,b)=>GORD.indexOf(gOf(a[0]))-GORD.indexOf(gOf(b[0]))||a[1]-b[1]).map(x=>x[0])}
 const grouped=s=>!s.ln&&ORD==='sis'&&new Set(s.ids.map(gOf)).size>1;
 function chipText(id,s){return id==='esquema'&&s.ln?'Folha do paciente':id==='fluxodm'&&(s.ln||s.k==='fx')?'Diabetes (DM2)':chipLabel(id)}
@@ -9877,7 +9920,7 @@ function renderPresc(m,id){
   m.querySelectorAll('button[data-e]').forEach(b=>b.onclick=()=>{const n=addToEsq(c.items[+b.dataset.e].rx);toast(n?n+' remédio(s) no esquema do paciente':'Não consegui ler esta receita')});
 }
 
-const SOAPLINK={has:[['labs','Preencher exames'],['fx_has','Fluxograma HAS'],['rcv','Risco CV'],['ecg_sobrec','ECG: SVE'],['tfg','TFG'],['mev_has','MEV']],dm:[['labs','Preencher exames'],['fluxodm','Fluxograma DM2'],['efp_pe','Exame do pé'],['itb','ITB'],['insulina','Insulina'],['tfg','TFG'],['mev_dm','MEV']],
+const SOAPLINK={soap_normal:[['ef_geral','Exame físico'],['rastreio','Rastreios'],['vacinas','Vacinas'],['labs','Preencher exames']],has:[['labs','Preencher exames'],['fx_has','Fluxograma HAS'],['rcv','Risco CV'],['ecg_sobrec','ECG: SVE'],['tfg','TFG'],['mev_has','MEV']],dm:[['labs','Preencher exames'],['fluxodm','Fluxograma DM2'],['efp_pe','Exame do pé'],['itb','ITB'],['insulina','Insulina'],['tfg','TFG'],['mev_dm','MEV']],
  drc:[['drcest','Estágio DRC'],['tfg','TFG'],['cg','Cockcroft-Gault'],['ajustes','Ajustes de dose']],hpb:[['ipss','IPSS']],prenatal:[['pn_exames','Exames do pré-natal'],['pn_img','USG e Doppler'],['ef_mama','Exame das mamas'],['ig','IG/DPP'],['vacinas','Vacinas']],
  puericultura:[['marcos','Marcos do desenvolvimento'],['ef_ped','Exame do lactente'],['pedi','Doses pediátricas'],['vacinas','Vacinas']],mental:[['phq9','PHQ-9'],['fx_dep','Fluxograma']],ansiedade:[['gad7','GAD-7'],['fx_ans','Fluxograma']],
  idoso:[['ivcf20','IVCF-20'],['katz','Katz'],['lawton','Lawton'],['minicog','Mini-Cog'],['quedas','Quedas'],['ajustes','Beers']],asma:[['fx_asma','Fluxograma'],['ex_espiro','Espirometria']],dpoc:[['fx_dpoc','Fluxograma'],['ex_espiro','Espirometria'],['gasocalc','Gasometria']],
