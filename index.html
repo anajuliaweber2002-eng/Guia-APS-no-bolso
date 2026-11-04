@@ -300,6 +300,8 @@ textarea.soap.rxta{min-height:0;overflow:hidden}
 @media print{#sheet.dermo img{width:auto;height:255mm;max-width:100%;border:0;margin:0 auto}#sheet.dermo img:last-child{break-after:avoid}#sheet.dermo img:first-child{break-after:page}}
 @media print{.encd .ec{white-space:nowrap}@page{size:A4;margin:10mm}.encd{border:0;padding:0;margin:0;font-size:10px}.encd h3{font-size:13px;margin:0 0 4px}.encd .eh{margin:5px 0 2px;font-size:10.5px}.encd .eg{gap:3px 10px}.encd .ef span,.encd .ec{font-size:10px}.encd .ec input{width:11px;height:11px;margin:0}.encd .ebody{gap:8px;margin-top:4px;flex-wrap:nowrap}.encd .ebody svg{width:240px;flex:0 0 240px}.encd textarea{min-height:0}}
 .obx .obx-r{display:grid;grid-template-columns:1.1fr .9fr .9fr 2.2fr;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:.86rem;line-height:1.42}.obx .obx-hd{font:600 .72rem var(--f-ui);color:var(--muted);text-transform:uppercase;letter-spacing:.03em;border-top:0;padding:2px 0 4px}.obx-b{display:inline-block;font:600 .68rem var(--f-ui);padding:1px 7px;border-radius:999px;background:var(--accent-soft);margin:4px 4px 0 0}.obx-t{grid-template-columns:repeat(auto-fit,minmax(84px,1fr))}@media(max-width:900px){.obx .obx-hd{display:none}.obx .obx-r{grid-template-columns:1fr;gap:3px}.obx .obx-c::before{content:attr(data-l) ": ";font-weight:600;color:var(--muted)}}
+.lbar{display:grid;gap:4px;margin-top:6px}.lbo{display:grid;gap:2px;text-align:left;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:8px;padding:7px 10px;font:inherit;font-size:.88rem;cursor:pointer}.lbo small{color:var(--muted);font-size:.76rem}button.lbo:hover{background:var(--accent-soft)}.lbo.lbn{cursor:default;border-style:dashed;gap:6px}.lbo.lbn input{font-size:.9rem;padding:7px 9px}.lbo.lbn .btn{justify-self:start}
+.sgb{display:flex;align-items:center;gap:6px;width:100%;border:0;background:none;color:var(--g,var(--fg));font:700 .7rem var(--f-ui);text-transform:uppercase;letter-spacing:.06em;padding:9px 8px 6px;border-radius:7px;cursor:pointer;text-align:left}.sgb::before{content:"▸";font-size:.85rem;color:var(--muted);width:10px}.sgb[aria-expanded="true"]::before{content:"▾"}.sgb small{margin-left:auto;font-weight:600;color:var(--muted);letter-spacing:0}.sgb:hover{background:var(--sunk)}.sgl{display:grid;gap:1px;padding-left:8px}
 </style>
 
 <header>
@@ -11169,9 +11171,8 @@ const SECTIONS=[
  {g:'Atendimento',k:'ef',t:'Exame físico',ic:'steth',ids:['ef_geral','ef_cv','ef_resp','ef_abd','ef_neuro','ef_cp','ef_pele','ef_mama','ef_gin','ef_ped','ef_reflex','efp_osteo','efp_cerv','efp_lomb','efp_ombro','efp_joelho','efp_vert','efp_tunel','efp_pe','efp_ulc','efp_ven','efp_art']},
  {g:'Atendimento',k:'presc',t:'Prescrições',ic:'presc',ids:['farmacia','titr_gd','anticonv_gd','atb_guia',...Object.keys(P)]},
  {g:'Atendimento',k:'fx',t:'Fluxogramas',ic:'fx',ids:['fx_has','fluxodm',...Object.keys(F).filter(k=>k!=='fx_has'&&!k.startsWith('u_'))]},
- {g:'Atendimento',k:'mev',t:'Estilo de vida (MEV)',ic:'mev',ids:Object.keys(M)},
+ {g:'Atendimento',k:'orient',t:'Orientações para o paciente',ic:'mev',ids:[...Object.keys(M),...['esquema','or_dengue','or_soro','or_hipo','or_pe','or_bomb','or_glp1','or_sang','or_sono','or_mrpa','or_glic_ins','or_glic','or_febre','or_escab','or_anticoag','or_corr','or_ia','or_epi','or_dem','or_icc','or_queda','or_sinc','or_drge','or_diu','or_vert','or_gota','or_bronq','or_parasit','or_dmali']]},
  {g:'Atendimento',k:'docs',t:'Documentos e atestados',ic:'doc',ids:['lme','inss_gd',...Object.keys(AT)]},
- {g:'Atendimento',k:'esq',t:'Folha do paciente',ic:'esq',ids:['esquema','or_dengue','or_soro','or_hipo','or_pe','or_bomb','or_glp1','or_sang','or_sono','or_mrpa','or_glic_ins','or_glic','or_febre','or_escab','or_anticoag','or_corr','or_ia','or_epi','or_dem','or_icc','or_queda','or_sinc','or_drge','or_diu','or_vert','or_gota','or_bronq','or_parasit','or_dmali']},
  {g:'Ferramentas',k:'calc',t:'Calculadoras',ic:'calc',ids:['ig','riscog','dopob','ictneo','tfg','drcest','cg','imc','rcv','ldlc','insulina','cacorr','curb65','wells_tvp','wells_tep','chads','hasbled','itb','mrpa','glicres','fib4','fli']},
  {g:'Ferramentas',k:'farm',t:'Farmácia do SUS',ic:'presc',ids:['farmacia','lme','ajustes']},
  {g:'Ferramentas',k:'pedi',t:'Doses pediátricas',ic:'pedi',ids:['pedi']},
@@ -11198,6 +11199,22 @@ let CURS=SECM[store.get('kitaps:sec')]?store.get('kitaps:sec'):'soap';
 let FAV=[];try{FAV=JSON.parse(store.get('kitaps:favs')||'[]').filter(id=>DZ[id]||T[id]||C[id]||P[id]||M[id]||F[id]||GD[id]||AT[id]||E[id])}catch(e){FAV=[]}
 const saveFav=()=>store.set('kitaps:favs',JSON.stringify(FAV));
 let MOPEN=new Set();try{MOPEN=new Set(JSON.parse(store.get('kitaps:mopen')||'[]'))}catch(e){}
+/* SGRP v1 */
+const TAGORD=[['Guia','Guias e exames'],['SOAP','SOAP'],['Cálc.','Calculadoras'],['Fluxo','Fluxogramas'],['Rx','Prescrições'],['MEV','Estilo de vida (MEV)'],['Doc','Documentos'],['','Folhas do paciente']];
+function sgGroups(s,list){
+  if(s.k==='orient')return [['mev','Orientações de estilo de vida',list.filter(id=>M[id])],['folha','Folha do paciente',list.filter(id=>!M[id])]].filter(x=>x[2].length);
+  if(s.ln)return TAGORD.map(([t,l])=>['t'+t,l,list.filter(id=>(chipTag(id,s)||'')===t)]).filter(x=>x[2].length);
+  if(grouped(s))return GORD.map(g=>['g'+g,GRP[g][1],list.filter(id=>gOf(id)===g)]).filter(x=>x[2].length);
+  return null}
+let SGO={};try{SGO=JSON.parse(store.get('kitaps:sgo')||'{}')||{}}catch(e){SGO={}}
+function sgItem(s,id,mk){const tg=s.ln||s.k==='orient'?'':chipTag(id,s),g=gOf(id);
+  return `<button class="msi" type="button"${mk?` data-s="${mk}"`:''} data-id="${id}" data-g="${g}" aria-current="${(!mk||s.k===CURS)&&id===cur.id}">${tg?`<small class="ctag">${tg}</small>`:''}${esc(chipText(id,s))}</button>`}
+function sgHTML(s,list,mk){const G=sgGroups(s,list);if(!G||G.length<2)return list.map(id=>sgItem(s,id,mk)).join('');
+  const o=SGO[s.k]||[];
+  return G.map(([k,l,L])=>{const op=o.includes(k)||(s.k===CURS&&L.includes(cur.id)),g=k[0]==='g'?k.slice(1):'';
+    return `<button type="button" class="sgb"${g?` data-g="${g}"`:''} data-sgs="${s.k}" data-sgk="${k}" aria-expanded="${op}"><span>${esc(l)}</span><small>${L.length}</small></button><div class="sgl"${op?'':' hidden'}>${L.map(id=>sgItem(s,id,mk)).join('')}</div>`}).join('')}
+function sgBind(root){root.querySelectorAll('[data-sgk]').forEach(b=>b.onclick=e=>{e.stopPropagation();const k=b.dataset.sgk,sk=b.dataset.sgs,op=b.getAttribute('aria-expanded')!=='true';
+  b.setAttribute('aria-expanded',op);b.nextElementSibling.hidden=!op;const o=new Set(SGO[sk]||[]);op?o.add(k):o.delete(k);SGO[sk]=[...o];store.set('kitaps:sgo',JSON.stringify(SGO))})}
 function renderMenu(){
   const nav=$('#menu-list');let g='',h='';
   SECTIONS.forEach(s=>{if(s.g!==g){g=s.g;h+=`<div class="mg">${esc(g)}</div>`}
@@ -11205,8 +11222,8 @@ function renderMenu(){
     if(s.ids.length<2){h+=mi;return}
     const op=MOPEN.has(s.k);
     h+=`<div class="mrow">${mi}<button class="mx" type="button" data-x="${s.k}" aria-expanded="${op}" aria-controls="ms-${s.k}" aria-label="Mostrar a lista de ${esc(s.t)}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></div>
-     <div class="msub" id="ms-${s.k}"${op?'':' hidden'}>${(()=>{const gr=grouped(s);let lg='';return secList(s).map(id=>{const tg=chipTag(id,s),g=gOf(id),hd=gr&&g!==lg?`<div class="sgh" data-g="${g}">${esc(GRP[g][1])}</div>`:'';lg=g;return hd+`<button class="msi" type="button" data-s="${s.k}" data-id="${id}" data-g="${g}" aria-current="${s.k===CURS&&id===cur.id}">${tg?`<small class="ctag">${tg}</small>`:''}${esc(chipText(id,s))}</button>`}).join('')})()}</div>`});
-  nav.innerHTML=h;
+     <div class="msub" id="ms-${s.k}"${op?'':' hidden'}>${sgHTML(s,secList(s),s.k)}</div>`});
+  nav.innerHTML=h;sgBind(nav);
   nav.querySelectorAll('.mi[data-s]').forEach(b=>b.onclick=()=>{openSection(b.dataset.s);closeMenu()});
   nav.querySelectorAll('.msi').forEach(b=>b.onclick=()=>{go(b.dataset.id,b.dataset.s);closeMenu()});
   nav.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{const k=b.dataset.x,op=!MOPEN.has(k);op?MOPEN.add(k):MOPEN.delete(k);store.set('kitaps:mopen',JSON.stringify([...MOPEN]));
@@ -11249,7 +11266,7 @@ function renderChips(){
       o.onclick=()=>{ORD=ORD==='az'?'sis':'az';store.set('kitaps:ord',ORD);renderChips();toast(ORD==='az'?'Ordem alfabética':'Agrupado por sistema')};c.prepend(o)}
     c.prepend(sel)}
   const sd=$('#side');if(sd){const show=list.length>=4;document.body.classList.toggle('hasside',show);
-    let sg='';sd.innerHTML=show?`<div class="sdh">${esc(s.t)}</div>`+list.map(id=>{const tg=chipTag(id,s),g=gOf(id),hd=gr&&g!==sg?`<div class="sgh" data-g="${g}">${esc(GRP[g][1])}</div>`:'';sg=g;return hd+`<button class="msi" type="button" data-id="${id}" data-g="${g}" aria-current="${id===cur.id}">${tg?`<small class="ctag">${tg}</small>`:''}${esc(chipText(id,s))}</button>`}).join(''):'';
+    sd.innerHTML=show?`<div class="sdh">${esc(s.t)}</div>`+sgHTML(s,list,''):'';sgBind(sd);
     sd.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>go(b.dataset.id,CURS));const a=sd.querySelector('[aria-current="true"]');if(a&&a.scrollIntoView&&(a.offsetTop<sd.scrollTop||a.offsetTop>sd.scrollTop+sd.clientHeight-40))sd.scrollTop=a.offsetTop-sd.clientHeight/3}
   renderMenu();renderFavs();
 }
@@ -11524,14 +11541,72 @@ const LB={
  epf:['EPF','Parasitológico de fezes','','txt'],
  gbs:['Strepto B','Cultura estreptococo B (35–37 sem)','','sel']
 };
+/* LBX v1 */
+Object.assign(LB,{
+ hcm:['HCM','HCM','pg',[27,33]],
+ chcm:['CHCM','CHCM','g/dL',[32,36]],
+ neut:['Neutrófilos','Neutrófilos','/mm³',[1500,7500]],
+ linf:['Linfócitos','Linfócitos','/mm³',[1000,4000]],
+ eos:['Eosinófilos','Eosinófilos','/mm³',[null,500]],
+ ret:['Reticulócitos','Reticulócitos','%',[0.5,2.5]],
+ fe:['Ferro','Ferro sérico','mcg/dL',[50,170]],
+ nhdl:['Não HDL','Colesterol não HDL','mg/dL',[null,159]],
+ gpp:['Glicemia 1h pós','Glicemia 1 h pós-refeição','mg/dL',[null,139]],
+ ldh:['LDH','LDH','U/L',[null,250]],
+ bd:['BD','Bilirrubina direta','mg/dL',[null,0.3]],
+ rpc:['RPC','Relação proteína/creatinina urinária','mg/mg',[null,0.29]],
+ prot24:['Proteinúria 24h','Proteinúria de 24 horas','mg/24h',c=>c.gest?[null,299]:[null,149]],
+ fita:['Proteinúria (fita)','Proteinúria em fita (teste rápido)','','txt'],
+ fibr:['Fibrinogênio','Fibrinogênio','mg/dL',c=>c.gest?[300,600]:[200,400]],
+ ttpa:['TTPA','TTPA (relação)','',[null,1.25]],
+ amil:['Amilase','Amilase','U/L',[null,100]],
+ lip:['Lipase','Lipase','U/L',[null,60]],
+ htlv:['HTLV','HTLV 1 e 2','','sel'],
+ rubg:['Rubéola IgG','Rubéola IgG','','sel'],
+ cmvg:['CMV IgG','Citomegalovírus IgG','','sel'],
+ cmvm:['CMV IgM','Citomegalovírus IgM','','sel'],
+ varg:['Varicela IgG','Varicela IgG','','sel'],
+ avid:['Avidez IgG toxo','Avidez de IgG para toxoplasmose','','txt'],
+ vdrlt:['VDRL','VDRL (titulação)','','txt'],
+ hbeag:['HBeAg','HBeAg','','sel'],
+ antihbc:['Anti-HBc','Anti-HBc total','','sel'],
+ cvhiv:['CV HIV','Carga viral do HIV','cópias/mL',[null,49]],
+ cd4:['CD4','CD4','céls/mm³',[500,null]],
+ eletro:['Eletroforese Hb','Eletroforese de hemoglobina','','txt'],
+ ctng:['CT/NG','Clamídia e gonococo (PCR)','','neg'],
+ bacter:['Bacterioscopia','Bacterioscopia da secreção vaginal','','txt'],
+ cito:['Preventivo','Citopatológico do colo do útero','','txt'],
+ hpv:['DNA-HPV','Teste de DNA-HPV','','neg'],
+ apaf:['Antifosfolípides','Anticorpos antifosfolípides','','txt'],
+ dengue:['Dengue','Dengue (NS1 / IgM)','','neg'],
+ bhcgq:['Beta-hCG','Beta-hCG quantitativo','mUI/mL',[null,null]],
+ prl:['Prolactina','Prolactina','ng/mL',c=>c.sex==='M'?[null,15]:[null,25]],
+ lh:['LH','LH','mUI/mL',[null,null]],
+ e2:['Estradiol','Estradiol','pg/mL',[null,null]],
+ testo:['Testosterona','Testosterona total','ng/dL',LBA([null,70],[264,916])],
+ cort:['Cortisol','Cortisol (8 h)','mcg/dL',[5,23]]
+});
+/* na gestação: lipídios sobem (sem meta fixa), leucocitose fisiológica até 15 mil, Hb ≥ 10,5 no 2º tri */
+['ct','ldl','tg','nhdl'].forEach(k=>{const r=LB[k][3];LB[k][3]=c=>c.gest?[null,null]:typeof r==='function'?r(c):r});
+{const r=LB.leuco[3];LB.leuco[3]=c=>c.gest?[4000,15000]:r}
+{const r=LB.hb[3];LB.hb[3]=c=>c.gest&&LBS.p==='g2'?[10.5,null]:r(c)}
+/* outros nomes (busca) */
+const LBSYN={hb:'hemograma eritrograma anemia',ht:'hemograma hematocrito',vcm:'volume corpuscular medio hemograma microcitose macrocitose',hcm:'hemoglobina corpuscular media hemograma hipocromia',chcm:'concentracao de hemoglobina corpuscular media hemograma',rdw:'anisocitose hemograma',leuco:'leucograma globulos brancos hemograma',neut:'segmentados leucograma neutropenia',linf:'leucograma linfocitose',eos:'leucograma eosinofilia',plaq:'plaquetograma trombocitos hemograma',ret:'reticulocitos anemia',ferr:'reserva de ferro anemia',fe:'ferro serico sideremia',sat:'indice de saturacao da transferrina ist',b12:'cobalamina',fol:'folato acido folico',glic:'glicose jejum acucar glicemia',gpp:'pos prandial perfil glicemico',hba1c:'glicada hemoglobina glicosilada a1c',totg0:'curva glicemica tolerancia glicose dextrosol 75g',totg1:'curva glicemica tolerancia glicose dextrosol',totg2:'curva glicemica tolerancia glicose dextrosol',ct:'colesterol lipidograma perfil lipidico lipidios gordura',hdl:'colesterol bom lipidograma perfil lipidico lipidios',ldl:'colesterol ruim lipidograma perfil lipidico lipidios',tg:'triglicerides triglicerideos lipidograma perfil lipidico lipidios',nhdl:'nao hdl lipidograma',cr:'creatinina funcao renal tfg',ur:'ureia funcao renal',k:'potassio',na:'sodio',au:'acido urico gota',rac:'microalbuminuria albuminuria',tgo:'ast transaminase oxalacetica figado',tgp:'alt transaminase piruvica figado',ggt:'gama glutamil transferase',fa:'fosfatase alcalina',bt:'bilirrubinas',bd:'bilirrubinas direta',alb:'albumina',inr:'tempo de protrombina tap tp rni coagulograma',ttpa:'coagulograma tempo de tromboplastina',fibr:'coagulograma',ldh:'desidrogenase latica hellp hemolise',rpc:'proteinuria relacao proteina creatinina pre-eclampsia',prot24:'urina de 24 horas proteinuria pre-eclampsia',fita:'proteinuria fita teste rapido pre-eclampsia',tsh:'tireotrofina tireoide',t4l:'tiroxina livre tireoide',tpo:'anti tireoperoxidase anticorpo tireoide',abo:'tipagem sanguinea grupo sanguineo fator rh',coombs:'tia antiglobulina pesquisa de anticorpos irregulares pai rh negativo',hiv:'anti-hiv aids teste rapido',cvhiv:'carga viral hiv',cd4:'linfocitos t cd4 hiv',vdrl:'sifilis teste rapido treponemico',vdrlt:'sifilis titulo titulacao nao treponemico',hbsag:'hepatite b antigeno de superficie teste rapido',antihbs:'hepatite b vacina imunidade',antihbc:'hepatite b',hbeag:'hepatite b',hcv:'hepatite c teste rapido',htlv:'htlv1 htlv2 virus linfotropico',toxg:'toxoplasmose toxo',toxm:'toxoplasmose toxo',avid:'toxoplasmose toxo avidez',rubg:'rubeola',cmvg:'citomegalovirus',cmvm:'citomegalovirus',varg:'varicela catapora',eas:'urina tipo 1 sumario de urina equ urina rotina',uroc:'cultura de urina antibiograma',epf:'protoparasitologico parasitologico fezes verminose',gbs:'estreptococo grupo b swab vaginal retal streptococcus agalactiae',eletro:'eletroforese hemoglobina falciforme talassemia',ctng:'clamidia gonococo gonorreia chlamydia pcr biologia molecular',bacter:'secrecao vaginal corrimento gram',cito:'preventivo papanicolau colpocitologia ccu',hpv:'hpv dna rastreio colo',apaf:'anticardiolipina anticoagulante lupico beta2 glicoproteina saf',dengue:'ns1 arbovirose',bhcg:'teste de gravidez hcg',bhcgq:'teste de gravidez hcg quantitativo',pcr:'proteina c reativa inflamacao',vhs:'velocidade de hemossedimentacao',psa:'antigeno prostatico prostata',vitd:'vitamina d 25 hidroxi',ca:'calcio',p:'fosforo',mg:'magnesio',pth:'paratormonio',cpk:'creatinofosfoquinase ck',prl:'prolactina',testo:'testosterona',cort:'cortisol',amil:'amilase pancreas',lip:'lipase pancreas',imc:'indice de massa corporal',cab:'cintura circunferencia abdominal'};
+/* exames criados pela usuária: [nome, outros nomes], salvos neste aparelho */
+const lbCusL=()=>{try{const L=JSON.parse(store.get('kitaps:lbcus')||'[]');return Array.isArray(L)?L:[]}catch(e){return[]}};
+const lbCusK=n=>'c_'+norm(n).replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'').slice(0,30);
+lbCusL().forEach(([n,y])=>{const k=lbCusK(n);if(k.length>2){LB[k]=[n,n,'','txt'];LBSYN[k]=norm(y||'')}});
+function lbCus(n,y){const k=lbCusK(n);if(k.length<3)return '';if(!LB[k]){LB[k]=[n,n,'','txt'];LBSYN[k]=norm(y||'');const L=lbCusL().filter(x=>lbCusK(x[0])!==k);L.push([n,y||'']);store.set('kitaps:lbcus',JSON.stringify(L))}return k}
+const LBQG=['tsh','ferr','hba1c','htlv','rubg','rpc','ldh','avid','epf','vitd'];
 const LBP=[
  ['adulto','Rotina adulto','hb ht vcm leuco plaq glic hba1c ct hdl ldl tg cr k au tgo tgp tsh vitd b12 eas hiv vdrl hbsag hcv'],
  ['menop','Mulher climatério / menopausa','hb glic hba1c ct hdl ldl tg cr tsh t4l vitd b12 ca fsh tgo tgp eas hiv vdrl hbsag hcv'],
  ['homem','Homem','hb ht glic hba1c ct hdl ldl tg cr k au tgo tgp ggt psa tsh vitd b12 eas hiv vdrl hbsag hcv'],
  ['crianca','Criança','hb ht vcm ferr glic ct hdl ldl tg tsh eas epf'],
- ['g1','Gestante 1º trimestre','abo coombs hb ht plaq glic tsh eas uroc hiv vdrl hbsag hcv toxg toxm'],
- ['g2','Gestante 2º trimestre','totg0 totg1 totg2 coombs toxm hb'],
- ['g3','Gestante 3º trimestre','hb ht plaq glic coombs eas uroc hiv vdrl hbsag hcv toxm gbs'],
+ ['g1','Gestante 1º trimestre','abo coombs hb ht vcm hcm chcm rdw leuco plaq glic ct hdl ldl tg tsh eas uroc hiv vdrl hbsag hcv htlv toxg toxm eletro'],
+ ['g2','Gestante 2º trimestre','totg0 totg1 totg2 hb ht vcm hcm chcm rdw leuco plaq ferr ct hdl ldl tg coombs toxg toxm vdrl hiv eas uroc'],
+ ['g3','Gestante 3º trimestre','hb ht vcm hcm chcm rdw leuco plaq ferr glic ct hdl ldl tg coombs eas uroc hiv vdrl hbsag hcv toxg toxm gbs'],
+ ['gpe','Gestante: pressão alta / pré-eclâmpsia','hb ht plaq cr ur au tgo tgp ldh bt rpc prot24 fita eas'],
  ['hasdm','HAS / DM','glic hba1c cr k na ct hdl ldl tg au rac eas tgp'],
  ['idoso','Idoso','hb vcm glic hba1c ct hdl ldl tg cr k na ca vitd b12 tsh eas'],
  ['drc','DRC','cr ur k na bic ca p pth vitd hb ferr sat rac eas hba1c hbsag antihbs hcv hiv'],
@@ -11596,18 +11671,27 @@ function renderLABS(m){
       <div class="field"><label for="lb-sex">Sexo</label><select id="lb-sex"><option value="F"${LBS.sex==='F'?' selected':''}>Feminino</option><option value="M"${LBS.sex==='M'?' selected':''}>Masculino</option></select></div>
     </div><div class="grid2" id="lb-f" style="margin-top:10px"></div>
       <div class="lbl" style="margin-top:12px">Adicionar exame nesta mesma data</div><div class="chips dzt" id="lb-q"></div>
-      <div class="bar" style="flex-wrap:wrap"><select id="lb-as" aria-label="Escolher exame para adicionar" style="flex:1;min-width:160px"></select><button class="btn small" type="button" id="lb-ab">+ Adicionar</button></div>
+      <div class="field" style="margin-top:8px"><input id="lb-as" type="search" placeholder="Buscar exame para adicionar (ex.: VCM, LDL, HTLV, urina 24 h)" aria-label="Buscar exame para adicionar" autocomplete="off" enterkeyhint="search"></div><div class="lbar" id="lb-ar"></div>
       <div class="field" style="margin-top:10px"><label for="lb-x">Outros exames (texto livre)</label><textarea id="lb-x" rows="2" placeholder="Ex.: USG abdome: esteatose leve">${esc(LBS.x)}</textarea></div></div>
     <div class="card"><div class="lbl">Texto para o SOAP</div><pre class="rx" id="lb-out"></pre></div>
     <div class="bar sticky-bar"><button class="btn primary" id="lb-cp" type="button">Copiar</button><button class="btn" id="lb-cs" type="button">+ Consulta</button><button class="btn" id="lb-sv" type="button">Guardar data</button><button class="btn" id="lb-clr" type="button">Limpar</button></div></section>`;
   const out=()=>{const t=lbAll();$('#lb-out').textContent=t||'Preencha algum resultado.';saveLbs()};
   const addUI=()=>{const keys=lbKeys(),base=(LBP.find(p=>p[0]===LBS.p)||LBP[0])[2].split(' '),A=(LBS.add||[]).filter(k=>LB[k]&&!base.includes(k));
-    $('#lb-q').innerHTML=A.map(k=>`<button class="chip" type="button" data-rm="${k}" aria-label="Tirar ${esc(LB[k][1])}">${esc(LB[k][0])} ✕</button>`).join('')+LBQ.filter(k=>!keys.includes(k)).map(k=>`<button class="chip" type="button" data-ad="${k}">+ ${esc(LB[k][0])}</button>`).join('');
-    $('#lb-as').innerHTML='<option value="">Outro exame…</option>'+Object.keys(LB).filter(k=>!keys.includes(k)&&!LBQ.includes(k)).sort((a,b)=>LB[a][1].localeCompare(LB[b][1])).map(k=>`<option value="${k}">${esc(LB[k][1])}</option>`).join('');
+    $('#lb-q').innerHTML=A.map(k=>`<button class="chip" type="button" data-rm="${k}" aria-label="Tirar ${esc(LB[k][1])}">${esc(LB[k][0])} ✕</button>`).join('')+(lbCtx().gest?LBQG:LBQ).filter(k=>!keys.includes(k)).map(k=>`<button class="chip" type="button" data-ad="${k}">+ ${esc(LB[k][0])}</button>`).join('');
+    $('#lb-ar').innerHTML='';
     const add=k=>{if(!k)return;LBS.add=[...(LBS.add||[]).filter(x=>x!==k),k];fields();const el=$('#lb-'+k);if(el)el.focus()};
     $('#lb-q').querySelectorAll('[data-ad]').forEach(b=>b.onclick=()=>add(b.dataset.ad));
     $('#lb-q').querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{const k=b.dataset.rm;LBS.add=LBS.add.filter(x=>x!==k);delete LBS.v[k];fields()});
-    $('#lb-ab').onclick=()=>add($('#lb-as').value)};
+    const sr=()=>{const q=$('#lb-as').value,ws=norm(q).trim().split(/\s+/).filter(Boolean),R=$('#lb-ar');if(!ws.length){R.innerHTML='';return}
+      const L=Object.keys(LB).filter(k=>!keys.includes(k)&&ws.every(w=>norm(k+' '+LB[k][0]+' '+LB[k][1]+' '+(LBSYN[k]||'')).includes(w))).sort((a,b)=>LB[a][1].localeCompare(LB[b][1])).slice(0,12);
+      const inP=Object.keys(LB).filter(k=>keys.includes(k)&&ws.every(w=>norm(k+' '+LB[k][0]+' '+LB[k][1]+' '+(LBSYN[k]||'')).includes(w))).slice(0,4);
+      R.innerHTML=L.map(k=>`<button type="button" class="lbo" data-ad="${k}"><b>+ ${esc(LB[k][1])}${LB[k][2]?` <span class="note">${esc(LB[k][2])}</span>`:''}</b>${LBSYN[k]?`<small>${esc(LBSYN[k])}</small>`:''}</button>`).join('')
+        +(inP.length?`<p class="note">Já está no painel: ${inP.map(k=>`<button type="button" class="lbre" data-fo="${k}">${esc(LB[k][1])}</button>`).join(', ')}</p>`:'')
+        +`<div class="lbo lbn"><b>Não achou? Criar o exame “${esc(q.trim())}”</b><small>Fica salvo neste aparelho e aparece nas próximas buscas.</small><input id="lb-ny" placeholder="Outros nomes ou descrição (opcional), para achar depois" autocomplete="off"><button type="button" class="btn small" id="lb-nb">+ Criar e adicionar</button></div>`;
+      R.querySelectorAll('[data-ad]').forEach(b=>b.onclick=()=>{$('#lb-as').value='';add(b.dataset.ad)});
+      R.querySelectorAll('[data-fo]').forEach(b=>b.onclick=()=>{const el=$('#lb-'+b.dataset.fo);$('#lb-as').value='';R.innerHTML='';if(el){el.scrollIntoView({block:'center'});el.focus()}});
+      $('#lb-nb').onclick=()=>{const k=lbCus(q.trim(),$('#lb-ny').value.trim());if(!k){toast('Digite o nome do exame');return}$('#lb-as').value='';toast('Exame criado');add(k)}};
+    $('#lb-as').oninput=sr;$('#lb-as').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();const b=$('#lb-ar [data-ad]');if(b)b.click()}};if($('#lb-as').value)sr()};
   const fields=()=>{const c=lbCtx(),keys=lbKeys();
     $('#lb-f').innerHTML=keys.map(k=>{const [,l,u,r]=LB[k],v=LBS.v[k]||'',ref=lbRef(k,c);
       const inp=r==='sel'?`<select id="lb-${k}" data-k="${k}"><option value=""></option><option value="NR"${v==='NR'?' selected':''}>Não reagente</option><option value="R"${v==='R'?' selected':''}>Reagente</option></select>`
