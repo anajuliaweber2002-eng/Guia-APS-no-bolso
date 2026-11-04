@@ -5687,6 +5687,9 @@ function parseMed(nameLine,instr){
   if(!ins){ // instrução na mesma linha: separar pelo primeiro verbo ou posologia
     const m=nome.match(/^(.*?\d+(?:[.,]\d+)?\s*(?:mg|mcg|g|ui|ml|%|mg\/ml)(?:\s*\+\s*[^\d]*\d+(?:[.,]\d+)?\s*(?:mg|mcg|g))?)\s+(.*)$/i);
     if(m){nome=m[1];ins=m[2].toLowerCase()}else ins=all;
+  }else{ // instrução na linha do nome e também em linha solta (ex.: "Uso contínuo")
+    const m=nome.match(/^(.*?\d+(?:[.,]\d+)?\s*(?:mg|mcg|g|ui|ml|%|mg\/ml)(?:\s*\+\s*[^\d]*\d+(?:[.,]\d+)?\s*(?:mg|mcg|g))?)\s+(.*)$/i);
+    if(m&&!/^[(+]/.test(m[2])&&/\d+\s*(cp|comp|c[aá]ps|gotas?|ml|ui|jatos?|puffs?|vez|x\b)|\d+\s*(\/|em)\s*\d+|manh|noite|tarde|caf[eé]|almo|jantar|deitar|jejum|ap[oó]s|antes|se (dor|febre|necess)/i.test(m[2])){nome=m[1];ins=(m[2]+' '+ins).toLowerCase()}
   }
   let titr='';
   if(/depois/.test(ins)){const k=ins.indexOf('depois');titr=ins.slice(0,k);ins=ins.slice(k)}
@@ -5715,6 +5718,7 @@ function parseMed(nameLine,instr){
   if(/com (a )?comida|refei[cç][aã]o|refei[cç][oõ]es|ap[oó]s o caf[eé]|junto com/.test(ins)&&!/antes d(a|as) refei/.test(ins))obs.push('com comida');
   if(/antes d(a|as) refei/.test(ins))obs.push('antes da comida');
   if(titr)obs.push('começar com dose menor na 1ª semana: ver receita');
+  if(/cont[ií]nuo|todos os dias|diariamente|n[aã]o (interromper|parar|suspender)/.test(ins))obs.push('uso contínuo');
   const d=ins.match(/por (\d+) (dias|semanas|meses)/);if(d)obs.push('por '+d[1]+' '+d[2]);
   r.obs=[...new Set(obs)].join(', ');
   return r;
@@ -5722,7 +5726,10 @@ function parseMed(nameLine,instr){
 function parseList(text){
   const lines=text.split(/\r?\n/).map(l=>l.trimEnd()).filter(l=>l.trim());
   const meds=[];let cur=null;
-  const isInstr=l=>/^\s+\S/.test(l)&&cur||/^\s*(tomar|aplicar|mascar|usar|dissolver|pingar|colocar|inalar|fazer|tomar)\b/i.test(l);
+  const numbered=lines.some(l=>/^\s*\d+[.)\-]\s/.test(l));/*esqlinha*/
+  const isInstr=l=>/^\s+\S/.test(l)&&cur||/^\s*(tomar|aplicar|mascar|usar|dissolver|pingar|colocar|inalar|fazer|tomar)\b/i.test(l)
+    ||cur&&/^\s*(uso cont[ií]nuo|cont[ií]nuo|de uso cont|uso di[aá]rio|todos os dias|diariamente|n[aã]o (interromper|parar|suspender|tomar|usar|mastigar|partir)|manter|por (\d+|tempo|mais)|durante|at[eé] |se |em caso|caso |dose [uú]nica|ap[oó]s|antes|depois|junto|com |sem |em jejum|pela manh|[àa] noite|ao deitar|obs|observa|quantidade|qtd|validade|repetir|suspender|evitar|reavaliar|retorn|sublingual|mastigar|agitar)/i.test(l)
+    ||cur&&numbered&&!/^\s*\d+[.)\-]\s/.test(l);
   for(const l of lines){
     if(/^\s*(uso (oral|nasal|t[oó]pico|intramuscular|transd[eé]rmico|inalat[oó]rio|subcut[aâ]neo|retal|vaginal|externo)|receitu|prescri[cç][aã]o:?$)/i.test(l))continue;
     if(isInstr(l)&&cur){cur.ins+=' '+l.trim();continue}
