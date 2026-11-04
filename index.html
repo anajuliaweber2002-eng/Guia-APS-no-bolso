@@ -5737,6 +5737,7 @@ function parseList(text){
   }
   return meds.map(m=>parseMed(m.name,m.ins)).filter(r=>r.nome.length>1);
 }
+/*esqbotao*/document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.go-esq');if(b){e.preventDefault();go('esquema')}});
 function addToEsq(text){
   const rows=parseList(text);if(!rows.length)return 0;
   if(ESQ.ex){ESQ.rows=[];ESQ.ex=false;ESQ.nome='';ESQ.cuid=new Set(['agua','todo','trazer'])}
@@ -7859,7 +7860,7 @@ function renderPEDI(m){
       <div class="field" id="pd-gtf" hidden><label for="pd-gt">Gotas por mL (confira na bula do frasco)</label><input id="pd-gt" inputmode="numeric"></div>
     </div>
     ${resultBox('pd-r')}
-    <div class="bar"><button class="btn primary small" id="pd-cp" type="button">Copiar prescrição</button><button class="btn small" id="pd-cs" type="button">+ Consulta</button><button class="btn small" id="pd-esq" type="button">Levar ao esquema do paciente</button></div>
+    <div class="bar"><button class="btn primary small" id="pd-cp" type="button">Copiar prescrição</button><button class="btn small" id="pd-cs" type="button">+ Consulta</button><button class="btn small" id="pd-esq" type="button">Levar ao esquema do paciente</button><button class="btn small go-esq" type="button">Esquema do paciente</button></div>
     <div class="lbl" id="pd-tl"></div>
     <table class="scale pdt" id="pd-tb"><tbody></tbody></table>
     <p class="note">Doses usuais para crianças com função renal e hepática normais, conforme bulas, SBP e protocolos do MS. O teto por tomada já é aplicado. Confira alergias, a apresentação disponível na REMUME e, nas gotas, quantas gotas há em 1 mL na bula do frasco.</p>
@@ -11335,7 +11336,7 @@ function renderPresc(m,id){
     <div class="ph"><h2>${esc(c.t)}</h2><span class="code">adultos</span></div>
     <div class="rec"><b>Receituário:</b> ${esc(c.rec)}.</div>
     ${tocHTML(c.items.map((it,i)=>['rxa-'+i,esc(it.t)]))}
-    ${c.items.map((it,i)=>`<article class="card rxcard" id="rxa-${i}"><h3>${esc(it.t)}${edTag(it.ed,it.own)}</h3><pre class="rx" id="rx-${i}">${esc(it.rx)}</pre>${farmBadges(it.rx)}<div class="bar"><button class="btn primary small" data-i="${i}">Copiar prescrição</button><button class="btn small" data-e="${i}">Levar ao esquema do paciente</button><button class="btn small" data-cs="${i}" type="button">+ Consulta</button><button class="btn small" data-rb="${i}" type="button">+ Receita</button><button class="btn small" data-ed="${i}" aria-label="Editar ${esc(it.t)}">${icon('edit',14)} Editar</button></div>${it.n?`<p class="note">${esc(it.n)}</p>`:''}${titrHTML(it.rx)}${(()=>{const ds=drugsIn(it.rx);return ds.length?`<details><summary>Ajustes: DRC, gestação, lactação, idoso</summary><div style="display:grid;gap:8px;margin-top:8px">${ds.map(d=>drugCard(d,{tfg:num(store.get('kitaps:tfg'))})).join('')}</div></details>`:''})()}</article>`).join('')}
+    ${c.items.map((it,i)=>`<article class="card rxcard" id="rxa-${i}"><h3>${esc(it.t)}${edTag(it.ed,it.own)}</h3><pre class="rx" id="rx-${i}">${esc(it.rx)}</pre>${farmBadges(it.rx)}<div class="bar"><button class="btn primary small" data-i="${i}">Copiar prescrição</button><button class="btn small" data-e="${i}">Levar ao esquema do paciente</button><button class="btn small" data-cs="${i}" type="button">+ Consulta</button><button class="btn small" data-rb="${i}" type="button">+ Receita</button><button class="btn small" data-ed="${i}" aria-label="Editar ${esc(it.t)}">${icon('edit',14)} Editar</button><button class="btn small go-esq" type="button">Esquema do paciente</button></div>${it.n?`<p class="note">${esc(it.n)}</p>`:''}${titrHTML(it.rx)}${(()=>{const ds=drugsIn(it.rx);return ds.length?`<details><summary>Ajustes: DRC, gestação, lactação, idoso</summary><div style="display:grid;gap:8px;margin-top:8px">${ds.map(d=>drugCard(d,{tfg:num(store.get('kitaps:tfg'))})).join('')}</div></details>`:''})()}</article>`).join('')}
     <article class="card rxcard" id="rx-newcard"><div class="bar"><button class="btn small" id="rx-new" type="button">+ Nova prescrição nesta classe</button></div></article>
     <p class="note">Doses para adultos com função renal e hepática normais. Confira alergias, gestação, interações e a disponibilidade na REMUME do seu município. Use Editar para ajustar ao seu protocolo: fica salvo neste aparelho.</p>
   </section>`;
@@ -12168,7 +12169,7 @@ function renderRXB(m){
     <div id="rxb-list"></div>
     <details class="card"><summary class="lbl" style="cursor:pointer">+ Digitar em texto livre</summary><div class="field" style="margin-top:8px"><label for="rxb-free">Nome, dose e quantidade na 1ª linha; como tomar embaixo</label><textarea id="rxb-free" rows="3" placeholder="Losartana 50 mg ...... 30 comprimidos&#10;Tomar 1 comprimido por dia."></textarea></div>
       <div class="bar"><select id="rxb-via" aria-label="Via">${VIAS.map(v=>`<option>${v}</option>`).join('')}</select><button class="btn small" id="rxb-add" type="button">Adicionar</button></div></details>
-    <div class="bar sticky-bar"><button class="btn primary" id="rxb-cp" type="button">Copiar</button><button class="btn" id="rxb-pr" type="button">Imprimir</button><button class="btn" id="rxb-cs" type="button">+ Consulta</button><button class="btn" id="rxb-es" type="button">Levar ao esquema</button><button class="btn" id="rxb-clr" type="button">Limpar</button></div>
+    <div class="bar sticky-bar"><button class="btn primary" id="rxb-cp" type="button">Copiar</button><button class="btn" id="rxb-pr" type="button">Imprimir</button><button class="btn" id="rxb-cs" type="button">+ Consulta</button><button class="btn" id="rxb-es" type="button">Levar ao esquema</button><button class="btn" id="rxb-clr" type="button">Limpar</button><button class="btn go-esq" type="button">Esquema do paciente</button></div>
     <div id="sheet" class="card atsheet rxsheet"></div></section>`;
   const draw=()=>{const G=rxbGroups(),box=$('#rxb-list');$('#rxb-int').innerHTML=rxInterHTML(rxInter(RXB.map(x=>x.txt)));m.querySelector('.ph .code').textContent=RXB.length+' remédio(s)';
     if(!RXB.length){box.innerHTML='<div class="card"><p class="note">Nenhum remédio ainda.</p></div>';return}
@@ -12199,7 +12200,7 @@ function srxDraw(id){
     <div class="rec"><b>Receituário:</b> ${esc(o.rec||RS)}.${/Notifica/.test(o.rec||'')?' A notificação vai no talão oficial; esta impressão é a receita que acompanha.':''}</div>
     <textarea class="soap rxta" id="srx-ta" spellcheck="false" aria-label="Receita: ${esc(o.t)}"></textarea>
     ${farmBadges(o.rx)}${o.n?`<p class="note">${esc(o.n)}</p>`:''}
-    <div class="bar"><button class="btn primary small" id="srx-cp" type="button">Copiar receita</button><button class="btn small" id="srx-pr" type="button">Imprimir receita</button><button class="btn small" id="srx-cs" type="button">+ Consulta</button><button class="btn small" id="srx-rb" type="button">+ Receita</button><button class="btn small" id="srx-es" type="button">Levar ao esquema</button><button class="btn small" id="srx-rs" type="button"${saved==null?' hidden':''}>Restaurar</button>${o.pid?`<button class="btn small" type="button" data-go="${o.pid}">Todas as receitas</button>`:''}</div>
+    <div class="bar"><button class="btn primary small" id="srx-cp" type="button">Copiar receita</button><button class="btn small" id="srx-pr" type="button">Imprimir receita</button><button class="btn small" id="srx-cs" type="button">+ Consulta</button><button class="btn small" id="srx-rb" type="button">+ Receita</button><button class="btn small" id="srx-es" type="button">Levar ao esquema</button><button class="btn small" id="srx-rs" type="button"${saved==null?' hidden':''}>Restaurar</button>${o.pid?`<button class="btn small" type="button" data-go="${o.pid}">Todas as receitas</button>`:''}<button class="btn small go-esq" type="button">Esquema do paciente</button></div>
     <details><summary class="note">Seus dados no rodapé da receita impressa (salvos neste aparelho)</summary><div class="grid2" style="margin-top:10px">
       <div class="field"><label for="srx-med">Nome do(a) médico(a)</label><input id="srx-med" data-k="kitaps:medico" value="${esc(store.get('kitaps:medico')||'')}"></div>
       <div class="field"><label for="srx-crm">CRM</label><input id="srx-crm" data-k="kitaps:crm" value="${esc(store.get('kitaps:crm')||'')}" placeholder="CRM-UF 00000"></div>
