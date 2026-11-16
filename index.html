@@ -1600,6 +1600,7 @@ Diário do sono por 2 semanas
 Tratar causa associada: [ ]
 [Sem medicação / trazodona 50 mg à noite / mirtazapina 7,5–15 mg à noite / melatonina __ mg 1–2 h antes de deitar]
 [Desmame de benzodiazepínico / zolpidem: reduzir 10–25% da dose a cada 2 semanas]
+[Retirada gradual do zolpidem: semanas 1 e 2, 1 comprimido à noite; semanas 3 e 4, meio comprimido (1/2) à noite; semanas 5 e 6, um quarto de comprimido (1/4) à noite. Depois disso, parar]
 Paciente ciente e concordante com a conduta, nega dúvidas.
 Retorno em [4] semanas com o diário do sono`},
 anemia:{t:'Anemia ferropriva',code:'CIAP-2 B80 · CID-10 D50.9',body:
@@ -4943,11 +4944,17 @@ rx_despr:{s:'Desprescrição',t:'Desprescrição: receitas de retirada',rec:RS+'
  {t:'Troca para diazepam e retirada (alprazolam, lorazepam, bromazepam)',rx:`Uso oral
 1. Diazepam 5 mg ...... 60 comprimidos
    Tomar [__] comprimido(s) por dia no lugar do [remédio atual], diminuindo ½ comprimido a cada 2 semanas, conforme o calendário entregue.`,n:'Diazepam tem meia-vida longa e retirada mais suave. Equivalência aproximada a diazepam 10 mg: clonazepam 0,5 mg, alprazolam 0,5 mg, lorazepam 1 mg, bromazepam 6 mg, clobazam 20 mg, zolpidem 20 mg. Trocar aos poucos (uma dose por semana) e depois reduzir 10 a 25% a cada 2 a 4 semanas. Evitar diazepam em hepatopatia grave e no idoso muito frágil (preferir reduzir o próprio remédio em passos pequenos).'},
- {t:'Zolpidem: retirada',rx:`Uso oral
+ {t:'Zolpidem: retirada gradual',rx:`Uso oral
 1. Zolpidem 10 mg ...... 30 comprimidos
-   Semanas 1 e 2: ½ comprimido (5 mg) à noite.
-   Semanas 3 e 4: ½ comprimido à noite, em noites alternadas.
-   Depois: parar.`,n:'Junto com higiene do sono e TCC para insônia (restrição de tempo na cama, controle de estímulos). Insônia de rebote nas primeiras noites é esperada e passa.'},
+   Semanas 1 e 2: tomar 1 comprimido à noite.
+   Semanas 3 e 4: tomar meio comprimido (1/2) à noite.
+   Semanas 5 e 6: tomar um quarto de comprimido (1/4) à noite. Depois disso, parar.
+
+Retirada gradual do zolpidem
+Para suspender o zolpidem com segurança, vamos reduzir a dose aos poucos:
+- Semanas 1 e 2: 1 comprimido à noite
+- Semanas 3 e 4: meio comprimido (1/2) à noite
+- Semanas 5 e 6: um quarto de comprimido (1/4) à noite. Depois disso, parar.`,n:'Notificação de Receita B (azul). Se já usa 1/2 comprimido, começar das semanas 3 e 4. Junto com higiene do sono e TCC para insônia (restrição de tempo na cama, controle de estímulos). Insônia de rebote nas primeiras noites é esperada e passa.'},
  {t:'Omeprazol: redução ou uso sob demanda',rx:`Uso oral
 1. Omeprazol 20 mg ...... 30 cápsulas
    Tomar 1 cápsula em jejum, a cada 2 dias, por 4 semanas. Depois, tomar só nos dias de azia, até a azia passar.
@@ -5765,7 +5772,18 @@ rx_sono:{s:'Insônia',t:'Insônia: hipnóticos e desmame',rec:'Trazodona, mirtaz
 1. Sertralina 50 mg ...... 30 comprimidos
    Tomar meio comprimido pela manhã por 7 dias e depois 1 comprimido pela manhã.
 2. Trazodona 50 mg ...... 15 comprimidos
-   Tomar 1/2 comprimido à noite nas primeiras semanas, se necessário.`,n:'Tratar o transtorno de base; o ISRS pode piorar o sono no início. Trazodona ou mirtazapina à noite ajudam nas primeiras semanas. Evitar quetiapina e prometazina só para dormir (efeitos metabólicos e anticolinérgicos, sem benefício comprovado). Receita C1 em 2 vias.'}]},
+   Tomar 1/2 comprimido à noite nas primeiras semanas, se necessário.`,n:'Tratar o transtorno de base; o ISRS pode piorar o sono no início. Trazodona ou mirtazapina à noite ajudam nas primeiras semanas. Evitar quetiapina e prometazina só para dormir (efeitos metabólicos e anticolinérgicos, sem benefício comprovado). Receita C1 em 2 vias.'},
+ {t:'Zolpidem: retirada gradual',rx:`Uso oral
+1. Zolpidem 10 mg ...... 30 comprimidos
+   Semanas 1 e 2: tomar 1 comprimido à noite.
+   Semanas 3 e 4: tomar meio comprimido (1/2) à noite.
+   Semanas 5 e 6: tomar um quarto de comprimido (1/4) à noite. Depois disso, parar.
+
+Retirada gradual do zolpidem
+Para suspender o zolpidem com segurança, vamos reduzir a dose aos poucos:
+- Semanas 1 e 2: 1 comprimido à noite
+- Semanas 3 e 4: meio comprimido (1/2) à noite
+- Semanas 5 e 6: um quarto de comprimido (1/4) à noite. Depois disso, parar.`,n:'Notificação de Receita B (azul). Junto com higiene do sono e TCC para insônia. Insônia de rebote nas primeiras noites é esperada e passa. Se abstinência, voltar ao passo anterior e ir mais devagar./*zolpidem-ret*/'}]},
 rx_anemia:{s:'Anemia',t:'Anemia ferropriva e deficiência de B12',rec:RS,items:[
  {t:'Ferropriva: adulto',rx:`Uso oral
 1. Sulfato ferroso 40 mg de ferro elementar ...... 60 comprimidos
@@ -7305,7 +7323,7 @@ fx_ins:{s:'Insônia',t:'Insônia no adulto',src:'AASM 2017/2021 · ABS Consenso 
    ['warn','Crônica','3 noites ou mais por semana há 3 meses ou mais, com prejuízo diurno','→ TCC-I é a primeira escolha']]},
   {k:'step',h:'TCC-I (primeira linha)',li:['Horário fixo para levantar, todos os dias','Controle de estímulo: cama só para dormir e sexo; não dormiu em 20 minutos, sair da cama','Restrição do sono: tempo na cama = tempo dormido no diário (mínimo 5–6 h), aumentar 15 min por semana se eficiência &gt; 85%','Sem cochilos; desligar telas 1 h antes; cafeína só pela manhã','Diário do sono por 2 semanas; ISI no início e no seguimento']},
   {k:'step',h:'Se precisar de remédio',li:['Trazodona 25–100 mg à noite (C1): sem dependência; hipotensão postural','Mirtazapina 7,5–15 mg à noite (C1): se depressão ou pouco apetite; ganho de peso','Amitriptilina 10–25 mg (C1): se dor crônica ou enxaqueca; evitar em idosos','Melatonina 1–5 mg 1–2 h antes de deitar: útil em idosos e no atraso de fase','Zolpidem (Notificação B) ou benzodiazepínico: só curto prazo (até 2–4 semanas), menor dose; evitar em idosos (quedas, confusão)','Evitar prometazina e anti-histamínicos para dormir']},
-  {k:'step',h:'Desmame de benzodiazepínico ou zolpidem',li:['Combinar com a pessoa, junto com TCC-I','Reduzir 10–25% da dose a cada 2 semanas; no fim, ir mais devagar','Uso longo de alprazolam ou clonazepam: trocar para diazepam equivalente e reduzir','Sintomas de abstinência (insônia rebote, ansiedade, tremor): voltar à dose anterior e reduzir mais devagar','Nunca parar de repente doses altas ou uso de anos (convulsão)']},
+  {k:'step',h:'Desmame de benzodiazepínico ou zolpidem',li:['Combinar com a pessoa, junto com TCC-I','Reduzir 10–25% da dose a cada 2 semanas; no fim, ir mais devagar','Zolpidem: semanas 1 e 2, 1 comprimido à noite; semanas 3 e 4, 1/2; semanas 5 e 6, 1/4; depois parar','Uso longo de alprazolam ou clonazepam: trocar para diazepam equivalente e reduzir','Sintomas de abstinência (insônia rebote, ansiedade, tremor): voltar à dose anterior e reduzir mais devagar','Nunca parar de repente doses altas ou uso de anos (convulsão)']},
   {k:'step',a:'4 semanas',h:'Reavaliar',li:['ISI e diário do sono','Suspeita de apneia: polissonografia','Refratária ou sintomas graves de outros transtornos do sono: especialista em sono ou psiquiatria']}]},
 fx_anemia:{s:'Anemia ferropriva',t:'Anemia: investigação e ferropriva',src:'MS · SBHH · OMS 2024 · BSG 2021',k:'anemia ferropriva ferritina ferro sulfato ferroso hemoglobina vcm microcitica investigacao sangramento colonoscopia endoscopia gestante crianca',
  pre:[{k:'bad',h:'Urgência',li:['Hb &lt; 7 g/dL com sintomas, ou falta de ar em repouso, dor no peito, síncope','Sangramento ativo (melena, hematêmese, sangramento uterino volumoso)','Anemia com plaquetas ou leucócitos muito baixos ou altos (avaliar hematologia com urgência)']}],
@@ -11463,7 +11481,7 @@ GD.dor_gd={s:'Controle da dor',t:'Controle da dor: escada da OMS, neuropática e
 GD.despr_gd={s:'Desprescrição',t:'Desprescrição: benzodiazepínico, IBP e antidepressivo',src:'deprescribing.org (Bruyère) · Ashton Manual · NICE NG215 (2022) · Maudsley Deprescribing Guidelines 2024 · Beers AGS 2023',k:'desprescricao desprescrever retirada retirar benzodiazepinico clonazepam diazepam alprazolam zolpidem ibp omeprazol pantoprazol antidepressivo sertralina fluoxetina paroxetina descontinuacao equivalencia',
  rel:[['rx_despr','Receitas de retirada'],['or_despr','Folha: calendário'],['polif','Polifarmácia'],['ajustes','Remédios no idoso (Beers)']],sec:[
  {h:'Como desprescrever (todos)',li:['Revisar a lista: para que serve cada remédio, desde quando, se ainda precisa','Combinar com a pessoa: explicar o porquê e que a redução é lenta e reversível','Um remédio por vez; reduzir em passos, com retorno a cada 2 a 4 semanas','Se sintomas fortes: voltar ao passo anterior e ir mais devagar (não é fracasso)','Registrar o plano no SOAP e entregar o calendário escrito']},
- {h:'Benzodiazepínicos e "drogas Z"',li:['Retirar se: uso &gt; 4 semanas para insônia ou ansiedade, idoso (quedas, fraturas, demência, acidentes), uso com opioide ou álcool','Redução de cerca de 25% a cada 2 semanas e passos de 12,5% no final (deprescribing.org); uso longo ou idoso: 10% a cada 2 a 4 semanas','Pode trocar para diazepam (meia-vida longa) se for alprazolam, lorazepam ou dose difícil de fracionar','Clonazepam gotas (0,1 mg/gota) permite passos pequenos','Sintomas de retirada: insônia, ansiedade, irritação, tremor, suor; graves: convulsão, delirium (risco maior se parar de repente)','Junto: TCC para insônia, higiene do sono, tratar ansiedade com ISRS se indicado']},
+ {h:'Benzodiazepínicos e "drogas Z"',li:['Retirar se: uso &gt; 4 semanas para insônia ou ansiedade, idoso (quedas, fraturas, demência, acidentes), uso com opioide ou álcool','Redução de cerca de 25% a cada 2 semanas e passos de 12,5% no final (deprescribing.org); uso longo ou idoso: 10% a cada 2 a 4 semanas','Pode trocar para diazepam (meia-vida longa) se for alprazolam, lorazepam ou dose difícil de fracionar','Clonazepam gotas (0,1 mg/gota) permite passos pequenos','Zolpidem 10 mg: semanas 1 e 2, 1 comprimido à noite; semanas 3 e 4, 1/2; semanas 5 e 6, 1/4; depois parar (receita pronta em Receitas de retirada e em Insônia)','Sintomas de retirada: insônia, ansiedade, irritação, tremor, suor; graves: convulsão, delirium (risco maior se parar de repente)','Junto: TCC para insônia, higiene do sono, tratar ansiedade com ISRS se indicado']},
  {h:'Equivalência a diazepam 10 mg',rows:[['Clonazepam','0,5 mg'],['Alprazolam','0,5 mg'],['Lorazepam','1 mg'],['Bromazepam','5 a 6 mg'],['Clobazam','20 mg'],['Zolpidem','20 mg'],['Nitrazepam','10 mg'],['Flunitrazepam','1 mg']]},
  {h:'IBP (omeprazol, pantoprazol)',li:['Manter se: esôfago de Barrett, esofagite grave (LA C/D), sangramento digestivo prévio, AINE ou antiagregante crônico com risco, gastroproteção indicada','Desprescrever se: uso &gt; 4 a 8 semanas para DRGE leve ou dispepsia já tratada, ou sem indicação (início no hospital, "protetor")','Opções: reduzir a dose (40 → 20 mg, ou 20 mg em dias alternados) ou parar e usar sob demanda','Rebote de azia em 2 a 4 semanas é esperado: antiácido, alginato, medidas para DRGE','Riscos do uso longo: deficiência de B12 e magnésio, fraturas, C. difficile, pneumonia']},
  {h:'Antidepressivos',li:['Quando: 6 a 12 meses sem sintomas após o 1º episódio; 2 anos ou mais se episódios repetidos ou graves; fora de crise ou mudança grande','Reduzir 25 a 50% a cada 2 a 4 semanas; as últimas doses mais devagar (redução hiperbólica): no final usar meio comprimido, dias alternados ou solução','Paroxetina e venlafaxina: mais sintomas de retirada; ir mais devagar ou trocar para fluoxetina','Fluoxetina 20 mg: pode parar direto ou em dias alternados por 2 a 4 semanas','Tricíclicos: reduzir 25 mg a cada 1 a 2 semanas (rebote colinérgico: náusea, diarreia, suor, insônia)']},
