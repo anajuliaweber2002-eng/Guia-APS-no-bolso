@@ -232,6 +232,10 @@ textarea.nota{font-family:var(--f-ui);font-size:.9rem}
 .rxsheet{display:none}
 .chip.tag{font-size:.74rem;padding:3px 9px;cursor:default;white-space:normal}
 .chip.tag.ok{border-color:var(--ok);color:var(--ok)}.chip.tag.warn{border-color:var(--warn);color:var(--warn)}.chip.tag.bad{border-color:var(--bad);color:var(--bad)}
+details.ceaf{margin:6px 0 2px;font-size:.88em;border:1px solid var(--line);border-radius:8px;padding:4px 8px}details.ceaf summary{cursor:pointer;font-weight:600;color:var(--accent)}
+.ceaf-p{padding:6px 0;border-top:1px dashed var(--line)}.ceaf-p:first-of-type{border-top:0}.ceaf-p .chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}.ceaf-p .chip{text-align:left;white-space:normal;line-height:1.25}.ceaf-p .chip small{font-weight:400;opacity:.85}
+details.ceaf .bar{align-items:center;gap:8px}.ceaf-f{font-size:.85em}#lme-ceaf .card{gap:6px;margin-bottom:10px}#lme-ceaf .ceaf-p .chip{cursor:pointer}
+@media print{details.ceaf,#lme-ceaf{display:none!important}}
 .farmb{gap:4px}
 details.ea{margin:6px 0 2px;font-size:.88em;border:1px solid var(--warn-soft);border-radius:8px;padding:4px 8px}
 details.ea summary{cursor:pointer;font-weight:600;color:var(--warn)}
@@ -10816,7 +10820,103 @@ const EA=[
 function eaHTML(rx){const t=norm(rx);const ds=EA.filter(e=>new RegExp(e[1]).test(t));if(!ds.length)return '';
   return `<details class="ea"><summary>Efeitos adversos (${ds.length})</summary>${ds.map(e=>`<div class="ea-i"><b>${esc(e[0])}</b><br>Comuns: ${esc(e[2])}<br><span class="ea-w">Atenção: ${esc(e[3])}</span></div>`).join('')}</details>`}
 
-function farmBadges(rx){return farmBadges0(rx)+eaHTML(rx)}
+/* CEAF: CID-10 aceitos por medicamento (PCDTs do Ministério da Saúde; conferidos em 16/11/2026 nos PDFs da Conitec e nos resumos CEAF da SES/SC). Só entram CIDs lidos na fonte. */
+const CEAFDATA='16/11/2026';
+const CEAFP={
+ asma:{n:'Asma',p:'Portaria Conjunta SAES/SCTIE nº 43, de 24/03/2026 (resumo SES/SC)',c:[['J45.0','Asma predominantemente alérgica'],['J45.1','Asma não alérgica'],['J45.8','Asma mista']]},
+ dpoc:{n:'DPOC',p:'Portaria Conjunta SAES/SCTIE/MS nº 19, de 16/11/2021',c:[['J44.0','DPOC com infecção respiratória aguda do trato respiratório inferior'],['J44.1','DPOC com exacerbação aguda não especificada'],['J44.8','Outras formas especificadas de DPOC']]},
+ dislip:{n:'Dislipidemia (prevenção de eventos cardiovasculares e pancreatite)',p:'Portaria Conjunta SCTIE/SAES/MS nº 8, de 30/07/2019',c:[['E78.0','Hipercolesterolemia pura'],['E78.1','Hipertrigliceridemia pura'],['E78.2','Hiperlipidemia mista'],['E78.3','Hiperquilomicronemia'],['E78.4','Outras hiperlipidemias'],['E78.5','Hiperlipidemia não especificada'],['E78.6','Deficiências de lipoproteínas'],['E78.8','Outros distúrbios do metabolismo de lipoproteínas']]},
+ dm1:{n:'Diabete melito tipo 1',p:'Portaria Conjunta nº 17, de 12/11/2019',c:[['E10.0','DM1 com coma'],['E10.1','DM1 com cetoacidose'],['E10.2','DM1 com complicações renais'],['E10.3','DM1 com complicações oftálmicas'],['E10.4','DM1 com complicações neurológicas'],['E10.5','DM1 com complicações circulatórias periféricas'],['E10.6','DM1 com outras complicações especificadas'],['E10.7','DM1 com complicações múltiplas'],['E10.8','DM1 com complicações não especificadas'],['E10.9','DM1 sem complicações']]},
+ dm2:{n:'Diabete melito tipo 2',p:'Portaria SCTIE/MS nº 13, de 21/02/2026',o:'Dapagliflozina: precisa de 2ª intensificação do tratamento e (a) 40 anos ou mais com doença cardiovascular estabelecida ou (b) homem 55+ ou mulher 60+ com alto risco cardiovascular (HAS, dislipidemia ou tabagismo).',c:[['E11','Diabete melito não insulinodependente'],['E11.2','DM2 com complicações renais'],['E11.3','DM2 com complicações oftálmicas'],['E11.4','DM2 com complicações neurológicas'],['E11.5','DM2 com complicações circulatórias periféricas'],['E11.6','DM2 com outras complicações especificadas'],['E11.7','DM2 com complicações múltiplas'],['E11.8','DM2 com complicações não especificadas'],['E11.9','DM2 sem complicações']]},
+ di:{n:'Diabete insípido',p:'Portaria Conjunta SAES/SECTICS nº 17, de 05/08/2025',c:[['E23.2','Diabete insípido']]},
+ hprl:{n:'Hiperprolactinemia',p:'Portaria Conjunta SAES/SCTIE/MS nº 19, de 23/11/2020',c:[['E22.1','Hiperprolactinemia']]},
+ esq:{n:'Esquizofrenia',p:'Portaria SAS/MS nº 364, de 09/04/2013',c:[['F20.0','Esquizofrenia paranoide'],['F20.1','Esquizofrenia hebefrênica'],['F20.2','Esquizofrenia catatônica'],['F20.3','Esquizofrenia indiferenciada'],['F20.4','Depressão pós-esquizofrênica'],['F20.5','Esquizofrenia residual'],['F20.6','Esquizofrenia simples'],['F20.8','Outras esquizofrenias']]},
+ esqaf:{n:'Transtorno esquizoafetivo',p:'Portaria Conjunta SAES/SCTIE/MS nº 7, de 14/05/2021',c:[['F25.0','Transtorno esquizoafetivo do tipo maníaco'],['F25.1','Transtorno esquizoafetivo do tipo depressivo'],['F25.2','Transtorno esquizoafetivo do tipo misto']]},
+ tab:{n:'Transtorno afetivo bipolar tipo I',p:'Portaria SAS/MS nº 315, de 30/03/2016',c:[['F31.1','TAB, episódio atual maníaco sem sintomas psicóticos'],['F31.2','TAB, episódio atual maníaco com sintomas psicóticos'],['F31.3','TAB, episódio atual depressivo leve ou moderado'],['F31.4','TAB, episódio atual depressivo grave sem sintomas psicóticos'],['F31.5','TAB, episódio atual depressivo grave com sintomas psicóticos'],['F31.6','TAB, episódio atual misto'],['F31.7','TAB, atualmente em remissão']]},
+ tea:{n:'Comportamento agressivo no TEA',p:'Portaria Conjunta SAES/SCTIE/MS nº 7, de 12/04/2022',c:[['F84.0','Autismo infantil'],['F84.1','Autismo atípico'],['F84.3','Outro transtorno desintegrativo da infância'],['F84.5','Síndrome de Asperger'],['F84.8','Outros transtornos globais do desenvolvimento']]},
+ epi:{n:'Epilepsia',p:'Portaria Conjunta SAES/SCTIE/MS nº 17, de 21/06/2018',c:[['G40.0','Epilepsia idiopática focal (relacionada à localização)'],['G40.1','Epilepsia sintomática focal com crises parciais simples'],['G40.2','Epilepsia sintomática focal com crises parciais complexas'],['G40.3','Epilepsia generalizada idiopática'],['G40.4','Outras epilepsias generalizadas'],['G40.5','Síndromes epilépticas especiais'],['G40.6','Crise de grande mal, não especificada'],['G40.7','Pequeno mal não especificado'],['G40.8','Outras epilepsias']]},
+ dor:{n:'Dor crônica',p:'Portaria Conjunta SAES/SAPS/SECTICS/MS nº 01, de 22/08/2024',o:'Os CIDs M16 e M17 do mesmo PCDT são só para naproxeno na artrose de quadril e joelho.',c:[['R52.1','Dor crônica intratável'],['R52.2','Outra dor crônica']]},
+ alz:{n:'Doença de Alzheimer',p:'Portaria Conjunta SAES/SCTIE nº 27, de 27/11/2025 (resumo SES/SC)',c:[['G30.0','Doença de Alzheimer de início precoce'],['G30.1','Doença de Alzheimer de início tardio'],['G30.8','Outras formas de doença de Alzheimer'],['F00.0','Demência na doença de Alzheimer de início precoce'],['F00.1','Demência na doença de Alzheimer de início tardio'],['F00.2','Demência na doença de Alzheimer, forma atípica ou mista']]},
+ park:{n:'Doença de Parkinson',p:'Portaria Conjunta SAES/SECTICS nº 16, de 01/08/2025',c:[['G20','Doença de Parkinson']]},
+ acne:{n:'Acne grave (protocolo de uso da isotretinoína)',p:'Portaria Conjunta SAES/SCTIE/MS nº 1159, de 18/11/2015',c:[['L70.0','Acne vulgar'],['L70.1','Acne conglobata'],['L70.8','Outras formas de acne']]},
+ glauc:{n:'Glaucoma',p:'Portaria Conjunta SAES/SECTICS/MS nº 28, de 06/12/2023',c:[['H40.1','Glaucoma primário de ângulo aberto'],['H40.2','Glaucoma primário de ângulo fechado'],['H40.3','Glaucoma secundário a traumatismo ocular'],['H40.4','Glaucoma secundário a inflamação ocular'],['H40.5','Glaucoma secundário a outros transtornos do olho'],['H40.6','Glaucoma secundário a drogas'],['H40.8','Outro glaucoma'],['Q15.0','Glaucoma congênito']]},
+ endo:{n:'Endometriose',p:'Portaria Conjunta SAES/SAPS/SCTIE nº 54, de 02/06/2026',c:[['N80.0','Endometriose do útero'],['N80.1','Endometriose do ovário'],['N80.2','Endometriose da trompa de Falópio'],['N80.3','Endometriose do peritônio pélvico'],['N80.4','Endometriose do septo retovaginal e da vagina'],['N80.5','Endometriose do intestino'],['N80.8','Outra endometriose']]},
+ ar:{n:'Artrite reumatoide',p:'Portaria Conjunta SAES/SCTIE/MS nº 16, de 03/09/2021',c:[['M05.0','Síndrome de Felty'],['M05.1','Doença reumatoide do pulmão'],['M05.2','Vasculite reumatoide'],['M05.3','Artrite reumatoide com comprometimento de outros órgãos e sistemas'],['M05.8','Outras artrites reumatoides soropositivas'],['M06.0','Artrite reumatoide soronegativa'],['M06.8','Outras artrites reumatoides especificadas']]},
+ aps:{n:'Artrite psoríaca',p:'Portaria Conjunta nº 37, de 21/01/2026',c:[['M07.0','Artropatia psoriásica interfalangiana distal'],['M07.2','Espondilite psoriásica'],['M07.3','Outras artropatias psoriásicas']]},
+ pso:{n:'Psoríase',p:'Portaria Conjunta SAS/SCTIE/MS nº 18, de 14/10/2021 (resumo SES/SC)',c:[['L40.0','Psoríase vulgar'],['L40.1','Psoríase pustulosa generalizada'],['L40.4','Psoríase gutata'],['L40.8','Outras formas de psoríase']]},
+ ea:{n:'Espondilite ancilosante',p:'Portaria SAS/MS nº 25, de 22/10/2018 (resumo SES/SC)',c:[['M45','Espondilite ancilosante'],['M46.8','Outras espondilopatias inflamatórias especificadas']]},
+ les:{n:'Lúpus eritematoso sistêmico',p:'Portaria Conjunta SAES/SCTIE/MS nº 21, de 01/11/2022',c:[['L93.0','Lúpus eritematoso discoide'],['L93.1','Lúpus eritematoso cutâneo subagudo'],['M32.1','LES com comprometimento de outros órgãos e sistemas'],['M32.8','Outras formas de LES']]},
+ crohn:{n:'Doença de Crohn',p:'Portaria SAS/SCTIE/MS nº 14, de 28/11/2017 (resumo SES/SC)',c:[['K50.0','Doença de Crohn do intestino delgado'],['K50.1','Doença de Crohn do intestino grosso'],['K50.8','Outras formas de doença de Crohn']]},
+ rcu:{n:'Retocolite ulcerativa',p:'Portaria Conjunta SAES/SECTICS/MS nº 9, de 12/09/2024',c:[['K51.0','Enterocolite ulcerativa (crônica)'],['K51.2','Proctite ulcerativa (crônica)'],['K51.3','Retossigmoidite ulcerativa (crônica)'],['K51.5','Proctocolite mucosa'],['K51.8','Outras colites ulcerativas']]},
+ cbp:{n:'Colangite biliar primária',p:'Portaria Conjunta SCTIE/SAES/MS nº 11, de 09/09/2019',c:[['K74.3','Cirrose biliar primária']]},
+ osteo:{n:'Osteoporose',p:'Portaria Conjunta SAES/SECTICS nº 22, de 22/10/2025 (resumo SES/SC)',o:'Os CIDs com * só podem ser usados para pessoas do sexo feminino.',c:[['M80.0','Osteoporose pós-menopáusica com fratura patológica *'],['M80.1','Osteoporose pós-ooforectomia com fratura patológica *'],['M80.2','Osteoporose de desuso com fratura patológica'],['M80.3','Osteoporose por má-absorção pós-cirúrgica com fratura patológica'],['M80.4','Osteoporose induzida por drogas com fratura patológica'],['M80.5','Osteoporose idiopática com fratura patológica'],['M80.8','Outras osteoporoses com fratura patológica'],['M81.0','Osteoporose pós-menopáusica *'],['M81.1','Osteoporose pós-ooforectomia *'],['M81.2','Osteoporose de desuso'],['M81.3','Osteoporose por má-absorção pós-cirúrgica'],['M81.4','Osteoporose induzida por drogas'],['M81.5','Osteoporose idiopática'],['M81.6','Osteoporose localizada (Lequesne)'],['M81.8','Outras osteoporoses'],['M82.0','Osteoporose na mielomatose múltipla'],['M82.1','Osteoporose em distúrbios endócrinos'],['M82.8','Osteoporose em outras doenças classificadas em outra parte'],['M85.8','Outros transtornos especificados da densidade e da estrutura ósseas']]}
+};
+/* [nome no LME, regex (texto normalizado), protocolos, observação] */
+const CEAFM=[
+ ['Budesonida + formoterol','formoterol',['asma','dpoc'],'Na asma, o PCDT não preconiza formoterol isolado.'],
+ ['Umeclidínio + vilanterol / tiotrópio + olodaterol','umeclidinio|tiotropio|vilanterol|olodaterol',['dpoc']],
+ ['Atorvastatina','atorvastatina',['dislip']],
+ ['Fibrato','bezafibrato|ciprofibrato|fenofibrato',['dislip'],'Fibratos: triglicerídeos acima de 500 mg/dL sem indicação de estatina. Fenofibrato consta no PCDT, mas não aparece no resumo atual da SES/SC: confira a oferta no estado.'],
+ ['Dapagliflozina','dapagliflozina',['dm2']],
+ ['Insulina análoga','glargina|asparte|lispro|glulisina|degludeca|detemir|insulinas? analoga',['dm1']],
+ ['Desmopressina','desmopressina',['di']],
+ ['Cabergolina','cabergolina',['hprl']],
+ ['Risperidona','risperidona',['esq','esqaf','tab','tea']],
+ ['Quetiapina','quetiapina',['esq','esqaf','tab']],
+ ['Olanzapina','olanzapina',['esq','esqaf','tab']],
+ ['Clozapina','clozapina',['esq','esqaf','tab']],
+ ['Ziprasidona','ziprasidona',['esq','esqaf'],'No PCDT de transtorno bipolar a ziprasidona não está incluída.'],
+ ['Lamotrigina','lamotrigina',['epi','tab']],
+ ['Levetiracetam','levetiracetam',['epi']],
+ ['Topiramato','topiramato',['epi']],
+ ['Vigabatrina','vigabatrina',['epi']],
+ ['Etossuximida','etossuximida',['epi']],
+ ['Clobazam','clobazam',['epi']],
+ ['Gabapentina','gabapentina',['dor','epi']],
+ ['Isotretinoína','isotretinoina',['acne']],
+ ['Donepezila','donepezila',['alz']],
+ ['Rivastigmina','rivastigmina',['alz']],
+ ['Galantamina','galantamina',['alz']],
+ ['Memantina','memantina',['alz']],
+ ['Pramipexol','pramipexol',['park']],
+ ['Rasagilina','rasagilina',['park']],
+ ['Entacapona','entacapona',['park']],
+ ['Hidroxicloroquina','hidroxicloroquina',['ar','les']],
+ ['Metotrexato','metotrexato',['ar','aps','pso','ea','les','crohn']],
+ ['Leflunomida','leflunomida',['ar','aps']],
+ ['Azatioprina','azatioprina',['ar','les','crohn','rcu']],
+ ['Sulfassalazina','sulfassalazina',['ar','aps','ea','crohn','rcu']],
+ ['Mesalazina','mesalazina',['crohn','rcu']],
+ ['Ácido ursodesoxicólico','ursodesoxicolico|ursodiol',['cbp']],
+ ['Risedronato','risedronato',['osteo']],
+ ['Raloxifeno','raloxifeno',['osteo']],
+ ['Calcitriol','calcitriol',['osteo'],'Aqui só o PCDT de osteoporose; outros usos do calcitriol têm protocolo próprio.'],
+ ['Colírio para glaucoma','timolol|latanoprosta|bimatoprosta|travoprosta|brimonidina|dorzolamida|brinzolamida',['glauc'],'Pelo PCDT, a prescrição é do oftalmologista.'],
+ ['Análogo de GnRH','gosserrelina|leuprorrelina|leuprolida|triptorrelina',['endo']],
+ ['Danazol','danazol',['endo','les']]
+];
+CEAFM.forEach(d=>d.re=new RegExp(norm(d[1])));
+const ceafFind=t=>{const n=norm(t||'');return CEAFM.filter(d=>d.re.test(n))};
+function ceafHTML(rx){const ds=ceafFind(rx);if(!ds.length)return '';
+ return ds.map(d=>`<details class="ceaf"><summary>CID-10 do CEAF: ${esc(d[0])}</summary>${d[2].map(k=>{const p=CEAFP[k];
+  return `<div class="ceaf-p" data-med="${esc(d[0])}"><b>${esc(p.n)}</b> <small class="muted">${esc(p.p)}</small><div class="chips">${p.c.map(c=>`<button type="button" class="chip ceaf-c" data-cid="${esc(c[0])}" data-dx="${esc(c[1].replace(/ \*$/,''))}" title="${esc(c[1])}">${esc(c[0])} <small>${esc(c[1])}</small></button>`).join('')}</div>${p.o?`<p class="note">${esc(p.o)}</p>`:''}</div>`}).join('')}
+  ${d[3]?`<p class="note">${esc(d[3])}</p>`:''}<div class="bar"><button type="button" class="btn small ceaf-lme">Preencher no LME</button><span class="muted ceaf-f">Toque no CID para copiar. Fonte: PCDT do Ministério da Saúde, conferido em ${CEAFDATA}. O paciente precisa cumprir os critérios do PCDT.</span></div></details>`).join('')}
+function ceafToLme(med,cid,dx){const S=lmeLoad();S.cid=cid.replace(/[^A-Z0-9]/gi,'').toUpperCase();S.dx=dx;
+ const ms=[1,2,3,4,5,6],has=ms.some(i=>norm(S['m'+i]||'').includes(norm(med.split(/[ /]/)[0])));
+ if(!has){const i=ms.find(i=>!(S['m'+i]||'').trim());if(i)S['m'+i]=med}
+ lmeSave(S)}
+document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('.ceaf-c,.ceaf-lme');if(!t)return;const box=t.closest('details.ceaf');if(!box)return;e.preventDefault();
+ if(t.classList.contains('ceaf-c')){box.querySelectorAll('.ceaf-c').forEach(b=>b.setAttribute('aria-selected',b===t));copy(t.dataset.cid+' – '+t.dataset.dx);return}
+ const c=box.querySelector('.ceaf-c[aria-selected="true"]');if(!c){toast('Toque primeiro no CID do paciente');return}
+ ceafToLme(c.closest('.ceaf-p').dataset.med,c.dataset.cid,c.dataset.dx);toast('CID '+c.dataset.cid+' levado ao LME');go('lme')});
+function ceafLme(m,S,sync){const box=m.querySelector('#lme-ceaf');if(!box)return;const seen=new Set(),ds=[];
+ [1,2,3,4,5,6].forEach(i=>ceafFind(S['m'+i]).forEach(d=>{if(!seen.has(d[0])){seen.add(d[0]);ds.push(d)}}));
+ if(!ds.length){box.innerHTML='<p class="note">Digite o medicamento abaixo e o app mostra aqui os CID-10 que o CEAF aceita para ele.</p>';return}
+ box.innerHTML=`<div class="card"><h3>CID-10 aceitos no CEAF para estes medicamentos</h3>${ds.map(d=>d[2].map(k=>{const p=CEAFP[k];
+  return `<div class="ceaf-p"><b>${esc(d[0])} · ${esc(p.n)}</b> <small class="muted">${esc(p.p)}</small><div class="chips">${p.c.map(c=>`<button type="button" class="chip" data-lcid="${esc(c[0])}" data-ldx="${esc(c[1].replace(/ \*$/,''))}" aria-selected="${(S.cid||'')===c[0].replace('.','')}">${esc(c[0])} <small>${esc(c[1])}</small></button>`).join('')}</div>${p.o?`<p class="note">${esc(p.o)}</p>`:''}</div>`}).join('')).join('')}
+  <p class="note">Toque no CID para preencher os campos 9 e 10. Fonte: PCDTs do Ministério da Saúde, conferidos em ${CEAFDATA}.</p></div>`;
+ box.querySelectorAll('[data-lcid]').forEach(b=>b.onclick=()=>{sync('cid',b.dataset.lcid.replace('.',''));sync('dx',b.dataset.ldx);box.querySelectorAll('[data-lcid]').forEach(x=>x.setAttribute('aria-selected',x===b));toast('CID '+b.dataset.lcid+' no LME')})}
+function farmBadges(rx){return farmBadges0(rx)+ceafHTML(rx)+eaHTML(rx)}
 function farmBadges0(rx){const ds=FARM.filter(f=>new RegExp(norm(f[1])).test(norm(rx)));if(!ds.length)return '';
   return `<div class="bar farmb">${ds.map(f=>{const c=FCOMP[f[2]],ms=FMUN.map(([k,n])=>inMun(f,k)?n:null).filter(Boolean);
    return `<span class="chip tag ${c[0]}" title="${esc(c[2])}">${esc(f[0].split(' (')[0])}: ${f[2]==='B'||f[2]==='E'?'SUS ✓':f[2]==='Esp'?'CEAF':f[2]==='N'?'fora da RENAME':'conferir'}${ms.length?' · '+esc(ms.join(', '))+' ✓':''}</span>`}).join('')}</div>`}
@@ -10844,7 +10944,7 @@ function renderFARM(m){
       return `<div class="node"><h3>${esc(f[0])} <small class="ctag" style="color:var(--${c[0]})">${esc(c[1])}</small></h3><div class="rows">
         <div><span>SUS</span><span style="text-align:right">${esc(c[2])}${f[3]?' · '+esc(f[3]):''}</span></div>
         ${ms.map(([n,ok])=>`<div><span>${esc(n)}</span><span style="text-align:right;color:${ok?'var(--ok)':'var(--bad)'};font-weight:600">${ok?'na REMUME':'não achei na lista colada'}</span></div>`).join('')}
-        ${s!=='l'?row('Gestação',f[4]):''}${s!=='g'?row('Lactação',f[5]):''}</div><div class="bar"><button class="btn small" type="button" data-fa="${esc(f[0])}">+ Receita</button></div></div>`}).join(''):'<p class="note">Nada encontrado. Confira na RENAME ou na REMUME do município.</p>'};
+        ${s!=='l'?row('Gestação',f[4]):''}${s!=='g'?row('Lactação',f[5]):''}</div>${ceafHTML(f[0]+' '+f[1])}<div class="bar"><button class="btn small" type="button" data-fa="${esc(f[0])}">+ Receita</button></div></div>`}).join(''):'<p class="note">Nada encontrado. Confira na RENAME ou na REMUME do município.</p>'};
   draw();
   $('#fm-list').addEventListener('click',e=>{const b=e.target.closest('[data-fa]');if(!b)return;const f=FARM.find(x=>x[0]===b.dataset.fa);if(!f)return;
     BLD=bldNew({name:f[0].split(' (')[0]});bldSetFarm(FARM.indexOf(f));go('receita')});
@@ -10928,7 +11028,7 @@ GD.lme={s:'LME (medicamento especializado)',t:'LME: laudo de solicitação de me
   m.innerHTML=`<section class="panel lmesec"><div class="ph"><h2>LME: medicamento do Componente Especializado</h2><span class="code">CEAF · Ministério da Saúde</span></div>
    <p class="muted">Preencha aqui ou direto na folha e imprima: os campos saem no lugar certo do laudo oficial (A4). Seus dados de médico e unidade ficam salvos neste aparelho; os do paciente somem ao fechar o app.</p>
    <div class="bar"><button class="btn" id="lme-pr" type="button">Imprimir LME</button><button class="btn small" id="lme-cp" type="button">Limpar dados do paciente</button><button class="btn small" id="lme-ca" type="button">Limpar tudo</button></div>
-   <details class="lmeform"${matchMedia('(min-width:1000px)').matches?'':' open'}><summary>Preencher por campos (mais fácil no celular)</summary>
+   <div id="lme-ceaf"></div><details class="lmeform"${matchMedia('(min-width:1000px)').matches?'':' open'}><summary>Preencher por campos (mais fácil no celular)</summary>
     ${grp('Médico e unidade',['cnes','est','med','cns','data'])}
     ${grp('Paciente',['pac','mae','peso','alt'])}
     <div class="card"><h3>Medicamentos e quantidade por mês</h3><div class="lmem">${medRows}</div></div>
@@ -10945,7 +11045,7 @@ GD.lme={s:'LME (medicamento especializado)',t:'LME: laudo de solicitação de me
   const paint=g=>m.querySelectorAll(`[data-r="${g}"]`).forEach(b=>{const on=b.dataset.v===S[g];b.classList.contains('lmex')?b.textContent=on?'X':'':b.setAttribute('aria-selected',on)});
   const all=()=>{m.querySelectorAll('[data-k]').forEach(e=>{const v=S[e.dataset.k]||'';if(e.value!==v)e.value=v;if(e.closest('.lmepg'))fit(e)});Object.keys(LMEOPT).forEach(paint)};
   m.querySelectorAll('[data-k]').forEach(e=>{const k=e.dataset.k;
-   e.oninput=()=>{let v=e.value;if(k==='cid')v=v.toUpperCase().replace(/[^A-Z0-9]/g,'');if(v!==e.value)e.value=v;sync(k,v,e)};
+   e.oninput=()=>{let v=e.value;if(k==='cid')v=v.toUpperCase().replace(/[^A-Z0-9]/g,'');if(v!==e.value)e.value=v;sync(k,v,e);if(/^m\d$/.test(k))ceafLme(m,S,sync)};
    e.onchange=()=>{const f=k==='cns'?LMEFMT.cns:k==='cpf'?LMEFMT.cpf:/^tel/.test(k)?LMEFMT.tel:k==='data'?LMEFMT.data:k==='docn'?(S.docr==='0'?LMEFMT.cpf:S.docr==='1'?LMEFMT.cns:null):null;
     if(f){const v=f(e.value);if(v!==e.value){e.value=v;sync(k,v,e)}}}});
   m.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{const g=b.dataset.r;S[g]=S[g]===b.dataset.v?'':b.dataset.v;paint(g);lmeSave(S)});
@@ -10953,7 +11053,7 @@ GD.lme={s:'LME (medicamento especializado)',t:'LME: laudo de solicitação de me
   m.querySelector('#lme-pr').onclick=()=>{m.querySelectorAll('.lmepg [data-k]').forEach(fit);printSheet()};
   m.querySelector('#lme-cp').onclick=()=>{Object.keys(S).forEach(k=>{if(!LMEDOC.includes(k))delete S[k]});S.data=lmeToday();lmeSave(S);all();toast('Dados do paciente apagados')};
   m.querySelector('#lme-ca').onclick=()=>{if(!confirm('Apagar todos os campos do LME, inclusive médico e unidade?'))return;Object.keys(S).forEach(k=>delete S[k]);S.data=lmeToday();lmeSave(S);all();toast('LME limpo')};
-  const img=m.querySelector('.lmepg img'),fa=()=>m.querySelectorAll('.lmepg [data-k]').forEach(fit);img.complete?requestAnimationFrame(fa):img.onload=fa},sec:[]};
+  ceafLme(m,S,sync);const img=m.querySelector('.lmepg img'),fa=()=>m.querySelectorAll('.lmepg [data-k]').forEach(fit);img.complete?requestAnimationFrame(fa):img.onload=fa},sec:[]};
 GD.abort_gd={s:'Abortamento: guia',t:'Abortamento e sangramento na gestação: classificação e conduta',src:'MS: Atenção Humanizada ao Abortamento (2011), Manual de Gestação de Alto Risco (2022) · FEBRASGO · FIGO 2023',k:'abortamento aborto classificacao ameaca inevitavel incompleto completo retido infectado habitual ectopica mola placenta previa descolamento rotura uterina vasa previa anti-d rh negativo beta hcg',rel:[['fx_sang1','Fluxograma 1ª metade'],['fx_sang2','Fluxograma 2ª metade'],['u_sang','Urgência'],['sang1','SOAP 1ª metade'],['sang2','SOAP 2ª metade'],['rx_abort','Receitas'],['or_sang','Folha do paciente']],sec:[
  {h:'Classificação do abortamento',intro:'Abortamento: perda até 20–22 semanas ou feto com menos de 500 g. Precoce: até 12 semanas.',rows:[
   ['Ameaça','Sangramento leve, colo fechado, útero compatível, embrião vivo. Expectante na APS; 80% evoluem bem.'],
