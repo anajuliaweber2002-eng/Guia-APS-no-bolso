@@ -307,6 +307,7 @@ textarea.soap.rxta{min-height:0;overflow:hidden}
 .lbar{display:grid;gap:4px;margin-top:6px}.lbo{display:grid;gap:2px;text-align:left;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:8px;padding:7px 10px;font:inherit;font-size:.88rem;cursor:pointer}.lbo small{color:var(--muted);font-size:.76rem}button.lbo:hover{background:var(--accent-soft)}.lbo.lbn{cursor:default;border-style:dashed;gap:6px}.lbo.lbn input{font-size:.9rem;padding:7px 9px}.lbo.lbn .btn{justify-self:start}
 .sgb{display:flex;align-items:center;gap:6px;width:100%;border:0;background:none;color:var(--g,var(--fg));font:700 .7rem var(--f-ui);text-transform:uppercase;letter-spacing:.06em;padding:9px 8px 6px;border-radius:7px;cursor:pointer;text-align:left}.sgb::before{content:"▸";font-size:.85rem;color:var(--muted);width:10px}.sgb[aria-expanded="true"]::before{content:"▾"}.sgb small{margin-left:auto;font-weight:600;color:var(--muted);letter-spacing:0}.sgb:hover{background:var(--sunk)}.sgl{display:grid;gap:1px;padding-left:8px}
 .mgb{display:flex;align-items:center;gap:8px;width:100%;border:0;border-top:1px solid var(--line);margin-top:8px;background:none;text-align:left;cursor:pointer;padding:14px 10px 8px;font:700 .74rem var(--f-ui);color:var(--fg)}.mgb::before{content:"▸";font-size:.9rem;color:var(--accent);width:12px}.mgb[aria-expanded="true"]::before{content:"▾"}.mgb:hover{background:var(--sunk);border-radius:0 0 8px 8px}.mgw{display:grid}
+.lbpre{box-shadow:inset 0 0 0 2px var(--accent);background:var(--accent-soft)!important}.lbpre-bar{border:1px solid var(--accent);background:var(--accent-soft);border-radius:var(--r);padding:10px 12px;margin:0 0 12px;font-size:.92rem}.lbpre-bar .bar{margin-top:8px}
 </style>
 
 <header>
@@ -12693,7 +12694,7 @@ function lbAll(){const l=lbLine();return [...LBS.hist,l].filter(Boolean).join('\
 function renderLABS(m){
   if(!LBS.d)LBS.d=new Date().toISOString().slice(0,10);
   m.innerHTML=`<section class="panel"><div class="ph"><h2>Preencher exames</h2><span class="code">resultado com data → texto do SOAP</span></div>
-    <p class="note">Escolha o painel, digite só o que veio no resultado e copie a linha pronta. Campos vazios não entram no texto. Valores fora da referência saem com ↑ ou ↓; a TFG (CKD-EPI 2021) sai junto da creatinina e o LDL é calculado (Friedewald) se vier só CT, HDL e TG. Toque em “editar” ao lado da referência para usar a do seu laboratório (fica salva neste aparelho, separada para criança e adulto). Faltou algum exame no painel? Use “Adicionar exame nesta mesma data” e ele entra no mesmo texto. Use “Guardar data” só para resultados de outra data. Fica só nesta aba do navegador.</p>
+    <p class="note">Escolha o painel, digite só o que veio no resultado e copie a linha pronta. Campos vazios não entram no texto. Valores fora da referência saem com ↑ ou ↓; a TFG (CKD-EPI 2021) sai junto da creatinina e o LDL é calculado (Friedewald) se vier só CT, HDL e TG. Toque em “editar” ao lado da referência para usar a do seu laboratório (fica salva neste aparelho, separada para criança e adulto). Faltou algum exame no painel? Use “Adicionar exame nesta mesma data” e ele entra no mesmo texto. Use “Guardar data” só para resultados de outra data. Os resultados (com idade e sexo) já entram sozinhos nas calculadoras: TFG, estágio da DRC, Cockcroft-Gault, ajustes de dose, LDL, risco CV, metas glicêmicas, FIB-4, FLI, fator R, cálcio corrigido, CURB-65, Glasgow-Blatchford e HAS-BLED. Fica só nesta aba do navegador; “Limpar” apaga tudo ao trocar de paciente.</p>
     <div class="chips dzt" id="lb-p" role="tablist">${LBP.map(p=>`<button class="chip" role="tab" type="button" data-p="${p[0]}" aria-selected="${LBS.p===p[0]}">${esc(p[1])}</button>`).join('')}</div>
     <div class="card"><div class="grid2">
       <div class="field"><label for="lb-d">Data da coleta</label><input type="date" id="lb-d" value="${esc(LBS.d)}"></div>
@@ -12704,8 +12705,9 @@ function renderLABS(m){
       <div class="field" style="margin-top:8px"><input id="lb-as" type="search" placeholder="Buscar exame para adicionar (ex.: VCM, LDL, HTLV, urina 24 h)" aria-label="Buscar exame para adicionar" autocomplete="off" enterkeyhint="search"></div><div class="lbar" id="lb-ar"></div>
       <div class="field" style="margin-top:10px"><label for="lb-x">Outros exames (texto livre)</label><textarea id="lb-x" rows="2" placeholder="Ex.: USG abdome: esteatose leve">${esc(LBS.x)}</textarea></div></div>
     <div class="card"><div class="lbl">Texto para o SOAP</div><pre class="rx" id="lb-out"></pre></div>
+    <div class="card" id="lb-calc" hidden><div class="lbl">Já vai preenchido nas calculadoras</div><div class="chips dzt" id="lb-cl"></div></div>
     <div class="bar sticky-bar"><button class="btn primary" id="lb-cp" type="button">Copiar</button><button class="btn" id="lb-cs" type="button">+ Consulta</button><button class="btn" id="lb-sv" type="button">Guardar data</button><button class="btn" id="lb-clr" type="button">Limpar</button></div></section>`;
-  const out=()=>{const t=lbAll();$('#lb-out').textContent=t||'Preencha algum resultado.';saveLbs()};
+  const out=()=>{const t=lbAll();$('#lb-out').textContent=t||'Preencha algum resultado.';saveLbs();lbCalcChips()};
   const addUI=()=>{const keys=lbKeys(),base=(LBP.find(p=>p[0]===LBS.p)||LBP[0])[2].split(' '),A=(LBS.add||[]).filter(k=>LB[k]&&!base.includes(k));
     $('#lb-q').innerHTML=A.map(k=>`<button class="chip" type="button" data-rm="${k}" aria-label="Tirar ${esc(LB[k][1])}">${esc(LB[k][0])} ✕</button>`).join('')+(lbCtx().gest?LBQG:LBQ).filter(k=>!keys.includes(k)).map(k=>`<button class="chip" type="button" data-ad="${k}">+ ${esc(LB[k][0])}</button>`).join('');
     $('#lb-ar').innerHTML='';
@@ -12749,6 +12751,86 @@ function renderLABS(m){
   $('#lb-clr').onclick=()=>{if(!confirm('Apagar todos os resultados preenchidos?'))return;LBS.v={};LBS.x='';LBS.hist=[];LBS.add=[];$('#lb-x').value='';fields()};
   fields();
 }
+/* ---------- Exames -> calculadoras (LBC) ---------- */
+const LBC={
+ has:k=>{const x=LBS.v[k];return !!(LB[k]&&x!=null&&String(x).trim()!==''&&typeof LB[k][3]!=='string'&&lbNum(x)!=null)},
+ n:k=>LBC.has(k)?lbNum(LBS.v[k]):null,
+ age:()=>{const a=lbNum(LBS.age);return a!=null&&a>=0&&a<130?a:null},
+ tfg:()=>{const c=LBC.n('cr'),a=LBC.age();return c>0&&a>=18?Math.round(ckdepi(c,a,LBS.sex!=='M')):null},
+ ldl:()=>{if(LBC.has('ldl'))return LBC.n('ldl');const ct=LBC.n('ct'),h=LBC.n('hdl'),t=LBC.n('tg');return ct>0&&h>0&&t>0&&t<400&&ct>h?Math.round(ldlMH(ct,h,t).ldl):null},
+ plq:()=>{const p=LBC.n('plaq');return p==null?null:p>2000?Math.round(p/100)/10:p},
+ hi:k=>{try{return lbRange(k,lbCtx())[1]}catch(e){return null}},
+ f:n=>n==null?'':String(n).replace('.',','),
+ date:()=>LBS.d?LBS.d.split('-').reverse().slice(0,2).join('/'):''
+};
+/* [id da calculadora, nome, tem dados?] — também vira atalho na página Preencher exames */
+const LBCALC=[
+ ['tfg','TFG',()=>LBC.has('cr')],
+ ['drcest','Estágio DRC',()=>LBC.tfg()!=null||LBC.has('rac')],
+ ['cg','Cockcroft-Gault',()=>LBC.has('cr')],
+ ['ajustes','Ajustes de dose',()=>LBC.tfg()!=null],
+ ['ldlc','LDL',()=>LBC.has('ct')&&LBC.has('hdl')&&LBC.has('tg')],
+ ['rcv','Risco CV',()=>LBC.has('ct')||LBC.has('hdl')],
+ ['ex_glic','Metas glicêmicas',()=>LBC.has('hba1c')||LBC.has('glic')],
+ ['fib4','FIB-4',()=>LBC.has('tgo')||LBC.has('tgp')],
+ ['fli','FLI',()=>LBC.has('tg')&&LBC.has('ggt')],
+ ['fatorr','Fator R',()=>LBC.has('tgp')&&LBC.has('fa')],
+ ['cacorr','Cálcio corrigido',()=>LBC.has('ca')&&LBC.has('alb')],
+ ['curb65','CURB-65',()=>LBC.has('ur')],
+ ['gbs','Glasgow-Blatchford',()=>LBC.has('ur')||LBC.has('hb')],
+ ['hasbled','HAS-BLED',()=>LBC.has('cr')]
+];
+function lbAuto(m){
+  if(!m||!LBS||!LBS.v)return;
+  const id=cur&&cur.id,q=s=>m.querySelector(s),got=[],seen=new Set();
+  const ev=el=>{el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}))};
+  const nm={age:'idade',sex:'sexo',tfg:'TFG (da creatinina)',ldl:'LDL',plq:'plaquetas'};
+  const tag=k=>{if(seen.has(k))return;seen.add(k);got.push(nm[k]||(LB[k]?LB[k][0]:k))};
+  /* v: valor (número) ou null = limpa o exemplo; k: nome para a faixa */
+  const put=(sel,v,k)=>{const el=q(sel);if(!el)return;if(v==null||v===''){if(el.tagName!=='SELECT'){el.value='';ev(el)}return}
+    el.value=typeof v==='number'?LBC.f(v):v;el.classList.add('lbpre');ev(el);if(k)tag(k)};
+  const radio=(sel,k)=>{const el=q(sel);if(!el)return;el.checked=true;ev(el);if(k)tag(k)};
+  const ck=(i,txt,on)=>{const el=q('#sc-'+i);if(!el||!el.parentElement.textContent.includes(txt))return false;el.checked=on;ev(el);return true};
+  const opt=(i,j)=>{const el=q(`input[name="sc-${i}"][value="${j}"]`);if(el){el.checked=true;ev(el)}};
+  const age=LBC.age(),fem=LBS.sex!=='M';
+  const A=age!=null?Math.round(age):null;
+  if(q('#tfg-cr')&&LBC.has('cr')){put('#tfg-cr',LBC.n('cr'),'cr');put('#tfg-age',A,'age');radio(fem?'#tfg-f':'#tfg-m','sex')}
+  if(q('#rcv-ct')&&(LBC.has('ct')||LBC.has('hdl'))){put('#rcv-age',A,'age');radio(fem?'#rcv-f':'#rcv-m','sex');put('#rcv-ct',LBC.n('ct'),'ct');put('#rcv-hdl',LBC.n('hdl'),'hdl');const l=LBC.ldl();if(l!=null)put('#rcv-ldl',l,'ldl');put('#rcv-pas',null)}
+  if(q('#lp-ct')&&(LBC.has('ct')||LBC.has('hdl')||LBC.has('tg'))){put('#lp-ct',LBC.n('ct'),'ct');put('#lp-hdl',LBC.n('hdl'),'hdl');put('#lp-tg',LBC.n('tg'),'tg')}
+  if(q('#gm-a')&&(LBC.has('hba1c')||LBC.has('glic'))){const gest=lbCtx().gest;if(gest||(A!=null&&A<18)){const s=q('#gm-p');if(s){s.value=gest?'g':'k';ev(s)}}
+    put('#gm-a',LBC.n('hba1c'),'hba1c');put('#gm-j',LBC.n('glic'),'glic');put('#gm-pp',null)}
+  if(q('#aj-tfg')&&LBC.tfg()!=null)put('#aj-tfg',LBC.tfg(),'tfg');
+  if(q('#pf-age')){if(A!=null&&!q('#pf-age').value)put('#pf-age',A,'age');if(LBC.tfg()!=null&&!q('#pf-tfg').value)put('#pf-tfg',LBC.tfg(),'tfg')}
+  if(typeof NC!=='undefined'&&NC[id]&&q('#nc-r')){
+    if(id==='drcest'&&(LBC.tfg()!=null||LBC.has('rac'))){put('#nc-tfg',LBC.tfg(),'tfg');put('#nc-rac',LBC.n('rac'),'rac')}
+    if(id==='cg'&&LBC.has('cr')){put('#nc-id',A,'age');put('#nc-cr',LBC.n('cr'),'cr');const s=q('#nc-sx');if(s){s.value=fem?'f':'m';ev(s);tag('sex')}put('#nc-kg',null)}
+    if(id==='cacorr'&&(LBC.has('ca')||LBC.has('alb'))){put('#nc-ca',LBC.n('ca'),'ca');put('#nc-alb',LBC.n('alb'),'alb')}
+    if(id==='ldlc'&&(LBC.has('ct')||LBC.has('hdl')||LBC.has('tg'))){put('#nc-ct',LBC.n('ct'),'ct');put('#nc-hdl',LBC.n('hdl'),'hdl');put('#nc-tg',LBC.n('tg'),'tg')}
+    if(id==='fli'&&(LBC.has('tg')||LBC.has('ggt'))){put('#nc-tg',LBC.n('tg'),'tg');put('#nc-ggt',LBC.n('ggt'),'ggt');put('#nc-ca',LBC.n('cab'),'cab');put('#nc-imc',LBC.n('imc'),'imc')}
+    if(id==='fib4'&&(LBC.has('tgo')||LBC.has('tgp'))){put('#nc-id',A,'age');put('#nc-ast',LBC.n('tgo'),'tgo');put('#nc-alt',LBC.n('tgp'),'tgp');put('#nc-pl',LBC.plq(),'plq')}
+    if(id==='fatorr'&&(LBC.has('tgp')||LBC.has('fa'))){put('#nc-alt',LBC.n('tgp'),'tgp');put('#nc-fa',LBC.n('fa'),'fa');const a=LBC.hi('tgp'),b=LBC.hi('fa');if(a)put('#nc-altl',a);if(b)put('#nc-fal',b)}
+  }
+  if(typeof SC!=='undefined'&&SC[id]&&q('#sc-r')){
+    if(id==='curb65'&&LBC.has('ur')){if(ck(1,'Ureia',LBC.n('ur')>50))tag('ur');if(A!=null&&ck(4,'Idade',A>=65))tag('age')}
+    if(id==='hasbled'){if(LBC.has('cr')&&LBC.n('cr')>=2.26&&ck(1,'Cr ≥',true))tag('cr');if(A!=null&&A>65&&ck(6,'Idade',true))tag('age')}
+    if(id==='gbs'){const u=LBC.n('ur'),hb=LBC.n('hb');
+      if(u!=null){opt(0,u<39?0:u<48?1:u<60?2:u<150?3:4);tag('ur')}
+      if(hb!=null){opt(1,hb<10?4:fem?(hb>=12?0:2):(hb>=13?0:hb>=12?1:3));tag('hb');tag('sex')}}
+  }
+  if(!got.length)return;
+  m.querySelectorAll('.ex').forEach(e=>e.hidden=true);
+  const ph=m.querySelector('.panel .ph');if(!ph||m.querySelector('.lbpre-bar'))return;
+  const d=LBC.date(),b=document.createElement('div');b.className='lbpre-bar';
+  b.innerHTML=`<div><b>Preenchido com os exames${d?' de '+d:''}</b>: ${esc(got.join(', '))}. Os campos destacados vieram do Preencher exames; confira e complete o resto.</div><div class="bar"><button type="button" class="btn small" data-lbgo>Ver exames</button><button type="button" class="btn small" data-lbclr>Limpar exames</button></div>`;
+  ph.after(b);
+  b.querySelector('[data-lbgo]').onclick=()=>go('labs');
+  b.querySelector('[data-lbclr]').onclick=()=>{if(!confirm('Apagar os exames preenchidos deste paciente? As calculadoras voltam ao exemplo.'))return;LBS.v={};LBS.x='';LBS.hist=[];LBS.add=[];LBS.age='';saveLbs();toast('Exames apagados');render()};
+}
+function lbCalcChips(){const w=document.getElementById('lb-calc');if(!w)return;
+  let L=[];try{L=LBCALC.filter(c=>{try{return known(c[0])&&c[2]()}catch(e){return false}})}catch(e){}
+  w.hidden=!L.length;w.querySelector('#lb-cl').innerHTML=L.map(c=>`<button class="chip" type="button" data-lbc="${c[0]}">${esc(c[1])} →</button>`).join('');
+  w.querySelectorAll('[data-lbc]').forEach(b=>b.onclick=()=>go(b.dataset.lbc))}
+{const _r=render;render=function(){const x=_r.apply(this,arguments);try{lbAuto(document.getElementById('main'))}catch(e){console.warn('lbAuto',e)}return x}}
 /* Como subir a dose: [regex, remédio, começar com, como subir, máximo, atenção] */
 const TITR=[
  ['omeprazol|pantoprazol|esomeprazol|lansoprazol|rabeprazol','IBP (omeprazol e outros)','Dose plena 1 vez ao dia, 30 min antes do café: omeprazol 20 mg = pantoprazol 40 mg = esomeprazol 40 mg (esofagite) = lansoprazol 30 mg = rabeprazol 20 mg','Sem resposta em 8 semanas (com adesão e horário certos): dose dupla, antes do café e antes do jantar','Omeprazol 40 mg/dia (80 mg só em casos especiais)','Depois do controle, descer para a menor dose ou sob demanda; rever a indicação (B12, magnésio, fraturas)'],
