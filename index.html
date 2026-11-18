@@ -4866,12 +4866,15 @@ rx_ad:{s:'Antidepressivos',t:'Antidepressivos',rec:RC,items:[
  {t:'Duloxetina',rx:`Uso oral
 1. Duloxetina 30 mg ...... 30 cápsulas
    Tomar 1 cápsula por dia por 1 a 2 semanas. Depois, 2 cápsulas (60 mg) por dia.`,n:'Depressão ou ansiedade com dor crônica, neuropatia diabética, fibromialgia, osteoartrite. Náusea no início (tomar com comida). Evitar se TFG < 30, hepatopatia ou etilismo. Não está na RENAME.'},
- {t:'Bupropiona',rx:`Uso oral
-1. Cloridrato de bupropiona 150 mg de liberação prolongada ...... 30 comprimidos
-   Tomar 1 comprimido pela manhã. Após 1 semana, pode aumentar para 1 comprimido de manhã e 1 até as 16 horas.`,n:'Depressão com cansaço, sono excessivo, disfunção sexual por ISRS ou tabagismo. Não causa ganho de peso. Contraindicada em epilepsia, bulimia/anorexia e retirada de álcool ou benzodiazepínico. Pode dar insônia e ansiedade.'},
+ {t:'Bupropiona XL 150 mg (Zetron XL)',rx:`Uso oral
+1. Cloridrato de bupropiona XL 150 mg (liberação estendida) ...... 30 comprimidos
+   Tomar 1 comprimido pela manhã, 1 vez ao dia. Engolir inteiro, sem partir ou mastigar.`,n:'Receita de Controle Especial (C1), 2 vias. XL (Zetron XL, Bup XL) é 1 vez ao dia, pela manhã: não dividir em 2 tomadas e não partir, mastigar ou triturar o comprimido. Intervalo mínimo de 24 h entre as doses. Dose máxima 450 mg/dia. Idoso, hepatopatia ou TFG < 60: ficar em 150 mg. Após pelo menos 4 dias a 1 semana, se precisar, passar para XL 300 mg 1x/dia (receita no fim desta lista). Depressão com cansaço, sono excessivo, disfunção sexual por ISRS ou tabagismo. Não causa ganho de peso. Contraindicada em epilepsia, bulimia/anorexia e retirada de álcool ou benzodiazepínico. Pode dar insônia e ansiedade.'},
  {t:'Mirtazapina',rx:`Uso oral
 1. Mirtazapina 15 mg ...... 30 comprimidos
-   Tomar 1 comprimido à noite.`,n:'Depressão com insônia, pouco apetite ou perda de peso (idoso). Dose 15 a 45 mg. Sono e ganho de peso. Pouco efeito sexual. Pode somar a um ISRS em resposta parcial.'}]},
+   Tomar 1 comprimido à noite.`,n:'Depressão com insônia, pouco apetite ou perda de peso (idoso). Dose 15 a 45 mg. Sono e ganho de peso. Pouco efeito sexual. Pode somar a um ISRS em resposta parcial.'},
+ {t:'Bupropiona XL 300 mg (Zetron XL)',rx:`Uso oral
+1. Cloridrato de bupropiona XL 300 mg (liberação estendida) ...... 30 comprimidos
+   Tomar 1 comprimido pela manhã, 1 vez ao dia. Engolir inteiro, sem partir ou mastigar.`,n:'Receita de Controle Especial (C1), 2 vias. XL (Zetron XL, Bup XL) é 1 vez ao dia, pela manhã: não dividir em 2 tomadas e não partir, mastigar ou triturar o comprimido. Intervalo mínimo de 24 h entre as doses. Dose máxima 450 mg/dia. Idoso, hepatopatia ou TFG < 60: ficar em 150 mg. Começar com XL 150 mg por pelo menos 4 dias a 1 semana antes de passar para 300 mg. Não somar 150 + 300: a troca é de um comprimido pelo outro. Depressão com cansaço, sono excessivo ou disfunção sexual por ISRS. Contraindicada em epilepsia, bulimia/anorexia e retirada de álcool ou benzodiazepínico. Pode dar insônia (não tomar à tarde/noite), ansiedade e aumento da PA./*bupxl*/'}]},
 rx_ap:{s:'Antipsicóticos',t:'Antipsicóticos',rec:RC,items:[
  {t:'Haloperidol oral',rx:`Uso oral
 1. Haloperidol 5 mg ...... 30 comprimidos
@@ -12875,7 +12878,7 @@ const TITR=[
  ['metimazol','Metimazol','5–30 mg/dia conforme T4L (1–1,5x LSN: 5–10; 1,5–2x: 10–20; > 2x: 20–30)','Ajustar a cada 4–6 semanas pelo T4L; reduzir para 5–10 mg na manutenção','40 mg/dia','Agranulocitose: febre ou dor de garganta → hemograma no mesmo dia'],
  ['gabapentina','Gabapentina','300 mg à noite','Aumentar 300 mg/dia a cada 1–3 dias: 300 → 600 → 900 mg/dia em 3 tomadas','3.600 mg/dia (TFG 30–59: 1.400; 15–29: 700)','Sonolência e tontura; ajuste renal obrigatório'],
  ['tramadol','Tramadol','50 mg de 8/8 ou 12/12 h (idoso: 25–50 mg)','Aumentar 50 mg/dia a cada 3 dias','400 mg/dia (idoso > 75 anos: 300 mg; TFG < 30: 200 mg)','Síndrome serotoninérgica com ISRS; reduz o limiar convulsivo'],
- ['bupropiona','Bupropiona','150 mg pela manhã','Após 3–7 dias, 150 mg de 12/12 h (2ª dose até as 16 h)','300 mg/dia (tabagismo); 450 mg/dia na depressão','Contraindicada se convulsão, bulimia ou anorexia'],
+ ['bupropiona','Bupropiona','150 mg pela manhã','XL (Zetron XL): após 4–7 dias, XL 300 mg 1x/dia pela manhã. SR (SUS, tabagismo): após 3 dias, 150 mg de 12/12 h (2ª dose até as 16 h)','300 mg/dia (tabagismo); 450 mg/dia na depressão','Contraindicada se convulsão, bulimia ou anorexia'],
  ['doxazosina','Doxazosina','1 mg à noite','Dobrar a cada 1–2 semanas: 1 → 2 → 4 mg','8 mg/dia (HPB); 16 mg/dia (HAS)','1ª dose à noite: hipotensão postural'],
  ['prednisona','Prednisona (retirada)','Conforme a doença','Uso > 3 semanas: reduzir 5–10 mg por semana até 20 mg, depois 2,5–5 mg por semana até 5–7,5 mg, depois 1 mg a cada 2–4 semanas','Depende da indicação','Uso < 3 semanas pode parar sem desmame. Glicemia e PA']
 ];
