@@ -12805,7 +12805,7 @@ function lbAll(){const l=lbLine();return [...LBS.hist,l].filter(Boolean).join('\
 function renderLABS(m){
   if(!LBS.d)LBS.d=new Date().toISOString().slice(0,10);
   m.innerHTML=`<section class="panel"><div class="ph"><h2>Preencher exames</h2><span class="code">resultado com data → texto do SOAP</span></div>
-    <p class="note">Escolha o painel, digite só o que veio no resultado e copie a linha pronta. Campos vazios não entram no texto. Valores fora da referência saem com ↑ ou ↓; a TFG (CKD-EPI 2021) sai junto da creatinina e o LDL é calculado (Friedewald) se vier só CT, HDL e TG. Toque em “editar” ao lado da referência para usar a do seu laboratório (fica salva neste aparelho, separada para criança e adulto). Faltou algum exame no painel? Use “Adicionar exame nesta mesma data” e ele entra no mesmo texto. Use “Guardar data” só para resultados de outra data. Os resultados (com idade e sexo) já entram sozinhos nas calculadoras: TFG, estágio da DRC, Cockcroft-Gault, ajustes de dose, LDL, risco CV, metas glicêmicas, FIB-4, FLI, fator R, cálcio corrigido, CURB-65, Glasgow-Blatchford e HAS-BLED. Fica só nesta aba do navegador; “Limpar” apaga tudo ao trocar de paciente.</p>
+    <p class="note">Escolha o painel, digite só o que veio no resultado e copie a linha pronta. Campos vazios não entram no texto. Valores fora da referência saem com ↑ ou ↓; a TFG (CKD-EPI 2021) sai junto da creatinina e o LDL é calculado (Friedewald) se vier só CT, HDL e TG. Toque em “editar” ao lado da referência para usar a do seu laboratório (fica salva neste aparelho, separada para criança e adulto). Faltou algum exame no painel? Use “Adicionar exame nesta mesma data” e ele entra no mesmo texto. Use “Guardar data” só para resultados de outra data. Os resultados (com idade e sexo) já entram sozinhos nas calculadoras, e o que você digitar numa calculadora também aparece aqui e nas outras: TFG, estágio da DRC, Cockcroft-Gault, ajustes de dose, LDL, risco CV, metas glicêmicas, FIB-4, FLI, fator R, cálcio corrigido, CURB-65, Glasgow-Blatchford e HAS-BLED. Fica só nesta aba do navegador; “Limpar” apaga tudo ao trocar de paciente.</p>
     <div class="chips dzt" id="lb-p" role="tablist">${LBP.map(p=>`<button class="chip" role="tab" type="button" data-p="${p[0]}" aria-selected="${LBS.p===p[0]}">${esc(p[1])}</button>`).join('')}</div>
     <div class="card"><div class="grid2">
       <div class="field"><label for="lb-d">Data da coleta</label><input type="date" id="lb-d" value="${esc(LBS.d)}"></div>
@@ -12859,7 +12859,7 @@ function renderLABS(m){
   $('#lb-cp').onclick=()=>{const t=lbAll();if(!t){toast('Preencha algum resultado');return}copy(t)};
   $('#lb-cs').onclick=()=>addCons('lab','Exames laboratoriais',lbAll());
   $('#lb-sv').onclick=()=>{const l=lbLine();if(!l){toast('Preencha algum resultado');return}LBS.hist.push(l);LBS.v={};LBS.x='';LBS.add=[];$('#lb-x').value='';toast('Data guardada. Preencha a próxima');fields()};
-  $('#lb-clr').onclick=()=>{if(!confirm('Apagar todos os resultados preenchidos?'))return;LBS.v={};LBS.x='';LBS.hist=[];LBS.add=[];$('#lb-x').value='';fields()};
+  $('#lb-clr').onclick=()=>{if(!confirm('Apagar todos os resultados preenchidos?'))return;LBS.tfg='';LBS.v={};LBS.x='';LBS.hist=[];LBS.add=[];$('#lb-x').value='';fields()};
   fields();
 }
 /* ---------- Exames -> calculadoras (LBC) ---------- */
@@ -12932,16 +12932,60 @@ function lbAuto(m){
   m.querySelectorAll('.ex').forEach(e=>e.hidden=true);
   const ph=m.querySelector('.panel .ph');if(!ph||m.querySelector('.lbpre-bar'))return;
   const d=LBC.date(),b=document.createElement('div');b.className='lbpre-bar';
-  b.innerHTML=`<div><b>Preenchido com os exames${d?' de '+d:''}</b>: ${esc(got.join(', '))}. Os campos destacados vieram do Preencher exames; confira e complete o resto.</div><div class="bar"><button type="button" class="btn small" data-lbgo>Ver exames</button><button type="button" class="btn small" data-lbclr>Limpar exames</button></div>`;
+  b.innerHTML=`<div><b>Preenchido com os exames${d?' de '+d:''}</b>: ${esc(got.join(', '))}. Os campos destacados vieram do Preencher exames ou de outra calculadora; ao mudar um exame aqui, ele muda em todas. Confira e complete o resto.</div><div class="bar"><button type="button" class="btn small" data-lbgo>Ver exames</button><button type="button" class="btn small" data-lbclr>Limpar exames</button></div>`;
   ph.after(b);
   b.querySelector('[data-lbgo]').onclick=()=>go('labs');
-  b.querySelector('[data-lbclr]').onclick=()=>{if(!confirm('Apagar os exames preenchidos deste paciente? As calculadoras voltam ao exemplo.'))return;LBS.v={};LBS.x='';LBS.hist=[];LBS.add=[];LBS.age='';saveLbs();toast('Exames apagados');render()};
+  b.querySelector('[data-lbclr]').onclick=()=>{if(!confirm('Apagar os exames preenchidos deste paciente? As calculadoras voltam ao exemplo.'))return;LBS.v={};LBS.x='';LBS.hist=[];LBS.add=[];LBS.age='';LBS.tfg='';saveLbs();toast('Exames apagados');render()};
 }
 function lbCalcChips(){const w=document.getElementById('lb-calc');if(!w)return;
   let L=[];try{L=LBCALC.filter(c=>{try{return known(c[0])&&c[2]()}catch(e){return false}})}catch(e){}
   w.hidden=!L.length;w.querySelector('#lb-cl').innerHTML=L.map(c=>`<button class="chip" type="button" data-lbc="${c[0]}">${esc(c[1])} →</button>`).join('');
   w.querySelectorAll('[data-lbc]').forEach(b=>b.onclick=()=>go(b.dataset.lbc))}
 {const _r=render;render=function(){const x=_r.apply(this,arguments);try{lbAuto(document.getElementById('main'))}catch(e){console.warn('lbAuto',e)}return x}}
+/* ---------- Exames sincronizados entre calculadoras (LBSYNC) ---------- */
+const LBSYNC={busy:0,
+ /* id do campo -> chave do exame (LB), 'age', 'sex', 'tfg' (TFG digitada) ou função(campo) */
+ map:{'tfg-cr':'cr','tfg-age':'age','tfg-f':'sex','tfg-m':'sex',
+  'rcv-age':'age','rcv-f':'sex','rcv-m':'sex','rcv-ct':'ct','rcv-hdl':'hdl','rcv-ldl':'ldl',
+  'lp-ct':'ct','lp-hdl':'hdl','lp-tg':'tg','gm-a':'hba1c','gm-j':'glic','gm-pp':'gpp',
+  'aj-tfg':'tfg','pf-age':'age','pf-tfg':'tfg',
+  'nc-cr':'cr','nc-id':'age','nc-sx':'sex','nc-tfg':'tfg','nc-rac':'rac','nc-alb':'alb','nc-hdl':'hdl','nc-ct':'ct','nc-tg':'tg',
+  'nc-ggt':'ggt','nc-imc':'imc','nc-ast':'tgo','nc-alt':'tgp','nc-fa':'fa','nc-pl':'plaq','nc-na':'na','nc-bt':'bt',
+  'nc-ca':el=>{const l=el.id&&document.querySelector(`label[for="${el.id}"]`),t=l?l.textContent:'';return /^C[aá]lcio/i.test(t)?'ca':/Circunfer/i.test(t)?'cab':null}},
+ key(el){if(!el||!el.id)return null;const k=this.map[el.id];return typeof k==='function'?k(el):k||null},
+ /* valor do campo -> valor guardado (plaquetas da FIB-4 vêm em mil/mm³) */
+ save(k,el){
+  if(k==='sex'){if(el.type==='radio'){if(!el.checked)return;LBS.sex=/-m$/.test(el.id)?'M':'F'}else LBS.sex=String(el.value).toLowerCase()==='m'?'M':'F';return}
+  let v=String(el.value||'').trim();
+  if(k==='plaq'&&v){const n=lbNum(v);if(n!=null&&n<2000)v=String(Math.round(n*1000))}
+  if(k==='age')LBS.age=v;else if(k==='tfg')LBS.tfg=v;
+  else if(v){LBS.v[k]=v;try{if(LB[k]&&!lbKeys().includes(k))LBS.add=[...(LBS.add||[]),k]}catch(e){}}else delete LBS.v[k];
+ },
+ /* espelha nos outros campos da mesma página */
+ mirror(src,k){const m=document.getElementById('main');if(!m)return;
+  m.querySelectorAll('input,select').forEach(el=>{if(el===src||this.key(el)!==k)return;
+   if(k==='sex'){if(el.type==='radio'){const on=(LBS.sex==='M')===/-m$/.test(el.id);if(el.checked!==on&&on){el.checked=true;this.fire(el)}}else if(el.tagName==='SELECT'){const v=LBS.sex==='M'?'m':'f';if(el.value!==v){el.value=v;this.fire(el)}}return}
+   let v=k==='age'?LBS.age:k==='tfg'?(LBC.tfg()!=null?LBC.f(LBC.tfg()):''):LBS.v[k]!=null?String(LBS.v[k]):'';
+   if(k==='plaq'&&v){const n=LBC.plq();v=n==null?'':LBC.f(n)}
+   if(el.value!==v){el.value=v;el.classList.add('lbpre');this.fire(el)}})},
+ fire(el){this.busy++;try{el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}))}finally{this.busy--}},
+ on(e){if(this.busy)return;const el=e.target,m=document.getElementById('main');if(!m||!m.contains(el))return;
+  const k=this.key(el);if(!k)return;
+  this.save(k,el);
+  if(k==='cr'||k==='age'||k==='sex'){this.mirror(el,'tfg')}
+  saveLbs();el.classList.remove('lbpre');this.mirror(el,k)}
+};
+document.addEventListener('input',e=>LBSYNC.on(e),true);
+document.addEventListener('change',e=>{if(e.target&&(e.target.type==='radio'||e.target.tagName==='SELECT'))LBSYNC.on(e)},true);
+/* TFG digitada direto (sem creatinina) também vale para as outras calculadoras */
+{const _t=LBC.tfg;LBC.tfg=()=>{const t=_t();if(t!=null)return t;const n=lbNum(LBS.tfg);return n>0?Math.round(n):null}}
+LBCALC.forEach(c=>{if(c[0]==='tfg')return;if(['drcest','ajustes'].includes(c[0])){const f=c[2];c[2]=()=>f()||LBC.tfg()!=null}});
+LBCALC.push(['gasocalc','Gasometria',()=>LBC.has('na')||LBC.has('alb')]);
+/* enquanto o kit preenche sozinho, não grava de volta; e completa a gasometria e a TFG digitada */
+{const _a=lbAuto;lbAuto=function(m){LBSYNC.busy++;try{_a(m);
+  if(m&&cur&&cur.id==='gasocalc'&&m.querySelector('#nc-r')){const q=s=>m.querySelector(s);[['#nc-na','na'],['#nc-alb','alb']].forEach(([s,k])=>{const el=q(s);if(el&&LBC.has(k)){el.value=LBC.f(LBC.n(k));el.classList.add('lbpre');LBSYNC.fire(el)}})}
+ }finally{LBSYNC.busy--}}}
+{const _r=rxTfg;rxTfg=function(){const r=_r();if(r[0]&&r[1]!=='da calculadora de TFG')return r;const n=lbNum(LBS.tfg);return n>0?[n,'das calculadoras']:r}}
 /* Como subir a dose: [regex, remédio, começar com, como subir, máximo, atenção] */
 const TITR=[
  ['omeprazol|pantoprazol|esomeprazol|lansoprazol|rabeprazol','IBP (omeprazol e outros)','Dose plena 1 vez ao dia, 30 min antes do café: omeprazol 20 mg = pantoprazol 40 mg = esomeprazol 40 mg (esofagite) = lansoprazol 30 mg = rabeprazol 20 mg','Sem resposta em 8 semanas (com adesão e horário certos): dose dupla, antes do café e antes do jantar','Omeprazol 40 mg/dia (80 mg só em casos especiais)','Depois do controle, descer para a menor dose ou sob demanda; rever a indicação (B12, magnésio, fraturas)'],
